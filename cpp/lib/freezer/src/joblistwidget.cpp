@@ -615,7 +615,7 @@ void JobListWidget::customEvent( QEvent * evt )
 			if( sdt->mHasData ) {
 				mSharedData->mJobTypeList = sdt->mJobTypes;
 				mSharedData->mProjectList = sdt->mProjects;
-				//mSharedData->mServiceList = sdt->mServices;
+				mSharedData->mServiceList = sdt->mServices;
 			}
 
 			// Default to showing all of the services and job types
@@ -965,6 +965,7 @@ void JobListWidget::doRefresh()
 		mJobTaskRunning = true;
 		LOG_5( "Statuses to show: "	+ mJobFilter.statusToShow.join(",") );
 		LOG_5( "Types to show: " + JobTypeList(JobType::table()->records(mJobFilter.typesToShow)).names().join(",") );
+		LOG_5( "Services to show:" + ServiceList(Service::table()->records(mJobFilter.servicesToShow)).services().join(",") );
 		mJobTree->busyWidget()->start();
 		FreezerCore::addTask( new JobListTask( this, mJobFilter, mJobList, activeProjects(), !mJobTree->isColumnHidden(19) /*Service column*/, isDependencyTreeEnabled()) );
 		FreezerCore::wakeup();

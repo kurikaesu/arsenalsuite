@@ -89,7 +89,7 @@ void JobListTask::run()
 		//LOG_5( "Non-Project Jobs: " + QString(mJobFilter.showNonProjectJobs ? "true" : "false") );
 		//LOG_5( "User List: " + mJobFilter.userList.join(",") );
 
-			if( mJobFilter.statusToShow.size() > 0 && mJobFilter.statusToShow.size() != 9 )
+		if( mJobFilter.statusToShow.size() > 0 && mJobFilter.statusToShow.size() != 9 )
 			e = Job::c.Status.in(mJobFilter.statusToShow);
 
 		if( mJobFilter.userList.size() > 0 )
@@ -115,7 +115,8 @@ void JobListTask::run()
 
 		if( mJobFilter.mDaysLimit > 0 )
 			//e &= Job::c.Submittedts > Expression::now() - Interval(0,mJobFilter.mDaysLimit,0);
-			e &= Expression::sql(QString(" AND submittedts > now()-'%1 days'::interval").arg(QString::number(mJobFilter.mDaysLimit)));
+			//e &= Expression::sql(QString(" AND submittedts > now()-'%1 days'::interval").arg(QString::number(mJobFilter.mDaysLimit)));
+			e &= Expression::sql(QString("submittedts > now()-'%1 days'::interval").arg(QString::number(mJobFilter.mDaysLimit)));
 
 		if( mJobFilter.mExtraFilters.isValid() )
 			e &= mJobFilter.mExtraFilters;
