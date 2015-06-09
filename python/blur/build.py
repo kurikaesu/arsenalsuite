@@ -344,7 +344,7 @@ class SipTarget(Target):
                 wantedName = self.name.replace("static","").replace("py","",1)
                 if self.has_arg("debug"):
                     wantedName += "_d"
-                print "Checking for the existance of (%s)" % ('sip' + wantedName + '/' + wantedName + '.lib')
+                #print "Checking for the existence of (%s)" % ('sip' + wantedName + '/' + wantedName + '.lib')
                 if os.path.isfile('sip' + wantedName + '/' + wantedName + '.lib'):
                     shutil.copyfile('sip' + wantedName + '/' + wantedName + '.lib', 'sip' + wantedName + '/py' + wantedName + '.lib')
                     os.remove('sip' + wantedName + '/' + wantedName + '.lib')
