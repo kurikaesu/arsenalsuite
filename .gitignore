@@ -45,3 +45,4 @@ classesconfig.py
 qrc_threadview.cpp
 qrc_freezer.cpp
 qrc_burner.cpp
+cpp/lib/sip/sipconfig.py
