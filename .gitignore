@@ -35,3 +35,13 @@ loader.cpp
 moc_*.cpp
 build_resume.cache
 *.manifest
+sipconfig.py
+stoneconfig.py
+qrc_stonegui.cpp
+stoneguiconfig.py
+cpp/lib/classes/sip/*.sip
+!cpp/lib/classes/sip/classes.sip
+classesconfig.py
+qrc_threadview.cpp
+qrc_freezer.cpp
+qrc_burner.cpp
