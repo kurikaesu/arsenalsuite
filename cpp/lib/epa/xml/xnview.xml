@@ -1,0 +1,4 @@
+<software name="xnview">
+	<set key="EPA_CMDLINE">xnview</set>
+	<set key="EPA_ICON">/usr/share/pixmaps/xnview.png</set>
+</software>

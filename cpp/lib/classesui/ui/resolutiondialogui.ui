@@ -1,0 +1,287 @@
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>ResolutionDialogUI</class>
+ <widget class="QDialog" name="ResolutionDialogUI" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>275</width>
+    <height>173</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Resolution</string>
+  </property>
+  <layout class="QVBoxLayout" >
+   <property name="margin" >
+    <number>7</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item>
+    <layout class="QGridLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item row="0" column="0" >
+      <widget class="QLabel" name="textLabel1" >
+       <property name="text" >
+        <string>Name:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1" >
+      <widget class="QComboBox" name="mDeliveryFormatCombo" >
+       <item>
+        <property name="text" >
+         <string>Digibeta</string>
+        </property>
+       </item>
+       <item>
+        <property name="text" >
+         <string>DLT</string>
+        </property>
+       </item>
+       <item>
+        <property name="text" >
+         <string>VHS</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="4" column="0" >
+      <widget class="QLabel" name="textLabel5" >
+       <property name="text" >
+        <string>Output Format:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1" >
+      <layout class="QHBoxLayout" >
+       <property name="margin" >
+        <number>0</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QLineEdit" name="mPixelAspectEdit" />
+       </item>
+       <item>
+        <widget class="QLabel" name="textLabel1_2" >
+         <property name="text" >
+          <string>FPS:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="FieldSpinBox" name="mFPSSpin" >
+         <property name="maximum" >
+          <number>10000</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="4" column="1" >
+      <widget class="QComboBox" name="mOutputFormatCombo" >
+       <item>
+        <property name="text" >
+         <string>TGA</string>
+        </property>
+       </item>
+       <item>
+        <property name="text" >
+         <string>JPEG</string>
+        </property>
+       </item>
+       <item>
+        <property name="text" >
+         <string>EXR</string>
+        </property>
+       </item>
+       <item>
+        <property name="text" >
+         <string>SGI</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="1" column="0" >
+      <widget class="QLabel" name="textLabel3" >
+       <property name="text" >
+        <string>Resolution:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1" >
+      <widget class="QLineEdit" name="mNameEdit" />
+     </item>
+     <item row="2" column="0" >
+      <widget class="QLabel" name="textLabel4_2" >
+       <property name="text" >
+        <string>Pixel Aspect:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" >
+      <layout class="QHBoxLayout" >
+       <property name="margin" >
+        <number>0</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="FieldSpinBox" name="mWidthSpin" >
+         <property name="maximum" >
+          <number>1000000</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="textLabel2" >
+         <property name="text" >
+          <string>x</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="FieldSpinBox" name="mHeightSpin" >
+         <property name="maximum" >
+          <number>1000000</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="3" column="0" >
+      <widget class="QLabel" name="textLabel4" >
+       <property name="text" >
+        <string>Delivery Format:</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QPushButton" name="mFillFrameImageButton" >
+     <property name="text" >
+      <string>Set Fill Frame Image</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType" >
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>56</width>
+         <height>10</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="mOKButton" >
+       <property name="text" >
+        <string>&amp;OK</string>
+       </property>
+       <property name="shortcut" >
+        <string>Alt+O</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="mCancelButton" >
+       <property name="text" >
+        <string>&amp;Cancel</string>
+       </property>
+       <property name="shortcut" >
+        <string>Alt+C</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+  <widget class="QWidget" name="" />
+  <widget class="QWidget" name="" />
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <customwidgets>
+  <customwidget>
+   <class>FieldSpinBox</class>
+   <extends></extends>
+   <header>fieldspinbox.h</header>
+   <container>0</container>
+   <pixmap></pixmap>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>mNameEdit</tabstop>
+  <tabstop>mWidthSpin</tabstop>
+  <tabstop>mHeightSpin</tabstop>
+  <tabstop>mFPSSpin</tabstop>
+  <tabstop>mPixelAspectEdit</tabstop>
+  <tabstop>mDeliveryFormatCombo</tabstop>
+  <tabstop>mOutputFormatCombo</tabstop>
+  <tabstop>mOKButton</tabstop>
+  <tabstop>mCancelButton</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>mOKButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ResolutionDialogUI</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>285</x>
+     <y>217</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>215</x>
+     <y>216</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>mCancelButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ResolutionDialogUI</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>367</x>
+     <y>212</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>369</x>
+     <y>230</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

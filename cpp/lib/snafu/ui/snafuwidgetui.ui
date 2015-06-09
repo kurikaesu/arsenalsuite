@@ -1,0 +1,1152 @@
+<ui version="4.0" >
+ <class>SnafuWidgetUI</class>
+ <widget class="QWidget" name="SnafuWidgetUI" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>952</width>
+    <height>884</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" >
+   <property name="margin" >
+    <number>1</number>
+   </property>
+   <property name="spacing" >
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QSplitter" name="splitter_2" >
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="handleWidth" >
+      <number>8</number>
+     </property>
+     <widget class="QSplitter" name="splitter_2_2" >
+      <property name="sizePolicy" >
+       <sizepolicy>
+        <hsizetype>5</hsizetype>
+        <vsizetype>3</vsizetype>
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="orientation" >
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="handleWidth" >
+       <number>8</number>
+      </property>
+      <widget class="QWidget" name="widget_2" >
+       <layout class="QVBoxLayout" >
+        <property name="margin" >
+         <number>0</number>
+        </property>
+        <property name="spacing" >
+         <number>2</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" >
+          <property name="margin" >
+           <number>0</number>
+          </property>
+          <property name="spacing" >
+           <number>2</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_3_2" >
+            <property name="text" >
+             <string>Find:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="mFindEdit" >
+            <property name="sizePolicy" >
+             <sizepolicy>
+              <hsizetype>5</hsizetype>
+              <vsizetype>0</vsizetype>
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="toolTip" >
+             <string>Find Host by Name (supports wildcards)</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType" >
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" >
+             <size>
+              <width>21</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="mAllButton" >
+            <property name="maximumSize" >
+             <size>
+              <width>40</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text" >
+             <string>All</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="mNoneButton" >
+            <property name="maximumSize" >
+             <size>
+              <width>40</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text" >
+             <string>None</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="mInverseButton" >
+            <property name="maximumSize" >
+             <size>
+              <width>40</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text" >
+             <string>Inverse</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="RecordTreeView" name="mHostTree" >
+          <property name="selectionMode" >
+           <enum>QAbstractItemView::ExtendedSelection</enum>
+          </property>
+          <property name="indentation" >
+           <number>12</number>
+          </property>
+          <property name="sortingEnabled" >
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QTabWidget" name="mHostSelectWidget" >
+       <property name="sizePolicy" >
+        <sizepolicy>
+         <hsizetype>7</hsizetype>
+         <vsizetype>1</vsizetype>
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip" >
+        <string/>
+       </property>
+       <property name="tabPosition" >
+        <enum>QTabWidget::South</enum>
+       </property>
+       <property name="tabShape" >
+        <enum>QTabWidget::Rounded</enum>
+       </property>
+       <property name="currentIndex" >
+        <number>2</number>
+       </property>
+       <widget class="QWidget" name="groupTab" >
+        <attribute name="title" >
+         <string>Group</string>
+        </attribute>
+        <attribute name="toolTip" >
+         <string>Filter Hosts By Group</string>
+        </attribute>
+        <layout class="QHBoxLayout" >
+         <property name="margin" >
+          <number>2</number>
+         </property>
+         <property name="spacing" >
+          <number>2</number>
+         </property>
+         <item>
+          <widget class="QTreeWidget" name="mGroupTree" >
+           <property name="selectionMode" >
+            <enum>QAbstractItemView::ExtendedSelection</enum>
+           </property>
+           <property name="indentation" >
+            <number>10</number>
+           </property>
+           <property name="rootIsDecorated" >
+            <bool>false</bool>
+           </property>
+           <property name="sortingEnabled" >
+            <bool>true</bool>
+           </property>
+           <property name="columnCount" >
+            <number>1</number>
+           </property>
+           <column>
+            <property name="text" >
+             <string>0</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="textTab" >
+        <attribute name="title" >
+         <string>Text</string>
+        </attribute>
+        <attribute name="toolTip" >
+         <string>Filter Hosts by Text List</string>
+        </attribute>
+        <layout class="QVBoxLayout" >
+         <property name="margin" >
+          <number>2</number>
+         </property>
+         <property name="spacing" >
+          <number>2</number>
+         </property>
+         <item>
+          <widget class="QTextEdit" name="mHostTextEdit" />
+         </item>
+         <item>
+          <widget class="QPushButton" name="mTextSelectButton" >
+           <property name="text" >
+            <string>Select</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="softwareTab" >
+        <attribute name="title" >
+         <string>Software</string>
+        </attribute>
+        <attribute name="toolTip" >
+         <string>Filter Hosts by Software</string>
+        </attribute>
+        <layout class="QGridLayout" >
+         <property name="margin" >
+          <number>2</number>
+         </property>
+         <property name="spacing" >
+          <number>2</number>
+         </property>
+         <item row="0" column="1" >
+          <widget class="QComboBox" name="mSoftwareLimitComboBox" />
+         </item>
+         <item row="0" column="0" >
+          <widget class="QComboBox" name="mSoftwareComboBox" />
+         </item>
+         <item row="1" column="0" colspan="2" >
+          <widget class="QTreeWidget" name="mSoftwareSelectTree" >
+           <property name="indentation" >
+            <number>10</number>
+           </property>
+           <property name="rootIsDecorated" >
+            <bool>false</bool>
+           </property>
+           <property name="sortingEnabled" >
+            <bool>true</bool>
+           </property>
+           <property name="columnCount" >
+            <number>1</number>
+           </property>
+           <column>
+            <property name="text" >
+             <string>0</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QTabWidget" name="tabWidget" >
+      <property name="currentIndex" >
+       <number>7</number>
+      </property>
+      <widget class="QWidget" name="eventTab" >
+       <attribute name="title" >
+        <string>Events</string>
+       </attribute>
+       <layout class="QVBoxLayout" >
+        <property name="margin" >
+         <number>2</number>
+        </property>
+        <property name="spacing" >
+         <number>2</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" >
+          <property name="margin" >
+           <number>0</number>
+          </property>
+          <property name="spacing" >
+           <number>2</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" >
+            <property name="margin" >
+             <number>0</number>
+            </property>
+            <property name="spacing" >
+             <number>2</number>
+            </property>
+            <item>
+             <widget class="QCheckBox" name="mShowAckCheckBox" >
+              <property name="text" >
+               <string>Show Ack'd</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="mSeverityComboBox" />
+            </item>
+            <item>
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_3" >
+              <property name="text" >
+               <string>Limit:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit" >
+              <property name="maximumSize" >
+               <size>
+                <width>50</width>
+                <height>16777215</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QTreeWidget" name="mEventTable" >
+            <property name="alternatingRowColors" >
+             <bool>false</bool>
+            </property>
+            <property name="selectionMode" >
+             <enum>QAbstractItemView::ExtendedSelection</enum>
+            </property>
+            <property name="indentation" >
+             <number>12</number>
+            </property>
+            <property name="rootIsDecorated" >
+             <bool>false</bool>
+            </property>
+            <property name="sortingEnabled" >
+             <bool>true</bool>
+            </property>
+            <property name="columnCount" >
+             <number>7</number>
+            </property>
+            <column>
+             <property name="text" >
+              <string>0</string>
+             </property>
+            </column>
+            <column>
+             <property name="text" >
+              <string>1</string>
+             </property>
+            </column>
+            <column>
+             <property name="text" >
+              <string>2</string>
+             </property>
+            </column>
+            <column>
+             <property name="text" >
+              <string>3</string>
+             </property>
+            </column>
+            <column>
+             <property name="text" >
+              <string>4</string>
+             </property>
+            </column>
+            <column>
+             <property name="text" >
+              <string>5</string>
+             </property>
+            </column>
+            <column>
+             <property name="text" >
+              <string>6</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="detailsTab" >
+       <attribute name="title" >
+        <string>Details</string>
+       </attribute>
+       <layout class="QVBoxLayout" >
+        <property name="margin" >
+         <number>9</number>
+        </property>
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+        <item>
+         <widget class="QGroupBox" name="groupBox" >
+          <property name="title" >
+           <string>General</string>
+          </property>
+          <layout class="QVBoxLayout" >
+           <property name="margin" >
+            <number>4</number>
+           </property>
+           <property name="spacing" >
+            <number>3</number>
+           </property>
+           <item>
+            <widget class="RecordPropValTree" name="mHostPropTree" />
+           </item>
+           <item>
+            <layout class="QHBoxLayout" >
+             <property name="margin" >
+              <number>0</number>
+             </property>
+             <property name="spacing" >
+              <number>6</number>
+             </property>
+             <item>
+              <spacer>
+               <property name="orientation" >
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" >
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton" >
+               <property name="text" >
+                <string>Save</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_2" >
+               <property name="text" >
+                <string>Reset</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_2" >
+          <property name="title" >
+           <string>Hardware</string>
+          </property>
+          <layout class="QVBoxLayout" >
+           <property name="margin" >
+            <number>4</number>
+           </property>
+           <property name="spacing" >
+            <number>3</number>
+           </property>
+           <item>
+            <widget class="QTreeWidget" name="mHardwareTree" />
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" >
+          <property name="margin" >
+           <number>0</number>
+          </property>
+          <property name="spacing" >
+           <number>3</number>
+          </property>
+          <item>
+           <widget class="QGroupBox" name="groupBox_3" >
+            <property name="title" >
+             <string>Software</string>
+            </property>
+            <layout class="QVBoxLayout" >
+             <property name="margin" >
+              <number>4</number>
+             </property>
+             <property name="spacing" >
+              <number>3</number>
+             </property>
+             <item>
+              <widget class="SoftwareCheckTree" name="mSoftwareTree" >
+               <property name="rootIsDecorated" >
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_4" >
+            <property name="title" >
+             <string>Services</string>
+            </property>
+            <layout class="QVBoxLayout" >
+             <property name="margin" >
+              <number>4</number>
+             </property>
+             <property name="spacing" >
+              <number>3</number>
+             </property>
+             <item>
+              <widget class="ServiceCheckTree" name="mServiceTree" >
+               <property name="rootIsDecorated" >
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_5" >
+          <property name="minimumSize" >
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="title" >
+           <string>Boot Options</string>
+          </property>
+          <layout class="QGridLayout" >
+           <property name="margin" >
+            <number>3</number>
+           </property>
+           <property name="spacing" >
+            <number>2</number>
+           </property>
+           <item row="0" column="0" >
+            <widget class="QLabel" name="label_9" >
+             <property name="text" >
+              <string>Boot Action</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" >
+            <widget class="QLabel" name="label_10" >
+             <property name="text" >
+              <string>Disk Image</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1" >
+            <widget class="QComboBox" name="mDiskImageCombo" />
+           </item>
+           <item row="1" column="0" >
+            <widget class="QComboBox" name="mBootActionCombo" >
+             <item>
+              <property name="text" >
+               <string>From Disk</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>Download Image</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>Upload Image</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>Network</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="alertTab" >
+       <attribute name="title" >
+        <string>Alerts</string>
+       </attribute>
+       <layout class="QVBoxLayout" >
+        <property name="margin" >
+         <number>2</number>
+        </property>
+        <property name="spacing" >
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_5" >
+          <property name="text" >
+           <string>Existing Alerts for this Host</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTreeWidget" name="mAlertTree" >
+          <property name="rootIsDecorated" >
+           <bool>false</bool>
+          </property>
+          <property name="sortingEnabled" >
+           <bool>true</bool>
+          </property>
+          <property name="columnCount" >
+           <number>7</number>
+          </property>
+          <column>
+           <property name="text" >
+            <string>0</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>1</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>2</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>3</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>4</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>5</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>6</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <spacer>
+          <property name="orientation" >
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" >
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Line" name="line" >
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label" >
+          <property name="text" >
+           <string>When this data source:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTreeWidget" name="mDataSourceTree" >
+          <property name="rootIsDecorated" >
+           <bool>true</bool>
+          </property>
+          <property name="sortingEnabled" >
+           <bool>true</bool>
+          </property>
+          <property name="columnCount" >
+           <number>1</number>
+          </property>
+          <column>
+           <property name="text" >
+            <string>0</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSplitter" name="splitter_3" >
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" >
+          <property name="margin" >
+           <number>0</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item>
+           <spacer>
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" >
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_6" >
+            <property name="text" >
+             <string>value as </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="mAlertSampleCombo" >
+            <property name="minimumSize" >
+             <size>
+              <width>70</width>
+              <height>0</height>
+             </size>
+            </property>
+            <item>
+             <property name="text" >
+              <string>Average</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Max</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Min</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_7" >
+            <property name="text" >
+             <string>for the last</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="mAlertSampleEdit" >
+            <property name="text" >
+             <string>10</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignRight</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_8" >
+            <property name="text" >
+             <string>minutes</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" >
+          <property name="margin" >
+           <number>0</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item>
+           <spacer>
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" >
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_4" >
+            <property name="text" >
+             <string>Goes</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="mAlertDirectionCombo" >
+            <item>
+             <property name="text" >
+              <string>Above</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Below</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="mAlertValueEdit" >
+            <property name="alignment" >
+             <set>Qt::AlignRight</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" >
+          <property name="margin" >
+           <number>0</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item>
+           <spacer>
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" >
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_4" >
+            <property name="text" >
+             <string>Create an Event of Severity</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="mAlertSeverityCombo" >
+            <item>
+             <property name="text" >
+              <string>Info</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Warning</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Minor</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Major</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Critical</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QPushButton" name="mAlertButton" >
+          <property name="text" >
+           <string>Add Alert</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="mapTab" >
+       <attribute name="title" >
+        <string>Maps</string>
+       </attribute>
+       <layout class="QGridLayout" >
+        <property name="margin" >
+         <number>8</number>
+        </property>
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+        <item row="0" column="0" >
+         <widget class="QGraphicsView" name="graphicsView" />
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="farmTab" >
+       <attribute name="title" >
+        <string>Farm</string>
+       </attribute>
+       <layout class="QVBoxLayout" >
+        <property name="margin" >
+         <number>8</number>
+        </property>
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="ticketTab" >
+       <attribute name="title" >
+        <string>Tickets</string>
+       </attribute>
+       <layout class="QGridLayout" >
+        <property name="margin" >
+         <number>8</number>
+        </property>
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+        <item row="1" column="0" colspan="2" >
+         <widget class="QTreeWidget" name="mTicketTree" >
+          <property name="sortingEnabled" >
+           <bool>true</bool>
+          </property>
+          <property name="columnCount" >
+           <number>4</number>
+          </property>
+          <column>
+           <property name="text" >
+            <string>0</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>1</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>2</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>3</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="graphTab" >
+       <attribute name="title" >
+        <string>Graphs</string>
+       </attribute>
+       <layout class="QVBoxLayout" >
+        <property name="margin" >
+         <number>2</number>
+        </property>
+        <property name="spacing" >
+         <number>2</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" >
+          <property name="margin" >
+           <number>0</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item>
+           <widget class="QPushButton" name="mNewGraphButton" >
+            <property name="text" >
+             <string>New Graph</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" >
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_2" >
+            <property name="text" >
+             <string>Start</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="mGraphPeriodEdit" >
+            <property name="maximumSize" >
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="mSetGraphButton" >
+            <property name="maximumSize" >
+             <size>
+              <width>40</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text" >
+             <string>Set</string>
+            </property>
+            <property name="iconSize" >
+             <size>
+              <width>16</width>
+              <height>16</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" >
+          <property name="margin" >
+           <number>0</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTabWidget" name="mGraphTabWidget" >
+          <property name="currentIndex" >
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="tab" >
+           <attribute name="title" >
+            <string>Tab 1</string>
+           </attribute>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="licenseTab" >
+       <attribute name="title" >
+        <string>Licenses</string>
+       </attribute>
+      </widget>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>RecordTreeView</class>
+   <extends>QTreeView</extends>
+   <header>items.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SoftwareCheckTree</class>
+   <extends>QTreeView</extends>
+   <header>softwarechecktree.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ServiceCheckTree</class>
+   <extends>QTreeView</extends>
+   <header>servicechecktree.h</header>
+  </customwidget>
+  <customwidget>
+   <class>RecordPropValTree</class>
+   <extends>QTreeView</extends>
+   <header>recordpropvaltree.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

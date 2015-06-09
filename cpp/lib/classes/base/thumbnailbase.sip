@@ -1,0 +1,3 @@
+
+	QString filePath() const;
+

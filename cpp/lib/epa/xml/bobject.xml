@@ -1,0 +1,3 @@
+<software name="bobject">
+	<add key="MAYA_PLUG_IN_PATH">$DRD_SOFTWARE_EXT/bobject/$DRD_PLATFORM/v1_0_0</add>
+</software>

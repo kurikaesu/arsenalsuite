@@ -1,0 +1,23 @@
+<!DOCTYPE QDOCINDEX>
+<INDEX url="http://www.trolltech.com/products/color triangle" title="Color Triangle Documentation">
+<namespace access="public" name="">
+ <class access="public" name="QtColorTriangle" bases="QWidget">
+  <function access="public" name="QtColorTriangle" virtual="non" meta="constructor" const="false" static="false" overload="false">
+   <parameter left="QWidget *" right="" name="parent" />
+  </function>
+  <function access="public" name="~QtColorTriangle" virtual="non" meta="destructor" const="false" static="false" overload="false" />
+  <function access="public" name="heightForWidth" virtual="impure" meta="plain" const="true" static="false" overload="false">
+   <parameter left="int" right="" name="w" />
+  </function>
+  <function access="public" name="colorChanged" virtual="non" meta="signal" const="false" static="false" overload="false">
+   <parameter left="const QColor &amp;" right="" name="color" />
+  </function>
+ </class>
+ <page access="public" name="index.html" subtype="page" title="Color Triangle" fulltitle="Color Triangle" subtitle="" location="index.qdoc">
+  <contents name="description" title="Description" />
+  <contents name="classes" title="Classes" />
+  <contents name="tested-platforms" title="Tested platforms" />
+  <contents name="screenshots" title="Screenshots" />
+ </page>
+</namespace>
+</INDEX>

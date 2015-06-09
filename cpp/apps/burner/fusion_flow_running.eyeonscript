@@ -1,0 +1,40 @@
+-- connect to the local instance of fusion
+-- with a ten second timeout
+-- make sure to specify to connect to the RenderSlave
+-- otherwise it will try to connect to the open instance of Fusion.
+-- you can also specify the uuid of the process as the third argument.
+-- returns 1 if fusion is rendering
+
+-- these don't work/connect
+-- fusion = Fusion("localhost", 10, nil, "RenderSlave")
+-- fusion = Fusion("localhost", 10, nil, "RenderManager")
+
+-- these connect, but to what?
+fusion = Fusion("localhost", 10, nil, nil)
+-- fusion = Fusion("localhost")
+-- fusion = Fusion()
+
+-- check to see if it connected..
+if fusion then
+    -- get the complist
+    complist = fusion:GetCompList()
+    if complist then
+        for i, comp in complist do
+            -- check to see its rendering status
+            if comp:IsRendering() == true then
+                -- at least one comp is rendering, give
+                -- an exit code
+		print("fusion is running a comp")
+                os.exit(1)
+                break
+            end
+        end
+    end
+else
+    -- could not connect to fusion...
+    print("fusion appears to be down\n")
+    os.exit(0)
+end 
+
+print("fusion is idle\n")
+os.exit(0)

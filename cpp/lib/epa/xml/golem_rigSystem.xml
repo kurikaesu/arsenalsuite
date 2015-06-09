@@ -1,0 +1,4 @@
+<software name="golem_rigSystem">
+	<add key="PYTHONPATH">/drd/software/int/golem_rigSystem/v00_00_02</add>
+	<add key="MAYA_PLUG_IN_PATH">/drd/software/int/golem_rigSystem/v00_00_02/MayaTools/plug_ins</add>
+</software>

@@ -1,0 +1,17 @@
+<software name="eclipseForPythonMaya">
+	<dependOn>python</dependOn>
+	<dependOn>maya_2009</dependOn>
+	<dependOn>cmake</dependOn>
+	<set key="EPA_WORKINGDIR">$DRD_SOFTWARE_EXT/eclipse/$DRD_PLATFORM/v3_4</set>
+	<set key="EPA_CMDLINE">./eclipse</set>
+	<set key="EPA_ICON">$DRD_SOFTWARE_EXT/eclipse/$DRD_PLATFORM/v3_4/plugins/org.eclipse.platform_3.3.100.v200806172000/eclipse32.png</set>
+	<add key="PATH">/usr/java/jdk1.6.0_10/bin/</add>
+
+					<!-- These are for running Maya Python Standalone within Eclipse.!-->
+					<!--
+					<set>PATH=/usr/autodesk/maya2008-x64/bin:$PATH</set>
+					<set>PYTHONHOME=/usr/autodesk/maya2008-x64</set>
+					<set>LD_LIBRARY_PATH=/usr/autodesk/maya2008-x64/lib:$LD_LIBRARY_PATH</set>
+					<set>MAYA_LOCATION=/usr/autodesk/maya2008-x64</set>
+					-->
+</software>

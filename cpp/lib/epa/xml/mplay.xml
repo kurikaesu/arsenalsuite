@@ -1,0 +1,5 @@
+<software name="mplay">
+	<set key="EPA_WORKINGDIR">$DRD_SOFTWARE_EXT/houdini/$DRD_PLATFORM/hfs9.5.343</set>
+	<set key="EPA_CMDLINE">$DRD_SOFTWARE_EXT/houdini/$DRD_PLATFORM/hfs9.5.343/bin/mplay</set>
+	<set key="EPA_ICON">$DRD_SOFTWARE_EXT/houdini/$DRD_PLATFORM/hfs9.5.343/houdini/help/icons/medium/IMAGE/diff_frame_next.png</set>
+</software>

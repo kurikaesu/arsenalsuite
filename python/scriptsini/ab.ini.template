@@ -1,0 +1,57 @@
+[Assburner]
+AFPath=c:\blur\assfreezer\assfreezer.exe
+ApplicationName=ArsenalBurner
+ClientLogFile=assburner.log
+LogCommand=cmd.exe /c C:\max5\assburner3\Tail-4.2.12\tail.exe %1
+OnlineAfterIdleMinutes=-1
+SpoolDirectory=c:\blur\assburner\spool
+
+[BackgroundMode]
+CutoffTime=60
+Enabled=true
+
+[Database]
+DatabaseDriver=QPSQL7
+DatabaseName=blur
+EchoMode=
+Host=farm_db_host
+MaxConnectionAttempts=-1
+Options=
+Password=password
+Port=5432
+ReconnectDelay=30
+SqlErrorEmailList=your.email@domain.com
+Timeout=10
+UseMultiTableSelect=false
+User=burner
+
+[Display Prefs]
+Icon Size=16,16
+
+[Email]
+Domain=@example.org
+Server=smtp.example.org
+
+[Logging]
+EchoStdOut=true
+Enabled=true
+File=/tmp/ab.log
+MaxFiles=2
+MaxSeverity=3
+MaxSize=104857600
+
+[LogonSession]
+Domain=bsi
+Password=password
+UseNewSession=true
+Username=magma
+
+[Update Server]
+Enabled=false
+ExecOfflineCommands=false
+Host=farm_db_host
+LastTransactionFile=update_manager_transaction.last
+MaxAttempts=-1
+Port=25565
+RetryRate=1000
+

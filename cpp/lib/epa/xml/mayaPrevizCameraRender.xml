@@ -1,0 +1,4 @@
+<software name="mayaPrevizCameraRender">
+	<add key="PYTHONPATH">$DRD_SOFTWARE_INT/mayaPrevizCameraRender_py/v00_01_14</add>
+	<set key="MPCR_CONFIG_FILE_NAME">$DRD_SOFTWARE_INT/mayaPrevizCameraRender_py/v00_01_14/mayaPrevizCameraRender/data/config.xml</set>
+</software>

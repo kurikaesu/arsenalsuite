@@ -1,0 +1,10 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+		<file>images/clear.png</file>
+		<file>images/warning.png</file>
+		<file>images/minor.png</file>
+		<file>images/major.png</file>
+		<file>images/critical.png</file>
+</qresource>
+</RCC>
+

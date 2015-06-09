@@ -1,0 +1,3 @@
+<software name="assetizer">
+	<add key="PYTHONPATH">$DRD_SOFTWARE_INT/assetizer_py/v00_01_05/assetizer</add>
+</software>

@@ -1,0 +1,36 @@
+Summary: Arsenal Freezer
+Name: freezer
+Version: 1.0
+Release: DrD
+License: GPL
+Group: Applications/Programming
+Distribution: CentOS
+Vendor: Dr. D Studios
+Packager: Aren Villanueva <aren.villanueva@drdstudios.com>
+BuildRoot:
+AutoReqProv: No
+
+%define _unpackaged_files_terminate_build 0
+
+%description
+Main GUI implementation for Arsenal.
+
+%files
+%defattr(-,root,root,-)
+/usr/lib/python2.5/site-packages/blur/Freezer.so
+/usr/share/sip/blur/assfreezerview.sip
+/usr/share/sip/blur/frameviewerplugin.sip
+/usr/share/sip/blur/mainwindow.sip
+/usr/share/sip/blur/jobviewerplugin.sip
+/usr/share/sip/blur/jobsettingswidgetplugin.sip
+/usr/share/sip/blur/assfreezermenus.sip
+/usr/share/sip/blur/hostviewerplugin.sip
+/usr/share/sip/blur/framenthdialog.sip
+/usr/share/sip/blur/freezer.sip
+/usr/share/sip/blur/jobsettingswidget.sip
+/usr/share/sip/blur/multiframeviewerplugin.sip
+/usr/local/lib/libfreezer.so.1.0.0
+/usr/local/bin/af
+
+%clean
+

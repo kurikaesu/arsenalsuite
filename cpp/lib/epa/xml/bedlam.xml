@@ -1,0 +1,9 @@
+<software name="bedlam">
+	<dependOn>python</dependOn>
+	<add key="PATH">$DRD_SOFTWARE_EXT/stone/$DRD_PLATFORM</add>
+	<add key="PATH" arch="win32">$DRD_SOFTWARE_EXT/Qt/4.4.1/$DRD_PLATFORM/lib</add>
+	<add key="PYTHONPATH">$DRD_SOFTWARE_EXT/python/$DRD_PLATFORM</add>
+	<add key="PYTHONPATH">$DRD_SOFTWARE_INT/bedlam/v00_01_15</add>
+	<add key="LD_LIBRARY_PATH" arch="lin64">$DRD_SOFTWARE_EXT/stone/$DRD_PLATFORM</add>
+	<add key="LD_LIBRARY_PATH" arch="lin64">$DRD_SOFTWARE_EXT/Qt/$DRD_PLATFORM/4.4.3/lib</add>
+</software>

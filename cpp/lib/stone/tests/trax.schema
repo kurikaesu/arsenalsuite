@@ -1,0 +1,2399 @@
+<!DOCTYPE Schema>
+<database schemaName="TRAX">
+ <table name="address" expireKeyCache="true" className="Address">
+  <column type="uint" methodName="keyaddress" name="keyaddress" pkey="true"/>
+  <column displayName="Fkey Contact" pluralMethodName="fkeyContacts" reverseAccess="true" type="uint" methodName="contact" name="fkeycontact">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Contact" indexUseCache="true" table="Contact" type="multi" hasIndex="true"/>
+  </column>
+  <column type="QString" methodName="street" name="street"/>
+  <column type="QString" methodName="city" name="city"/>
+  <column type="QString" methodName="state" name="state"/>
+  <column type="QString" methodName="country" name="country"/>
+  <column type="QString" methodName="zipcode" name="zipcode"/>
+  <column reverseAccess="true" type="uint" methodName="employee" name="fkeyemployee">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Employee" indexUseCache="true" table="Employee" type="multi" hasIndex="true"/>
+  </column>
+  <column type="uint" methodName="addressType" name="fkeyaddresstype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="AddressType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="address" name="address"/>
+  <column type="uint" methodName="client" name="fkeyclient">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Client" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table name="addresstype" expireKeyCache="true" className="AddressType">
+  <column type="uint" methodName="keyaddresstype" name="keyaddresstype" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <index useCache="true" type="single" name="Name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="approval" expireKeyCache="true" className="Approval">
+  <column type="uint" methodName="keyapproval" name="keyapproval" pkey="true"/>
+  <column type="uint" methodName="approvalType" name="fkeyapprovaltype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ApprovalType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="QString" methodName="description" name="description"/>
+  <column type="uint" methodName="assignedTo" name="fkeyusr_assignedto">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDateTime" methodName="assignedOn" name="assignedon"/>
+  <column type="uint" methodName="approvedBy" name="fkeyusr_approvedby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDateTime" methodName="approvedOn" name="approvedon"/>
+  <column type="bool" methodName="approved" name="approved"/>
+  <column type="uint" methodName="deliveryStatus" name="fkeydeliverystatus">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="DeliveryStatus" type="multi" hasIndex="false"/>
+  </column>
+  <column reverseAccess="true" type="uint" methodName="delivery" name="fkeydelivery">
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="delivery" indexUseCache="false" table="Delivery" type="multi" hasIndex="true"/>
+  </column>
+  <column reverseAccess="true" type="uint" methodName="deliverable" name="fkeydeliverable">
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="deliverable" indexUseCache="false" table="Deliverable" type="multi" hasIndex="true"/>
+  </column>
+  <column type="QDateTime" methodName="created" name="created"/>
+  <column type="uint" methodName="createdBy" name="fkeyusr_createdby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table name="approvaltype" expireKeyCache="false" className="ApprovalType">
+  <column type="uint" methodName="keyapprovaltype" name="keyapprovaltype" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="superType" name="fkeyapprovaltype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ApprovalType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="description" name="description"/>
+  <column type="QString" methodName="qcChecklist" name="qcchecklist"/>
+  <column type="uint" methodName="role" name="fkeyrole">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Role" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="order" name="order"/>
+  <index useCache="false" type="single" name="Name">
+   <column name="name"/>
+  </index>
+  <index useCache="false" type="single" name="name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="approvaltypedeliverystatusmap" expireKeyCache="true" className="ApprovalTypeDeliveryStatusMap">
+  <column type="uint" methodName="keyapprovaltypedeliverystatusmap" name="keyapprovaltypedeliverystatusmap" pkey="true"/>
+  <column type="uint" methodName="approvalType" name="fkeyapprovaltype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ApprovalType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="deliveryStatus" name="fkeydeliverystatus">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="DeliveryStatus" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table parent="Element" name="asset" expireKeyCache="true" className="Asset">
+  <column docs="This field is not used.  Use the Due Date (datecomplete) field instead." type="QDate" methodName="dateDue" name="datedue"/>
+  <index useCache="false" type="single" name="ProjectAndName">
+   <column name="fkeyproject"/>
+   <column name="name"/>
+  </index>
+  <index useCache="false" type="multi" name="projectAndAssetType">
+   <column name="fkeyproject"/>
+   <column name="fkeyassettype"/>
+  </index>
+ </table>
+ <table parent="Element" name="assetgroup" expireKeyCache="true" className="AssetGroup">
+  <column type="uint" methodName="groupType" name="fkeytimesheetcategory">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="AssetType" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table name="assetproperty" expireKeyCache="true" className="AssetProperty">
+  <column displayName="Keyassetproperty" pluralMethodName="keys" type="uint" methodName="key" name="keyassetproperty" pkey="true"/>
+  <column reverseAccess="true" type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Element" indexUseCache="false" table="Element" type="multi" hasIndex="true"/>
+  </column>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="int" methodName="type" name="type"/>
+  <column type="QString" methodName="value" name="value"/>
+ </table>
+ <table parent="Element" name="bid" expireKeyCache="true" className="Bid">
+  <column type="QDate" methodName="date" name="date"/>
+ </table>
+ <table docs="BidItems are a line-item in a Bid.  Each line-item either specifies days and a rate (which when multiplied, give the cost), or alternatively, the days and rate are omitted and just a staticCost is given.  The total budget for a Bid is the sum of its BidItems.  A Project can have multiple Bids.  The total Budget for a Project is the sum of its Bids.&#xa;&#xa;Here is a brief description of the fields:&#xa;&#xa;days - Many biditems specify X days of work.&#xa;rate - This is the Rate used when calculating total budget and dayrates.&#xa;&#xa;staticCost - Some biditems don't specify days or rate, but instead use a set amount.  These are usually used for known 3rd party costs, such as head scans, mocap talent, etc.&#xa;&#xa;name, bid, project, department - These fields are used to categorize the BidItem&#xa;" name="biditem" expireKeyCache="true" className="BidItem">
+  <column type="uint" methodName="keybiditem" name="keybiditem" pkey="true"/>
+  <column type="double" methodName="days" name="days"/>
+  <column type="double" methodName="rate" name="rate"/>
+  <column type="double" methodName="staticCost" name="staticcost"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="department" name="fkeydepartment">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Department" type="multi" hasIndex="false"/>
+  </column>
+  <column reverseAccess="true" type="uint" methodName="bid" name="fkeybid">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="bid" indexUseCache="false" table="Bid" type="multi" hasIndex="true"/>
+  </column>
+  <column type="uint" methodName="project" name="fkeyproject">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="project" indexUseCache="false" table="Project" type="multi" hasIndex="true"/>
+  </column>
+  <index useCache="false" type="multi" name="projectAndDepartment">
+   <column name="fkeyproject"/>
+   <column name="fkeydepartment"/>
+  </index>
+ </table>
+ <table name="calendar" expireKeyCache="true" className="Calendar">
+  <column type="uint" methodName="keycalendar" name="keycalendar" pkey="true"/>
+  <column type="QString" methodName="name" name="calendar"/>
+  <column type="QDateTime" methodName="dateTime" name="date"/>
+  <column type="QDateTime" methodName="endDateTime" name="enddate"/>
+  <column type="uint" methodName="category" name="fkeycalendarcategory">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="CalendarCategory" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="project" name="fkeyproject">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Project" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="user" name="fkeyusr">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="repeat" name="repeat"/>
+  <column type="uint" methodName="location" name="fkeylocation">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Location" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="localLocation" name="locallocation"/>
+  <column type="QString" methodName="url" name="url"/>
+  <column type="bool" methodName="isAllDayEvent" name="alldayevent"/>
+  <column type="QDate" methodName="repeatUntil" name="repeatuntil"/>
+  <column type="uint" methodName="author" name="fkeyauthor">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="private" name="private"/>
+  <column type="QString" methodName="details" name="details"/>
+  <column type="QString" methodName="reel" name="reel"/>
+  <column type="uint" methodName="department" name="fkeydepartment">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Department" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="departmentPass" name="fkeydepartmentpass">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="DepartmentPass" type="multi" hasIndex="false"/>
+  </column>
+  <column type="bool" methodName="isPublicCalendar" name="public_calendar"/>
+  <column type="uint" methodName="notification" name="fkeynotification">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="notification" indexUseCache="false" table="Notification" type="multi" hasIndex="true"/>
+  </column>
+  <column type="bool" methodName="required" name="required"/>
+ </table>
+ <table preload="true" name="calendarcategory" expireKeyCache="false" className="CalendarCategory">
+  <column type="uint" methodName="keycalendarcategory" name="keycalendarcategory" pkey="true"/>
+  <column type="QString" methodName="name" name="calendarcategory"/>
+  <column type="uint" methodName="elementType" name="fkeyelementtype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ElementType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="bool" methodName="useLocation" name="uselocation"/>
+  <column type="bool" methodName="useLocalLocation" name="uselocallocation"/>
+  <column type="bool" methodName="useUrl" name="useurl"/>
+  <column type="bool" methodName="useRepeat" name="userepeat"/>
+  <column type="bool" methodName="useReel" name="usereel"/>
+  <column type="bool" methodName="useLinks" name="uselinks"/>
+  <column type="bool" methodName="useAllDay" name="useallday"/>
+  <column type="bool" methodName="isAllDay" name="allday"/>
+  <column type="bool" methodName="useNotes" name="usenotes"/>
+  <column type="uint" methodName="private" name="private"/>
+  <column type="bool" methodName="isUserEditable" name="usereditable"/>
+  <index useCache="true" type="single" name="name">
+   <column name="calendarcategory"/>
+  </index>
+ </table>
+ <table name="calendardav" expireKeyCache="true" className="CalendarDAV">
+  <column type="uint" methodName="keycalendardav" name="keycalendardav" pkey="true"/>
+  <column reverseAccess="true" type="uint" methodName="user" name="fkeyusr">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="User" indexUseCache="false" table="User" type="single" hasIndex="true"/>
+  </column>
+  <column type="bool" methodName="enabled" name="enabled"/>
+  <column type="QString" methodName="email" name="email"/>
+  <column type="QString" methodName="password" name="pword"/>
+  <column type="QString" methodName="calendar" name="calendar"/>
+ </table>
+ <table parent="Element" name="camera" expireKeyCache="true" className="Camera">
+  <column type="uint" methodName="approvedBy" name="fkeyemployee_approvedby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="frameStart" name="framestart"/>
+  <column type="uint" methodName="frameEnd" name="frameend"/>
+  <column reverseAccess="true" type="uint" methodName="shotGroup" name="fkeyshotgroup">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="shotGroup" indexUseCache="false" table="ShotGroup" type="multi" hasIndex="true"/>
+  </column>
+  <column reverseAccess="true" type="uint" methodName="shot" name="fkeyshot">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="shot" indexUseCache="false" table="Shot" type="multi" hasIndex="true"/>
+  </column>
+  <column type="uint" methodName="sourceCamera" name="fkeycamera_source">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Camera" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="editOrder" name="editorder"/>
+  <column type="uint" methodName="cameraStatus" name="fkeycamerastatus">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="CameraStatus" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDateTime" methodName="approvedOn" name="approvedon"/>
+  <column type="bool" methodName="approved" name="approved"/>
+  <column type="QDateTime" methodName="exportedOn" name="exportedon"/>
+  <column type="uint" methodName="exportedBy" name="fkeyusr_exportedby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="cameraType" name="fkeycameratype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="CameraType" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table name="camerastatus" expireKeyCache="true" className="CameraStatus">
+  <column type="uint" methodName="keycamerastatus" name="keycamerastatus" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="order" name="order"/>
+  <column type="bool" methodName="marksApproved" name="marksapproved"/>
+  <index useCache="false" type="single" name="Name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="cameratype" expireKeyCache="false" className="CameraType">
+  <column type="uint" methodName="keycameratype" name="keycameratype" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="order" name="order"/>
+  <index useCache="false" type="single" name="Name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="checkout" expireKeyCache="true" className="Checkout">
+  <column type="uint" methodName="keycheckout" name="keycheckout" pkey="true"/>
+  <column type="uint" methodName="checkoutUser" name="fkeyusr">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDateTime" methodName="checkoutDateTime" name="checkoutdatetime"/>
+  <column type="QDateTime" methodName="checkinDateTime" name="checkindatetime"/>
+  <column type="QString" methodName="notes" name="notes"/>
+  <column displayName="Filter" pluralMethodName="filters" type="QString" methodName="filters" name="filters"/>
+  <column type="uint" methodName="checkinUser" name="fkeycheckinusr">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="backup" name="backup"/>
+  <column type="QDateTime" methodName="modifiedDateTime" name="modifieddatetime"/>
+  <column type="QString" methodName="backupFile" name="backupfile"/>
+ </table>
+ <table name="client" expireKeyCache="true" className="Client">
+  <column type="uint" methodName="keyclient" name="keyclient" pkey="true"/>
+  <column type="QString" methodName="name" name="client"/>
+  <column type="QString" methodName="textcard" name="textcard"/>
+  <column type="uint" methodName="primaryContact" name="fkeycontact">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Contact" type="multi" hasIndex="false"/>
+  </column>
+  <column displayName="Active" type="bool" methodName="isActive" name="active"/>
+  <column displayName="Billing Seperate" type="bool" methodName="isBillingSeperate" name="billingseperate"/>
+  <column type="uint" methodName="billingContact" name="fkeybillingcontact">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Contact" type="multi" hasIndex="false"/>
+  </column>
+  <column displayName="Is Billing Contact Separate" pluralMethodName="isBillingContactSeparates" type="bool" methodName="isBillingContactSeperate" name="billingcontactseperate"/>
+  <index useCache="false" type="multi" name="Name">
+   <column name="client"/>
+  </index>
+ </table>
+ <table name="contact" expireKeyCache="true" className="Contact">
+  <column type="uint" methodName="keycontact" name="keycontact" pkey="true"/>
+  <column type="QString" methodName="firstName" name="firstname"/>
+  <column type="QString" methodName="lastName" name="lastname"/>
+  <column type="QString" methodName="webPage" name="webpage"/>
+  <column type="QString" methodName="email" name="email"/>
+  <column reverseAccess="true" type="uint" methodName="client" name="fkeyclient">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Client" indexUseCache="true" table="Client" type="multi" hasIndex="true"/>
+  </column>
+  <column type="QString" methodName="title" name="title"/>
+  <index useCache="false" type="single" name="FirstAndLastName">
+   <column name="firstname"/>
+   <column name="lastname"/>
+  </index>
+ </table>
+ <table name="daily" expireKeyCache="true" className="Daily">
+  <column type="uint" methodName="keydaily" name="keydaily" pkey="true"/>
+  <column reverseAccess="true" type="uint" methodName="delivery" name="fkeydelivery">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="delivery" indexUseCache="false" table="Delivery" type="multi" hasIndex="true"/>
+  </column>
+  <column type="QDateTime" methodName="created" name="created"/>
+  <column type="uint" methodName="createdBy" name="fkeyusr_createdby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="description" name="description"/>
+  <column reverseAccess="true" type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="element" indexUseCache="false" table="Element" type="multi" hasIndex="true"/>
+  </column>
+  <column type="uint" methodName="baseElement" name="fkeyelement_base">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="project" name="fkeyproject">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Project" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="department" name="fkeydepartment">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Department" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="deliveryType" name="fkeydeliverytype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="DeliveryType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="note" name="fkeynote">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Note" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table name="defaultcplist" expireKeyCache="true" className="DefaultCPList">
+  <column type="uint" methodName="keydefaultcplist" name="keydefaultcplist" pkey="true"/>
+  <column type="QString" methodName="traxtablename" name="traxtablename"/>
+  <column displayName="CPList" type="uint" methodName="cplist" name="fkeycplist">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="CPList" type="multi" hasIndex="false"/>
+  </column>
+  <index useCache="false" type="single" name="Traxtablename">
+   <column name="traxtablename"/>
+  </index>
+ </table>
+ <table parent="Element" name="deliverable" expireKeyCache="true" className="Deliverable">
+  <column type="uint" methodName="delivery" name="fkeydelivery">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Delivery" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="deliverableType" name="fkeydeliverabletype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="DeliverableType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="bool" methodName="mastered" name="mastered"/>
+  <column type="uint" methodName="masteredBy" name="fkeyusr_masteredby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDateTime" methodName="masteredOn" name="masteredon"/>
+  <column type="uint" methodName="replacedBy" name="fkeydeliverable">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Deliverable" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="masterfile" name="masterfile"/>
+  <column type="QString" methodName="masternotes" name="masternotes"/>
+  <column type="uint" methodName="deliveryStatus" name="fkeydeliverystatus">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="DeliveryStatus" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table preload="true" name="deliverabletype" expireKeyCache="false" className="DeliverableType">
+  <column type="uint" methodName="keydeliverabletype" name="keydeliverabletype" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column reverseAccess="true" type="uint" methodName="deliveryType" name="fkeydeliverytype">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="deliveryType" indexUseCache="false" table="DeliveryType" type="multi" hasIndex="true"/>
+  </column>
+  <column type="QString" methodName="description" name="description"/>
+  <column type="uint" methodName="assetType" name="fkeytimesheetcategory">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="AssetType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="bool" methodName="useMaster" name="usemaster"/>
+  <index useCache="true" type="single" name="name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="deliverabletypeapprovaltypemap" expireKeyCache="true" className="DeliverableTypeApprovalTypeMap">
+  <column type="uint" methodName="keydeliverabletypeapprovaltypemap" name="keydeliverabletypeapprovaltypemap" pkey="true"/>
+  <column type="uint" methodName="deliverableType" name="fkeydeliverabletype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="DeliverableType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="approvalType" name="fkeyapprovaltype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ApprovalType" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table parent="Element" name="delivery" expireKeyCache="true" className="Delivery">
+  <column type="uint" methodName="deliveryType" name="fkeydeliverytype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="DeliveryType" type="multi" hasIndex="false"/>
+  </column>
+  <column reverseAccess="true" type="uint" methodName="task" name="fkeytask">
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="Task" indexUseCache="false" table="Task" type="multi" hasIndex="true"/>
+  </column>
+  <column type="uint" methodName="approvedBy" name="fkeyusr_approvedby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDateTime" methodName="approvedOn" name="approvedon"/>
+  <column type="uint" methodName="deliveryStatus" name="fkeydeliverystatus">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="DeliveryStatus" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="department" name="fkeydepartment">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Department" type="multi" hasIndex="false"/>
+  </column>
+  <column type="bool" methodName="approved" name="approved"/>
+  <column type="uint" methodName="assignedTo" name="fkeyusr_assignedto">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="statusThread" name="fkeynote_statusthread">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Note" type="multi" hasIndex="false"/>
+  </column>
+  <column type="bool" methodName="isMilestone" name="milestone"/>
+  <column type="float" methodName="dayrate" name="dayrate"/>
+  <column type="uint" methodName="priority" name="priority"/>
+  <column type="uint" methodName="difficulty" name="difficulty"/>
+  <column type="uint" methodName="qcArtist" name="fkeyemployee_qcartist">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <column displayName="delay Until" docs="This delivery should not be started untll this date. This dictates if a delivery is delayed in the delivery queue." type="QDate" methodName="delayUntil" name="delayUntil"/>
+  <column type="bool" methodName="final" name="final"/>
+  <column reverseAccess="true" docs="A Delivery can optionally be linked to a single BidItem.  This shows that a Delivery represents a portion of the work for a BidItem.  In most cases, this granularity is not needed, and Deliveries and BidItems are &quot;linked&quot; automatically via their Department." type="uint" methodName="bidItem" name="fkeybiditem">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="bidItem" indexUseCache="false" table="BidItem" type="multi" hasIndex="true"/>
+  </column>
+  <column type="double" methodName="daysSupervisorBid" name="dayssupervisorbid"/>
+ </table>
+ <table preload="true" name="deliverystatus" expireKeyCache="false" className="DeliveryStatus">
+  <column pluralMethodName="keys" type="uint" methodName="key" name="keydeliverystatus" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="order" name="order"/>
+  <column type="QString" methodName="description" name="description"/>
+  <column type="float" methodName="percentComplete" name="percentcomplete"/>
+  <column type="bool" methodName="marksApproved" name="marksapproved"/>
+  <column type="bool" methodName="requiresNote" name="requiresnote"/>
+  <index useCache="true" type="single" name="name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table preload="true" name="deliverytype" expireKeyCache="false" className="DeliveryType">
+  <column type="uint" methodName="keydeliverytype" name="keydeliverytype" pkey="true"/>
+  <column reverseAccess="true" type="uint" methodName="department" name="fkeydepartment">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Department" indexUseCache="false" table="Department" type="multi" hasIndex="true"/>
+  </column>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="order" name="order"/>
+  <column type="QString" methodName="description" name="description"/>
+  <column type="double" methodName="managerXPos" name="managerxpos"/>
+  <column type="bool" methodName="isMilestone" name="milestone"/>
+  <column type="float" methodName="managerWidth" name="managerwidth"/>
+  <column type="uint" methodName="submitQc" name="fkeyapprovaltype_submitqc">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ApprovalType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="masterQc" name="fkeyapprovaltype_masterqc">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ApprovalType" type="multi" hasIndex="false"/>
+  </column>
+  <column displayName="Role" type="uint" methodName="supervisorRole" name="fkeyrole_supervisor">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Role" type="multi" hasIndex="false"/>
+  </column>
+  <index useCache="false" type="single" name="DepartmentAndName">
+   <column name="fkeydepartment"/>
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="deliverytypeassettypemap" expireKeyCache="true" className="DeliveryTypeAssetTypeMap">
+  <column type="uint" methodName="keydeliverytypeassettypemap" name="keydeliverytypeassettypemap" pkey="true"/>
+  <column type="uint" methodName="assetType" name="fkeytimesheetcategory">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="AssetType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="deliveryType" name="fkeydeliverytype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="DeliveryType" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table preload="true" name="deliverytypemap" expireKeyCache="false" className="DeliveryTypeMap">
+  <column type="uint" methodName="keydeliverytypemap" name="keydeliverytypemap" pkey="true"/>
+  <column type="uint" methodName="dependsOn" name="fkeydeliverytype_dependson">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="DeliveryType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="dependency" name="fkeydeliverytype_dependency">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="DeliveryType" type="multi" hasIndex="false"/>
+  </column>
+  <index useCache="false" type="single" name="DependsOnAndDependency">
+   <column name="fkeydeliverytype_dependson"/>
+   <column name="fkeydeliverytype_dependency"/>
+  </index>
+ </table>
+ <table name="deliverytypenotifylinkmap" expireKeyCache="true" className="DeliveryTypeNotifyLinkMap">
+  <column type="uint" methodName="keydeliverytypenotifylinkmap" name="keydeliverytypenotifylinkmap" pkey="true"/>
+  <column type="uint" methodName="deliveryType" name="fkeydeliverytype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="DeliveryType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="user" name="fkeyusr">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="department" name="fkeydepartment">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Department" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="role" name="fkeyrole">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Role" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table preload="true" name="department" expireKeyCache="false" className="Department">
+  <column type="uint" methodName="keydepartment" name="keydepartment" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="int" methodName="order" name="order"/>
+  <column type="uint" methodName="flags" name="flags"/>
+  <column type="uint" methodName="timeoffSupervisor" name="fkeytimeoffsupervisor">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="description" name="description"/>
+  <column type="uint" methodName="sequentialOrder" name="sequentialorder"/>
+  <index useCache="true" type="single" name="name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="departmentcalendar" expireKeyCache="true" className="DepartmentCalendar">
+  <column type="uint" methodName="keydepartmentcalendar" name="keydepartmentcalendar" pkey="true"/>
+  <column type="uint" methodName="department" name="fkeydepartment">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Department" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="calendar" name="fkeycalendar">
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="calendar" indexUseCache="false" table="Calendar" type="multi" hasIndex="true"/>
+  </column>
+ </table>
+ <table name="departmentcamera" expireKeyCache="true" className="DepartmentCamera">
+  <column pluralMethodName="keys" type="uint" methodName="key" name="keydepartmentcamera" pkey="true"/>
+  <column type="uint" methodName="department" name="fkeydepartment">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Department" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="camera" name="fkeycamera">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Camera" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="cameraStatus" name="fkeycamerastatus">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="CameraStatus" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="frameStart" name="framestart"/>
+  <column type="uint" methodName="frameEnd" name="frameend"/>
+  <column type="uint" methodName="shot" name="fkeyshot">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Shot" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="shotGroup" name="fkeyshotgroup">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ShotGroup" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDateTime" methodName="importedOn" name="importedon"/>
+  <column type="uint" methodName="importedBy" name="fkeyusr_importedby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <index useCache="false" type="single" name="CameraAndDepartment">
+   <column name="fkeycamera"/>
+   <column name="fkeydepartment"/>
+  </index>
+ </table>
+ <table name="dir" expireKeyCache="true" className="Dir">
+  <column displayName="KeyDir" pluralMethodName="keyDir" type="uint" methodName="keyDir" name="keydir" pkey="true"/>
+  <column docs="STAT st_mode field.  Protection." type="uint" methodName="mode" name="mode"/>
+  <column displayName="uid" docs="STAT st_uid field.  User ID of owner." type="uint" methodName="uid" name="uid"/>
+  <column displayName="gid" docs="STAT st_gid field.  Group ID of owner." type="uint" methodName="gid" name="gid"/>
+  <column docs="STAT st_size field.  Total size in bytes." type="uint" methodName="size" name="size"/>
+  <column displayName="Modified" docs="STAT st_mtime field.  Time of last modification." type="QDateTime" methodName="mtime" name="mtime"/>
+  <column displayName="Created" docs="STAT st_ctime field.  Time of last status change." type="QDateTime" methodName="ctime" name="ctime"/>
+  <column displayName="inode" docs="STAT st_inode field.  inode of file, used to ensure we track moves properly." type="uint" methodName="inode" name="inode"/>
+  <column docs="Arbitrary string field that provides more flexibility for querying and associating files." type="QString" methodName="tags" name="tags"/>
+  <column type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+  <column displayName="Thumbnail" type="uint" methodName="thumbnailFile" name="fkeyfile_thumbnail">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="File" type="multi" hasIndex="false"/>
+  </column>
+  <column displayName="Type" type="uint" methodName="dirType" name="fkeyfiletype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="FileType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="parent" name="fkeyparent">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="parent" indexUseCache="false" table="" type="multi" hasIndex="true"/>
+  </column>
+  <column type="uint" methodName="mapping" name="fkeymapping">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Mapping" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="path" name="path"/>
+  <index useCache="true" type="single" name="inode">
+   <column name="inode"/>
+  </index>
+  <index useCache="true" type="single" name="MappingAndInode">
+   <column name="fkeymapping"/>
+   <column name="inode"/>
+  </index>
+  <index useCache="true" type="single" name="MappingAndPath">
+   <column name="fkeymapping"/>
+   <column name="path"/>
+  </index>
+ </table>
+ <table name="element" expireKeyCache="true" className="Element">
+  <column type="uint" methodName="keyelement" name="keyelement" pkey="true"/>
+  <column type="bool" methodName="allowTime" name="allowtime"/>
+  <column docs="The number of days alotted for this Element in the Project Bid." type="double" methodName="daysBid" name="daysbid"/>
+  <column docs="The number of days it is estimated it will take to complete this Element." type="double" methodName="daysEstimated" name="daysestimated"/>
+  <column docs="A brief description of this Element." type="QString" methodName="description" name="description"/>
+  <column reverseAccess="true" docs="The parent Element for this Element.  All Elements should have a parent.  At the top of the parent hierarchy is the Project.  The parent field defines what this Element &quot;belongs to&quot;.  For example, a Character Asset &quot;belongs to&quot; a project, so its parent will be the Project.  A Final Animation Delivery &quot;belongs to&quot; a particular Shot, so its parent would be the Shot." type="uint" methodName="parent" name="fkeyelement">
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="parent" indexUseCache="true" table="Element" type="multi" hasIndex="true"/>
+  </column>
+  <column type="uint" methodName="status" name="fkeyelementstatus">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ElementStatus" type="multi" hasIndex="false"/>
+  </column>
+  <column docs="The name for this Element.  Element names should be unique, per ElementType, per Project.  For example, there should be only one Character Asset named &quot;OldMan&quot; in any given Project." type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="assetType" name="fkeyassettype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="AssetType" type="multi" hasIndex="false"/>
+  </column>
+  <column displayName="Due Date" type="QDate" methodName="dateComplete" name="datecomplete"/>
+  <column type="QDate" methodName="dateStart" name="datestart"/>
+  <column type="bool" methodName="isComplete" name="completed"/>
+  <column type="int" methodName="versionMajor" name="versionmajor"/>
+  <column type="int" methodName="versionMinor" name="versionminor"/>
+  <column type="uint" methodName="project" name="fkeyproject">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Project" indexUseCache="true" table="Project" type="multi" hasIndex="true"/>
+  </column>
+  <column type="QString" methodName="brief" name="brief"/>
+  <column type="uint" methodName="bid" name="fkeybid">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Bid" indexUseCache="true" table="Bid" type="multi" hasIndex="true"/>
+  </column>
+  <column type="bool" methodName="isPublished" name="published"/>
+  <column type="uint" methodName="order" name="order"/>
+  <column type="QString" methodName="templateUri" name="templateuri"/>
+  <column type="uint" methodName="bidType" name="bidtype"/>
+  <column type="QDateTime" methodName="datePublished" name="datepublished"/>
+  <column type="uint" methodName="componentType" name="componenttype"/>
+  <column type="double" methodName="bidAmount" name="bidamount"/>
+  <column type="double" methodName="amount" name="amount"/>
+  <column type="uint" methodName="dataType" name="datatype"/>
+  <column type="QString" methodName="bidName" name="bidname"/>
+  <column type="QString" methodName="folderName" name="foldername"/>
+  <column type="uint" methodName="supervisor" name="fkeysupervisor">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="workflow" name="fkeyworkflow">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Workflow" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="customFlow" name="customflow"/>
+  <column type="uint" methodName="note" name="fkeynote">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Note" type="multi" hasIndex="false"/>
+  </column>
+  <column docs="Timestamp when this record was created." type="QDateTime" methodName="created" name="created"/>
+  <column docs="The User who created this Element." type="uint" methodName="createdBy" name="fkeyusr_createdby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column docs="The last time this Element was modified." type="QDateTime" methodName="modified" name="modified"/>
+  <column docs="The person who last modified this Element record.  This should not be confused with modifications made to Files associated with an Element, this only applies to the Element record itself." type="uint" methodName="modifiedBy" name="fkeyusr_modifiedby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="bool" methodName="flowGenerated" name="flowgenerated"/>
+  <column docs="Controls whether this Element is Enabled or not.  Many tools and views ignore Elements that are disabled." type="bool" methodName="enabled" name="enabled"/>
+  <column type="uint" methodName="latestSample" name="fkeyfiletracker_latestsample">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="FileTracker" type="multi" hasIndex="false"/>
+  </column>
+  <column displayName="Thumbnail" docs="A File record that can be used to display a thumbnail for this Element." type="uint" methodName="thumbnailFile" name="fkeyfile_thumbnail">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="File" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table name="elementcalendar" expireKeyCache="true" className="ElementCalendar">
+  <column type="uint" methodName="keyElementCalendar" name="keyElementCalendar" pkey="true"/>
+  <column type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="calendar" name="fkeycalendar">
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="calendar" indexUseCache="false" table="Calendar" type="multi" hasIndex="true"/>
+  </column>
+ </table>
+ <table name="elementcolor" expireKeyCache="true" className="ElementColor">
+  <column type="uint" methodName="keyelementcolor" name="keyelementcolor" pkey="true"/>
+  <column type="QColor" methodName="color" name="color"/>
+  <column type="QString" methodName="scheme" name="scheme"/>
+  <column type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="element" indexUseCache="true" table="Element" type="multi" hasIndex="true"/>
+  </column>
+ </table>
+ <table name="elementdep" expireKeyCache="true" className="ElementDep">
+  <column type="uint" methodName="keyelementdep" name="keyelementdep" pkey="true"/>
+  <column displayName="Driver" type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="DependsOn" indexUseCache="true" table="Element" type="multi" hasIndex="true"/>
+  </column>
+  <column displayName="Dependency" reverseAccess="true" type="uint" methodName="elementDep" name="fkeyelementdep">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Dependency" indexUseCache="true" table="Element" type="multi" hasIndex="true"/>
+  </column>
+  <column type="bool" methodName="isDisabled" name="disabled"/>
+  <column displayName="Constraint" pluralMethodName="constraints" type="uint" methodName="constraints" name="constraints"/>
+  <column displayName="Is Default" type="bool" methodName="isPrimary" name="primary"/>
+  <column type="QString" methodName="data" name="data"/>
+  <column type="uint" methodName="flags" name="flags"/>
+  <index useCache="true" type="single" name="ElementAndDep">
+   <column name="fkeyelement"/>
+   <column name="fkeyelementdep"/>
+  </index>
+ </table>
+ <table name="elementnote" expireKeyCache="true" className="ElementNote">
+  <column type="uint" methodName="keyelementnote" name="keyelementnote" pkey="true"/>
+  <column type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="note" name="fkeynote">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Note" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table name="elementpreset" expireKeyCache="true" className="ElementPreset">
+  <column type="uint" methodName="keyelementpreset" name="keyelementpreset" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="parent" name="fkeyelementpreset">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ElementPreset" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="elementType" name="fkeyelementtype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ElementType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="assetType" name="fkeytimesheetcategory">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="AssetType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="xml" name="xml"/>
+ </table>
+ <table name="elementsoftware" expireKeyCache="true" className="ElementSoftware">
+  <column type="uint" methodName="keyelementsoftware" name="keyelementsoftware" pkey="true"/>
+  <column type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="software" name="fkeysoftware">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Software" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table name="elementstatus" expireKeyCache="true" className="ElementStatus">
+  <column type="uint" methodName="keyelementstatus" name="keyelementstatus" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="QString" methodName="color" name="color"/>
+  <column type="int" methodName="order" name="order"/>
+  <column type="uint" methodName="disabled" name="disabled"/>
+  <column type="bool" methodName="recordApproval" name="recordapproval"/>
+  <column type="double" methodName="percentComplete" name="percentcomplete"/>
+  <column type="uint" methodName="groups" name="groups"/>
+ </table>
+ <table name="elementthread" expireKeyCache="true" className="ElementThread">
+  <column type="uint" methodName="keyelementthread" name="keyelementthread" pkey="true"/>
+  <column type="QDateTime" methodName="dateTime" name="datetime"/>
+  <column type="QString" methodName="elementthread" name="elementthread"/>
+  <column type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="usr" name="fkeyusr">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="hasAttachments" name="hasattachments"/>
+  <column type="uint" methodName="reply" name="skeyreply"/>
+  <column type="uint" methodName="todoStatus" name="todostatus"/>
+  <column type="QString" methodName="topic" name="topic"/>
+ </table>
+ <table preload="true" name="elementtype" expireKeyCache="true" className="ElementType">
+  <column type="uint" methodName="keyelementtype" name="keyelementtype" pkey="true"/>
+  <column type="QString" methodName="name" name="elementtype"/>
+  <column type="QString" methodName="sortPrefix" name="sortprefix"/>
+  <column type="bool" methodName="enabled" name="enabled"/>
+  <index useCache="true" type="single" name="Name">
+   <column name="elementtype"/>
+  </index>
+  <index useCache="true" type="multi" name="name">
+   <column name="elementtype"/>
+  </index>
+ </table>
+ <table name="elementuser" expireKeyCache="true" className="ElementUser">
+  <column displayName="Keyuserelement" pluralMethodName="keyuserelements" type="uint" methodName="key" name="keyelementuser" pkey="true"/>
+  <column type="uint" methodName="user" name="fkeyuser">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="role" name="fkeyrole">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Role" type="multi" hasIndex="false"/>
+  </column>
+  <column type="bool" methodName="active" name="active"/>
+  <column type="uint" methodName="asset" name="fkeyassettype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Asset" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="department" name="fkeydepartment">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Department" type="multi" hasIndex="false"/>
+  </column>
+  <index useCache="false" type="multi" name="UserAndElement">
+   <column name="fkeyuser"/>
+   <column name="fkeyelement"/>
+  </index>
+  <index useCache="true" type="multi" name="Element">
+   <column name="fkeyelement"/>
+  </index>
+  <index useCache="false" type="single" name="UserAndRoleAndElement">
+   <column name="fkeyuser"/>
+   <column name="fkeyrole"/>
+   <column name="fkeyelement"/>
+  </index>
+ </table>
+ <table preload="true" parent="User" name="employee" expireKeyCache="false" className="Employee">
+  <column type="QString" methodName="firstName" name="nameFirst"/>
+  <column type="QString" methodName="lastName" name="nameLast"/>
+  <column type="QDate" methodName="dateOfBirth" name="dateOfBirth"/>
+  <column docs="This is no longer used.  Use the Date Of Termination on the TimeOffAccrual record instead." type="QDate" methodName="dateOfTermination" name="dateOfTermination"/>
+  <column docs="This is no longer used.  Use the Date of Hire on the TimeoffAccrual record instead." type="QDate" methodName="dateOfHire" name="dateOfHire"/>
+  <column type="QString" methodName="initials" name="initials"/>
+  <column type="QString" methodName="comment" name="comment"/>
+  <column type="uint" methodName="userLevel" name="userLevel"/>
+  <column docs="The primary Role for this Employee." type="uint" methodName="primaryRole" name="fkeyrole">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Role" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDate" methodName="payrollStartDate" name="payrollstartdate"/>
+  <column type="double" methodName="vacationStartDays" name="vacationstartdays"/>
+  <column type="QString" methodName="seating" name="seating"/>
+  <column type="uint" methodName="floorPosX" name="floorposx"/>
+  <column type="uint" methodName="floorPosY" name="floorposy"/>
+  <column type="uint" methodName="reviewManager" name="fkeyemployee_reviewmanager">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDate" methodName="dateOfReview" name="dateofreview"/>
+  <column docs="This is the current TimeoffAccrual record for this Employee.  A TimeoffAccrual record is like an Employment history.  An employee can have multiple TimeoffAccrual records -- one for each term of employment.  If an Employee leaves, and then returns, they will have multiple TimeoffAccrual records.  This field points to the most recent and currently active TimeoffAccrual record." type="uint" methodName="timeoffAccrual" name="fkeytimeoffaccrual">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="TimeoffAccrual" type="multi" hasIndex="false"/>
+  </column>
+  <index useCache="false" type="single" name="FirstAndLastName">
+   <column name="nameFirst"/>
+   <column name="nameLast"/>
+  </index>
+ </table>
+ <table name="EmployeeAvailability" expireKeyCache="true" className="EmployeeAvailability">
+  <column type="uint" methodName="keyEmployeeAvailability" name="keyEmployeeAvailability" pkey="true"/>
+  <column docs="Number of days available per week" type="float" methodName="days" name="days"/>
+  <column docs="This record is valid between dateStart and dateEnd" type="QDate" methodName="dateStart" name="dateStart"/>
+  <column docs="This record is valid between dateStart and dateEnd" type="QDate" methodName="dateEnd" name="dateEnd"/>
+  <column docs="This record should be ignored if a record that matches the other boolan values (freelance, qc, supervisor).&#xa;&#xa;This allows users to define a base availability for two months with this flag checked.&#xa;If that availability needs to change for a specific week, create a record for that week with baseAvail set to False.&#xa;&#xa;The first record will be ignored for that week.&#xa;This functionality is used in the staticmethod &quot;betweenWithOverrides&quot;" type="bool" methodName="baseAvail" name="baseAvail"/>
+  <column docs="This record represents Freelance time." type="bool" methodName="freelance" name="freelance"/>
+  <column docs="This record represents QC time." type="bool" methodName="qc" name="qc"/>
+  <column docs="The employee this record is for." type="uint" methodName="employee" name="fkeyemployee">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <column docs="The role this record is for." type="uint" methodName="role" name="fkeyrole">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Role" type="multi" hasIndex="false"/>
+  </column>
+  <column docs="This record represents supervisory time." type="bool" methodName="supervisor" name="supervisor"/>
+  <column docs="Last day in the week for that employee's availability." type="uint" methodName="endOfWeek" name="endofweek"/>
+  <index useCache="true" type="multi" name="employee">
+   <column name="fkeyemployee"/>
+  </index>
+ </table>
+ <table docs="This table is used to represent the fact that some Employees' Timesheets are calculated at a reduced percentage for specific Projects." name="employeebillable" expireKeyCache="true" className="EmployeeBillable">
+  <column type="uint" methodName="keyemployeebillable" name="keyemployeebillable" pkey="true"/>
+  <column type="uint" methodName="project" name="fkeyproject">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Project" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="employee" name="fkeyemployee">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <column type="double" methodName="percentBillable" name="percentbillable"/>
+  <index useCache="true" type="single" name="projectAndEmployee">
+   <column name="fkeyproject"/>
+   <column name="fkeyemployee"/>
+  </index>
+ </table>
+ <table name="eventlog" expireKeyCache="true" className="EventLog">
+  <column type="uint" methodName="keyeventlog" name="keyeventlog" pkey="true"/>
+  <column displayName="tablename" type="QString" methodName="tablename" name="tablename"/>
+  <column displayName="tablekey" pluralMethodName="tablekeys" type="uint" methodName="tablekey" name="tablekey"/>
+  <column displayName="user" type="uint" methodName="user" name="fkeyuser">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column displayName="datetime" type="QDateTime" methodName="datetime" name="datetime"/>
+  <column displayName="Event Log Type" type="uint" methodName="eventlogtype" name="fkeyeventlogtype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="EventLogType" type="multi" hasIndex="false"/>
+  </column>
+  <column displayName="eventdata" type="QString" methodName="eventdata" name="eventdata"/>
+ </table>
+ <table name="eventlogtype" expireKeyCache="true" className="EventLogType">
+  <column type="uint" methodName="keyeventlogtype" name="keyeventlogtype" pkey="true"/>
+  <column displayName="name" type="QString" methodName="name" name="name"/>
+  <column type="QString" methodName="displayName" name="displayname"/>
+  <index useCache="false" type="single" name="name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="file" expireKeyCache="true" className="File">
+  <column displayName="KeyFile" pluralMethodName="keyFile" type="uint" methodName="keyFile" name="keyfile" pkey="true"/>
+  <column pluralMethodName="createdBys" type="uint" methodName="createdBy" name="fkeyusr_createdby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column pluralMethodName="modifiedBys" type="uint" methodName="modifiedBy" name="fkeyusr_modifiedby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="fileStatus" name="fkeyfilestatus">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="FileStatus" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="fileType" name="fkeyfiletype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="FileType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="archivePriority" name="archivepriority"/>
+  <column displayName="Thumbnail" type="uint" methodName="thumbnailFile" name="fkeyfile_thumbnail">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="File" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="version" name="version"/>
+  <column docs="STAT st_mode field." type="uint" methodName="mode" name="mode"/>
+  <column displayName="UID" docs="STAT st_uid field." type="uint" methodName="uid" name="uid"/>
+  <column displayName="GID" docs="STAT st_gid field." type="uint" methodName="gid" name="gid"/>
+  <column docs="STAT st_size field (in bytes)." type="Q_ULLONG" methodName="size" name="size"/>
+  <column displayName="Modified" docs="STAT st_mtime field.  Last modified time." type="QDateTime" methodName="mtime" name="mtime"/>
+  <column displayName="Created" docs="STAT st_ctime field.  Time of last status change." type="QDateTime" methodName="ctime" name="ctime"/>
+  <column docs="STAT st_inode field.  inode of file, used to ensure we track moves properly." type="uint" methodName="inode" name="inode"/>
+  <column type="QString" methodName="ext" name="ext"/>
+  <column docs="Base name of file (w/o dirpath, includes extension)." type="QString" methodName="filename" name="filename"/>
+  <column docs="Element Variation." type="QString" methodName="variation" name="variation"/>
+  <column displayName="tags" docs="Arbitrary string field that provides more flexibility for querying and associating files." type="QString" methodName="tags" name="tags"/>
+  <column type="uint" methodName="mapping" name="fkeymapping">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Mapping" type="multi" hasIndex="false"/>
+  </column>
+  <column reverseAccess="true" type="uint" methodName="fileSequence" name="fkeyfilesequence">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="FileSequence" type="multi" hasIndex="false"/>
+  </column>
+  <column reverseAccess="true" type="uint" methodName="dir" name="fkeydir">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="dir" indexUseCache="true" table="Dir" type="multi" hasIndex="true"/>
+  </column>
+  <index useCache="true" type="multi" name="Dir">
+   <column name="fkeydir"/>
+  </index>
+  <index useCache="true" type="single" name="DirAndFilename">
+   <column name="fkeydir"/>
+   <column name="filename"/>
+  </index>
+  <index useCache="true" type="multi" name="inode">
+   <column name="keyfile"/>
+  </index>
+  <index useCache="false" type="multi" name="MappingAndInode">
+   <column name="fkeymapping"/>
+   <column name="inode"/>
+  </index>
+ </table>
+ <table name="filegroup" expireKeyCache="true" className="FileGroup">
+  <column type="uint" methodName="keyfilegroup" name="keyfilegroup" pkey="true"/>
+  <column type="uint" methodName="fileGroupType" name="fkeyfilegrouptype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="FileGroupType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="note" name="fkeynote">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Note" type="multi" hasIndex="false"/>
+  </column>
+  <column docs="The thubmnail record associated with this file group." type="uint" methodName="thumbnail" name="fkeyfile_thumbnail">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="File" type="multi" hasIndex="false"/>
+  </column>
+  <column pluralMethodName="submittedBys" docs="The user that submitted this file group." type="uint" methodName="submittedBy" name="fkeyusr_submittedBy">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column docs="The date this file group was submited." type="QDateTime" methodName="submitted" name="submitted"/>
+  <column type="QString" methodName="variation" name="variation"/>
+  <column docs="The element this file group was checked in against. Most likely a delivery." type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table docs="This is a ManyToMany mapping table used to link FileGroups and Files.  It is used to represent Files &quot;membership&quot; in a FileGroup." name="filegroupfilemap" expireKeyCache="true" className="FileGroupFileMap">
+  <column type="uint" methodName="keyFileGroupFileMap" name="keyfilegroupfilemap" pkey="true"/>
+  <column type="uint" methodName="fileGroup" name="fkeyfilegroup">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="FileGroup" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="file" name="fkeyfile">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="File" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="order" name="order"/>
+  <column type="QString" methodName="name" name="name"/>
+  <index useCache="false" type="multi" name="fileGroup">
+   <column name="fkeyfilegroup"/>
+  </index>
+  <index useCache="false" type="single" name="fileGroupAndFile">
+   <column name="fkeyfilegroup"/>
+   <column name="fkeyfile"/>
+  </index>
+  <index useCache="false" type="single" name="file">
+   <column name="fkeyfile"/>
+  </index>
+ </table>
+ <table docs="This is a ManyToMany mapping table used to link FileGroups and FilesSequences.  It is used to represent FileSequences &quot;membership&quot; in a FileGroup." name="filegroupfilesequencemap" expireKeyCache="true" className="FileGroupFileSequenceMap">
+  <column type="uint" methodName="keyfilegroupfilesequencemap" name="keyfilegroupfilesequencemap" pkey="true"/>
+  <column type="uint" methodName="fileGroup" name="fkeyfilegroup">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="FileGroup" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="fileSequence" name="fkeyfilesequence">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="FileSequence" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="order" name="order"/>
+  <index useCache="false" type="multi" name="fileGroup">
+   <column name="fkeyfilegroup"/>
+  </index>
+  <index useCache="false" type="single" name="fileGroupAndFileSequence">
+   <column name="fkeyfilegroup"/>
+   <column name="fkeyfilesequence"/>
+  </index>
+ </table>
+ <table name="filegrouptype" expireKeyCache="true" className="FileGroupType">
+  <column type="uint" methodName="keyfilegrouptype" name="keyfilegrouptype" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <index useCache="false" type="single" name="name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="filesequence" expireKeyCache="true" className="FileSequence">
+  <column type="uint" methodName="keyfilesequence" name="keyfilesequence" pkey="true"/>
+  <column type="uint" methodName="version" name="version"/>
+  <column type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+  <column displayName="Type" type="uint" methodName="fileType" name="fkeyfiletype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="FileType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="variation" name="variation"/>
+  <column type="QString" methodName="tags" name="tags"/>
+  <column displayName="Thumbnail" type="uint" methodName="thumbnailFile" name="fkeyfile_thumbnail">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="File" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table name="filestatus" expireKeyCache="true" className="FileStatus">
+  <column type="uint" methodName="keyfilestatus" name="keyfilestatus" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="order" name="order"/>
+  <index useCache="false" type="single" name="name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table docs="This class is used by the submit tool to build lists of the files needed for a submission." name="filesubmissionrow" expireKeyCache="true" className="FileSubmissionRow">
+  <column type="uint" methodName="key" name="keyFileSubmissionRow" pkey="true"/>
+  <column displayName="true" docs="Name of the submission type" type="QString" methodName="name" name="name"/>
+  <column docs="The name of the class used to display this item" type="QString" methodName="rowType" name="rowtype"/>
+  <column docs="This filter is applied to the browse dialog. Only these types of files are shown&#xa;&#xa;Example:&#xa;&#xa;&quot;Images (*.png *.jpg *.tga *.tif);;All Files(*.*)&quot;&#xa;&quot;XSI Files(*.scn, *.emdl);;Max Files(*.max)&quot;" type="QString" methodName="fileFilter" name="filefilter"/>
+  <column displayName="Default Locations" docs="This is the default location the SubmissionType will use. It points to a file Record" type="uint" methodName="defaultLocation" name="fkeyfiletype_defaultlocation">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="FileType" type="multi" hasIndex="false"/>
+  </column>
+  <column docs="This is the file type for where the file will be published to." type="uint" methodName="destination" name="fkeyfiletype_destination">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="FileType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="order" name="order"/>
+  <column reverseAccess="true" type="uint" methodName="submissionType" name="fkeysubmissiontype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="SubmissionType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="bool" methodName="optional" name="optional"/>
+  <column type="QString" methodName="tags" name="tags"/>
+  <index useCache="false" type="multi" name="submissionType">
+   <column name="fkeysubmissiontype"/>
+  </index>
+  <index useCache="false" type="single" name="submissionTypeAndName">
+   <column name="fkeysubmissiontype"/>
+   <column name="name"/>
+  </index>
+ </table>
+ <table docs="File Submissions are made against submission Types. This gives us the ability to set up various submissions for a changing pipeline." name="filesubmissiontype" expireKeyCache="true" className="FileSubmissionType">
+  <column type="uint" methodName="key" name="keyFileSubmissionType" pkey="true"/>
+  <column displayName="true" type="QString" methodName="name" name="name"/>
+  <column docs="If true this item will be selected by default." type="bool" methodName="default" name="default"/>
+  <column type="uint" methodName="deliveryType" name="fkeydeliverytype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="DeliveryType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="order" name="order"/>
+  <column type="bool" methodName="requiresNote" name="requiresNote"/>
+  <column docs="If a valid delivery is provided, the provided delivery will have its status changed to this." type="uint" methodName="deliveryStatus" name="fkeydeliverystatus">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="DeliveryStatus" type="multi" hasIndex="false"/>
+  </column>
+  <column docs="If setting a delivery status, should it set the final flag to True, False, or leave it in its current state." type="int" methodName="markFinal" name="markfinal"/>
+  <index useCache="false" type="single" name="deliveryTypeAndName">
+   <column name="fkeydeliverytype"/>
+   <column name="name"/>
+  </index>
+  <index useCache="false" type="multi" name="deliveryType">
+   <column name="fkeydeliverytype"/>
+  </index>
+  <index useCache="false" type="single" name="deliveryTypeAndDefault">
+   <column name="fkeydeliverytype"/>
+   <column name="default"/>
+  </index>
+ </table>
+ <table name="filetracker" expireKeyCache="true" className="FileTracker">
+  <column type="uint" methodName="keyfiletracker" name="keyfiletracker" pkey="true"/>
+  <column type="uint" methodName="createdBy" name="fkeyemployee">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDateTime" methodName="created" name="created"/>
+  <column type="QString" methodName="tags" name="tags"/>
+  <column type="uint" methodName="project" name="fkeyproject">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Project" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="department" name="fkeydepartment">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Department" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="parent" name="fkeyfiletracker">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="FileTracker" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="baseElement" name="fkeyelement_base">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="assetType" name="fkeytimesheetcategory">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="AssetType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="description" name="description"/>
+  <column type="QString" methodName="thumbfile" name="thumbfile"/>
+  <column type="uint" methodName="deliveryType" name="fkeydeliverytype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="DeliveryType" type="multi" hasIndex="false"/>
+  </column>
+  <column reverseAccess="true" type="uint" methodName="daily" name="fkeydaily">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="daily" indexUseCache="false" table="Daily" type="multi" hasIndex="true"/>
+  </column>
+ </table>
+ <table preload="true" name="filetype" expireKeyCache="true" className="FileType">
+  <column type="uint" methodName="keyfiletype" name="keyfiletype" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="QString" methodName="type" name="type"/>
+  <column type="QString" methodName="id" name="id"/>
+  <column displayName="true" type="QString" methodName="displayName" name="displayname"/>
+  <column type="QString" methodName="basePath" name="basepath"/>
+  <column type="bool" methodName="publishingAllowed" name="publishingallowed"/>
+  <column type="bool" methodName="versioningAllowed" name="versioningallowed"/>
+  <column type="uint" methodName="assetType" name="fkeytimesheetcategory_assettype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="AssetType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="group" name="fkeytimesheetcategory_group">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="AssetType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="parent" name="fkeyfiletype">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="parent" indexUseCache="true" table="FileType" type="multi" hasIndex="true"/>
+  </column>
+  <index useCache="false" type="single" name="name">
+   <column name="name"/>
+  </index>
+  <index useCache="false" type="single" name="id">
+   <column name="id"/>
+  </index>
+  <index useCache="false" type="single" name="assetTypeAndId">
+   <column name="fkeytimesheetcategory_assettype"/>
+   <column name="id"/>
+  </index>
+ </table>
+ <table name="history" expireKeyCache="true" className="History">
+  <column displayName="Keyhistory" pluralMethodName="keyelementhistories" type="uint" methodName="key" name="keyhistory" pkey="true"/>
+  <column type="QString" methodName="text" name="history"/>
+  <column type="QDateTime" methodName="date" name="date"/>
+  <column displayName="Fkey User" reverseAccess="true" type="uint" methodName="user" name="fkeyusr">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="User" indexUseCache="false" table="User" type="multi" hasIndex="true"/>
+  </column>
+  <column displayName="Fkey Element" reverseAccess="true" type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+  <column type="bool" methodName="isArchived" name="archive"/>
+ </table>
+ <table name="host" expireKeyCache="true" className="Host">
+  <column type="uint" methodName="keyhost" name="keyhost" pkey="true"/>
+  <column type="uint" methodName="user" name="fkeyuser">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="servicePackVersion" name="servicepackversion"/>
+  <column type="uint" methodName="buildNumber" name="buildnumber"/>
+  <column type="uint" methodName="spoolPartitionSize" name="spoolpartitionsize"/>
+ </table>
+ <table name="library" expireKeyCache="true" className="Library">
+  <column type="uint" methodName="keylibrary" name="keylibrary" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="QString" methodName="path" name="path"/>
+  <column type="uint" methodName="createdBy" name="fkeyusrcreatedby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDateTime" methodName="created" name="created"/>
+  <column type="uint" methodName="itemType" name="fkeyassettype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="AssetType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="bool" methodName="public" name="public"/>
+  <column type="bool" methodName="enabled" name="enabled"/>
+  <column type="QString" methodName="description" name="description"/>
+  <column type="uint" methodName="submitQc" name="fkeyapprovaltype_submitqc">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ApprovalType" type="multi" hasIndex="false"/>
+  </column>
+  <index useCache="false" type="multi" name="ItemType">
+   <column name="fkeyassettype"/>
+  </index>
+  <index useCache="false" type="single" name="Name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="librarycategory" expireKeyCache="true" className="LibraryCategory">
+  <column type="uint" methodName="keylibrarycategory" name="keylibrarycategory" pkey="true"/>
+  <column type="uint" methodName="library" name="fkeylibrary">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Library" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="parent" name="fkeylibrarycategory">
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="parent" indexUseCache="false" table="LibraryCategory" type="multi" hasIndex="true"/>
+  </column>
+ </table>
+ <table name="librarycategoryitemmap" expireKeyCache="true" className="LibraryCategoryItemMap">
+  <column type="uint" methodName="keylibrarycategoryitemmap" name="keylibrarycategoryitemmap" pkey="true"/>
+  <column type="uint" methodName="category" name="fkeylibrarycategory">
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="category" indexUseCache="false" table="LibraryCategory" type="multi" hasIndex="true"/>
+  </column>
+  <column type="uint" methodName="item" name="fkeylibraryitem">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="LibraryItem" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table parent="Element" name="libraryitem" expireKeyCache="true" className="LibraryItem">
+  <column type="uint" methodName="library" name="fkeylibrary">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Library" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="sourceElement" name="fkeyelement_source">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="tags" name="tags"/>
+  <column type="uint" methodName="itemStatus" name="fkeylibraryitemstatus">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="LibraryItemStatus" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="sampleImage" name="sampleimage"/>
+  <column type="QString" methodName="sampleSequence" name="samplesequence"/>
+  <column type="QString" methodName="sampleMovie" name="samplemovie"/>
+  <column type="QString" methodName="metadata" name="metadata"/>
+  <index useCache="false" type="single" name="LibraryAndFolder">
+   <column name="fkeylibrary"/>
+   <column name="foldername"/>
+  </index>
+  <index useCache="false" type="multi" name="AssetType">
+   <column name="fkeyassettype"/>
+  </index>
+ </table>
+ <table name="libraryitemstatus" expireKeyCache="true" className="LibraryItemStatus">
+  <column type="uint" methodName="keylibraryitemstatus" name="keylibraryitemstatus" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="order" name="order"/>
+  <column type="QString" methodName="folderName" name="foldername"/>
+  <index useCache="false" type="single" name="Name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="libraryitemusrmap" expireKeyCache="true" className="LibraryItemUserMap">
+  <column type="uint" methodName="keylibraryitemusrmap" name="keylibraryitemusrmap" pkey="true"/>
+  <column type="uint" methodName="user" name="fkeyusr">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="item" name="fkeylibraryitem">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="LibraryItem" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="customTags" name="customtags"/>
+ </table>
+ <table name="libraryusrmap" expireKeyCache="true" className="LibraryUserMap">
+  <column type="uint" methodName="keylibraryusrmap" name="keylibraryusrmap" pkey="true"/>
+  <column type="uint" methodName="user" name="fkeyusr">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="library" name="fkeylibrary">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Library" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="level" name="level"/>
+ </table>
+ <table name="location" expireKeyCache="true" className="Location">
+  <column type="uint" methodName="keylocation" name="keylocation" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <index useCache="false" type="single" name="Name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="mailinglist" expireKeyCache="true" className="MailingList">
+  <column type="uint" methodName="keymailinglist" name="keymailinglist" pkey="true"/>
+  <column type="QString" methodName="email" name="email"/>
+  <column type="uint" methodName="private" name="private"/>
+  <column pluralMethodName="includealls" type="uint" methodName="includeAll" name="includeall"/>
+  <column displayName="Additionalemails" type="QString" methodName="additionalEmails" name="additionalemails"/>
+  <column type="bool" methodName="onsiteOnly" name="onsiteonly"/>
+  <index useCache="true" type="single" name="Email">
+   <column name="email"/>
+  </index>
+ </table>
+ <table name="mailinglistmap" expireKeyCache="true" className="MailingListMap">
+  <column type="uint" methodName="keymailinglistmap" name="keymailinglistmap" pkey="true"/>
+  <column type="uint" methodName="mailingList" name="fkeymailinglist">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="MailingList" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="role" name="fkeyrole">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Role" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="department" name="fkeydepartment">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Department" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="user" name="fkeyusr">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="email" name="email"/>
+ </table>
+ <table name="mailinglistperldump" expireKeyCache="true" className="MailingListPerlDump">
+  <column type="uint" methodName="keymailinglistperldump" name="keymailinglistperldump" pkey="true"/>
+  <column type="QDateTime" methodName="datetime" name="datetime"/>
+  <column displayName="Perl Dump" type="QString" methodName="mailingListPerlDump" name="mailinglistperldump"/>
+  <column displayName="Synced" type="bool" methodName="syncedWithMailServer" name="syncedwithmailserver"/>
+ </table>
+ <table name="mapping" expireKeyCache="true" className="Mapping">
+  <column type="uint" methodName="keymapping" name="keymapping" pkey="true"/>
+  <column type="uint" methodName="host" name="fkeyhost">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Host" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="share" name="share"/>
+  <column type="QString" methodName="mount" name="mount"/>
+  <column type="uint" methodName="mappingType" name="fkeymappingtype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="MappingType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="description" name="description"/>
+ </table>
+ <table name="mappingtype" expireKeyCache="true" className="MappingType">
+  <column type="uint" methodName="keymappingtype" name="keymappingtype" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+ </table>
+ <table docs="This table stores data representing mocap talent.  " parent="Element" name="mocapactor" expireKeyCache="true" className="MocapActor">
+  <column type="QString" methodName="firstName" name="firstname"/>
+  <column type="QString" methodName="lastName" name="lastname"/>
+  <column type="QString" methodName="actorId" name="actorid"/>
+  <column type="QString" methodName="email" name="email"/>
+  <column type="QString" methodName="phoneNumber" name="phonenumber"/>
+  <column type="QString" methodName="height" name="height"/>
+  <column type="QString" methodName="weight" name="weight"/>
+  <column type="QString" methodName="rate" name="rate"/>
+  <column type="QString" methodName="specialties" name="specialties"/>
+  <column displayName="Notes" type="QString" methodName="mocapNotes" name="notes"/>
+  <column displayName="keymocapactor" type="uint" methodName="keymocapactor" name="keymocapactor"/>
+  <index useCache="false" type="single" name="actorId">
+   <column name="actorid"/>
+  </index>
+ </table>
+ <table name="mocapdirectorshot" expireKeyCache="true" className="MocapDirectorShot">
+  <column type="uint" methodName="keymocapdirectorshot" name="keymocapdirectorshot" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="mocapDirectorShotGroup" name="fkeymocapdirectorshotgroup">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="MocapDirectorShotGroup" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="description" name="description"/>
+  <column pluralMethodName="indexes" type="uint" methodName="index" name="index"/>
+ </table>
+ <table name="mocapdirectorshotgroup" expireKeyCache="true" className="MocapDirectorShotGroup">
+  <column type="uint" methodName="keymocapdirectorshotgroup" name="keymocapdirectorshotgroup" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="project" name="fkeyproject">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Project" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table name="mocapshoot" expireKeyCache="true" className="MocapShoot">
+  <column type="uint" methodName="keymocapshoot" name="keymocapshoot" pkey="true"/>
+  <column type="QDate" methodName="date" name="date"/>
+  <index useCache="false" type="single" name="date">
+   <column name="date"/>
+  </index>
+ </table>
+ <table parent="Element" name="mocaptake" expireKeyCache="true" className="MocapTake">
+  <column reverseAccess="true" type="uint" methodName="mocapShoot" name="fkeymocapshoot">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="MocapShoot" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="mocapShootIndex" name="mocapshootindex"/>
+  <column displayName="Mocap Difficulty" type="uint" methodName="mocapTakeDifficulty" name="fkeymocaptakedifficulty">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="MocapTakeDifficulty" type="multi" hasIndex="false"/>
+  </column>
+  <column displayName="Mocap Select" type="uint" methodName="mocapTakeSelect" name="fkeymocaptakeselect">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="MocapTakeSelect" type="multi" hasIndex="false"/>
+  </column>
+  <column displayName="Mocap Status" type="uint" methodName="mocapTakeStatus" name="fkeymocaptakestatus">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="MocapTakeStatus" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table name="mocaptakeasset" expireKeyCache="true" className="MocapTakeAsset">
+  <column pluralMethodName="keymocapassets" type="uint" methodName="keymocaptakeasset" name="keymocaptakeasset" pkey="true"/>
+  <column type="uint" methodName="mocapTake" name="fkeymocaptake">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="mocapTake" indexUseCache="false" table="MocapTake" type="multi" hasIndex="true"/>
+  </column>
+  <column type="uint" methodName="mocapActor" name="fkeymocapactor">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="MocapActor" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="asset" name="fkeyasset">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Asset" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table docs="MocapTakeDifficulty is an enumerated table used for gauging the processing difficulty of a MocapTake." name="mocaptakedifficulty" expireKeyCache="true" className="MocapTakeDifficulty">
+  <column type="uint" methodName="keymocaptakedifficulty" name="keymocaptakedifficulty" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="order" name="order"/>
+  <index useCache="false" type="single" name="name">
+   <column name="name"/>
+  </index>
+  <index useCache="false" type="single" name="order">
+   <column name="order"/>
+  </index>
+ </table>
+ <table docs="MocapTakeSelect is an enumerated table used for setting the Select status of a MocapTake." name="mocaptakeselect" expireKeyCache="true" className="MocapTakeSelect">
+  <column type="uint" methodName="keymocaptakeselect" name="keymocaptakeselect" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="order" name="order"/>
+  <index useCache="false" type="single" name="name">
+   <column name="name"/>
+  </index>
+  <index useCache="false" type="single" name="order">
+   <column name="order"/>
+  </index>
+ </table>
+ <table docs="MocapTakeStatus is an enumerated table used for setting the data Status of MocapTake data." name="mocaptakestatus" expireKeyCache="true" className="MocapTakeStatus">
+  <column type="uint" methodName="keymocaptakestatus" name="keymocaptakestatus" pkey="true"/>
+  <column displayName="name" type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="order" name="order"/>
+  <index useCache="false" type="single" name="name">
+   <column name="name"/>
+  </index>
+  <index useCache="false" type="single" name="order">
+   <column name="order"/>
+  </index>
+ </table>
+ <table name="note" expireKeyCache="true" className="Note">
+  <column type="uint" methodName="keynote" name="keynote" pkey="true"/>
+  <column displayName="Description" type="QString" methodName="text" name="text"/>
+  <column type="QDateTime" methodName="createdOn" name="datetime"/>
+  <column pluralMethodName="createdBys" type="uint" methodName="createdBy" name="fkeyusr_createdby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="parent" name="fkeynote">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Note" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Element" indexUseCache="false" table="Element" type="multi" hasIndex="true"/>
+  </column>
+  <column type="uint" methodName="noteType" name="fkeynotetype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="NoteType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="project" name="fkeyproject">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Project" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="priority" name="priority"/>
+  <column type="QDateTime" methodName="closedOn" name="closeddatetime"/>
+  <column type="uint" methodName="closedBy" name="fkeyusr_closedby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="baseElement" name="fkeyelement_base">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="subject" name="subject"/>
+  <column type="bool" methodName="hasAttachments" name="hasattachments"/>
+  <column type="bool" methodName="closed" name="closed"/>
+  <column type="bool" methodName="needsTask" name="needstask"/>
+  <column type="uint" methodName="task" name="fkeytask">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Task" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="assignedTo" name="fkeyusr_assignedTo">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="assignedToDepartment" name="fkeydepartment_assignedToDept">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Department" type="multi" hasIndex="false"/>
+  </column>
+  <column pluralMethodName="assignedBys" type="uint" methodName="assignedBy" name="fkeyusr_assignedby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="bool" methodName="studioClosed" name="studioclosed"/>
+  <column type="QDateTime" methodName="studioClosedOn" name="studioclosedon"/>
+  <column type="uint" methodName="studioClosedBy" name="fkeyusr_studioclosedby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="fileTracker" name="fkeyfiletracker">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="FileTracker" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="metadata" name="metadata"/>
+ </table>
+ <table name="noteattachment" expireKeyCache="true" className="NoteAttachment">
+  <column type="uint" methodName="keynoteattachment" name="keynoteattachment" pkey="true"/>
+  <column type="uint" methodName="note" name="fkeynote">
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="note" indexUseCache="false" table="Note" type="multi" hasIndex="true"/>
+  </column>
+  <column type="QString" methodName="filename" name="filename"/>
+ </table>
+ <table docs="This is a ManyToMany mapping table used to link Notes and Files.  It is used to represent File &quot;attachments&quot; to Notes." name="notefilemap" expireKeyCache="true" className="NoteFileMap">
+  <column type="uint" methodName="keynotefilemap" name="keynotefilemap" pkey="true"/>
+  <column type="uint" methodName="note" name="fkeynote">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Note" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="file" name="fkeyfile">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="File" type="multi" hasIndex="false"/>
+  </column>
+  <index useCache="false" type="multi" name="note">
+   <column name="fkeynote"/>
+  </index>
+  <index useCache="false" type="multi" name="file">
+   <column name="fkeyfile"/>
+  </index>
+  <index useCache="false" type="multi" name="noteAndFile">
+   <column name="fkeynote"/>
+   <column name="fkeyfile"/>
+  </index>
+ </table>
+ <table docs="This is a ManyToMany mapping table used to link Notes and FileSequences.  It is used to represent FileSequence &quot;attachments&quot; to Notes." name="notefilesequencemap" expireKeyCache="true" className="NoteFileSequenceMap">
+  <column type="uint" methodName="keynotefilesequencemap" name="keynotefilesequencemap" pkey="true"/>
+  <column type="uint" methodName="note" name="fkeynote">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Note" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="fileSequence" name="fkeyfilesequence">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="FileSequence" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table name="notelink" expireKeyCache="true" className="NoteLink">
+  <column type="uint" methodName="keynotelink" name="keynotelink" pkey="true"/>
+  <column type="uint" methodName="note" name="fkeynote">
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="note" indexUseCache="false" table="Note" type="multi" hasIndex="true"/>
+  </column>
+  <column type="uint" methodName="user" name="fkeyusr">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="role" name="fkeyrole">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Role" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="department" name="fkeydepartment">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Department" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="linkType" name="linktype"/>
+ </table>
+ <table name="noterelation" expireKeyCache="true" className="NoteRelation">
+  <column type="uint" methodName="keyNoteRelation" name="keyNoteRelation" pkey="true"/>
+  <column type="uint" methodName="source" name="fkeynote">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Note" type="multi" hasIndex="false"/>
+  </column>
+  <column pluralMethodName="target" type="uint" methodName="target" name="fkeytarget">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Note" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="relationType" name="fkeynoterelationtype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="NoteRelationType" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table name="noterelationtype" expireKeyCache="true" className="NoteRelationType">
+  <column type="uint" methodName="keyNoteRelationType" name="keyNoteRelationType" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="order" name="order"/>
+  <column type="QString" methodName="targetName" name="targetname"/>
+  <column type="QString" methodName="description" name="description"/>
+ </table>
+ <table name="notetype" expireKeyCache="true" className="NoteType">
+  <column type="uint" methodName="keyNoteType" name="keyNoteType" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="order" name="order"/>
+  <column type="QString" methodName="description" name="description"/>
+  <column type="bool" methodName="needsTask" name="needstask"/>
+  <column type="bool" methodName="userOption" name="useroption"/>
+  <index useCache="true" type="single" name="Name">
+   <column name="name"/>
+  </index>
+  <index useCache="false" type="single" name="Order">
+   <column name="order"/>
+  </index>
+ </table>
+ <table name="noteusr" expireKeyCache="true" className="NoteUser">
+  <column displayName="Keynotewatcher" type="uint" methodName="keynoteusr" name="keynoteusr" pkey="true"/>
+  <column type="uint" methodName="note" name="fkeynote">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Note" type="multi" hasIndex="false"/>
+  </column>
+  <column displayName="Usr" type="uint" methodName="user" name="fkeyusr">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <index useCache="true" type="single" name="NoteAndUser">
+   <column name="fkeynote"/>
+   <column name="fkeyusr"/>
+  </index>
+ </table>
+ <table name="notification" expireKeyCache="true" className="Notification">
+  <column displayName="keynotification" pluralMethodName="keynotifications" type="uint" methodName="key" name="keynotification" pkey="true"/>
+  <column type="QString" methodName="subject" name="subject"/>
+  <column type="QString" methodName="message" name="message"/>
+  <column type="QDateTime" methodName="created" name="created"/>
+  <column reverseAccess="true" type="uint" methodName="parent" name="fkeynotification">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Notification" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="event" name="event"/>
+  <column type="QDateTime" methodName="routed" name="routed"/>
+  <column reverseAccess="true" type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Element" indexUseCache="false" table="Element" type="multi" hasIndex="true"/>
+  </column>
+  <column type="QString" methodName="component" name="component"/>
+  <column type="uint" methodName="createdBy" name="fkeyusr">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="note" name="fkeynote">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Note" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDateTime" methodName="occursAt" name="occursat"/>
+  <column type="QString" methodName="brief" name="brief"/>
+ </table>
+ <table name="notificationcomponent" expireKeyCache="true" className="NotificationComponent">
+  <column type="uint" methodName="keynotificationcomponent" name="keynotificationcomponent" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="QString" methodName="description" name="description"/>
+ </table>
+ <table name="notificationdestination" expireKeyCache="true" className="NotificationDestination">
+  <column type="uint" methodName="keynotificationdestination" name="keynotificationdestination" pkey="true"/>
+  <column reverseAccess="true" type="uint" methodName="notification" name="fkeynotification">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Notification" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="notificationMethod" name="fkeynotificationmethod">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="NotificationMethod" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDateTime" methodName="delivered" name="delivered"/>
+  <column type="QString" methodName="destination" name="destination"/>
+  <column type="uint" methodName="user" name="fkeyuser">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column pluralMethodName="routeds" type="QDateTime" methodName="routed" name="routed"/>
+  <column displayName="NotificationUserPref" type="uint" methodName="notificationUserPref" name="fkeynotificationuserpref">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="NotificationUserPref" type="multi" hasIndex="false"/>
+  </column>
+  <column pluralMethodName="scheduleds" type="QDateTime" methodName="scheduled" name="scheduled"/>
+ </table>
+ <table name="notificationevent" expireKeyCache="true" className="NotificationEvent">
+  <column type="uint" methodName="keynotificationevent" name="keynotificationevent" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column reverseAccess="true" type="uint" methodName="component" name="fkeynotificationcomponent">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="component" indexUseCache="true" table="NotificationComponent" type="multi" hasIndex="true"/>
+  </column>
+  <column type="QString" methodName="description" name="description"/>
+  <column type="int" methodName="version" name="version"/>
+ </table>
+ <table name="notificationmethod" expireKeyCache="true" className="NotificationMethod">
+  <column type="uint" methodName="keynotificationmethod" name="keynotificationmethod" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+ </table>
+ <table name="notificationroute" expireKeyCache="true" className="NotificationUserRoute">
+  <column displayName="Keynotificationroute" pluralMethodName="keynotificationuserroutes" type="uint" methodName="key" name="keynotificationuserroute" pkey="true"/>
+  <column type="QString" methodName="eventMatch" name="eventmatch"/>
+  <column type="QString" methodName="componentMatch" name="componentmatch"/>
+  <column type="QString" methodName="subjectMatch" name="subjectmatch"/>
+  <column type="QString" methodName="messageMatch" name="messagematch"/>
+  <column type="uint" methodName="user" name="fkeyuser">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="actions" name="actions"/>
+  <column type="uint" methodName="priority" name="priority"/>
+  <column type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+  <column type="bool" methodName="routeAssetDescendants" name="routeassetdescendants"/>
+  <column type="bool" methodName="matchDestination" name="matchdestination"/>
+ </table>
+ <table name="notificationuserpref" expireKeyCache="true" className="NotificationUserPref">
+  <column type="uint" methodName="keynotificationuserpref" name="keynotificationuserpref" pkey="true"/>
+  <column type="uint" methodName="role" name="fkeyrole">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Role" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="template" name="fkeynotificationuserpref_template">
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="template" indexUseCache="false" table="NotificationUserPref" type="multi" hasIndex="true"/>
+  </column>
+  <column displayName="Enabled" pluralMethodName="areEnabled" type="bool" methodName="isEnabled" name="enabled"/>
+  <column type="uint" methodName="notificationEvent" name="fkeynotificationevent">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="NotificationEvent" type="multi" hasIndex="false"/>
+  </column>
+  <column type="Interval" methodName="offset" name="offset"/>
+  <column type="uint" methodName="notificationMethod" name="fkeynotificationmethod">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="NotificationMethod" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="deliveryTrigger" name="deliverytrigger"/>
+  <column type="uint" methodName="offsetType" name="offsettype"/>
+  <column type="bool" methodName="deliverBefore" name="deliverbefore"/>
+  <column pluralMethodName="createdBys" type="uint" methodName="createdBy" name="fkeyusrcreatedby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="user" name="fkeyuser">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table name="Permission" expireKeyCache="true" className="Permission">
+  <column type="uint" methodName="keyPermission" name="keyPermission" pkey="true"/>
+  <column type="QString" methodName="methodPattern" name="methodpattern"/>
+  <column type="uint" methodName="user" name="fkeyusr">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="permission" name="permission"/>
+  <column type="QString" methodName="name" name="class"/>
+  <column type="bool" methodName="inherits" name="inherits"/>
+  <index useCache="false" type="single" name="Name">
+   <column name="class"/>
+  </index>
+ </table>
+ <table name="phoneno" expireKeyCache="true" className="PhoneNumber">
+  <column displayName="Keyphonenumber" pluralMethodName="keyphonenumbers" type="uint" methodName="key" name="keyphoneno" pkey="true"/>
+  <column type="QString" methodName="number" name="phoneno"/>
+  <column displayName="Fkey Contact" reverseAccess="true" type="uint" methodName="contact" name="fkeycontact">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Contact" indexUseCache="true" table="Contact" type="multi" hasIndex="true"/>
+  </column>
+  <column type="QString" methodName="domain" name="domain"/>
+  <column reverseAccess="true" type="uint" methodName="employee" name="fkeyemployee">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Employee" indexUseCache="true" table="Employee" type="multi" hasIndex="true"/>
+  </column>
+  <column displayName="Phonetype" type="uint" methodName="phoneType" name="fkeyphonetype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="PhoneType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="client" name="fkeyclient">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Client" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table name="phonetype" expireKeyCache="true" className="PhoneType">
+  <column type="uint" methodName="keyphonetype" name="keyphonetype" pkey="true"/>
+  <column type="QString" methodName="name" name="phoneType"/>
+  <index useCache="false" type="single" name="Name">
+   <column name="phoneType"/>
+  </index>
+ </table>
+ <table parent="Element" name="project" expireKeyCache="true" className="Project">
+  <column type="double" methodName="dayRate" name="dayrate"/>
+  <column reverseAccess="true" type="uint" methodName="client" name="fkeyclient">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Client" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="shortName" name="shortname"/>
+  <column type="QString" methodName="script" name="script"/>
+  <column type="uint" methodName="projectNumber" name="projectnumber"/>
+  <column type="uint" methodName="projectStatus" name="fkeyprojectstatus">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="projectStatus" indexUseCache="true" table="ProjectStatus" type="multi" hasIndex="true"/>
+  </column>
+  <column type="QDate" methodName="dateDue" name="datedue"/>
+  <column type="QColor" methodName="color" name="color"/>
+  <column type="uint" methodName="hoursPerDay" name="hoursperday"/>
+  <column type="double" methodName="budget" name="budget"/>
+  <column type="double" methodName="fps" name="fps"/>
+  <column type="bool" methodName="isTraxVisible" name="traxvisible"/>
+  <column type="QColor" methodName="textColor" name="textcolor"/>
+ </table>
+ <table name="projectcomptime" expireKeyCache="true" className="ProjectCompTime">
+  <column type="uint" methodName="keyprojectcomptime" name="keyprojectcomptime" pkey="true"/>
+  <column type="uint" methodName="project" name="fkeyproject">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Project" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="employee" name="fkeyemployee">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <column docs="Test" type="double" methodName="dayCount" name="daycount"/>
+  <column type="QDate" methodName="dateStart" name="datestart"/>
+  <column type="uint" methodName="author" name="fkeyauthor">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <index useCache="false" type="single" name="ProjectAndEmployee">
+   <column name="fkeyproject"/>
+   <column name="fkeyemployee"/>
+  </index>
+ </table>
+ <table docs="ProjectCosts are used to represent all costs incurred by a Project, and don't necessarily apply to a specific Bid.  This table is generally used&#xa;to account for overhead costs on a Project.  These costs are used, along with the Bids and BidItems, to calculate dayrates for a project." name="projectcost" expireKeyCache="true" className="ProjectCost">
+  <column displayName="keyprojectcost" type="uint" methodName="keyprojectcost" name="keyprojectcost" pkey="true"/>
+  <column type="uint" methodName="projectCostType" name="fkeyprojectcosttype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ProjectCostType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="project" name="fkeyproject">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="project" indexUseCache="false" table="Project" type="multi" hasIndex="true"/>
+  </column>
+  <column type="QDate" methodName="date" name="date"/>
+  <column type="double" methodName="cost" name="cost"/>
+  <column type="QString" methodName="description" name="description"/>
+  <column type="bool" methodName="paid" name="paid"/>
+  <column type="QDate" methodName="paidDate" name="paiddate"/>
+  <column type="uint" methodName="department" name="fkeydepartment">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Department" type="multi" hasIndex="false"/>
+  </column>
+  <index useCache="false" type="multi" name="projectAndDepartment">
+   <column name="fkeyproject"/>
+   <column name="fkeydepartment"/>
+  </index>
+ </table>
+ <table docs="This table is an enumeration of the types of ProjectCosts that can be incurred." name="projectcosttype" expireKeyCache="true" className="ProjectCostType">
+  <column displayName="keyprojectcosttype" type="uint" methodName="keyprojectcosttype" name="keyprojectcosttype" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <index useCache="false" type="single" name="name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="projectdeliverymethod" expireKeyCache="false" className="ProjectDeliveryMethod">
+  <column type="uint" methodName="keyprojectdeliverymethod" name="keyprojectdeliverymethod" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="order" name="order"/>
+  <index useCache="false" type="single" name="Name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="projectresolution" expireKeyCache="true" className="ProjectResolution">
+  <column type="uint" methodName="keyprojectresolution" name="keyprojectresolution" pkey="true"/>
+  <column type="QString" methodName="deliveryFormat" name="deliveryformat"/>
+  <column reverseAccess="true" type="uint" methodName="project" name="fkeyproject">
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="Project" indexUseCache="true" table="Project" type="multi" hasIndex="true"/>
+  </column>
+  <column type="int" methodName="fps" name="fps"/>
+  <column type="uint" methodName="height" name="height"/>
+  <column type="QString" methodName="outputFormat" name="outputformat"/>
+  <column type="double" methodName="pixelAspect" name="pixelaspect"/>
+  <column type="QString" methodName="name" name="projectresolution"/>
+  <column type="uint" methodName="width" name="width"/>
+  <column type="uint" methodName="approvedBy" name="fkeyapprovedby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <column displayName="Approved" pluralMethodName="approved" type="bool" methodName="isApproved" name="approved"/>
+  <column type="QDateTime" methodName="approvedDateTime" name="approvedDateTime"/>
+  <column type="uint" methodName="cameraType" name="fkeycameratype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="CameraType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="similarToProject" name="fkeyproject_similar">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Project" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="deliveryMethod" name="fkeyprojectdeliverymethod">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ProjectDeliveryMethod" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDate" methodName="renderCrunchStart" name="rendercrunchstart"/>
+  <column type="QDate" methodName="renderCrunchEnd" name="rendercrunchend"/>
+  <column type="QString" methodName="hardwareRequirements" name="hardwarerequirements"/>
+  <index useCache="false" type="single" name="ProjectAndName">
+   <column name="fkeyproject"/>
+   <column name="projectresolution"/>
+  </index>
+ </table>
+ <table preload="true" name="projectstatus" expireKeyCache="true" className="ProjectStatus">
+  <column displayName="Keyelementstage" pluralMethodName="keys" type="uint" methodName="key" name="keyprojectstatus" pkey="true"/>
+  <column type="QString" methodName="name" name="projectstatus"/>
+  <column type="uint" methodName="chronology" name="chronology"/>
+  <column type="uint" methodName="order" name="order"/>
+  <column type="uint" methodName="flags" name="flags"/>
+  <index useCache="true" type="single" name="Order">
+   <column name="order"/>
+  </index>
+  <index useCache="true" type="single" name="name">
+   <column name="projectstatus"/>
+  </index>
+ </table>
+ <table name="projectstorage" expireKeyCache="true" className="ProjectStorage">
+  <column type="uint" methodName="keyprojectstorage" name="keyprojectstorage" pkey="true"/>
+  <column reverseAccess="true" type="uint" methodName="project" name="fkeyproject">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="project" indexUseCache="true" table="Project" type="multi" hasIndex="true"/>
+  </column>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="QString" methodName="location" name="location"/>
+  <column type="QString" methodName="storageName" name="storagename"/>
+  <column type="bool" methodName="default" name="default"/>
+  <column type="uint" methodName="host" name="fkeyhost"/>
+ </table>
+ <table name="querypage" expireKeyCache="true" className="QueryPage">
+  <column type="uint" methodName="keyquerypage" name="keyquerypage" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column displayName="Created By" pluralMethodName="createdbys" type="uint" methodName="createdby" name="fkeycreatedby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="bool" methodName="shared" name="shared"/>
+  <column displayName="Traxtable Name" type="QString" methodName="traxtablename" name="traxtablename"/>
+  <column displayName="settingspickle" type="QString" methodName="settingspickle" name="settingspickle"/>
+ </table>
+ <table name="review" expireKeyCache="true" className="Review">
+  <column type="uint" methodName="keyreview" name="keyreview" pkey="true"/>
+  <column type="uint" methodName="year" name="year"/>
+  <column type="uint" methodName="notesMeeting" name="fkeycalendar_notesmeeting">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Calendar" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="reviewMeeting" name="fkeycalendar_reviewmeeting">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Calendar" type="multi" hasIndex="false"/>
+  </column>
+  <column displayName="HR Meeting" type="uint" methodName="hrMeeting" name="fkeycalendar_hrMeeting">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Calendar" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="employee" name="fkeyemployee">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="employee" indexUseCache="false" table="Employee" type="multi" hasIndex="true"/>
+  </column>
+  <column type="uint" methodName="reviewStatus" name="fkeyreviewstatus">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ReviewStatus" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="reviewSalaryStatus" name="fkeyreviewsalarystatus">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ReviewSalaryStatus" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="noteMeetings" name="fkeynotesMeetings">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ReviewCalendar" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="reviewMeetings" name="fkeyreviewMeetings">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ReviewCalendar" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDateTime" methodName="lastSaved" name="lastsaved"/>
+  <index useCache="false" type="single" name="EmployeeAndYear">
+   <column name="fkeyemployee"/>
+   <column name="year"/>
+  </index>
+  <index useCache="false" type="multi" name="NotesMeeting">
+   <column name="fkeycalendar_notesmeeting"/>
+  </index>
+  <index useCache="false" type="multi" name="ReviewMeeting">
+   <column name="fkeycalendar_reviewmeeting"/>
+  </index>
+ </table>
+ <table name="ReviewCalendar" expireKeyCache="true" className="ReviewCalendar">
+  <column type="uint" methodName="keyReviewCalendar" name="keyReviewCalendar" pkey="true"/>
+  <column type="uint" methodName="calendar" name="fkeycalendar">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Calendar" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="review" name="fkeyreview">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Review" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="calendarType" name="calendarType"/>
+  <column type="uint" methodName="order" name="order"/>
+  <index useCache="false" type="multi" name="review">
+   <column name="fkeyreview"/>
+  </index>
+  <index useCache="false" type="multi" name="reviewAndType">
+   <column name="fkeyreview"/>
+   <column name="calendarType"/>
+  </index>
+  <index useCache="false" type="multi" name="calendar">
+   <column name="fkeycalendar"/>
+  </index>
+ </table>
+ <table name="reviewer" expireKeyCache="true" className="Reviewer">
+  <column type="uint" methodName="keyreviewer" name="keyreviewer" pkey="true"/>
+  <column reverseAccess="true" type="uint" methodName="review" name="fkeyreview">
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="review" indexUseCache="false" table="Review" type="multi" hasIndex="true"/>
+  </column>
+  <column reverseAccess="true" type="uint" methodName="employee" name="fkeyemployee">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="employee" indexUseCache="false" table="Employee" type="single" hasIndex="true"/>
+  </column>
+  <column type="uint" methodName="reviewerStatus" name="fkeyreviewerstatus">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ReviewerStatus" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="reviewMeeting" name="fkeyreviewCalendar_reviewMeeting">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ReviewCalendar" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="notesMeeting" name="fkeyreviewcalendar_notesMeeting">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ReviewCalendar" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDateTime" methodName="modified" name="modified"/>
+  <index useCache="false" type="single" name="EmployeeAndReview">
+   <column name="fkeyemployee"/>
+   <column name="fkeyreview"/>
+  </index>
+  <index useCache="false" type="multi" name="noteMeeting">
+   <column name="fkeyreviewcalendar_notesMeeting"/>
+  </index>
+  <index useCache="false" type="multi" name="reviewMeeting">
+   <column name="fkeyreviewCalendar_reviewMeeting"/>
+  </index>
+ </table>
+ <table preload="true" name="ReviewerStatus" expireKeyCache="false" className="ReviewerStatus">
+  <column type="uint" methodName="keyReviewerStatus" name="keyReviewerStatus" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="order" name="order"/>
+  <index useCache="false" type="single" name="name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="reviewquestion" expireKeyCache="true" className="ReviewQuestion">
+  <column type="uint" methodName="keyreviewquestion" name="keyreviewquestion" pkey="true"/>
+  <column type="QString" methodName="question" name="question"/>
+  <column type="uint" methodName="order" name="order"/>
+  <column reverseAccess="true" type="uint" methodName="role" name="fkeyrole">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="role" indexUseCache="false" table="Role" type="single" hasIndex="true"/>
+  </column>
+  <column type="QString" methodName="shortName" name="shortName"/>
+  <index useCache="false" type="multi" name="shortName">
+   <column name="shortName"/>
+  </index>
+ </table>
+ <table name="ReviewSalaryStatus" expireKeyCache="true" className="ReviewSalaryStatus">
+  <column type="uint" methodName="keyReviewSalaryStatus" name="keyReviewSalaryStatus" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="order" name="order"/>
+  <index useCache="false" type="single" name="name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="reviewstatus" expireKeyCache="true" className="ReviewStatus">
+  <column type="uint" methodName="keyreviewstatus" name="keyreviewstatus" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="order" name="order"/>
+  <index useCache="false" type="single" name="name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table preload="true" name="role" expireKeyCache="false" className="Role">
+  <column type="uint" methodName="keyrole" name="keyrole" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column pluralMethodName="fkeyDepartments" reverseAccess="true" type="uint" methodName="department" name="fkeydepartment">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Department" indexUseCache="true" table="Department" type="multi" hasIndex="true"/>
+  </column>
+  <column reverseAccess="true" type="uint" methodName="parent" name="fkeyrole">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Parent" indexUseCache="true" table="Role" type="multi" hasIndex="true"/>
+  </column>
+  <column type="QString" methodName="description" name="description"/>
+  <column type="QString" methodName="color" name="color"/>
+  <column type="int" methodName="order" name="order"/>
+  <column type="uint" methodName="flags" name="flags"/>
+  <column type="QString" methodName="abbreviation" name="abbreviation"/>
+  <index useCache="true" type="single" name="Name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="rolecalendar" expireKeyCache="true" className="RoleCalendar">
+  <column type="uint" methodName="keyrolecalendar" name="keyrolecalendar" pkey="true"/>
+  <column type="uint" methodName="role" name="fkeyrole">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Role" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="calendar" name="fkeycalendar">
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="calendar" indexUseCache="false" table="Calendar" type="multi" hasIndex="true"/>
+  </column>
+ </table>
+ <table name="shortcut" expireKeyCache="true" className="Shortcut">
+  <column type="uint" methodName="keyshortcut" name="keyshortcut" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="QString" methodName="target" name="target"/>
+  <column reverseAccess="true" type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Element" indexUseCache="true" table="Element" type="multi" hasIndex="true"/>
+  </column>
+ </table>
+ <table parent="Element" name="shot" expireKeyCache="true" className="Shot">
+  <column type="double" methodName="number" name="shot"/>
+  <column type="uint" methodName="scriptPage" name="scriptpage"/>
+  <column type="uint" methodName="layoutShot" name="fkeyshot">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Shot" type="multi" hasIndex="false"/>
+  </column>
+  <column docs="The ShotGroup that this Shot belongs to." type="uint" methodName="shotGroup" name="fkeyshotgroup">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ShotGroup" type="multi" hasIndex="false"/>
+  </column>
+  <column type="int" methodName="rangeStart" name="rangestart"/>
+  <column type="int" methodName="rangeEnd" name="rangeend"/>
+ </table>
+ <table parent="Element" name="shotasset" expireKeyCache="true" className="ShotAsset">
+  <column type="bool" methodName="useIteration" name="useiteration"/>
+  <column type="uint" methodName="iteration" name="iteration"/>
+  <column reverseAccess="true" type="uint" methodName="shot" name="fkeyshot">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="shot" indexUseCache="false" table="Shot" type="multi" hasIndex="true"/>
+  </column>
+  <column reverseAccess="true" type="uint" methodName="asset" name="fkeyasset">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="asset" indexUseCache="false" table="Asset" type="multi" hasIndex="true"/>
+  </column>
+  <column type="QString" methodName="variation" name="variation"/>
+  <column type="QString" methodName="useVariation" name="usevariation"/>
+  <column reverseAccess="true" type="uint" methodName="shotGroup" name="fkeyshotgroup">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Fkeyshotgroup" indexUseCache="false" table="ShotGroup" type="multi" hasIndex="true"/>
+  </column>
+  <index useCache="false" type="multi" name="ShotAndAsset">
+   <column name="fkeyshot"/>
+   <column name="fkeyasset"/>
+  </index>
+  <index useCache="false" type="single" name="ShotAssetAndIteration">
+   <column name="fkeyshot"/>
+   <column name="fkeyasset"/>
+   <column name="iteration"/>
+  </index>
+  <index useCache="false" type="multi" name="ShotGroupAndAsset">
+   <column name="fkeyshotgroup"/>
+   <column name="fkeyasset"/>
+  </index>
+  <index useCache="false" type="multi" name="ShotGroupAssetAndIteration">
+   <column name="fkeyshotgroup"/>
+   <column name="fkeyasset"/>
+   <column name="iteration"/>
+  </index>
+ </table>
+ <table name="shotassetmocap" expireKeyCache="true" className="ShotAssetMocap">
+  <column type="uint" methodName="keyshotassetmocap" name="keyshotassetmocap" pkey="true"/>
+  <column type="uint" methodName="mocapTakeAsset" name="fkeymocaptakeasset">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="MocapTakeAsset" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="shotAsset" name="fkeyshotasset">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ShotAsset" type="multi" hasIndex="false"/>
+  </column>
+  <column type="double" methodName="offsetTranslationX" name="offsettranslationx"/>
+  <column type="double" methodName="offsetTranslationY" name="offsettranslationy"/>
+  <column type="double" methodName="offsetTranslationZ" name="offsettranslationz"/>
+  <column type="double" methodName="offsetRotationX" name="offsetrotationx"/>
+  <column type="double" methodName="offsetRotationY" name="offsetrotationy"/>
+  <column type="double" methodName="offsetRotationZ" name="offsetrotationz"/>
+  <column type="double" methodName="offsetRotationW" name="offsetrotationw"/>
+  <column type="double" methodName="offsetScaleX" name="offsetscalex"/>
+  <column type="double" methodName="offsetScaleY" name="offsetscaley"/>
+  <column type="double" methodName="offsetScaleZ" name="offsetscalez"/>
+  <column type="uint" methodName="srcFrameIn" name="srcframein"/>
+  <column type="uint" methodName="srcFrameOut" name="srcframeout"/>
+  <column type="uint" methodName="targetFrameIn" name="targetframein"/>
+  <column type="double" methodName="targetFrameScale" name="targetframescale"/>
+ </table>
+ <table parent="Element" name="shotgroup" expireKeyCache="true" className="ShotGroup">
+  <column type="uint" methodName="number" name="number"/>
+ </table>
+ <table name="software" expireKeyCache="true" className="Software">
+  <column type="uint" methodName="keysoftware" name="keysoftware" pkey="true"/>
+  <column type="QString" methodName="softwareId" name="softwareid"/>
+ </table>
+ <table name="softwareargument" expireKeyCache="true" className="SoftwareArgument">
+  <column type="uint" methodName="keysoftwareargument" name="keysoftwareargument" pkey="true"/>
+  <column reverseAccess="true" type="uint" methodName="software" name="fkeysoftware">
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="software" indexUseCache="false" table="Software" type="multi" hasIndex="true"/>
+  </column>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="QString" methodName="commandKey" name="commandkey"/>
+  <index useCache="false" type="single" name="SoftwareAndName">
+   <column name="fkeysoftware"/>
+   <column name="name"/>
+  </index>
+ </table>
+ <table parent="Element" name="task" expireKeyCache="true" className="Task">
+  <column reverseAccess="true" type="uint" methodName="employee" name="fkeyemployee">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Employee" indexUseCache="true" table="Employee" type="multi" hasIndex="true"/>
+  </column>
+  <column reverseAccess="true" type="uint" methodName="role" name="fkeyrole">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Role" indexUseCache="true" table="Role" type="multi" hasIndex="true"/>
+  </column>
+  <column reverseAccess="true" type="uint" methodName="department" name="fkeydepartment">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Department" indexUseCache="true" table="Department" type="multi" hasIndex="true"/>
+  </column>
+  <column pluralMethodName="datesFinished" type="QDate" methodName="dateFinished" name="datefinished"/>
+  <column type="double" methodName="dayWeight" name="dayweight"/>
+  <column type="bool" methodName="isIndependent" name="independent"/>
+  <column type="double" methodName="offsetDays" name="offsetdays"/>
+  <column type="uint" methodName="dayMode" name="daymode"/>
+  <column type="uint" methodName="departmentBid" name="fkeydepartmentbid">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="DepartmentBid" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="baseElement" name="fkeyelement_base">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+  <column reverseAccess="true" type="uint" methodName="task" name="fkeytask">
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="Task" indexUseCache="false" table="Task" type="multi" hasIndex="true"/>
+  </column>
+  <column type="uint" methodName="sprint" name="fkeysprint">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Task" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="shot" name="fkeyshot">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Shot" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="shotgroup" name="fkeyshotgroup">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ShotGroup" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="asset" name="fkeyasset">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Asset" type="multi" hasIndex="false"/>
+  </column>
+  <column type="float" methodName="dayrate" name="dayrate"/>
+ </table>
+ <table name="thumbnail" expireKeyCache="true" className="Thumbnail">
+  <column type="uint" methodName="keythumbnail" name="keythumbnail" pkey="true"/>
+  <column type="QString" methodName="clipRect" name="cliprect"/>
+  <column type="QDateTime" methodName="date" name="date"/>
+  <column type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="user" name="fkeyuser">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QByteArray" methodName="image" name="image"/>
+  <column type="QString" methodName="originalFile" name="originalfile"/>
+ </table>
+ <table name="timeoff" expireKeyCache="true" className="Timeoff">
+  <column type="uint" methodName="keytimeoff" name="keytimeoff" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="QDate" methodName="dateStart" name="datestart"/>
+  <column type="QDate" methodName="dateEnd" name="dateend"/>
+  <column type="QString" methodName="details" name="details"/>
+  <column type="uint" methodName="employee" name="fkeyemployee">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <column displayName="Blur Approved By" type="uint" methodName="approvedBy" name="fkeyapprovedby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="author" name="fkeyauthor">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="timeoffStatus" name="fkeytimeoffstatus">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="TimeoffStatus" type="multi" hasIndex="false"/>
+  </column>
+  <column displayName="Created" pluralMethodName="dateTimeCreateds" type="QDateTime" methodName="dateTimeCreated" name="datetimecreated"/>
+  <column type="QDateTime" methodName="dateTimeApproved" name="datetimeapproved"/>
+  <column type="bool" methodName="isUserApproved" name="userapproved"/>
+  <column type="bool" methodName="isStudioApproved" name="studioapproved"/>
+  <column type="uint" methodName="days" name="days"/>
+  <column type="bool" methodName="isPayrollApproved" name="payrollapproved"/>
+  <column type="bool" methodName="isScheduleApproved" name="scheduleapproved"/>
+  <column displayName="Payroll Approver" pluralMethodName="payrollApprovedBy" type="uint" methodName="payrollApprovedBy" name="fkeypayrollapprovedby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="scheduleApprovedBy" name="fkeyscheduleapprovedby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDateTime" methodName="payrollDateTimeApproved" name="payrolldatetimeapproved"/>
+  <column type="QDateTime" methodName="scheduleDateTimeApproved" name="scheduledatetimeapproved"/>
+  <index useCache="true" type="multi" name="employee">
+   <column name="fkeyemployee"/>
+  </index>
+ </table>
+ <table name="timeoffaccrual" expireKeyCache="true" className="TimeoffAccrual">
+  <column displayName="key" pluralMethodName="keys" type="uint" methodName="key" name="keytimeoffaccrual" pkey="true"/>
+  <column type="uint" methodName="employee" name="fkeyemployee">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDate" methodName="dateStart" name="datestart"/>
+  <column type="QString" methodName="dayCountStart" name="daycountstart"/>
+  <column displayName="Date of Termination" type="QDate" methodName="dateOfTermination" name="dateoftermination"/>
+  <column displayName="Date of Hire" type="QDate" methodName="dateOfHire" name="dateofhire"/>
+  <column docs="This field should be a float value between 0.0-1.0.  It represents the percentage of the studio accrual rates that an employee will accrue timeoff.  The default accrual rates for the studio are 10 days/year for the first 3 years and 15 days/year thereafter.  This assumes a fulltime employee.  Some employees may be part time, and therefore will accrue timeoff at a percentage of the normal accrual rates.  For instance, someone who works 20 hours a week would normally accrue at a rate of 50 percent the normal accrual rates.  Someone that generally works 30 hours a week would accrue at a rate of 75 percent, etc." type="float" methodName="accrualPercentage" name="accrualpercentage"/>
+ </table>
+ <table name="timeoffbin" expireKeyCache="true" className="TimeoffBin">
+  <column type="uint" methodName="keytimeoffbin" name="keytimeoffbin" pkey="true"/>
+  <column type="uint" methodName="employee" name="fkeyemployee">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="timeoffType" name="fkeytimeofftype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="TimeoffType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="createdBy" name="fkeycreatedby">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDateTime" methodName="created" name="created"/>
+  <column type="uint" methodName="project" name="fkeyproject">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Project" type="multi" hasIndex="false"/>
+  </column>
+  <column type="double" methodName="days" name="days"/>
+ </table>
+ <table name="timeoffbreakdown" expireKeyCache="true" className="TimeoffBreakdown">
+  <column type="uint" methodName="keytimeoffbreakdown" name="keytimeoffbreakdown" pkey="true"/>
+  <column type="double" methodName="days" name="days"/>
+  <column reverseAccess="true" type="uint" methodName="timeoff" name="fkeytimeoff">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="timeoff" indexUseCache="true" table="Timeoff" type="multi" hasIndex="true"/>
+  </column>
+  <column type="uint" methodName="timeoffType" name="fkeytimeofftype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="TimeoffType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QDate" methodName="date" name="date"/>
+  <column type="uint" methodName="employee" name="fkeyemployee">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Employee" type="multi" hasIndex="false"/>
+  </column>
+  <column type="bool" methodName="cashout" name="cashout"/>
+  <column type="bool" methodName="unpaid" name="unpaid"/>
+  <index useCache="true" type="multi" name="timeoffAndCashout">
+   <column name="fkeytimeoff"/>
+   <column name="cashout"/>
+  </index>
+ </table>
+ <table name="timeoffstatus" expireKeyCache="true" className="TimeoffStatus">
+  <column type="uint" methodName="keytimeoffstatus" name="keytimeoffstatus" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="order" name="order"/>
+  <index useCache="true" type="single" name="Name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="timeofftype" expireKeyCache="true" className="TimeoffType">
+  <column type="uint" methodName="keytimeofftype" name="keytimeofftype" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="order" name="order"/>
+  <column type="bool" methodName="blockAccrual" name="blockaccrual"/>
+  <column type="QString" methodName="accrualInfo" name="accrualinfo"/>
+  <column type="QString" methodName="permission" name="permission"/>
+  <column type="QString" methodName="description" name="description"/>
+  <column type="bool" methodName="showCashout" name="showcashout"/>
+  <column type="bool" methodName="allowOverDraft" name="allowover"/>
+  <column type="bool" methodName="isDefaultUnpaid" name="defaultunpaid"/>
+  <column type="bool" methodName="showUnpaid" name="showunpaid"/>
+  <index useCache="true" type="single" name="Name">
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="timesheet" expireKeyCache="true" className="TimeSheet">
+  <column type="uint" methodName="keytimesheet" name="keytimesheet" pkey="true"/>
+  <column displayName="Date" type="QDateTime" methodName="dateTime" name="datetime"/>
+  <column displayName="Scheduled Hours" type="double" methodName="scheduledhour" name="scheduledhour"/>
+  <column reverseAccess="true" type="uint" methodName="element" name="fkeyelement">
+   <fkey indexDeleteMode="UpdateOnDelete" indexName="Element" indexUseCache="true" table="Element" type="multi" hasIndex="true"/>
+  </column>
+  <column reverseAccess="true" type="uint" methodName="employee" name="fkeyemployee">
+   <fkey indexDeleteMode="UpdateOnDelete" indexName="User" indexUseCache="true" table="Employee" type="multi" hasIndex="true"/>
+  </column>
+  <column type="QString" methodName="comment" name="comment"/>
+  <column type="QDateTime" methodName="dateTimeSubmitted" name="datetimesubmitted"/>
+  <column type="uint" methodName="project" name="fkeyproject">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="project" indexUseCache="false" table="Project" type="multi" hasIndex="true"/>
+  </column>
+  <column type="uint" methodName="flags" name="flags"/>
+  <column type="uint" methodName="baseTask" name="fkeytask_base">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Task" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table preload="true" name="timesheetcategory" expireKeyCache="true" className="AssetType">
+  <column displayName="Keyassettype" pluralMethodName="keyassettypes" type="uint" methodName="key" name="keytimesheetcategory" pkey="true"/>
+  <column type="QString" methodName="name" name="timesheetcategory"/>
+  <column type="QString" methodName="color" name="color"/>
+  <column type="QString" methodName="description" name="description"/>
+  <column type="QString" methodName="nameRegExp" name="nameregexp"/>
+  <column type="QString" methodName="sortColumn" name="sortcolumn"/>
+  <column type="int" methodName="order" name="order"/>
+  <column type="QString" methodName="prefix" name="prefix"/>
+  <column type="uint" methodName="elementType" name="fkeyelementtype">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="elementType" indexUseCache="true" table="ElementType" type="multi" hasIndex="true"/>
+  </column>
+  <column type="uint" methodName="parent" name="fkeytimesheetcategory">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="AssetType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="private" name="private"/>
+  <column type="bool" methodName="isRootType" name="roottype"/>
+  <column type="QString" methodName="pluralName" name="pluralname"/>
+  <column type="QString" methodName="components" name="components"/>
+  <column type="QString" methodName="nameRegExpHint" name="nameregexphint"/>
+  <column type="bool" methodName="enabled" name="enabled"/>
+  <column type="QString" methodName="runCommand" name="runcommand"/>
+  <column type="uint" methodName="flags" name="flags"/>
+  <column type="uint" methodName="fileType" name="fkeyfiletype">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="FileType" type="multi" hasIndex="false"/>
+  </column>
+  <index useCache="false" type="single" name="Prefix">
+   <column name="prefix"/>
+  </index>
+  <index useCache="true" type="single" name="name">
+   <column name="timesheetcategory"/>
+  </index>
+ </table>
+ <table preload="true" name="userrole" expireKeyCache="false" className="UserRole">
+  <column type="uint" methodName="keyuserrole" name="keyuserrole" pkey="true"/>
+  <column reverseAccess="true" type="uint" methodName="user" name="fkeyusr">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="User" indexUseCache="true" table="User" type="multi" hasIndex="true"/>
+  </column>
+  <column reverseAccess="true" type="uint" methodName="role" name="fkeyrole">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Role" indexUseCache="true" table="Role" type="multi" hasIndex="true"/>
+  </column>
+  <index useCache="false" type="single" name="UserAndRole">
+   <column name="fkeyusr"/>
+   <column name="fkeyrole"/>
+  </index>
+ </table>
+ <table preload="true" parent="Element" name="usr" expireKeyCache="false" className="User">
+  <column docs="The last time this user has logged into the Trax system." type="QDate" methodName="dateoflastlogon" name="dateoflastlogon"/>
+  <column type="uint" methodName="isDisabled" name="disabled"/>
+  <column docs="The primary email for this User." type="QString" methodName="email" name="email"/>
+  <column type="uint" methodName="groupId" name="gid"/>
+  <column type="QString" methodName="groupGuardKey" name="gpgkey"/>
+  <column displayName="Jabber" docs="The primary jabberId for this User." type="QString" methodName="jabberId" name="jid"/>
+  <column type="QString" methodName="password" name="password"/>
+  <column docs="The username/login for this User." type="QString" methodName="username" name="usr"/>
+  <column type="QString" methodName="pager" name="pager"/>
+  <column docs="This field is primarily used by Delivery Queue calculations." type="float" methodName="daysAvailablePerWeek" name="daysAvailablePerWeek"/>
+  <column docs="The primary host computer for this User." type="uint" methodName="host" name="fkeyhost">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Host" type="multi" hasIndex="false"/>
+  </column>
+  <index useCache="false" type="single" name="UserName">
+   <column name="name"/>
+  </index>
+ </table>
+ <table name="usrpermission" expireKeyCache="true" className="UserPermission">
+  <column type="uint" methodName="keyUsrPermission" name="keyUsrPermission" pkey="true"/>
+  <column type="uint" methodName="user" name="fkeyusr">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="permission" name="fkeypermission">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Permission" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="role" name="fkeyrole">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Role" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="department" name="fkeydepartment">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Department" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="level" name="level"/>
+ </table>
+ <table docs="This table is used by the Trax Viewer plugin to store saved View settings.  It is part of a customizable GUI and query builder framework." name="viewerdetailview" expireKeyCache="true" className="ViewerDetailView">
+  <column displayName="keyviewerdetailview" type="uint" methodName="keyviewerdetailview" name="keyviewerdetailview" pkey="true"/>
+  <column displayName="Trax Table Name" type="QString" methodName="className" name="classname"/>
+  <column displayName="Settings XML" type="QString" methodName="settingsXML" name="settingsxml"/>
+ </table>
+ <table docs="This table is used to store display settings for Viewer forms.  These forms are configurable per table.  Viewer forms are used to create new records on a given table, and for editing and multi-editing existing records." name="viewerformview" expireKeyCache="true" className="ViewerFormView">
+  <column type="uint" methodName="keyviewerformview" name="keyviewerformview" pkey="true"/>
+  <column displayName="ClassName" docs="There is currently only one Viewer form per classname (i.e per table).  This field is used to specify that." type="QString" methodName="className" name="classname"/>
+  <column displayName="Settings XML" docs="All of the settings that control how to construct and display the Viewer form are defined using XML and stored in this field.  The settings may change from time to time, and this allows flexibility in the Viewer Form design, without needing to change the database schema." type="QString" methodName="settingsXML" name="settingsxml"/>
+ </table>
+ <table docs="This table is used by the Trax Viewer plugin to store saved View settings.  It is part of a customizable GUI and query builder framework." name="viewerlistview" expireKeyCache="true" className="ViewerListView">
+  <column type="uint" methodName="keyviewerlistview" name="keyviewerlistview" pkey="true"/>
+  <column type="uint" methodName="owner" name="fkeyuser_owner">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="name" name="name"/>
+  <column displayName="Settings XML" type="QString" methodName="settingsXML" name="settingsxml"/>
+  <column type="bool" methodName="shared" name="shared"/>
+  <column type="bool" methodName="globalDefault" name="globaldefault"/>
+  <column displayName="Trax TableName" type="QString" methodName="className" name="classname"/>
+  <column displayName="ViewerListViewGroup" type="uint" methodName="viewerListViewGroup" name="fkeyviewerlistviewgroup">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ViewerListViewGroup" type="multi" hasIndex="false"/>
+  </column>
+ </table>
+ <table docs="The ViewerListViewGroup is used to organize ViewerListViews.  An analogy would be to think of ViewerListViews as the files, and ViewerListViewGroups as the Folders." name="viewerlistviewgroup" expireKeyCache="true" className="ViewerListViewGroup">
+  <column type="uint" methodName="keyviewerlistviewgroup" name="keyviewerlistviewgroup" pkey="true"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="uint" methodName="parent" name="fkeyviewerlistviewgroup">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ViewerListViewGroup" type="multi" hasIndex="false"/>
+  </column>
+  <column type="uint" methodName="owner" name="fkeyusr_owner">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+  </column>
+  <column type="bool" methodName="shared" name="shared"/>
+ </table>
+ <table name="workflow" expireKeyCache="true" className="Workflow">
+  <column type="uint" methodName="keyworkflow" name="keyworkflow" pkey="true"/>
+  <column reverseAccess="true" type="uint" methodName="assetType" name="fkeytimesheetcategory">
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="assetType" indexUseCache="false" table="AssetType" type="multi" hasIndex="true"/>
+  </column>
+  <column type="uint" methodName="projectType" name="fkeytimesheetcategory2">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="AssetType" type="multi" hasIndex="false"/>
+  </column>
+  <column type="QString" methodName="xml" name="xml"/>
+  <column type="QString" methodName="name" name="name"/>
+  <column type="QString" methodName="description" name="description"/>
+  <column type="bool" methodName="default" name="default"/>
+  <column type="bool" methodName="enabled" name="enabled"/>
+  <index useCache="true" type="single" name="Name">
+   <column name="name"/>
+  </index>
+ </table>
+</database>

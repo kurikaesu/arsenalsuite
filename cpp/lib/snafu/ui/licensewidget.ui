@@ -1,0 +1,107 @@
+<ui version="4.0" >
+ <class>LicenseWidgetUI</class>
+ <widget class="QWidget" name="LicenseWidgetUI" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>545</width>
+    <height>452</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" >
+   <property name="margin" >
+    <number>9</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item row="0" column="0" >
+    <widget class="QSplitter" name="splitter" >
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="HostSoftwareTree" name="mHostTree" >
+      <property name="dragDropMode" >
+       <enum>QAbstractItemView::DropOnly</enum>
+      </property>
+      <property name="alternatingRowColors" >
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QWidget" name="layoutWidget" >
+      <layout class="QVBoxLayout" >
+       <property name="margin" >
+        <number>0</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" >
+         <property name="margin" >
+          <number>0</number>
+         </property>
+         <property name="spacing" >
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QToolButton" name="mAddSoftwareButton" >
+           <property name="toolTip" >
+            <string>Add Software</string>
+           </property>
+           <property name="text" >
+            <string>+</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="mFilterCombo" >
+           <item>
+            <property name="text" >
+             <string>Show All</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>Show Available</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="SoftwareLicenseTree" name="mLicenseTree" >
+         <property name="dragDropMode" >
+          <enum>QAbstractItemView::DragOnly</enum>
+         </property>
+         <property name="alternatingRowColors" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SoftwareLicenseTree</class>
+   <extends>QTreeView</extends>
+   <header>softwarelicensetree.h</header>
+  </customwidget>
+  <customwidget>
+   <class>HostSoftwareTree</class>
+   <extends>QTreeView</extends>
+   <header>hostsoftwaretree.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

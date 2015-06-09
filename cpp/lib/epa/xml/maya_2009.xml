@@ -1,0 +1,29 @@
+<software name="maya">
+	<dependOn>mayaSetup</dependOn>
+	<dependOn>noodle</dependOn>
+	<dependOn>mayaSlate</dependOn>
+	<dependOn>mayaPrevizCameraRender</dependOn>
+	<dependOn>vacuumMeshCache</dependOn>
+	<dependOn>mayaBmoNode</dependOn>
+	<dependOn>mayaBmoToVacuumMesh</dependOn>
+	<dependOn>KE_MayaFileBrowser</dependOn>
+	<dependOn>nodeNamingConventions</dependOn>
+	<dependOn>pointCloudViewerNode</dependOn>
+	<dependOn>golem_rigSystem</dependOn>
+	<dependOn>mayaVacuum</dependOn>
+	<dependOn>smith</dependOn>
+	<dependOn>assetizer</dependOn>
+	<dependOn>3delight</dependOn>
+	<dependOn>mayaSlate</dependOn>
+	<set key="EPA_WORKINGDIR">/usr/autodesk/maya2009-x64/bin</set>
+	<set key="EPA_CMDLINE">/drd/software/int/bin/mayawrap</set>
+	<set key="EPA_ICON">/usr/autodesk/maya2009-x64/desktop/Maya.png</set>
+	<set key="MAYA_LOCATION">/usr/autodesk/maya2009-x64</set>
+	<set key="LM_LICENSE_FILE">7111@mayalic01</set>
+	<add key="PATH">$MAYA_LOCATION/bin</add>
+	<add key="PYTHONPATH">$DRD_SOFTWARE_PRF/rigging</add>
+	<set key="MAYA_MMSET_DEFAULT_XCURSOR">1</set>
+	<set key="MAYA_DEBUG_ENABLE_CRASH_REPORTING">1</set>
+	<set key="TEMP">$DRD_TEMP</set>
+</software>
+

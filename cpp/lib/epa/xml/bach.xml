@@ -1,0 +1,5 @@
+<software name="bach">
+	<set key="EPA_WORKINGDIR">/drd/software/int/bach</set>
+	<set key="EPA_CMDLINE">./bach.sh</set>
+	<set key="EPA_ICON">/drd/software/int/bach/win32/images/bachicon.jpg</set>
+</software>

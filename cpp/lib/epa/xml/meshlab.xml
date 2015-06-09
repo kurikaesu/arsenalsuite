@@ -1,0 +1,5 @@
+<software name="meshlab">
+	<set key="EPA_WORKINGDIR">/drd/software/ext/meshlab/lin64/v111/meshlab</set>
+	<set key="EPA_CMDLINE">./meshlab</set>
+	<set key="EPA_ICON">/drd/software/ext/meshlab/lin64/v111/meshlab/images/eye48.png</set>
+</software>

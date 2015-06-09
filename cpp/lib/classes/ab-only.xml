@@ -1,0 +1,1061 @@
+<!DOCTYPE Schema>
+<database schemaName="CLASSES" >
+ <table useCodeGen="true" name="Client" expireKeyCache="true" className="Client" >
+  <column type="uint" methodName="key" name="keyClient" pkey="true" />
+  <column type="QString" methodName="name" name="client" />
+  <column type="QString" methodName="textcard" name="textcard" />
+  <index useCache="false" type="single" name="Name" >
+   <column name="client" />
+  </index>
+ </table>
+ <table useCodeGen="true" name="Config" expireKeyCache="true" className="Config" >
+  <column type="QString" methodName="config" name="config" />
+  <column type="uint" methodName="keyconfig" name="keyconfig" pkey="true" />
+  <column type="QString" methodName="value" name="value" />
+  <index useCache="false" type="single" name="Name" >
+   <column name="config" />
+  </index>
+ </table>
+ <table docs="This class provides a dynamic host list based on current host properties(user, memory, mhz, etc)." useCodeGen="true" parent="HostGroup" name="DynamicHostGroup" expireKeyCache="true" className="DynamicHostGroup" >
+  <column type="uint" methodName="keyDynamicHostGroup" name="keyDynamicHostGroup" pkey="true" />
+  <column type="QString" methodName="hostWhereClause" name="hostWhereClause" />
+ </table>
+ <table useCodeGen="true" name="FileTracker" expireKeyCache="true" projectPreload="fkeyElement" className="FileTracker" >
+  <column type="uint" methodName="Element" name="fkeyElement" >
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="Element" indexUseCache="true" table="Element" type="multi" hasIndex="true" />
+  </column>
+  <column type="uint" methodName="keyFileTracker" name="keyFileTracker" pkey="true" />
+  <column type="QString" methodName="name" name="name" />
+  <column type="QString" methodName="pathRaw" name="path" />
+  <column type="QString" methodName="fileNameRaw" name="fileName" />
+  <column type="uint" methodName="PathTemplate" name="fkeyPathTemplate" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="PathTemplate" type="single" hasIndex="false" />
+  </column>
+  <column type="uint" methodName="ProjectStorage" name="fkeyProjectStorage" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ProjectStorage" type="multi" hasIndex="false" />
+  </column>
+  <column type="QString" methodName="storageName" name="storageName" />
+  <variable type="int" name="mPathCacheNumber" />
+  <variable type="QString" name="mPathCache" />
+  <index useCache="false" type="multi" name="Path" >
+   <column name="path" />
+  </index>
+ </table>
+ <table useCodeGen="true" name="FileTrackerDep" expireKeyCache="true" className="FileTrackerDep" >
+  <column type="uint" methodName="key" name="keyFileTrackerDep" pkey="true" />
+  <column type="uint" methodName="Input" name="fkeyInput" >
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="Input" indexUseCache="true" table="FileTracker" type="multi" hasIndex="true" />
+  </column>
+  <column type="uint" methodName="Output" name="fkeyOutput" >
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="Output" indexUseCache="true" table="FileTracker" type="multi" hasIndex="true" />
+  </column>
+  <index useCache="false" type="single" name="InputAndOutput" >
+   <column name="fkeyInput" />
+   <column name="fkeyOutput" />
+  </index>
+ </table>
+ <table useCodeGen="true" name="GroupMapping" expireKeyCache="true" className="GroupMapping" >
+  <column type="uint" methodName="keyGroupMapping" name="keyGroupMapping" pkey="true" />
+  <column reverseAccess="true" type="uint" methodName="group" name="fkeyGrp" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="group" indexUseCache="false" table="Group" type="multi" hasIndex="true" />
+  </column>
+  <column type="uint" methodName="Mapping" name="fkeyMapping" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Mapping" type="multi" hasIndex="false" />
+  </column>
+ </table>
+ <table preload="true" useCodeGen="true" name="Grp" expireKeyCache="true" className="Group" >
+  <column type="uint" methodName="key" name="keyGrp" pkey="true" />
+  <column type="QString" methodName="name" name="grp" />
+  <index useCache="false" type="single" name="Name" >
+   <column name="grp" />
+  </index>
+ </table>
+ <table preload="true" useCodeGen="true" name="Host" expireKeyCache="true" className="Host" >
+  <column type="QString" methodName="abVersion" name="abVersion" />
+  <column type="QString" methodName="backupbytes" name="backupbytes" />
+  <column type="uint" methodName="cpus" name="cpus" />
+  <column type="QString" methodName="cpuName" name="cpuName" />
+  <column type="QString" methodName="architecture" name="architecture" />
+  <column type="QString" methodName="osVersion" name="osVersion" />
+  <column type="QString" methodName="description" name="description" />
+  <column type="QString" methodName="diskusage" name="diskusage" />
+  <column type="QString" methodName="name" name="host" />
+  <column type="QString" methodName="manufacturer" name="manufacturer" />
+  <column type="QString" methodName="model" name="model" />
+  <column type="QString" methodName="os" name="os" />
+  <column type="QString" methodName="slavePluginList" name="slavePluginList" />
+  <column type="QString" methodName="sn" name="sn" />
+  <column type="QString" methodName="version" name="version" />
+  <column type="uint" methodName="key" name="keyHost" pkey="true" />
+  <column type="double" methodName="dutyCycle" name="dutyCycle" />
+  <column type="uint" methodName="memory" name="memory" />
+  <column type="uint" methodName="mhz" name="mhtz" />
+  <column type="int" methodName="online" name="online" />
+  <column type="uint" methodName="uid" name="uid" />
+  <column type="uint" methodName="virusCount" name="virusCount" />
+  <column type="QDate" methodName="virusTimeStamp" name="virusTimeStamp" />
+  <column type="uint" methodName="backupHost" name="fkeyHost_backup" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Host" type="multi" hasIndex="false" />
+  </column>
+  <column type="bool" methodName="allowMapping" name="allowmapping" />
+  <column type="bool" methodName="allowSleep" name="allowsleep" />
+  <column displayName="locationX" type="double" methodName="locationX" name="loc_x" />
+  <column type="double" methodName="locationY" name="loc_y" />
+  <column type="double" methodName="locationZ" name="loc_z" />
+  <column reverseAccess="true" type="uint" methodName="diskImage" name="fkeyDiskImage" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="DiskImage" type="multi" hasIndex="false" />
+  </column>
+  <column type="QString" methodName="bootAction" name="bootAction" />
+  <column type="QString" methodName="syncName" name="syncName" />
+  <column type="uint" methodName="Location" name="fkeyLocation" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Location" type="multi" hasIndex="false" />
+  </column>
+  <column docs="Timestamp of last time puppet ran on this host" type="QDateTime" methodName="puppetPulse" name="puppetPulse" />
+  <index useCache="true" type="single" name="Name" >
+   <column name="host" />
+  </index>
+ </table>
+ <table name="HostDailyStat" expireKeyCache="true" className="HostDailyStat" >
+  <column type="uint" methodName="keyHostDailyStat" name="keyHostDailyStat" pkey="true" />
+  <column type="uint" methodName="Host" name="fkeyHost" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Host" type="multi" hasIndex="false" />
+  </column>
+  <column type="QString" methodName="readyTime" name="readyTime" />
+  <column type="QString" methodName="assignedTime" name="assignedTime" />
+  <column type="QString" methodName="copyTime" name="copyTime" />
+  <column type="QString" methodName="loadTime" name="loadTime" />
+  <column type="QString" methodName="busyTime" name="busyTime" />
+  <column type="QString" methodName="offlineTime" name="offlineTime" />
+  <column type="QDate" methodName="date" name="date" />
+  <column type="uint" methodName="tasksDone" name="tasksDone" />
+  <column type="uint" methodName="loadErrors" name="loadErrors" />
+  <column pluralMethodName="taskErrors" type="uint" methodName="taskErrors" name="taskErrors" />
+  <column type="Interval" methodName="busyErrorTime" name="busyErrorTime" />
+  <column type="Interval" methodName="loadErrorTime" name="loadErrorTime" />
+ </table>
+ <table useCodeGen="true" name="HostGroup" expireKeyCache="true" className="HostGroup" >
+  <column type="uint" methodName="key" name="keyHostGroup" pkey="true" />
+  <column type="QString" methodName="name" name="HostGroup" />
+  <column type="uint" methodName="user" name="fkeyUsr" >
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="User" indexUseCache="true" table="User" type="multi" hasIndex="true" />
+  </column>
+  <column type="bool" methodName="private_" name="private" />
+  <index useCache="false" type="single" name="NameAndUser" >
+   <column name="HostGroup" />
+   <column name="fkeyUsr" />
+  </index>
+  <index useCache="false" type="single" name="Name" >
+   <column name="HostGroup" />
+  </index>
+ </table>
+ <table useCodeGen="true" name="HostGroupItem" expireKeyCache="true" className="HostGroupItem" >
+  <column type="uint" methodName="key" name="keyHostGroupItem" pkey="true" />
+  <column reverseAccess="true" type="uint" methodName="HostGroup" name="fkeyHostGroup" >
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="HostGroup" indexUseCache="true" table="HostGroup" type="multi" hasIndex="true" />
+  </column>
+  <column type="uint" methodName="Host" name="fkeyHost" >
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="Host" indexUseCache="false" table="Host" type="multi" hasIndex="true" />
+  </column>
+ </table>
+ <table useCodeGen="true" name="HostHistory" expireKeyCache="true" className="HostHistory" >
+  <column type="uint" methodName="keyHostHistory" name="keyHostHistory" pkey="true" />
+  <column type="uint" methodName="Host" name="fkeyHost" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Host" type="multi" hasIndex="false" />
+  </column>
+  <column type="uint" methodName="Job" name="fkeyJob" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Job" type="multi" hasIndex="false" />
+  </column>
+  <column type="uint" methodName="jobstat" name="fkeyjobstat" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="JobStat" type="multi" hasIndex="false" />
+  </column>
+  <column type="QString" methodName="status" name="status" />
+  <column type="QString" methodName="laststatus" name="laststatus" />
+  <column type="QDateTime" methodName="dateTime" name="datetime" />
+  <column displayName="Jobtask" type="uint" methodName="jobTask" name="fkeyjobtask" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="JobTask" type="multi" hasIndex="false" />
+  </column>
+  <column type="QString" methodName="change_from_ip" name="change_from_ip" />
+  <column type="QString" methodName="nextStatus" name="nextstatus" />
+  <column type="uint" methodName="jobType" name="fkeyjobtype" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="JobType" type="multi" hasIndex="false" />
+  </column>
+  <column type="uint" methodName="JobCommandHistory" name="fkeyJobCommandHistory" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="JobCommandHistory" type="multi" hasIndex="false" />
+  </column>
+  <column reverseAccess="true" type="uint" methodName="JobError" name="fkeyJobError" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="JobError" type="multi" hasIndex="false" />
+  </column>
+  <column type="bool" methodName="success" name="success" />
+  <column type="Interval" methodName="duration" name="duration" />
+ </table>
+ <table useCodeGen="true" name="HostLoad" expireKeyCache="true" className="HostLoad" >
+  <column type="uint" methodName="keyHostLoad" name="keyHostLoad" pkey="true" />
+  <column reverseAccess="true" type="uint" methodName="Host" name="fkeyHost" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Host" indexUseCache="false" table="Host" type="single" hasIndex="true" />
+  </column>
+  <column type="float" methodName="loadAvg" name="loadAvg" />
+  <column type="float" methodName="loadAvgAdjust" name="loadAvgAdjust" />
+ </table>
+ <table useCodeGen="true" name="HostMapping" expireKeyCache="true" className="HostMapping" >
+  <column type="uint" methodName="keyHostMapping" name="keyHostMapping" pkey="true" />
+  <column type="uint" methodName="Host" name="fkeyHost" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Host" type="multi" hasIndex="false" />
+  </column>
+  <column reverseAccess="true" type="uint" methodName="Mapping" name="fkeyMapping" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Mapping" indexUseCache="false" table="Mapping" type="multi" hasIndex="true" />
+  </column>
+ </table>
+ <table name="HostResource" expireKeyCache="true" className="HostResource" >
+  <column type="uint" methodName="key" name="keyHostResource" pkey="true" />
+  <column type="uint" methodName="Host" name="fkeyHost" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Host" type="single" hasIndex="false" />
+  </column>
+  <column type="QString" methodName="name" name="hostresource" />
+ </table>
+ <table useCodeGen="true" name="HostService" expireKeyCache="false" className="HostService" >
+  <column reverseAccess="true" type="uint" methodName="Host" name="fkeyHost" >
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="Host" indexUseCache="true" table="Host" type="multi" hasIndex="true" />
+  </column>
+  <column reverseAccess="true" type="uint" methodName="Service" name="fkeyService" >
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="Service" indexUseCache="false" table="Service" type="multi" hasIndex="true" />
+  </column>
+  <column type="uint" methodName="keyHostService" name="keyHostService" pkey="true" />
+  <column type="uint" methodName="SysLog" name="fkeySysLog" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="SysLog" type="single" hasIndex="false" />
+  </column>
+  <column displayName="Pulse" type="QDateTime" methodName="pulseDateTime" name="pulse" />
+  <column type="uint" methodName="remoteLogPort" name="remoteLogPort" />
+  <column type="bool" methodName="enabled" name="enabled" />
+  <index useCache="true" type="single" name="HostAndService" >
+   <column name="fkeyHost" />
+   <column name="fkeyService" />
+  </index>
+ </table>
+ <table useCodeGen="true" name="HostSoftware" expireKeyCache="true" className="HostSoftware" >
+  <column type="uint" methodName="keyHostSoftware" name="keyHostSoftware" pkey="true" />
+  <column reverseAccess="true" type="uint" methodName="host" name="fkeyHost" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Host" indexUseCache="true" table="Host" type="multi" hasIndex="true" />
+  </column>
+  <column reverseAccess="true" type="uint" methodName="software" name="fkeySoftware" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Software" indexUseCache="true" table="Software" type="multi" hasIndex="true" />
+  </column>
+ </table>
+ <table useCodeGen="true" name="HostStatus" expireKeyCache="true" className="HostStatus" >
+  <column reverseAccess="true" type="uint" methodName="Host" name="fkeyHost" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Host" indexUseCache="true" table="Host" type="single" hasIndex="true" />
+  </column>
+  <column type="QString" methodName="slaveStatus" name="slaveStatus" />
+  <column type="QDateTime" methodName="lastStatusChange" name="lastStatusChange" />
+  <column type="uint" methodName="key" name="keyHostStatus" pkey="true" />
+  <column type="QDateTime" methodName="slavePulse" name="slavePulse" />
+  <column type="int" methodName="online" name="online" />
+  <column type="int" methodName="activeAssignmentCount" name="activeAssignmentCount" />
+  <column type="QDateTime" methodName="lastAssignmentChange" name="lastAssignmentChange" />
+  <column type="int" methodName="availableMemory" name="availableMemory" />
+ </table>
+ <table docs="@brief Job is the base table that represents an Assburner Job.&#xa;&#xa;This table stores the type of job, the state and progress of the job, who submitted the job, who to notify regarding changes in the job, etc." useCodeGen="true" name="Job" expireKeyCache="true" className="Job" >
+  <column type="uint" methodName="Element" name="fkeyElement" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Element" indexUseCache="true" table="Element" type="single" hasIndex="true" />
+  </column>
+  <column type="uint" methodName="Host" name="fkeyHost" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Host" type="single" hasIndex="false" />
+  </column>
+  <column type="uint" methodName="JobType" name="fkeyJobType" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="JobType" type="single" hasIndex="false" />
+  </column>
+  <column type="uint" methodName="Project" name="fkeyProject" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Project" type="single" hasIndex="false" />
+  </column>
+  <column type="uint" methodName="User" name="fkeyUsr" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="single" hasIndex="false" />
+  </column>
+  <column type="QString" methodName="hostList" name="hostList" />
+  <column type="QString" methodName="name" name="job" />
+  <column type="QString" methodName="jobTime" name="jobTime" />
+  <column type="QString" methodName="outputPath" name="outputPath" />
+  <column type="QString" methodName="status" name="status" />
+  <column type="uint" methodName="key" name="keyJob" pkey="true" />
+  <column type="uint" methodName="submitted" name="submitted" />
+  <column type="uint" methodName="started" name="started" />
+  <column type="uint" methodName="ended" name="ended" />
+  <column type="uint" methodName="deleteOnComplete" name="deleteOnComplete" />
+  <column type="uint" methodName="priority" name="priority" />
+  <column type="QString" methodName="packetType" name="packetType" />
+  <column type="uint" methodName="packetSize" name="packetSize" />
+  <column docs="@brief  Represents all the users to notify regarding job errors, and how to notify them&#xa;Format of the string is (USERNAME:[je]+),...&#xa;USERNAME must be a valid name stored in the usr table.&#xa;j - Sends notifications as jabbers&#xa;e - Sends notifications as emails&#xa;&#xa;Examples&#xa;'newellm:j,abe:e,diego:je'  Sends jabber to newellm, email to abe, and both to diego." type="QString" methodName="notifyOnError" name="notifyOnError" />
+  <column docs="@brief Represents all the users to notify regarding successful job completion, and how to notify them.&#xa;See notifyOnError documentation for formatting details." type="QString" methodName="notifyOnComplete" name="notifyOnComplete" />
+  <column type="uint" methodName="maxTaskTime" name="maxTaskTime" />
+  <column type="uint" methodName="cleaned" name="cleaned" />
+  <column type="uint" methodName="fileSize" name="fileSize" />
+  <column type="QString" methodName="btInfoHash" name="btInfoHash" />
+  <column type="QString" methodName="fileName" name="fileName" />
+  <column type="QString" methodName="fileMd5sum" name="fileMd5sum" />
+  <column reverseAccess="true" type="uint" methodName="JobStat" name="fkeyJobStat" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="JobStat" type="single" hasIndex="false" />
+  </column>
+  <column type="QString" methodName="userName" name="userName" />
+  <column type="QString" methodName="domain" name="domain" />
+  <column type="QString" methodName="password" name="password" />
+  <column type="QString" methodName="stats" name="stats" />
+  <column type="float" methodName="currentMapServerWeight" name="currentMapServerWeight" />
+  <column type="bool" methodName="prioritizeOuterTasks" name="prioritizeOuterTasks" />
+  <column type="bool" methodName="outerTasksAssigned" name="outerTasksAssigned" />
+  <column docs="Maximum amount of time to load the job before a task is started.  If a task hasn't started by the time this expires, the job will report an error and the host will be reset." type="int" methodName="maxLoadTime" name="maxloadtime" />
+  <column docs="Maximum amount of memory a job is allowed to use (in bytes). If it exceeds this the task will raise an error." type="uint" methodName="maxMemory" name="maxMemory" />
+  <column type="uint" methodName="JobParent" name="fkeyJobParent" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Job" type="multi" hasIndex="false" />
+  </column>
+  <column type="QDateTime" methodName="submittedts" name="submittedts" />
+  <column type="QDateTime" methodName="startedts" name="startedts" />
+  <column type="QDateTime" methodName="endedts" name="endedts" />
+  <column pluralMethodName="maxHosts" type="int" methodName="maxHosts" name="maxhosts" />
+  <column type="uint" methodName="personalPriority" name="personalPriority" />
+  <column type="bool" methodName="loggingEnabled" name="loggingEnabled" />
+  <column type="QString" methodName="environment" name="environment" />
+  <column type="bool" methodName="uploadedFile" name="uploadedFile" />
+  <column type="bool" methodName="checkFileMd5" name="checkFileMd5" />
+  <column pluralMethodName="runasSubmitter" type="bool" methodName="runasSubmitter" name="runasSubmitter" />
+  <column type="int" methodName="frameNth" name="frameNth" />
+  <column docs="0 - No Copy&#xa;1 - Copy to missing in-between frames&#xa;2 - Copy to all in-between frames&#xa;3 - Frame Fill Mode, renders in-between frames only" type="int" methodName="frameNthMode" name="frameNthMode" />
+  <column type="bool" methodName="exclusiveAssignment" name="exclusiveAssignment" />
+  <column type="bool" methodName="hasTaskProgress" name="hasTaskProgress" />
+  <column type="uint" methodName="minMemory" name="minMemory" />
+ </table>
+ <table useCodeGen="true" parent="Job" name="Job3Delight" expireKeyCache="true" className="Job3Delight" >
+  <column type="uint" methodName="width" name="width" />
+  <column type="uint" methodName="height" name="height" />
+  <column type="uint" methodName="frameStart" name="frameStart" />
+  <column type="uint" methodName="frameEnd" name="frameEnd" />
+  <column pluralMethodName="threads" docs="launch the render using 'n' threads" type="uint" methodName="threads" name="threads" />
+  <column pluralMethodName="processes" docs="launch the render using 'n' processes" type="uint" methodName="processes" name="processes" />
+  <column docs="use 'script' to start renders" type="QString" methodName="jobscript" name="jobscript" />
+  <column docs="passes 'p' as the first parameter of script" type="QString" methodName="jobscriptparam" name="jobscriptparam" />
+ </table>
+ <table useCodeGen="true" parent="Job" name="JobAfterEffects" expireKeyCache="true" className="JobAfterEffects" >
+  <column type="uint" methodName="frameStart" name="frameStart" />
+  <column type="uint" methodName="frameEnd" name="frameEnd" />
+  <column type="uint" methodName="width" name="width" />
+  <column type="uint" methodName="height" name="height" />
+  <column type="QString" methodName="comp" name="comp" />
+ </table>
+ <table useCodeGen="true" parent="JobAfterEffects" name="JobAfterEffects7" expireKeyCache="true" className="JobAfterEffects7" />
+ <table useCodeGen="true" parent="JobAfterEffects" name="JobAfterEffects8" expireKeyCache="true" className="JobAfterEffects8" />
+ <table useCodeGen="true" name="JobAssignment" expireKeyCache="true" className="JobAssignment" >
+  <column type="uint" methodName="keyJobAssignment" name="keyJobAssignment" pkey="true" />
+  <column type="uint" methodName="job" name="fkeyjob" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Job" type="multi" hasIndex="false" />
+  </column>
+  <column type="uint" methodName="JobAssignmentStatus" name="fkeyJobAssignmentStatus" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="JobAssignmentStatus" type="multi" hasIndex="false" />
+  </column>
+  <column type="uint" methodName="host" name="fkeyhost" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Host" type="multi" hasIndex="false" />
+  </column>
+  <column type="QString" methodName="stdOut" name="stdOut" />
+  <column type="QString" methodName="stdErr" name="stdErr" />
+  <column type="QString" methodName="command" name="command" />
+  <column type="uint" methodName="maxMemory" name="maxMemory" />
+  <column type="QDateTime" methodName="started" name="started" />
+  <column type="QDateTime" methodName="ended" name="ended" />
+  <column reverseAccess="true" type="uint" methodName="JobError" name="fkeyJobError" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="JobError" indexUseCache="false" table="JobError" type="single" hasIndex="true" />
+  </column>
+  <column type="float" methodName="realtime" name="realtime" />
+  <column type="float" methodName="usertime" name="usertime" />
+  <column type="float" methodName="systime" name="systime" />
+  <column type="uint" methodName="iowait" name="iowait" />
+ </table>
+ <table preload="true" useCodeGen="true" name="JobAssignmentStatus" expireKeyCache="true" className="JobAssignmentStatus" >
+  <column type="uint" methodName="keyJobAssignmentStatus" name="keyJobAssignmentStatus" pkey="true" />
+  <column type="QString" methodName="status" name="status" />
+  <index useCache="true" type="single" name="status" >
+   <column name="status" />
+  </index>
+  <index useCache="true" type="single" name="Name" >
+   <column name="status" />
+  </index>
+ </table>
+ <table useCodeGen="true" parent="Job" name="JobAutodeskBurn" expireKeyCache="true" className="JobAutodeskBurn" >
+  <column type="uint" methodName="frameStart" name="frameStart" />
+  <column type="uint" methodName="frameEnd" name="frameEnd" />
+  <column type="QString" methodName="handle" name="handle" />
+  <index useCache="false" type="single" name="nameAndHandle" >
+   <column name="job" />
+   <column name="handle" />
+  </index>
+ </table>
+ <table useCodeGen="true" parent="Job" name="JobBatch" expireKeyCache="false" className="JobBatch" >
+  <column type="QString" methodName="cmd" name="cmd" />
+  <column type="bool" methodName="restartAfterShutdown" name="restartAfterShutdown" />
+  <column type="bool" methodName="passSlaveFramesAsParam" name="passSlaveFramesAsParam" />
+  <column type="bool" methodName="disableWow64FsRedirect" name="disableWow64FsRedirect" />
+ </table>
+ <table docs="Represents a &quot;canned&quot; batch job, that can be submitted as a batch job at any time by just selecting the hosts to run it on." useCodeGen="true" name="JobCannedBatch" expireKeyCache="true" className="JobCannedBatch" >
+  <column type="uint" methodName="keyJobCannedBatch" name="keyJobCannedBatch" pkey="true" />
+  <column type="QString" methodName="name" name="name" />
+  <column type="QString" methodName="group" name="group" />
+  <column type="QString" methodName="cmd" name="cmd" />
+  <column type="bool" methodName="disableWow64FsRedirect" name="disableWow64FsRedirect" />
+  <index useCache="false" type="single" name="GroupAndName" >
+   <column name="group" />
+   <column name="name" />
+  </index>
+ </table>
+ <table useCodeGen="true" parent="Job" name="JobCinema4D" expireKeyCache="true" className="JobCinema4D" />
+ <table docs="Each packet assigned to a host will generate a JobCommandHistory. This stores the command executed, stdout, stderr, and peak memory." useCodeGen="true" name="JobCommandHistory" expireKeyCache="true" className="JobCommandHistory" >
+  <column type="uint" methodName="keyJobCommandHistory" name="keyJobCommandHistory" pkey="true" />
+  <column type="QString" methodName="stdErr" name="stdErr" />
+  <column type="QString" methodName="stdOut" name="stdOut" />
+  <column type="QString" methodName="command" name="command" />
+  <column type="uint" methodName="memory" name="memory" />
+  <column type="uint" methodName="Job" name="fkeyJob" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Job" indexUseCache="false" table="Job" type="multi" hasIndex="true" />
+  </column>
+  <column type="uint" methodName="Host" name="fkeyHost" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Host" type="multi" hasIndex="false" />
+  </column>
+  <column type="uint" methodName="hostHistory" name="fkeyhosthistory" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="HostHistory" type="multi" hasIndex="false" />
+  </column>
+  <column displayName="Real" type="float" methodName="realtime" name="realtime" />
+  <column displayName="User" type="float" methodName="usertime" name="usertime" />
+  <column displayName="Sys" type="float" methodName="systime" name="systime" />
+  <column type="uint" methodName="iowait" name="iowait" />
+ </table>
+ <table useCodeGen="true" name="JobDep" expireKeyCache="true" className="JobDep" >
+  <column displayName="Key Job Dependency" type="uint" methodName="keyJobDep" name="keyJobDep" pkey="true" />
+  <column type="uint" methodName="Job" name="fkeyJob" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Job" indexUseCache="true" table="Job" type="multi" hasIndex="true" />
+  </column>
+  <column type="uint" methodName="Dep" name="fkeyDep" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Dep" indexUseCache="false" table="Job" type="multi" hasIndex="true" />
+  </column>
+  <index useCache="true" type="single" name="JobAndDep" >
+   <column name="fkeyJob" />
+   <column name="fkeyDep" />
+  </index>
+ </table>
+ <table useCodeGen="true" name="JobError" expireKeyCache="true" className="JobError" >
+  <column reverseAccess="true" type="uint" methodName="Host" name="fkeyHost" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Host" type="single" hasIndex="false" />
+  </column>
+  <column reverseAccess="true" type="uint" methodName="Job" name="fkeyJob" >
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="Job" indexUseCache="false" table="Job" type="multi" hasIndex="true" />
+  </column>
+  <column type="QString" methodName="frames" name="frames" />
+  <column type="QString" methodName="message" name="message" />
+  <column type="uint" methodName="key" name="keyJobError" pkey="true" />
+  <column type="uint" methodName="errorTime" name="errorTime" />
+  <column type="uint" methodName="count" name="count" />
+  <column type="bool" methodName="cleared" name="cleared" />
+  <column type="QDateTime" methodName="lastOccurrence" name="lastOccurrence" />
+  <column type="bool" methodName="timeout" name="timeout" />
+  <index useCache="false" type="multi" name="JobAndHost" >
+   <column name="fkeyJob" />
+   <column name="fkeyHost" />
+  </index>
+ </table>
+ <table useCodeGen="true" name="JobErrorHandler" expireKeyCache="true" className="JobErrorHandler" >
+  <column type="uint" methodName="keyJobErrorHandler" name="keyJobErrorHandler" pkey="true" />
+  <column reverseAccess="true" type="uint" methodName="JobType" name="fkeyJobType" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="JobType" type="multi" hasIndex="false" />
+  </column>
+  <column type="QString" methodName="errorRegEx" name="errorRegEx" />
+  <column type="uint" methodName="JobErrorHandlerScript" name="fkeyJobErrorHandlerScript" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="JobErrorHandlerScript" type="multi" hasIndex="false" />
+  </column>
+ </table>
+ <table useCodeGen="true" name="JobErrorHandlerScript" expireKeyCache="true" className="JobErrorHandlerScript" >
+  <column type="uint" methodName="keyJobErrorHandlerScript" name="keyJobErrorHandlerScript" pkey="true" />
+  <column type="QString" methodName="script" name="script" />
+ </table>
+ <table useCodeGen="true" parent="Job" name="JobFusion" expireKeyCache="true" className="JobFusion" >
+  <column type="QString" methodName="frameList" name="frameList" />
+  <column type="bool" methodName="allFramesAsSingleTask" name="allFramesAsSingleTask" />
+  <column type="uint" methodName="outputCount" name="outputCount" />
+ </table>
+ <table useCodeGen="true" parent="JobFusion" name="JobFusionVideoMaker" expireKeyCache="true" className="JobFusionVideoMaker" >
+  <column type="QString" methodName="codec" name="codec" />
+  <column type="QString" methodName="inputFramePath" name="inputframepath" />
+  <column type="uint" methodName="sequenceFrameStart" name="sequenceframestart" />
+  <column type="uint" methodName="sequenceFrameEnd" name="sequenceframeend" />
+ </table>
+ <table useCodeGen="true" name="JobHistory" expireKeyCache="true" className="JobHistory" >
+  <column type="uint" methodName="keyJobHistory" name="keyJobHistory" pkey="true" />
+  <column type="uint" methodName="type" name="fkeyJobHistoryType" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="JobHistoryType" type="multi" hasIndex="false" />
+  </column>
+  <column reverseAccess="true" type="uint" methodName="Job" name="fkeyJob" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Job" indexUseCache="false" table="Job" type="multi" hasIndex="true" />
+  </column>
+  <column reverseAccess="true" type="uint" methodName="Host" name="fkeyHost" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Host" indexUseCache="false" table="Host" type="multi" hasIndex="true" />
+  </column>
+  <column reverseAccess="true" type="uint" methodName="User" name="fkeyUser" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="User" indexUseCache="false" table="User" type="multi" hasIndex="true" />
+  </column>
+  <column type="QString" methodName="message" name="message" />
+  <column type="QDateTime" methodName="created" name="created" />
+ </table>
+ <table useCodeGen="true" name="JobHistoryType" expireKeyCache="true" className="JobHistoryType" >
+  <column type="uint" methodName="keyJobHistoryType" name="keyJobHistoryType" pkey="true" />
+  <column type="QString" methodName="type" name="type" />
+  <index useCache="false" type="single" name="Name" >
+   <column name="type" />
+  </index>
+ </table>
+ <table useCodeGen="true" parent="Job" name="JobMax" expireKeyCache="true" className="JobMax" >
+  <column type="QString" methodName="camera" name="camera" />
+  <column type="QString" methodName="elementFile" name="elementFile" />
+  <column type="QString" methodName="fileOriginal" name="fileOriginal" />
+  <column type="uint" methodName="flag_h" name="flag_h" />
+  <column type="uint" methodName="flag_v" name="flag_v" />
+  <column type="uint" methodName="flag_w" name="flag_w" />
+  <column type="uint" methodName="flag_x2" name="flag_x2" />
+  <column type="uint" methodName="flag_xa" name="flag_xa" />
+  <column type="uint" methodName="flag_xc" name="flag_xc" />
+  <column type="uint" methodName="flag_xd" name="flag_xd" />
+  <column type="uint" methodName="flag_xe" name="flag_xe" />
+  <column type="uint" methodName="flag_xf" name="flag_xf" />
+  <column type="uint" methodName="flag_xh" name="flag_xh" />
+  <column type="uint" methodName="flag_xk" name="flag_xk" />
+  <column type="uint" methodName="flag_xn" name="flag_xn" />
+  <column type="uint" methodName="flag_xo" name="flag_xo" />
+  <column type="uint" methodName="flag_xp" name="flag_xp" />
+  <column type="uint" methodName="flag_xv" name="flag_xv" />
+  <column type="uint" methodName="frameEnd" name="frameEnd" />
+  <column type="QString" methodName="frameList" name="frameList" />
+  <column type="uint" methodName="frameStart" name="frameStart" />
+  <column pluralMethodName="exrChannels" type="QString" methodName="exrChannels" name="exrChannels" />
+  <column type="QString" methodName="exrAttributes" name="exrAttributes" />
+  <column type="QString" methodName="startupScript" name="startupScript" />
+  <column docs="This corrosponds to the MaxOpenExr enum, not the actual bit depth.&#xa;Values are &#xa;0 - &quot;Integer - 8 bits per channel&quot;&#xa;1 - &quot;Half Float - 16 bits per channel&quot;&#xa;2 - &quot;Float - 32 bits per channel&quot;" type="int" methodName="exrSaveBitDepth" name="exrSaveBitDepth" />
+ </table>
+ <table useCodeGen="true" parent="JobMax" name="JobMax10" expireKeyCache="true" className="JobMax10" />
+ <table useCodeGen="true" parent="JobMax" name="JobMax2009" expireKeyCache="true" className="JobMax2009" />
+ <table useCodeGen="true" parent="Job" name="JobMax5" expireKeyCache="true" className="JobMax5" >
+  <column type="QString" methodName="camera" name="camera" />
+  <column type="QString" methodName="fileOriginal" name="fileOriginal" />
+  <column type="uint" methodName="flag_h" name="flag_h" />
+  <column type="uint" methodName="frameStart" name="frameStart" />
+  <column type="uint" methodName="frameEnd" name="frameEnd" />
+  <column type="uint" methodName="flag_w" name="flag_w" />
+  <column type="uint" methodName="flag_xv" name="flag_xv" />
+  <column type="uint" methodName="flag_x2" name="flag_x2" />
+  <column type="uint" methodName="flag_xa" name="flag_xa" />
+  <column type="uint" methodName="flag_xe" name="flag_xe" />
+  <column type="uint" methodName="flag_xk" name="flag_xk" />
+  <column type="uint" methodName="flag_xd" name="flag_xd" />
+  <column type="uint" methodName="flag_xh" name="flag_xh" />
+  <column type="uint" methodName="flag_xo" name="flag_xo" />
+  <column type="uint" methodName="flag_xf" name="flag_xf" />
+  <column type="uint" methodName="flag_xn" name="flag_xn" />
+  <column type="uint" methodName="flag_xp" name="flag_xp" />
+  <column type="uint" methodName="flag_xc" name="flag_xc" />
+  <column type="uint" methodName="flag_v" name="flag_v" />
+  <column type="QString" methodName="elementFile" name="elementFile" />
+  <column type="QString" methodName="frameList" name="frameList" />
+ </table>
+ <table useCodeGen="true" parent="Job" name="JobMax6" expireKeyCache="true" className="JobMax6" >
+  <column type="QString" methodName="camera" name="camera" />
+  <column type="QString" methodName="elementFile" name="elementFile" />
+  <column type="QString" methodName="fileOriginal" name="fileOriginal" />
+  <column type="uint" methodName="flag_h" name="flag_h" />
+  <column type="uint" methodName="flag_v" name="flag_v" />
+  <column type="uint" methodName="flag_w" name="flag_w" />
+  <column type="uint" methodName="flag_x2" name="flag_x2" />
+  <column type="uint" methodName="flag_xa" name="flag_xa" />
+  <column type="uint" methodName="flag_xc" name="flag_xc" />
+  <column type="uint" methodName="flag_xd" name="flag_xd" />
+  <column type="uint" methodName="flag_xe" name="flag_xe" />
+  <column type="uint" methodName="flag_xf" name="flag_xf" />
+  <column type="uint" methodName="flag_xh" name="flag_xh" />
+  <column type="uint" methodName="flag_xk" name="flag_xk" />
+  <column type="uint" methodName="flag_xn" name="flag_xn" />
+  <column type="uint" methodName="flag_xo" name="flag_xo" />
+  <column type="uint" methodName="flag_xp" name="flag_xp" />
+  <column type="uint" methodName="flag_xv" name="flag_xv" />
+  <column type="uint" methodName="frameEnd" name="frameEnd" />
+  <column type="QString" methodName="frameList" name="frameList" />
+  <column type="uint" methodName="frameStart" name="frameStart" />
+ </table>
+ <table useCodeGen="true" parent="JobMax" name="JobMax7" expireKeyCache="true" className="JobMax7" />
+ <table useCodeGen="true" parent="JobMax" name="JobMax8" expireKeyCache="true" className="JobMax8" />
+ <table useCodeGen="true" parent="JobMax" name="JobMax9" expireKeyCache="true" className="JobMax9" />
+ <table useCodeGen="true" parent="Job" name="JobMaxScript" expireKeyCache="true" className="JobMaxScript" >
+  <column type="QString" methodName="script" name="script" />
+  <column type="uint" methodName="maxTime" name="maxTime" />
+  <column type="QString" methodName="outputFiles" name="outputFiles" />
+  <column type="bool" methodName="silent" name="silent" />
+  <column type="QString" methodName="maxVersion" name="maxVersion" />
+  <column type="bool" methodName="runMax64" name="runMax64" />
+ </table>
+ <table docs="@brief A container class to be subclassed for specific versions of Maya and MentalRay for Maya." useCodeGen="true" parent="Job" name="JobMaya" expireKeyCache="true" className="JobMaya" >
+  <column type="int" methodName="frameStart" name="frameStart" />
+  <column type="int" methodName="frameEnd" name="frameEnd" />
+  <column type="QString" methodName="camera" name="camera" />
+  <column type="QString" methodName="renderer" name="renderer" />
+  <column type="QString" methodName="projectPath" name="projectPath" />
+  <column type="uint" methodName="width" name="width" />
+  <column type="uint" methodName="height" name="height" />
+  <column type="QString" methodName="append" name="append" />
+ </table>
+ <table useCodeGen="true" parent="JobMaya" name="JobMaya2008" expireKeyCache="true" className="JobMaya2008" />
+ <table useCodeGen="true" parent="JobMaya" name="JobMaya2009" expireKeyCache="true" className="JobMaya2009" />
+ <table useCodeGen="true" parent="JobMaya" name="JobMaya7" expireKeyCache="true" className="JobMaya7" />
+ <table useCodeGen="true" parent="JobMaya" name="JobMaya8" expireKeyCache="true" className="JobMaya8" />
+ <table useCodeGen="true" parent="JobMaya" name="JobMaya85" expireKeyCache="true" className="JobMaya85" />
+ <table useCodeGen="true" parent="JobMaya" name="JobMentalRay7" expireKeyCache="true" className="JobMentalRay7" />
+ <table useCodeGen="true" parent="JobMaya" name="JobMentalRay8" expireKeyCache="true" className="JobMentalRay8" />
+ <table useCodeGen="true" parent="JobMaya" name="JobMentalRay85" expireKeyCache="true" className="JobMentalRay85" />
+ <table useCodeGen="true" parent="Job" name="JobNuke51" expireKeyCache="true" className="JobNuke51" >
+  <column type="uint" methodName="frameStart" name="frameStart" />
+  <column type="uint" methodName="frameEnd" name="frameEnd" />
+  <column type="uint" methodName="outputCount" name="outputCount" />
+ </table>
+ <table useCodeGen="true" name="JobOutput" expireKeyCache="true" className="JobOutput" >
+  <column type="uint" methodName="keyJobOutput" name="keyJobOutput" pkey="true" />
+  <column reverseAccess="true" type="uint" methodName="Job" name="fkeyJob" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Job" indexUseCache="false" table="Job" type="multi" hasIndex="true" />
+  </column>
+  <column type="QString" methodName="name" name="name" />
+  <column type="uint" methodName="FileTracker" name="fkeyFileTracker" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="FileTracker" type="multi" hasIndex="false" />
+  </column>
+  <index useCache="false" type="single" name="JobAndName" >
+   <column name="fkeyJob" />
+   <column name="name" />
+  </index>
+ </table>
+ <table useCodeGen="true" parent="Job" name="JobRealFlow" expireKeyCache="true" className="JobRealFlow" >
+  <column type="uint" methodName="keyJobRealFlow" name="keyJobRealFlow" pkey="true" />
+  <column type="int" methodName="frameStart" name="frameStart" />
+  <column type="int" methodName="frameEnd" name="frameEnd" />
+  <column type="QString" methodName="simType" name="simType" />
+  <column type="uint" methodName="threads" name="threads" />
+ </table>
+ <table useCodeGen="true" parent="Job" name="JobRenderMan" expireKeyCache="true" className="JobRenderMan" >
+  <column type="uint" methodName="frameStart" name="frameStart" />
+  <column type="uint" methodName="frameEnd" name="frameEnd" />
+  <column type="QString" methodName="version" name="version" />
+ </table>
+ <table useCodeGen="true" parent="Job" name="JobRibGen" expireKeyCache="true" className="JobRibGen" >
+  <column type="uint" methodName="frameStart" name="frameStart" />
+  <column type="uint" methodName="frameEnd" name="frameEnd" />
+  <column type="QString" methodName="version" name="version" />
+ </table>
+ <table docs="JobService is a mapping table between jobs and any @ref Service they require on hosts to run them. A job can have multiple Service dependancies to support multiple plugin licenses, difference in machine builds etc." useCodeGen="true" name="JobService" expireKeyCache="true" className="JobService" >
+  <column type="uint" methodName="keyJobService" name="keyJobService" pkey="true" />
+  <column reverseAccess="true" type="uint" methodName="Job" name="fkeyJob" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Job" indexUseCache="false" table="Job" type="multi" hasIndex="true" />
+  </column>
+  <column type="uint" methodName="Service" name="fkeyService" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Service" indexUseCache="false" table="Service" type="multi" hasIndex="true" />
+  </column>
+ </table>
+ <table useCodeGen="true" parent="Job" name="JobShake" expireKeyCache="true" className="JobShake" >
+  <column type="uint" methodName="frameStart" name="frameStart" />
+  <column type="uint" methodName="frameEnd" name="frameEnd" />
+  <column type="QString" methodName="codec" name="codec" />
+  <column type="QString" methodName="slatePath" name="slatePath" />
+  <column type="QString" methodName="frameRange" name="frameRange" />
+ </table>
+ <table useCodeGen="true" name="JobStat" expireKeyCache="true" className="JobStat" >
+  <column type="uint" methodName="keyJobStat" name="keyJobStat" pkey="true" />
+  <column type="QString" methodName="pass" name="pass" />
+  <column reverseAccess="true" type="uint" methodName="element" name="fkeyelement" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false" />
+  </column>
+  <column type="int" methodName="taskCount" name="taskcount" />
+  <column type="int" methodName="tasksCompleted" name="taskscompleted" />
+  <column type="int" methodName="taskTime" name="tasktime" />
+  <column type="QDateTime" methodName="started" name="started" />
+  <column type="QDateTime" methodName="ended" name="ended" />
+  <column type="uint" methodName="user" name="fkeyusr" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false" />
+  </column>
+  <column type="uint" methodName="project" name="fkeyproject" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Project" type="multi" hasIndex="false" />
+  </column>
+  <column type="QString" methodName="name" name="name" />
+  <column type="int" methodName="errorCount" name="errorCount" />
+  <column type="Interval" methodName="totalTaskTime" name="totaltasktime" />
+  <column type="Interval" methodName="minTaskTime" name="mintasktime" />
+  <column type="Interval" methodName="maxTaskTime" name="maxtasktime" />
+  <column type="Interval" methodName="avgTaskTime" name="avgtasktime" />
+  <column type="Interval" methodName="totalErrorTime" name="totalerrortime" />
+  <column type="Interval" methodName="minErrorTime" name="minerrortime" />
+  <column type="Interval" methodName="maxErrorTime" name="maxerrortime" />
+  <column type="Interval" methodName="avgErrorTime" name="avgerrorTime" />
+  <column type="Interval" methodName="totalLoadTime" name="totalloadtime" />
+  <column type="Interval" methodName="minLoadTime" name="minloadtime" />
+  <column type="Interval" methodName="maxLoadTime" name="maxloadtime" />
+  <column type="Interval" methodName="avgLoadTime" name="avgloadTime" />
+  <column type="Interval" methodName="totalCopyTime" name="totalcopytime" />
+  <column type="Interval" methodName="minCopyTime" name="mincopytime" />
+  <column type="Interval" methodName="maxCopyTime" name="maxcopytime" />
+  <column type="Interval" methodName="avgCopyTime" name="avgcopyTime" />
+ </table>
+ <table useCodeGen="true" name="JobStatus" expireKeyCache="true" className="JobStatus" >
+  <column type="uint" methodName="keyJobStatus" name="keyJobStatus" pkey="true" />
+  <column type="uint" methodName="hostsOnJob" name="hostsOnJob" />
+  <column reverseAccess="true" type="uint" methodName="Job" name="fkeyJob" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Job" indexUseCache="true" table="Job" type="single" hasIndex="true" />
+  </column>
+  <column type="uint" methodName="tasksUnassigned" name="tasksUnassigned" />
+  <column type="uint" methodName="tasksCount" name="tasksCount" />
+  <column type="uint" methodName="tasksDone" name="tasksDone" />
+  <column type="uint" methodName="tasksCancelled" name="tasksCancelled" />
+  <column type="uint" methodName="tasksSuspended" name="tasksSuspended" />
+  <column type="uint" methodName="tasksAssigned" name="tasksAssigned" />
+  <column type="uint" methodName="tasksBusy" name="tasksBusy" />
+  <column type="uint" methodName="tasksAverageTime" name="tasksAverageTime" />
+  <column type="float" methodName="health" name="health" />
+  <column type="QDateTime" methodName="jobLastUpdated" name="jobLastUpdated" />
+  <column type="uint" methodName="errorCount" name="errorCount" />
+  <column type="uint" methodName="lastNotifiedErrorCount" name="lastNotifiedErrorCount" />
+  <column docs="Average memory used per task in kilobytes." type="uint" methodName="averageMemory" name="averageMemory" />
+ </table>
+ <table useCodeGen="true" parent="Job" name="JobSync" expireKeyCache="true" className="JobSync" >
+  <column type="QString" methodName="direction" name="direction" />
+  <column type="QString" methodName="filesFrom" name="filesFrom" />
+  <column type="QString" methodName="append" name="append" />
+ </table>
+ <table useCodeGen="true" name="JobTask" expireKeyCache="true" className="JobTask" >
+  <column type="uint" methodName="Host" name="fkeyHost" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Host" type="single" hasIndex="false" />
+  </column>
+  <column reverseAccess="true" type="uint" methodName="Job" name="fkeyJob" >
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="Job" indexUseCache="false" table="Job" type="multi" hasIndex="true" />
+  </column>
+  <column type="QString" methodName="status" name="status" />
+  <column type="uint" methodName="key" name="keyJobTask" pkey="true" />
+  <column type="int" methodName="frameNumber" name="jobTask" />
+  <column docs="This holds the name of the task to be displayed to the user.  If label is null, the task is considered to represent a frame and the number stored in the jobtask(frameNumber) field is displayed." type="QString" methodName="label" name="label" />
+  <column reverseAccess="true" type="uint" methodName="JobOutput" name="fkeyJobOutput" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="JobOutput" type="multi" hasIndex="false" />
+  </column>
+  <column displayName="Job Assignment Task" reverseAccess="true" type="uint" methodName="JobTaskAssignment" name="fkeyJobTaskAssignment" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="JobTaskAssignment" type="single" hasIndex="false" />
+  </column>
+  <column type="uint" methodName="progress" name="progress" />
+  <index useCache="false" type="multi" name="JobAndHost" >
+   <column name="fkeyJob" />
+   <column name="fkeyHost" />
+  </index>
+ </table>
+ <table useCodeGen="true" name="JobTaskAssignment" expireKeyCache="true" className="JobTaskAssignment" >
+  <column pluralMethodName="keyJobTaskAssignment" type="uint" methodName="key" name="keyJobTaskAssignment" pkey="true" />
+  <column reverseAccess="true" type="uint" methodName="JobAssignment" name="fkeyJobAssignment" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="JobAssignment" indexUseCache="false" table="JobAssignment" type="multi" hasIndex="true" />
+  </column>
+  <column type="uint" methodName="memory" name="memory" />
+  <column type="QDateTime" methodName="started" name="started" />
+  <column type="QDateTime" methodName="ended" name="ended" />
+  <column type="uint" methodName="JobAssignmentStatus" name="fkeyJobAssignmentStatus" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="JobAssignmentStatus" type="multi" hasIndex="false" />
+  </column>
+  <column type="uint" methodName="JobTask" name="fkeyJobTask" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="JobTask" type="multi" hasIndex="false" />
+  </column>
+  <column type="uint" methodName="JobError" name="fkeyJobError" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="JobError" type="multi" hasIndex="false" />
+  </column>
+ </table>
+ <table preload="true" useCodeGen="true" name="JobType" expireKeyCache="true" className="JobType" >
+  <column type="QString" methodName="name" name="jobType" />
+  <column type="uint" methodName="keyJobType" name="keyJobType" pkey="true" />
+  <column reverseAccess="true" type="uint" methodName="Service" name="fkeyService" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Service" indexUseCache="false" table="Service" type="multi" hasIndex="true" />
+  </column>
+  <column type="QImage" methodName="icon" name="icon" />
+  <index useCache="true" type="single" name="Name" >
+   <column name="jobType" />
+  </index>
+ </table>
+ <table useCodeGen="true" name="JobTypeMapping" expireKeyCache="false" className="JobTypeMapping" >
+  <column type="uint" methodName="key" name="keyJobTypeMapping" pkey="true" />
+  <column reverseAccess="true" type="uint" methodName="JobType" name="fkeyJobType" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="JobType" indexUseCache="false" table="JobType" type="multi" hasIndex="true" />
+  </column>
+  <column type="uint" methodName="Mapping" name="fkeyMapping" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Mapping" type="multi" hasIndex="false" />
+  </column>
+ </table>
+ <table useCodeGen="true" parent="Job" name="JobXSI" expireKeyCache="true" className="JobXSI" >
+  <column type="QString" methodName="pass" name="pass" />
+  <column type="QString" methodName="framelist" name="framelist" />
+  <column type="uint" methodName="frameStart" name="frameStart" />
+  <column type="uint" methodName="frameEnd" name="frameEnd" />
+  <column type="uint" methodName="resolutionX" name="resolutionx" />
+  <column type="uint" methodName="resolutionY" name="resolutiony" />
+  <column docs="Valid values are&#xa;default - Default Scanline&#xa;ogl - OpenGL scanline&#xa;rapid - Rapid scanline, designed for very large scenes&#xa;trace - Raytrace" type="QString" methodName="renderer" name="renderer" />
+  <column type="bool" methodName="motionBlur" name="motionblur" />
+  <column type="bool" methodName="deformMotionBlur" name="deformmotionblur" />
+ </table>
+ <table useCodeGen="true" parent="Job" name="JobXSIScript" expireKeyCache="true" className="JobXSIScript" >
+  <column type="int" methodName="frameStart" name="frameStart" />
+  <column type="int" methodName="frameEnd" name="frameEnd" />
+  <column type="bool" methodName="scriptRequiresUi" name="scriptRequiresUi" />
+  <column type="QString" methodName="scriptFile" name="scriptFile" />
+  <column type="QString" methodName="xsiFile" name="xsiFile" />
+  <column type="QString" methodName="scriptMethod" name="scriptMethod" />
+  <column type="QString" methodName="frameList" name="frameList" />
+ </table>
+ <table preload="true" useCodeGen="true" name="License" expireKeyCache="true" className="License" >
+  <column type="uint" methodName="keyLicense" name="keyLicense" pkey="true" />
+  <column type="QString" methodName="license" name="license" />
+  <column type="uint" methodName="Host" name="fkeyHost" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Host" indexUseCache="true" table="Host" type="multi" hasIndex="true" />
+  </column>
+  <column type="uint" methodName="Software" name="fkeySoftware" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Software" indexUseCache="true" table="Software" type="multi" hasIndex="true" />
+  </column>
+  <column type="int" methodName="total" name="total" />
+  <column type="int" methodName="reserved" name="reserved" />
+  <column type="int" methodName="inUse" name="inUse" />
+ </table>
+ <table useCodeGen="true" name="Location" expireKeyCache="true" className="Location" >
+  <column type="uint" methodName="keyLocation" name="keyLocation" pkey="true" />
+  <column type="QString" methodName="name" name="name" />
+ </table>
+ <table useCodeGen="true" name="Mapping" expireKeyCache="false" className="Mapping" >
+  <column type="uint" methodName="keyMapping" name="keyMapping" pkey="true" />
+  <column type="uint" methodName="Host" name="fkeyHost" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Host" type="multi" hasIndex="false" />
+  </column>
+  <column type="QString" methodName="share" name="share" />
+  <column type="uint" methodName="MappingType" name="fkeyMappingType" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="MappingType" type="multi" hasIndex="false" />
+  </column>
+  <column type="QString" methodName="mount" name="mount" />
+ </table>
+ <table useCodeGen="true" name="MappingType" expireKeyCache="false" className="MappingType" >
+  <column type="uint" methodName="keyMappingType" name="keyMappingType" pkey="true" />
+  <column type="QString" methodName="name" name="name" />
+ </table>
+ <table useCodeGen="true" name="Notification" expireKeyCache="true" className="Notification" >
+  <column type="uint" methodName="keyNotification" name="keyNotification" pkey="true" />
+  <column type="QDateTime" methodName="created" name="created" />
+  <column type="QString" methodName="subject" name="subject" />
+  <column type="QString" methodName="message" name="message" />
+  <column type="QString" methodName="component" name="component" />
+  <column type="QString" methodName="event" name="event" />
+  <column type="QDateTime" methodName="routed" name="routed" />
+  <column type="uint" methodName="Element" name="fkeyElement" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false" />
+  </column>
+ </table>
+ <table useCodeGen="true" name="NotificationDestination" expireKeyCache="true" className="NotificationDestination" >
+  <column type="uint" methodName="keyNotificationDestination" name="keyNotificationDestination" pkey="true" />
+  <column reverseAccess="true" type="uint" methodName="Notification" name="fkeyNotification" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Notification" type="multi" hasIndex="false" />
+  </column>
+  <column type="uint" methodName="NotificationMethod" name="fkeyNotificationMethod" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="NotificationMethod" type="multi" hasIndex="false" />
+  </column>
+  <column docs="This holds the datetime when the notification was delivered to this destination.  If this field is null, the notification has not been delivered." type="QDateTime" methodName="delivered" name="delivered" />
+  <column docs="This is a generic field, can be used to hold email address, phone number, jabber id, etc." type="QString" methodName="destination" name="destination" />
+  <column docs="Specifies the user that is being notified by this destination.  Can be null if a user does not apply, or does not exist." type="uint" methodName="User" name="fkeyUser" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false" />
+  </column>
+  <column type="QDateTime" methodName="routed" name="routed" />
+ </table>
+ <table useCodeGen="true" name="NotificationMethod" expireKeyCache="true" className="NotificationMethod" >
+  <column type="uint" methodName="keyNotificationMethod" name="keyNotificationMethod" pkey="true" />
+  <column type="QString" methodName="name" name="name" />
+  <index useCache="false" type="single" name="Name" >
+   <column name="name" />
+  </index>
+ </table>
+ <table useCodeGen="true" name="NotificationRoute" expireKeyCache="true" className="NotificationRoute" >
+  <column type="uint" methodName="keyNotificationUserRoute" name="keyNotificationUserRoute" pkey="true" />
+  <column type="QString" methodName="eventMatch" name="eventMatch" />
+  <column type="QString" methodName="componentMatch" name="componentMatch" />
+  <column type="uint" methodName="User" name="fkeyUser" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="User" indexUseCache="false" table="User" type="multi" hasIndex="true" />
+  </column>
+  <column type="QString" methodName="subjectMatch" name="subjectMatch" />
+  <column type="QString" methodName="messageMatch" name="messageMatch" />
+  <column pluralMethodName="actions" docs="This is a string encoded as follows&#xa;&#xa;[SECTION],...&#xa;&#xa;each section consists of:&#xa;&#xa;ACTION:METHOD[:DESTINATION][:USER]&#xa;&#xa;Actions consist of:&#xa;&#xa;default - Sets default method/destination, user is ignored, only used for routing notificationdestinations.&#xa;add - Adds a new destination using method/destination/user&#xa;&#xa;Section Examples:&#xa;&#xa;default:email - Sets default method to email&#xa;add:email:gates@microsoft.com - Adds new destination, emails to gates@microsoft.com address&#xa;&#xa;&#xa;" type="QString" methodName="actions" name="actions" />
+  <column docs="Routes are processes from lowest to highest priority.  The default method can be set multiple times, so the highest priority is ultimatly used." type="int" methodName="priority" name="priority" />
+  <column type="uint" methodName="Element" name="fkeyElement" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false" />
+  </column>
+  <column pluralMethodName="routeAssetDescendants" type="bool" methodName="routeAssetDescendants" name="routeAssetDescendants" />
+ </table>
+ <table useCodeGen="true" name="PathSyncTarget" expireKeyCache="true" className="PathSyncTarget" >
+  <column type="uint" methodName="keyPathSyncTarget" name="keyPathSyncTarget" pkey="true" />
+  <column type="uint" methodName="PathTracker" name="fkeyPathTracker" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="PathTracker" indexUseCache="true" table="PathTracker" type="multi" hasIndex="true" />
+  </column>
+  <column reverseAccess="true" type="uint" methodName="ProjectStorage" name="fkeyProjectStorage" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="ProjectStorage" indexUseCache="true" table="ProjectStorage" type="multi" hasIndex="true" />
+  </column>
+ </table>
+ <table preload="true" useCodeGen="true" name="PathTemplate" expireKeyCache="true" className="PathTemplate" >
+  <column type="uint" methodName="keyPathTemplate" name="keyPathTemplate" pkey="true" />
+  <column type="int" methodName="version" name="version" />
+  <column type="QString" methodName="fileNameTemplate" name="fileNameTemplate" />
+  <column type="QString" methodName="pathTemplate" name="pathTemplate" />
+  <column type="QString" methodName="name" name="name" />
+  <column type="QString" methodName="pythonCode" name="pythonCode" />
+  <index useCache="false" type="single" name="Name" >
+   <column name="name" />
+  </index>
+ </table>
+ <table docs="Used to associate a path with an asset, so that an asset can have multiple paths associated with it." useCodeGen="true" name="PathTracker" expireKeyCache="true" className="PathTracker" >
+  <column type="uint" methodName="keyPathTracker" name="keyPathTracker" pkey="true" />
+  <column reverseAccess="true" type="uint" methodName="Element" name="fkeyElement" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Element" indexUseCache="true" table="Element" type="multi" hasIndex="true" />
+  </column>
+  <column type="QString" methodName="pathRaw" name="path" />
+  <column type="uint" methodName="PathTemplate" name="fkeyPathTemplate" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="PathTemplate" type="multi" hasIndex="false" />
+  </column>
+  <column type="uint" methodName="ProjectStorage" name="fkeyProjectStorage" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ProjectStorage" type="multi" hasIndex="false" />
+  </column>
+  <column type="QString" methodName="storageName" name="storageName" />
+  <index useCache="false" type="multi" name="Path" >
+   <column name="path" />
+  </index>
+ </table>
+ <table preload="true" useCodeGen="true" name="Permission" expireKeyCache="false" className="Permission" >
+  <column type="uint" methodName="key" name="keyPermission" pkey="true" />
+  <column type="QString" methodName="methodPattern" name="methodpattern" />
+  <column type="uint" methodName="User" name="fkeyUsr" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false" />
+  </column>
+  <column type="QString" methodName="permission" name="permission" />
+  <column type="uint" methodName="Group" name="fkeyGrp" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Group" type="multi" hasIndex="false" />
+  </column>
+  <column type="QString" methodName="_class" name="Class" />
+ </table>
+ <table preload="true" useCodeGen="true" name="ProjectStatus" expireKeyCache="true" className="ProjectStatus" >
+  <column type="QString" methodName="projectStatus" name="projectStatus" />
+  <column type="uint" methodName="chronology" name="chronology" />
+  <column type="uint" methodName="key" name="keyProjectStatus" pkey="true" />
+  <index useCache="false" type="single" name="Name" >
+   <column name="projectStatus" />
+  </index>
+ </table>
+ <table useCodeGen="true" name="ProjectStorage" expireKeyCache="true" className="ProjectStorage" >
+  <column type="uint" methodName="keyProjectStorage" name="keyProjectStorage" pkey="true" />
+  <column type="QString" methodName="name" name="name" />
+  <column reverseAccess="true" type="uint" methodName="Project" name="fkeyProject" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Project" indexUseCache="false" table="Project" type="multi" hasIndex="true" />
+  </column>
+  <column type="uint" methodName="Host" name="fkeyHost" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Host" type="single" hasIndex="false" />
+  </column>
+  <column type="QString" methodName="location" name="location" />
+  <column type="bool" methodName="defaultStorage" name="default" />
+  <index useCache="false" type="single" name="ProjectAndName" >
+   <column name="fkeyProject" />
+   <column name="name" />
+  </index>
+ </table>
+ <table useCodeGen="true" parent="FileTracker" name="RangeFileTracker" expireKeyCache="true" className="RangeFileTracker" >
+  <column type="QString" methodName="fileNameTemplate" name="fileNameTemplate" />
+  <column type="int" methodName="frameStart" name="frameStart" />
+  <column type="int" methodName="frameEnd" name="frameEnd" />
+  <column type="uint" methodName="Resolution" name="fkeyResolution" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Resolution" type="single" hasIndex="false" />
+  </column>
+  <column type="QString" methodName="renderElement" name="renderElement" />
+ </table>
+ <table useCodeGen="true" name="ServerFileAction" expireKeyCache="true" className="ServerFileAction" >
+  <column type="uint" methodName="keyServerFileAction" name="keyServerFileAction" pkey="true" />
+  <column pluralMethodName="statuses" type="uint" methodName="ServerFileActionStatus" name="fkeyServerFileActionStatus" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ServerFileActionStatus" type="multi" hasIndex="false" />
+  </column>
+  <column type="uint" methodName="ServerFileActionType" name="fkeyServerFileActionType" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="ServerFileActionType" type="multi" hasIndex="false" />
+  </column>
+  <column type="uint" methodName="host" name="fkeyhost" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Host" type="multi" hasIndex="false" />
+  </column>
+  <column type="QString" methodName="destPath" name="destPath" />
+  <column type="QString" methodName="errorMessage" name="errorMessage" />
+  <column type="QString" methodName="sourcePath" name="sourcePath" />
+  <index useCache="false" type="multi" name="HostAndStatus" >
+   <column name="fkeyhost" />
+   <column name="fkeyServerFileActionStatus" />
+  </index>
+ </table>
+ <table preload="true" useCodeGen="true" name="ServerFileActionStatus" expireKeyCache="true" className="ServerFileActionStatus" >
+  <column type="uint" methodName="keyServerFileActionStatus" name="keyServerFileActionStatus" pkey="true" />
+  <column type="QString" methodName="name" name="name" />
+  <index useCache="false" type="single" name="Name" >
+   <column name="name" />
+  </index>
+ </table>
+ <table preload="true" useCodeGen="true" name="ServerFileActionType" expireKeyCache="true" className="ServerFileActionType" >
+  <column type="uint" methodName="keyServerFileActionType" name="keyServerFileActionType" pkey="true" />
+  <column type="QString" methodName="name" name="type" />
+  <index useCache="false" type="single" name="Name" >
+   <column name="type" />
+  </index>
+ </table>
+ <table preload="true" useCodeGen="true" name="Service" expireKeyCache="true" className="Service" >
+  <column type="uint" methodName="keyService" name="keyService" pkey="true" />
+  <column type="QString" methodName="service" name="service" />
+  <column type="uint" methodName="License" name="fkeyLicense" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="License" type="multi" hasIndex="false" />
+  </column>
+  <column type="bool" methodName="enabled" name="enabled" />
+  <column pluralMethodName="forbiddenProcesses" docs="comma seperated list of process names that can't be running for AB to start up, or pick up a job." type="QString" methodName="forbiddenProcesses" name="forbiddenProcesses" />
+  <column docs="This describes if the service is and active or passive service.  Active services are running and are expected to pulse." type="bool" methodName="active" name="active" />
+  <column docs="This describes if this service should only be enabled on a single host at any given time." type="bool" methodName="unique" name="unique" />
+  <column type="QString" methodName="description" name="description" />
+  <column pluralMethodName="Software" type="uint" methodName="Software" name="fkeySoftware" >
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Software" type="multi" hasIndex="false" />
+  </column>
+  <index useCache="false" type="single" name="Name" >
+   <column name="service" />
+  </index>
+ </table>
+ <table useCodeGen="true" name="Software" expireKeyCache="true" className="Software" >
+  <column type="uint" methodName="keySoftware" name="keySoftware" pkey="true" />
+  <column displayName="Software" type="QString" methodName="name" name="software" />
+  <column type="double" methodName="version" name="version" />
+  <column type="QString" methodName="installedPath" name="installedPath" />
+  <column type="QString" methodName="executable" name="executable" />
+  <column type="bool" methodName="sixtyfourbit" name="sixtyfourbit" />
+  <column type="bool" methodName="active" name="active" />
+ </table>
+ <table preload="true" useCodeGen="true" name="UserRole" expireKeyCache="true" className="UserRole" >
+  <column type="uint" methodName="AssetType" name="fkeyTaskType" >
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="AssetType" indexUseCache="true" table="AssetType" type="multi" hasIndex="true" />
+  </column>
+  <column reverseAccess="true" type="uint" methodName="User" name="fkeyUsr" >
+   <fkey indexDeleteMode="CascadeOnDelete" indexName="User" indexUseCache="true" table="User" type="multi" hasIndex="true" />
+  </column>
+  <column type="uint" methodName="keyUserRole" name="keyUserRole" pkey="true" />
+ </table>
+ <table useCodeGen="true" name="UsrGrp" expireKeyCache="true" className="UserGroup" >
+  <column type="uint" methodName="key" name="keyusrgrp" pkey="true" />
+  <column reverseAccess="true" type="uint" methodName="user" name="fkeyusr" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="User" indexUseCache="true" table="User" type="multi" hasIndex="true" />
+  </column>
+  <column type="uint" methodName="group" name="fkeygrp" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="Group" indexUseCache="true" table="Group" type="multi" hasIndex="true" />
+  </column>
+  <index useCache="false" type="single" name="UserAndGroup" >
+   <column name="fkeyusr" />
+   <column name="fkeygrp" />
+  </index>
+ </table>
+ <table useCodeGen="true" parent="FileTracker" name="VersionFileTracker" expireKeyCache="true" className="VersionFileTracker" >
+  <column type="QString" methodName="fileNameTemplateRaw" name="fileNameTemplate" />
+  <column type="uint" methodName="VersionFileTracker" name="fkeyVersionFileTracker" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="VersionFileTracker" indexUseCache="true" table="VersionFileTracker" type="multi" hasIndex="true" />
+  </column>
+  <column type="QString" methodName="oldFileNamesSingle" name="oldFileNames" />
+  <column type="uint" methodName="versionRaw" name="version" />
+  <column type="uint" methodName="iterationRaw" name="iteration" />
+  <column type="uint" methodName="autoFinalRaw" name="autoMaster" />
+ </table>
+</database>

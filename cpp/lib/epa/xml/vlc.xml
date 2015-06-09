@@ -1,0 +1,4 @@
+<software name="vlc">
+	<set key="EPA_CMDLINE">/usr/bin/vlc</set>
+	<set key="EPA_ICON">/usr/share/pixmaps/vlc.png</set>
+</software>

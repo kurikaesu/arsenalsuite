@@ -1,0 +1,172 @@
+Notes on Extended RLA files
+===========================
+
+20 Feb 2003
+Ben Campbell (ben.campbell@SPAMSPAMSPAMjustaddmonsters.com)
+
+Introduction
+------------
+
+We ran into a problem using Maya-produced RLA files in After
+Effects - our Z buffer information wasn't surviving the trip.
+I did a little investigating and discovered that there was an
+extended RLA format, and that After Effects won't load Z data
+out of original-style RLA files.
+
+I ended up writing a little utility to cook our files into
+the extended format so that they could be used for compositing
+in After Effects.
+
+I thought I'd write up what I discovered about extended RLA
+files along the way...
+
+
+History
+-------
+
+The original RLA format was created by Wavefront, and is
+generally pretty well documented. It can store:
+
+- channels (usually R,G,B)
+- matte channels (usually a single alpha channel)
+- aux channels (eg ZBuffer information)
+
+Each channel can be stored as integer values (1-32 bits) or
+as 32 bit floats.
+Integer channels are compressed using run length encoding.
+
+You can find the original spec pretty easily out there in
+internetland.
+
+
+At some point, Discreet (makers of 3D Max?) added some
+proprietry extensions to the RLA file format. These don't
+seem to be documented anywhere on the web.
+Such docs might be available to registered 3D Max developers.
+
+
+
+Changes from base RLA spec
+--------------------------
+
+1)	The heade 'revision' field is 0xfffd instead of 0xfffe
+
+2)	The string in the header 'program' field has flags to
+	indicate which extra data is present in the file. Flags
+	appear within parentheses.
+
+	Extended channel flags:
+
+	Z ZBuffer info
+	E Material ID
+	O Node ID
+	U UV
+	N Normal
+	R Real Pix
+	C Coverage
+	B BG
+	I Node render ID
+	G Colour
+	T Transparency
+	V Velocity
+	W Weight
+	M Mask
+
+
+	Other flags:
+
+	L Layer information flag
+	P Render information flag
+	D Node name table flag
+
+	Example: a program field of "Funkovision v69.0 ( Z L P )"
+	would indicate the presence of Z, Layer and Render
+	information.
+
+
+3)	Extended channels are stored per scanline after the
+	standard, matte and aux channel data, except their compression
+	is slightly different (see below). Sheesh.
+
+	Extended channels are always stored as 32 bit values. Z is
+	stored as 32 bit floats, I'd guess some of the other channels
+	are really 32 bit ints, but it doesn't really make any
+	difference from the file formats point of view... they're
+	just 4 byte values.
+
+	Layer information is stored per scanline, and appears after
+	all the other channels.
+
+
+4)	The Render and Nodename flags indicate the presence of extra
+	data chunks between the scanline offset array and the start of
+	channel data.
+
+
+So the layout of the extended format goes something like this:
+
+	Header
+	Offset table
+	<optional Render information chunk ('P' flag)>
+	<optional Node Name chunk ('D' flag)>
+	Scanline data
+
+Note that code to read the original format can still work with
+the new format as the extended channel data is at the end of
+each scanline, and so will simply be ignored.
+
+
+Compression of extended channels
+--------------------------------
+
+The normal compression scheme compresses multi-byte channels
+like this:
+
+size of data (16 bits)
+compressed runs for most significant bytes
+...compressed runs...
+compressed runs for least significant bytes
+
+
+However, the extended channels (always 32 bit values) are
+encoded like this:
+
+size (16 bits)
+compressed runs for most significant bytes
+size (16 bits)
+compressed runs
+size (16 bits)
+compressed runs
+size (16 bits)
+compressed runs for least significant bytes
+
+It's as if each set of bytes is treated as a separate channel.
+Not sure why it was done like this. It seems a bit silly
+when the existing scheme could have been reused.
+
+
+Notes
+-----
+
+After Effects (v5.5 Pro Bundle) won't read Zbuffer information
+out of Auxilary channels, only from an ZBuffer extended channel.
+So After Effects can't get ZBuffer data out of standard wavefront
+RLA file rendered by Maya, say.
+I consider this to be a reasonably major flaw in the After Effects
+RLA loader. I'd report it as a bug, but I'm cynical enough about
+proprietry software that I don't think it'd make the slightest bit
+of difference.
+
+Maya RLA files use an aux channel to store ZBuffer data. Values
+are stored as 31 bit integers. 31 bits? bizzare.
+
+I haven't investigated the Render Information chunk, the Node name
+chunk or the layer data. All I looked at was the Z channel.
+
+Discreet have invented a replacement for RLA called "Rich Pixel
+Format", or RPF. They haven't released any docs on that format
+either. Bandits.
+
+
+
+

@@ -1,0 +1,4 @@
+<software name="mayaFileBrowser">
+	<add key="MAYA_SCRIPT_PATH">$DRD_SOFTWARE_EXT/maya/$DRD_PLATFORM/global/KE_MayaFileBrowser/v1_1</add>
+	<set key="KE_FILEBROWSER_WRAPPER">$DRD_SOFTWARE_EXT/maya/$DRD_PLATFORM/global/KE_MayaFileBrowser/v1_1/KE_FileBrowserWrapper.sh</set>
+</software>

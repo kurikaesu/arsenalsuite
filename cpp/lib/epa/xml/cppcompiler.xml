@@ -1,0 +1,12 @@
+<software name="cppcompiler">
+	<dependOn>cmake</dependOn>
+	<dependOn>boost</dependOn>
+	<set key="HDF5_ROOT">$DRD_SOFTWARE_EXT/hdf5/$DRD_PLATFORM/v1_8_1</set>
+	<set key="FTGL_ROOT">$DRD_SOFTWARE_EXT/ftgl/$DRD_PLATFORM/v2_1_3</set>
+	<set key="FREETYPE_ROOT">$DRD_SOFTWARE_EXT/freetype/$DRD_PLATFORM/v2_3_7</set>
+	<set key="FFTW_ROOT">$DRD_SOFTWARE_EXT/fftw/$DRD_PLATFORM/v3_2alpha3_f</set>
+	<set key="QTDIR">$DRD_SOFTWARE_EXT/Qt/$DRD_PLATFORM/4.4.0</set>
+	<set key="MPICH2_ROOT">$DRD_SOFTWARE_EXT/mpich2/$DRD_PLATFORM/v1_0_8</set>
+	<add key="LD_LIBRARY_PATH">$DRD_SOFTWARE_EXT/hdf5/$DRD_PLATFORM/v1_8_1/lib</add>
+	<add key="PATH">$DRD_SOFTWARE_EXT/hdf5/$DRD_PLATFORM/v1_8_1/bin</add>
+</software>

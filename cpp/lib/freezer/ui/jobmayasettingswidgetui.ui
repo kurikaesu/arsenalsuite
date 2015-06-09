@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>JobMayaSettingsWidgetUI</class>
+ <widget class="QGroupBox" name="JobMayaSettingsWidgetUI">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>GroupBox</string>
+  </property>
+  <property name="title">
+   <string>Maya Settings</string>
+  </property>
+  <layout class="QVBoxLayout" name="mVerticalLayout">
+   <property name="margin">
+    <number>4</number>
+   </property>
+   <item>
+    <layout class="QGridLayout">
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <property name="spacing">
+      <number>4</number>
+     </property>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Renderer</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="RendererCombo">
+       <item>
+        <property name="text">
+         <string>Maya</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>MentalRay</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Renderman</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="textLabel9">
+       <property name="text">
+        <string>Width</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="textLabel8">
+       <property name="text">
+        <string>Height</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="FieldSpinBox" name="mHeightSpin">
+       <property name="maximum">
+        <number>1000000</number>
+       </property>
+       <property name="field" stdset="0">
+        <string>height</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="textLabel7">
+       <property name="text">
+        <string>Camera</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="FieldSpinBox" name="mWidthSpin">
+       <property name="maximum">
+        <number>1000000</number>
+       </property>
+       <property name="field" stdset="0">
+        <string>width</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="CameraCombo">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>160</width>
+         <height>0</height>
+        </size>
+       </property>
+       <item>
+        <property name="text">
+         <string>Camera01</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Cmd Args</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="FieldLineEdit" name="mAppendEdit">
+       <property name="field" stdset="0">
+        <string>append</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QPushButton" name="mSetupFrameNthButton">
+     <property name="text">
+      <string>Setup Frame Nth Rendering...</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="spacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>90</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>FieldLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>fieldlineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>FieldSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>fieldspinbox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

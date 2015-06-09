@@ -1,0 +1,5 @@
+<software name="boost">
+	<set key="BOOST_ROOT">$DRD_SOFTWARE_EXT/boost/$DRD_PLATFORM/v1_37_0</set>
+	<set key="BOOST_INCLUDE">$BOOST_ROOT/include</set>
+	<set key="BOOST_LIB">$BOOST_ROOT/lib</set>
+</software>

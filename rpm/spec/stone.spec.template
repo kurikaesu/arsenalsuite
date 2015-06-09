@@ -1,0 +1,100 @@
+Summary: Stone Library
+Name: stone
+Version: 1.0
+Release: DrD
+License: GPL
+Group: Libraries/Programming
+Distribution: CentOS
+Vendor: Dr. D Studios
+Packager: Aren Villanueva <aren.villanueva@drdstudios.com>
+BuildRoot:
+AutoReqProv: No
+
+%define _unpackaged_files_terminate_build 0
+
+%description
+Database library for Arsenal
+
+%files
+%defattr(-,root,root,-)
+/usr/lib/python2.5/site-packages/blur/Stone.so
+/usr/lib/python2.5/site-packages/blur/pgconnection.sip
+/usr/lib/python2.5/site-packages/blur/iniconfig.sip
+/usr/lib/python2.5/site-packages/blur/undomanager.sip
+/usr/lib/python2.5/site-packages/blur/index.sip
+/usr/lib/python2.5/site-packages/blur/graphite.sip
+/usr/lib/python2.5/site-packages/blur/recordproxy.sip
+/usr/lib/python2.5/site-packages/blur/connection.sip
+/usr/lib/python2.5/site-packages/blur/joinedselect.sip
+/usr/lib/python2.5/site-packages/blur/interval.sip
+/usr/lib/python2.5/site-packages/blur/recordimp.sip
+/usr/lib/python2.5/site-packages/blur/recordlist.sip
+/usr/lib/python2.5/site-packages/blur/schema.sip
+/usr/lib/python2.5/site-packages/blur/tableschema.sip
+/usr/lib/python2.5/site-packages/blur/table.sip
+/usr/lib/python2.5/site-packages/blur/multilog.sip
+/usr/lib/python2.5/site-packages/blur/pyembed.sip
+/usr/lib/python2.5/site-packages/blur/path.sip
+/usr/lib/python2.5/site-packages/blur/process.sip
+/usr/lib/python2.5/site-packages/blur/recordxml.sip
+/usr/lib/python2.5/site-packages/blur/dateutil.sip
+/usr/lib/python2.5/site-packages/blur/record.sip
+/usr/lib/python2.5/site-packages/blur/field.sip
+/usr/lib/python2.5/site-packages/blur/blurqt.sip
+/usr/lib/python2.5/site-packages/blur/database.sip
+/usr/lib/python2.5/site-packages/blur/resultset.sip
+/usr/lib/python2.5/site-packages/blur/indexschema.sip
+/usr/lib/python2.5/site-packages/blur/freezercore.sip
+/usr/lib/python2.5/site-packages/blur/sqlerrorhandler.sip
+/usr/lib/python2.5/site-packages/blur/updatemanager.sip
+/usr/lib/python2.5/site-packages/blur/Stonegui.so
+/usr/lib/python2.5/site-packages/blur/blowfish.py
+/usr/lib/python2.5/site-packages/blur/blurFusion.py
+/usr/lib/python2.5/site-packages/blur/build.py
+/usr/lib/python2.5/site-packages/blur/daemonize.py
+/usr/lib/python2.5/site-packages/blur/defaultdict.py
+/usr/lib/python2.5/site-packages/blur/DynamicTableTypes.py
+/usr/lib/python2.5/site-packages/blur/email.py
+/usr/lib/python2.5/site-packages/blur/globals.py
+/usr/lib/python2.5/site-packages/blur/hostlist_dump.py
+/usr/lib/python2.5/site-packages/blur/__init__.py
+/usr/lib/python2.5/site-packages/blur/jabber.py
+/usr/lib/python2.5/site-packages/blur/logredirect.py
+/usr/lib/python2.5/site-packages/blur/path_remove_dups.py
+/usr/lib/python2.5/site-packages/blur/project_times.py
+/usr/lib/python2.5/site-packages/blur/quickinit.py
+/usr/lib/python2.5/site-packages/blur/reports.py
+/usr/lib/python2.5/site-packages/blur/termctl.py
+/usr/lib/python2.5/site-packages/blur/user_last_logon.py
+/usr/lib/python2.5/site-packages/stoneconfig.py
+/usr/share/sip/blur/modelgrouper.sip
+/usr/share/sip/blur/lostconnectiondialog.sip
+/usr/share/sip/blur/recorddrag.sip
+/usr/share/sip/blur/graphiteoptionswidget.sip
+/usr/share/sip/blur/recordsupermodel.sip
+/usr/share/sip/blur/busywidget.sip
+/usr/share/sip/blur/recordlistmodel.sip
+/usr/share/sip/blur/stonegui.sip
+/usr/share/sip/blur/htmlhighlighter.sip
+/usr/share/sip/blur/graphitewidget.sip
+/usr/share/sip/blur/fieldlineedit.sip
+/usr/share/sip/blur/fieldcheckbox.sip
+/usr/share/sip/blur/configdbdialog.sip
+/usr/share/sip/blur/recordlistview.sip
+/usr/share/sip/blur/qvariantcmp.sip
+/usr/share/sip/blur/graphitedialog.sip
+/usr/share/sip/blur/fieldspinbox.sip
+/usr/share/sip/blur/graphitesourceswidget.sip
+/usr/share/sip/blur/recorddelegate.sip
+/usr/share/sip/blur/recordtreeview.sip
+/usr/share/sip/blur/graphitesource.sip
+/usr/share/sip/blur/recordcombo.sip
+/usr/share/sip/blur/supermodel.sip
+/usr/share/sip/blur/richtexteditor.sip
+/usr/share/sip/blur/modeliter.sip
+/usr/share/sip/blur/fieldtextedit.sip
+/usr/local/lib/libstone.so.1.0.0
+/usr/local/lib/libstonegui.so.1.0.0
+
+%clean
+

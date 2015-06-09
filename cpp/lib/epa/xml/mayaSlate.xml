@@ -1,0 +1,4 @@
+<software name="mayaSlate">
+	<add key="MAYA_PLUG_IN_PATH">$DRD_SOFTWARE_INT/mayaSlate_cpp/lin64/200900/v01_00_01</add>
+	<add key="MAYA_SCRIPT_PATH">$DRD_SOFTWARE_INT/mayaSlate_cpp/lin64/200900/v01_00_01/mel</add>
+</software>

@@ -1,0 +1,34 @@
+[Database]
+DatabaseDriver=QPSQL7
+DatabaseName=blur
+Host=farm_db_host
+Password=password
+Port=5432
+Timeout=10
+User=farmer
+SqlErrorEmailList=your.email@domain.com
+
+[Display Prefs]
+Icon Size=16,16
+
+[Email]
+Server=smtp.drd.roam
+Domain=@drdstudios.com
+
+[Logging]
+EchoStdOut=true
+Enabled=true
+File=/var/log/ab/manager.log
+MaxFiles=10
+MaxSeverity=3
+MaxSize=104857600
+
+[Update Server]
+Enabled=false
+ExecOfflineCommands=false
+Host=farm_db_host
+LastTransactionFile=update_manager_transaction.last
+MaxAttempts=-1
+Port=25565
+RetryRate=1000
+

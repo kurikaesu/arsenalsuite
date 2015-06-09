@@ -1,0 +1,18 @@
+
+CREATE OR REPLACE FUNCTION automaticallyCCIT() RETURNS trigger AS '
+BEGIN
+PERFORM * FROM cc WHERE bug_id = NEW.bug_id AND who = 11;
+IF NOT FOUND THEN
+ INSERT INTO cc(bug_id,who) VALUES (NEW.bug_id, 11);
+END IF;
+RETURN new;
+END;
+' LANGUAGE plpgsql;
+
+DROP TRIGGER automaticallyCCIT ON bugs;
+
+CREATE TRIGGER automaticallyCCIT
+AFTER INSERT
+ON bugs
+FOR EACH ROW
+EXECUTE PROCEDURE automaticallyCCIT();

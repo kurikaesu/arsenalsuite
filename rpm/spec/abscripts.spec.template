@@ -1,0 +1,67 @@
+Summary: Arsenal Daemon Scripts
+Name: abscripts
+Version: 1.0
+Release: DrD
+License: GPL
+Group: Applications/Programming
+Distribution: CentOS
+Vendor: Dr. D Studios
+Packager: Aren Villanueva <aren.villanueva@drdstudios.com>
+BuildRoot:
+AutoReqProv: No
+
+%define _unpackaged_files_terminate_build 0
+
+%description
+Daemon scripts for Arsenal Suite.
+Installs to /usr/local/share/ab/
+
+%files
+%defattr(-,root,root,-)
+/usr/local/share/ab/joberror_handler_initscript.sh
+/usr/local/share/ab/rrd_stats_collector_initscript.sh
+/usr/local/share/ab/manager.py
+/usr/local/share/ab/unassign_tasks_initscript.sh
+/usr/local/share/ab/missing_timesheet_handler.py
+/usr/local/share/ab/reaper_initscript.sh
+/usr/local/share/ab/server_file_controller.py
+/usr/local/share/ab/render_host_checker.py
+/usr/local/share/ab/verifier.py
+/usr/local/share/ab/sys_path.py
+/usr/local/share/ab/joberror_handler.py
+/usr/local/share/ab/notifier.py
+/usr/local/share/ab/reclaim_tasks_initscript.sh
+/usr/local/share/ab/import_users.py
+/usr/local/share/ab/conference_logger.py
+/usr/local/share/ab/unassign_tasks.py
+/usr/local/share/ab/render_host_checker_initscript.sh
+/usr/local/share/ab/email_farm_stats.py
+/usr/local/share/ab/manager_initscript.sh
+/usr/local/share/ab/rrd_stats_collector.py
+/usr/local/share/ab/initab.py
+/usr/local/share/ab/notifier_initscript.sh
+/usr/local/share/ab/verifier_plugin_factory.py
+/usr/local/share/ab/manager_test.py
+/usr/local/share/ab/energy_saver.py
+/usr/local/share/ab/db_pruner.py
+/usr/local/share/ab/arsenal_api_example.py
+/usr/local/share/ab/email_calendar_data.py
+/usr/local/share/ab/reclaim_tasks.py
+/usr/local/share/ab/reaper.py
+/usr/local/share/ab/drd_manager.py
+/usr/local/share/ab/energy_saver_initscript.sh
+/usr/local/share/ab/verifier_plugins/urgentPrios.py
+/usr/local/share/ab/verifier_plugins/addFastLane.py
+/usr/local/share/ab/verifier_plugins/denyjob.py
+/usr/local/share/ab/verifier_plugins/setShotName.py
+/usr/local/share/ab/verifier_plugins/wenv.py
+/usr/local/share/ab/verifier_plugins/bad_paths.py
+/usr/local/share/ab/verifier_plugins/check_md5.py
+/usr/local/share/ab/verifier_plugins/maxTaskTime.py
+/usr/local/share/ab/verifier_plugins/addServices.py
+/usr/local/share/ab/verifier_plugins/wrasql_client_api.py
+/usr/local/share/ab/verifier_plugins/checkOnTens.py
+/usr/local/share/ab/verifier_plugins/adjustPriority.py
+
+%clean
+

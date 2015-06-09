@@ -1,0 +1,8 @@
+<software name="bedlamGui">
+	<dependOn>bedlam</dependOn>
+	<set key="EPA_WORKINGDIR">$DRD_SOFTWARE_INT/bedlamGui/v00_00_10</set>
+	<set key="EPA_CMDLINE">python2.5 bedlamGuiCmd.py</set>
+	<set key="EPA_ICON">$DRD_SOFTWARE_INT/bedlamGui/v00_00_14/images/bedlam.png</set>
+	<set key="BEDLAMGUI">$DRD_SOFTWARE_INT/bedlamGui/v00_00_14</set>
+	<add key="PYTHONPATH">$BEDLAMGUI</add>
+</software>

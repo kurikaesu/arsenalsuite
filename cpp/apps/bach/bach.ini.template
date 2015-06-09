@@ -1,0 +1,37 @@
+[Database]
+DatabaseDriver=QPSQL7
+DatabaseName=bach
+EchoMode=EchoSelect,EchoUpdate,EchoInsert,EchoDelete
+FrameGeometry=148,111,1174,806
+Host=sql01
+JobSplitterPos=350,570
+MainSplitterPos=229,939
+MainWindowDockPos=\n\n\nToolbar,\n[Toolbar,0,0,-1,-1,1]\n\n\n\n\nBookmarks,\n[Bookmarks,0,0,150,-1,0]\n
+Options=
+Password=sonja
+Port=5432
+ReconnectDelay=30
+ShowSettingsMenu=false
+Timeout=2
+User=barry
+
+[Display Prefs]
+Icon Size=16,16
+
+[Logging]
+EchoStdOut=true
+Enabled=true
+File=/tmp/bach.log
+MaxFiles=10
+MaxSeverity=5
+MaxSize=10485760
+
+[Update Server]
+Enabled=false
+ExecOfflineCommands=false
+Host=dalton
+LastTransactionFile=update_manager_transaction.last
+MaxAttempts=-1
+Port=25565
+RetryRate=1000
+

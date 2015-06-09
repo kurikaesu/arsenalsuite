@@ -1,0 +1,5 @@
+<software name="doxygen">
+	<set key="EPA_WORKINGDIR">$DRD_SOFTWARE_EXT/doxygen/$DRD_PLATFORM/v1_5_7/bin</set>
+	<set key="EPA_CMDLINE">doxygen</set>
+	<add key="PATH">$DRD_SOFTWARE_EXT/doxygen/$DRD_PLATFORM/v1_5_7/bin</add>
+</software>

@@ -1,0 +1,6 @@
+<software name="cmake">
+	<set key="EPA_WORKINGDIR">$DRD_SOFTWARE_EXT/cmake/$DRD_PLATFORM/v2_6_2/bin</set>
+	<set key="EPA_CMDLINE">cmake</set>
+	<set key="CMAKE_ROOT">$DRD_SOFTWARE_EXT/cmake/$DRD_PLATFORM/v2_6_2</set>
+	<add key="PATH">$CMAKE_ROOT/bin</add>
+</software>

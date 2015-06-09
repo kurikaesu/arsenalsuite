@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+<set key="DRD_JOB">hf2</set>
+<set key="DRD_FILEROOT" arch="lin64">/drd/jobs/hf2</set>
+<set key="DRD_FILEROOT" arch="win32">T:/drd/jobs/hf2</set>
+<set key="DRD_FILEROOT" arch="osx">/drd/jobs/hf2</set>
+<set key="DRD_SOFTWARE_EXT" arch="lin64">/drd/software/ext</set>
+<set key="DRD_SOFTWARE_EXT" arch="win32">T:/drd/software/ext</set>
+<set key="DRD_SOFTWARE_EXT" arch="osx">/drd/software/ext</set>
+<set key="DRD_SOFTWARE_INT" arch="lin64">/drd/software/int</set>
+<set key="DRD_SOFTWARE_INT" arch="win32">T:/drd/software/int</set>
+<set key="DRD_SOFTWARE_INT" arch="osx">/drd/software/int</set>
+<set key="DRD_PLATFORM" arch="lin64">lin64</set>
+<set key="DRD_PLATFORM" arch="win32">win32</set>
+<set key="DRD_PLATFORM" arch="osx">osx</set>
+</project>

@@ -1,0 +1,4 @@
+<software name="mayaBanksy">
+	<dependOn>python</dependOn>
+	<add key="PYTHONPATH">$DRD_SOFTWARE_INT/mayaBanksy/v0_5_0</add>
+</software>

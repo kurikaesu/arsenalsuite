@@ -1,0 +1,6 @@
+<software name="mayaSetup">
+	<add key="PYTHONPATH">$DRD_SOFTWARE_INT/mayaSetup_py/v00_01_01</add>
+	<add key="MAYA_SCRIPT_PATH">$DRD_SOFTWARE_INT/mayaSetup_py/v00_01_01</add>
+	<add key="PYTHONPATH">$DRD_SOFTWARE_PRF/global/maya</add>
+	<add key="XBMLANGPATH">$DRD_SOFTWARE_PRF/global/icons/%B</add>
+</software>

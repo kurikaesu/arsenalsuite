@@ -1,0 +1,7 @@
+<software name="epydoc">
+	<dependOn>python</dependOn>
+	<set key="EPA_WORKINGDIR">$DRD_SOFTWARE_EXT/python/v2_5_1/Scripts/</set>
+	<set key="EPA_CMDLINE">epydoc</set>
+	<set key="EPA_ICON">$DRD_SOFTWARE_EXT/python/v2_5_1/DLLs/py.ico</set>
+</software>
+

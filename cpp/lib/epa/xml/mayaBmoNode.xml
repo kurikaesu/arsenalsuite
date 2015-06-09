@@ -1,0 +1,3 @@
+<software name="mayaBmoNode">
+	<add key="MAYA_PLUG_IN_PATH">$DRD_SOFTWARE_INT/mayaBmoNode_cpp/lin64/200900/v0_0_0:$MAYA_PLUG_IN_PATH</add>
+</software>

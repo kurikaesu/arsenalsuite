@@ -1,0 +1,20 @@
+
+Currently tested building 32 and 64 bit with msvc 2008.
+
+You need to have Qt installed, QTDIR set to the install location, and %QTDIR%\bin in the PATH.
+
+To build pyqt run
+
+python build.py clean build install pyqt
+
+Depending on your Qt configuration some PyQt4 modules may not be built.  You may have to adjust which files are packaged in cpp\lib\PyQt4\PyQt4.nsi by commenting out the File XXX.pyd lines.
+
+On windows the burner and freezer both link statically to the python modules they depend on(pystone etc.), except for PyQt4 modules.  This is done so that the burner, freezer, and installed python modules can be updated independently of each other, for example testing a new burner without having to also compile and distribute everything else.
+
+Because of this you can't build the pyqt_modules target at the same time as the freezer or burner targets, because the former requires dynamic python modules be built, and the latter static.
+
+Generally once PyQt4 is built you only need to rebuild it during an upgrade, so the following two commands should get everything built.
+
+python build.py clean build install freezer burner sip:skip pyqt:skip
+python build.py clean build install pyqt_modules sip:skip pyqt:skip
+ 

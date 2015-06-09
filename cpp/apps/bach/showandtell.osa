@@ -1,0 +1,7 @@
+on run argv
+tell application "Finder"
+	open POSIX file (item 1 of argv) as string
+	select {POSIX file (item 2 of argv) as string}
+    activate
+end tell
+end run

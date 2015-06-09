@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/assfreezer_button.png</file>
+        <file>images/AssburnerIcon.png</file>
+        <file>images/AssburnerLogo.png</file>
+        <file>images/ArsenalBurnerIcon.png</file>
+        <file>images/ArsenalBurnerLogo.png</file>
+    </qresource>
+</RCC>

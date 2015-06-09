@@ -1,0 +1,4 @@
+<software name="nodeNamingConventions">
+	<set key="nodeNamingConventions">$DRD_SOFTWARE_INT/nodeNamingLib/v00_01_00/conventions/nodeNamingConventions.xml</set>
+	<add key="PYTHONPATH">$DRD_SOFTWARE_INT/nodeNamingLib/v00_01_00</add>
+</software>

@@ -1,0 +1,54 @@
+--- qabstractitemmodel.cpp.broken	2008-01-24 16:29:03.000000000 -0800
++++ qabstractitemmodel.cpp	2008-01-29 11:02:18.000000000 -0800
+@@ -482,6 +482,8 @@
+ void QAbstractItemModelPrivate::removePersistentIndexData(QPersistentModelIndexData *data)
+ {
+     int data_index = persistent.indexes.indexOf(data);
++    if( data_index < 0 ) return;
++
+     persistent.indexes.remove(data_index);
+     // make sure our optimization still works
+     if (persistent.previous == data)
+@@ -536,7 +538,13 @@
+ {
+     // no need to make invalidate recursive, since the *AboutToBeRemoved functions
+     // will register indexes to be invalidated recursively
+-    persistent.indexes[position]->index = QModelIndex();
++    QPersistentModelIndexData *data = persistent.indexes[position];
++    removePersistentIndexData(data);
++    data->index = QModelIndex();
++    // This must be set to zero, otherwise the following sequence will lead to a crash
++    // Model gets deleted, then already invalid persistent model index gets destroyed,
++    // trys to access model to call removePersistentIndexData...crash
++    data->model = 0;
+ }
+ 
+ void QAbstractItemModelPrivate::rowsAboutToBeInserted(const QModelIndex &parent,
+@@ -608,7 +616,7 @@
+             q_func()->index(old.row() - count, old.column(), parent);
+     }
+     QList<int> persistent_invalidated = persistent.invalidated.pop();
+-    for (int j = 0; j < persistent_invalidated.count(); ++j)
++    for (int j = persistent_invalidated.count()-1; j >= 0 ; --j)
+         invalidate(persistent_invalidated.at(j));
+ }
+ 
+@@ -681,15 +689,15 @@
+             q_func()->index(old.row(), old.column() - count, parent);
+     }
+     QList<int> persistent_invalidated = persistent.invalidated.pop();
+-    for (int j = 0; j < persistent_invalidated.count(); ++j)
++    for (int j = persistent_invalidated.count()-1; j >= 0 ; --j)
+         invalidate(persistent_invalidated.at(j));
+ }
+ 
+ void QAbstractItemModelPrivate::reset()
+ {
+     // invalidate persistent indexes
+-    for (int i = 0; i < persistent.indexes.count(); ++i)
+-        persistent.indexes[i]->index = QModelIndex();
++    invalidatePersistentIndexes();
++    persistent.indexes.clear();
+ }
+ 
+ /*!

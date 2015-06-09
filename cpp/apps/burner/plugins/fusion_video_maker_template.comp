@@ -1,0 +1,396 @@
+Composition {
+	CurrentTime = 400,
+	RenderRange = { 0, 400, },
+	GlobalRange = { 0, 1000, },
+	HiQ = true,
+	Version = "Fusion 5.2 build 54",
+	SavedOutputs = 0,
+	HeldTools = 0,
+	DisabledTools = 0,
+	LockedTools = 0,
+	AudioOffset = 0,
+	AutoRenderRange = true,
+	Resumable = true,
+	OutputClips = {
+		"C:\\temp\\test.avi",
+	},
+	Tools = {
+		Loader1 = Loader {
+			Clips = {
+				Clip {
+					ID = "Clip1",
+					Filename = "C:\\temp\\test_v2_0000.tif",
+					FormatID = "TiffFormat",
+					StartFrame = 0,
+					Length = 401,
+					Multiframe = false,
+					Saving = false,
+					LengthSetManually = true,
+					TrimIn = 0,
+					TrimOut = 400,
+					ExtendFirst = 0,
+					ExtendLast = 0,
+					Loop = 1,
+					Reverse = false,
+					ImportMode = 0,
+					PullOffset = 0,
+					AspectMode = 0,
+					Depth = 1,
+					TimeCode = 0,
+					KeyCode = "",
+					GlobalStart = 0,
+					GlobalEnd = 400,
+				},
+			},
+			Inputs = {
+				Depth = Input {
+					Value = 1,
+				},
+				EnableClipList = Input {
+					Value = 0,
+				},
+			},
+			ViewInfo = OperatorInfo {
+				Pos = { 55, 16.5, },
+			},
+		},
+		Saver1 = Saver {
+			CtrlWZoom = false,
+			Inputs = {
+				Clip = Input {
+					Value = Clip {
+						Filename = "C:\\temp\\test.avi",
+						FormatID = "AVIFormat",
+						StartFrame = 0,
+						Length = 0,
+						Multiframe = true,
+						Saving = true,
+						LengthSetManually = false,
+						TrimIn = 0,
+						TrimOut = 4294967295,
+						ExtendFirst = 0,
+						ExtendLast = 0,
+						Loop = 1,
+						Reverse = false,
+						ImportMode = 0,
+						PullOffset = 0,
+						AspectMode = 0,
+						Depth = 1,
+						GlobalStart = -1000000000,
+						GlobalEnd = 0,
+					},
+				},
+				OutputFormat = Input {
+					Value = FuID { "AVIFormat", },
+				},
+				SequenceStartFrame = Input {
+					Disabled = true,
+				},
+				Input = Input {
+					SourceOp = "Loader1",
+					Source = "Output",
+				},
+				["JpegFormat.Quality"] = Input {
+					Value = 100,
+				},
+				["AVIFormat.Compression"] = Input {
+					Value = 7,
+				},
+				["QuickTimeMovies.Compression"] = Input {
+					Value = FuID { "Sorenson Video 3_SVQ3", },
+				},
+			},
+			ViewInfo = OperatorInfo {
+				Pos = { 165, 16.5, },
+			},
+		},
+	},
+	Views = {
+		{
+			Mode = 3,
+			LayoutPreset = 0,
+			Left = 0,
+			Top = 0,
+			Width = 1564,
+			Height = 732,
+			Views = {
+				Main = MultiView {
+					Active = "Flow",
+					Flow = FlowView {
+						Flags = {
+							Navigator = true,
+							GridSnap = true,
+							PipesAlways = true,
+							Thumbnails = false,
+							FullIndicator = true,
+							RemoveRouters = true,
+						},
+						NavigatorSize = { 100, 100, },
+						Direction = "Horizontal",
+						PipeStyle = "Direct",
+						Scale = 1,
+						Offset = { 26, 29, },
+					},
+					Console = ConsoleView {
+						Show = {
+						},
+						History = {
+						},
+					},
+					Timeline = TimelineView {
+						TreeControlState = {
+						},
+						DisplayMode = "All Tools",
+						ShowCurrentTimeTools = false,
+						Filter = "Show All",
+						ShowSelectedTools = false,
+						ShowAnimatedToolsOnly = false,
+						ShowEditBoxes = false,
+						KeyFrameView = {
+							Position = { Left = 130, Bottom = 510, },
+							ScaleX = 0.742741390952059,
+							OffsetX = -49.763673193788,
+							OffsetY = 0,
+							AutoScaling = true,
+							AutoSnapTo = "frame",
+							AutoSnapToGuidelines = false,
+							GuidelinesSnapTo = "frame",
+						},
+						Spreadsheet = { LeftPos = 130, Visible = false, },
+					},
+					Spline = SplineEditorView {
+						LeftPos = 205,
+						ScaleX = 0.2,
+						ScaleY = 0.0034965034965035,
+						OffsetX = 368.6,
+						OffsetY = 0,
+						AutoScaling = true,
+						AutoSnapTo = "frame",
+						AutoSnapToGuidelines = true,
+						GuidelinesSnapTo = "frame",
+						ShowKeyMarkers = false,
+						IndependentHandles = false,
+						ShowNonSplineModifiers = false,
+						ShowOneToolOnly = false,
+						ShowSelectedTools = false,
+						ShowAllInputs = false,
+						Filter = "Show All",
+					},
+				},
+				Controls = MultiView {
+					Active = "Tools",
+				},
+				Time = {
+					VisibleRange = { 0, 1000, },
+				},
+			},
+			Layout = {
+				Columns = 2,
+				RatioX = 1,
+				RatioY = 1,
+				{
+					Rows = 3,
+					RatioX = 0.809800128949065,
+					RatioY = 0.00995732574679943,
+					{
+						Columns = 2,
+						RatioX = 1,
+						RatioY = 0.461979913916786,
+						{
+							ID = "Left",
+							RatioX = 0.500399042298484,
+							RatioY = 0.0093167701863354,
+							Pop = true,
+						},
+						{
+							ID = "Right",
+							RatioX = 0.499600957701516,
+							Pop = true,
+						},
+						Pop = true,
+					},
+					{
+						ID = "Main",
+						RatioY = 0.460545193687231,
+						Pop = true,
+					},
+					{
+						ID = "Time",
+						SnapY = 52,
+						Flat = true,
+					},
+				},
+				{
+					Rows = 2,
+					PixelX = 293,
+					{
+						ID = "Controls",
+						RatioX = 1,
+						RatioY = 1,
+					},
+					{
+						ID = "Transport",
+						FixedY = -2,
+					},
+				},
+			},
+		},
+	},
+	Prefs = {
+		Comp = {
+			AutoSave = {
+				Delay = 300,
+			},
+			NumberStyles = {
+				ClipFrame = 2,
+			},
+			FlowView = {
+				AutoSnap = false,
+				PipesOnTop = true,
+				ShowThumbnails = false,
+				GridSnap = true,
+				FullToolIndicator = true,
+			},
+			SplineEditor = {
+				AutoSnap = {
+					Keys = 18,
+				},
+			},
+			FrameFormat = {
+				GuideRatio = 0,
+				GuideX2 = 0,
+				DepthLock = false,
+				GuideY2 = 0,
+				GuideX1 = 1,
+				PerFeet = 1,
+				DepthFull = 1,
+				DepthPreview = 1,
+				Rate = 30,
+				Width = 1280,
+				Name = "HDTV 720",
+				GuideY1 = 1,
+				Height = 720,
+				DepthInteractive = 1,
+				DepthLoader = 1,
+			},
+			Interactive = {
+				Proxy = {
+					Scale = 2,
+					Auto = false,
+					AutoScale = 4,
+				},
+			},
+			Unsorted = {
+				RenderSettings = {
+					Configs = {
+						Final = {
+							Quality = true,
+							MotionBlur = true,
+							UpdateMode = "Some",
+							UseNetwork = false,
+							SizeType = 1,
+							CustomWidth = 200,
+							CustomHeight = 160,
+							CustomAspect = true,
+							StepRender = false,
+							StepSize = 5,
+							PriorityClasses = "all",
+							ShowSlaves = false,
+						},
+						Preview = {
+							Quality = false,
+							MotionBlur = true,
+							UpdateMode = "Some",
+							UseNetwork = false,
+							SizeType = 1,
+							CustomWidth = 200,
+							CustomHeight = 160,
+							CustomAspect = true,
+							StepRender = false,
+							StepSize = 5,
+							PriorityClasses = "all",
+							ShowSlaves = false,
+						},
+					},
+					CurrentConfig = "Final",
+					PreviewConfig = "Preview",
+				},
+			},
+			Preview = {
+				OutputDevice = "Left.A",
+			},
+			LastFile = "C:\\temp\\test_v2_0000.tif",
+			FilterModeName = "Show All",
+			Memory = {
+				Render = {
+					SimultaneousBranching = true,
+				},
+				FramesAtOnce = 1,
+				Interactive = {
+					SimultaneousBranching = true,
+				},
+			},
+			Timeline = {
+				ViewFilterMode = 0,
+			},
+			Views = {
+				Right = {
+					ViewLUT = {
+					},
+					Guides = {
+						Show = true,
+						Center = false,
+						SafeImage = false,
+						Film = true,
+						SafeTitle = false,
+					},
+					Viewer = {
+						EnableLUTs = false,
+						CheckerUnderlay = false,
+					},
+					Toolbar = {
+						Style = 0,
+						Size = 0,
+					},
+					OpToolbar = {
+						Style = 0,
+						Size = 0,
+					},
+				},
+				Left = {
+					ViewLUT = {
+					},
+					Guides = {
+						Show = true,
+						Center = false,
+						SafeImage = false,
+						Film = true,
+						SafeTitle = false,
+					},
+					Viewer = {
+						EnableLUTs = false,
+						ScaleMode = 0,
+						CheckerUnderlay = false,
+					},
+					Toolbar = {
+						Style = 0,
+						Size = 0,
+					},
+					OpToolbar = {
+						Style = 0,
+						Size = 0,
+					},
+				},
+			},
+			Cluster = {
+				SideFrames = 0,
+			},
+			QuickTime = {
+			},
+			Paths = {
+			},
+		},
+	},
+}
+
+ 

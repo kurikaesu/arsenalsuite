@@ -1,0 +1,24 @@
+Summary: Arsenal Burner Submit Library
+Name: absubmit
+Version: 1.0
+Release: DrD
+License: GPL
+Group: Libraries/Programming
+Distribution: CentOS
+Vendor: Dr. D Studios
+Packager: Aren Villanueva <aren.villanueva@drdstudios.com>
+BuildRoot:
+AutoReqProv: No
+
+%define _unpackaged_files_terminate_build 0
+
+%description
+Arsenal job submitter library
+
+%files
+%defattr(-,root,root,-)
+/usr/lib/python2.5/site-packages/blur/absubmit.so
+/usr/share/sip/blur/absubmit.sip
+/usr/share/sip/blur/submitter.sip
+/usr/local/lib/libabsubmit.so.1.0.0
+/usr/local/bin/absubmit

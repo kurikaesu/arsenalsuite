@@ -1,0 +1,401 @@
+Only in sip/: .svn
+Only in sip/: Makefile
+Only in sip/: README.Fink
+Only in sip/: README.HP-UX
+Only in sip/: THANKS
+Only in sip/: TODO
+Only in sip/: __init__.py
+Only in sip/: __init__.pyc
+Only in sip/: build.py
+Only in sip/: build.pyc
+Only in sip/custom: .svn
+Only in sip/: diff_from_4.9.1.diff
+Only in sip/doc: .svn
+Only in sip/doc: default.css
+Only in sip/doc: sipref.html
+Only in sip/doc: sipref.txt
+Only in sip/: sip.nsi
+Only in sip/: sipconfig.py
+Only in sip/: sipconfig.pyc
+Only in sip/sipgen: .svn
+Only in sip/sipgen: Makefile
+Only in sip/sipgen: export.o
+Only in sip/sipgen: export.obj
+diff -ru sip-4.9.1/sipgen/gencode.c sip/sipgen/gencode.c
+--- sip-4.9.1/sipgen/gencode.c	2009-10-23 10:13:16.000000000 -0700
++++ sip/sipgen/gencode.c	2009-10-23 11:36:50.294500000 -0700
+@@ -6070,6 +6070,20 @@
+     }
+ }
+ 
++/*
++ * Find the virtual error handler name for the given function.
++ */
++static char * findVirtualErrorHandler(moduleDef *mod, classDef *cd, overDef *od)
++{
++    char * veh = NULL;
++    if (od->virterrorhandler)
++        veh = od->virterrorhandler;
++    else if(cd->virterrorhandler)
++        veh = cd->virterrorhandler;
++    else
++        veh = mod->virterrorhandler;
++    return veh;
++}
+ 
+ /*
+  * Generate the catcher for a virtual function.
+@@ -6081,6 +6095,7 @@
+     argDef *res;
+     apiVersionRangeDef *avr;
+     const char *indent;
++    char * veh = findVirtualErrorHandler(mod,cd,od);
+ 
+     normaliseArgs(od->cppsig);
+ 
+@@ -6123,7 +6138,11 @@
+ 
+     prcode(fp,
+ "    sip_gilstate_t sipGILState;\n"
+-"    PyObject *meth;\n"
++"    PyObject *meth;\n");
++    if (veh)
++        prcode(fp,
++"    bool error = false;\n");
++	prcode(fp,
+ "\n"
+ "    meth = sipIsPyMethod(&sipGILState,");
+ 
+@@ -6305,6 +6324,7 @@
+     signatureDef saved;
+     argDef *ad;
+     int a, args_keep = FALSE, result_keep = FALSE;
++    char * veh = findVirtualErrorHandler(mod,cd,od);
+ 
+     saved = *vhd->cppsig;
+     fakeProtectedArgs(vhd->cppsig);
+@@ -6316,7 +6336,7 @@
+ 
+         generateBaseType(cd->iff, &od->cppsig->result, FALSE, fp);
+ 
+-        prcode(fp, " sipVH_%s_%d(sip_gilstate_t,PyObject *", vhd->module->name, vhd->virthandlernr);
++        prcode(fp, " sipVH_%s_%d(sip_gilstate_t,PyObject *,bool*", vhd->module->name, vhd->virthandlernr);
+     }
+     else
+     {
+@@ -6325,7 +6345,7 @@
+ 
+         generateBaseType(cd->iff, &od->cppsig->result, FALSE, fp);
+ 
+-        prcode(fp, " (*sipVH_%s_%d)(sip_gilstate_t,PyObject *", vhd->module->name, vhd->virthandlernr);
++        prcode(fp, " (*sipVH_%s_%d)(sip_gilstate_t,PyObject *,bool*", vhd->module->name, vhd->virthandlernr);
+     }
+ 
+     if (vhd->cppsig->nrArgs > 0)
+@@ -6368,6 +6388,7 @@
+         prcode(fp, "((sipVH_%s_%d)(sipModuleAPI_%s_%s->em_virthandlers[%d]))", vhd->module->name, vhd->virthandlernr, mod->name, vhd->module->name, vhd->virthandlernr);
+ 
+     prcode(fp,"(sipGILState,meth");
++    prcode(fp,"(sipGILState,meth,%s", veh ? "&error" : "0");
+ 
+     for (ad = od->cppsig->args, a = 0; a < od->cppsig->nrArgs; ++a, ++ad)
+     {
+@@ -6393,6 +6414,10 @@
+  
+     prcode(fp,");\n"
+         );
++	if (veh) {
++        prcode(fp,
++"    if (error) %s(this,sipPySelf);\n", veh);
++    }
+ }
+ 
+ 
+@@ -6953,7 +6978,7 @@
+ 
+     generateBaseType(NULL, &vhd->cppsig->result, FALSE, fp);
+ 
+-    prcode(fp," sipVH_%s_%d(sip_gilstate_t sipGILState,PyObject *sipMethod"
++    prcode(fp," sipVH_%s_%d(sip_gilstate_t sipGILState,PyObject *sipMethod,bool *error"
+         , vhd->module->name, vhd->virthandlernr);
+ 
+     if (vhd->cppsig->nrArgs > 0)
+@@ -7059,8 +7084,10 @@
+         if (error_flag)
+             prcode(fp,
+ "\n"
+-"    if (sipIsErr)\n"
+-"        PyErr_Print();\n"
++"    if (sipIsErr) {\n"
++"        if (error) *error = true;\n"
++"        else       PyErr_Print();\n"
++"    }\n"
+                 );
+ 
+         prcode(fp,
+@@ -7185,14 +7212,16 @@
+     if (isref)
+         prcode(fp,") < 0);\n"
+ "\n"
+-"    if (sipIsErr)\n"
++"    if (sipIsErr) {\n"
+             );
+     else
+-        prcode(fp,") < 0)\n"
++        prcode(fp,") < 0) {\n"
+             );
+ 
+     prcode(fp,
+-"        PyErr_Print();\n"
++"        if (error) *error = true;\n"
++"        else       PyErr_Print();\n"
++"    }\n"
+         );
+ 
+     /* Make a copy if needed. */
+Only in sip/sipgen: gencode.o
+Only in sip/sipgen: gencode.obj
+Only in sip/sipgen: heap.o
+Only in sip/sipgen: heap.obj
+diff -ru sip-4.9.1/sipgen/lexer.l sip/sipgen/lexer.l
+--- sip-4.9.1/sipgen/lexer.l	2009-10-23 10:13:16.000000000 -0700
++++ sip/sipgen/lexer.l	2009-10-23 11:19:09.841375000 -0700
+@@ -79,6 +79,7 @@
+ ^[ \t]*%DefaultMetatype     {return TK_DEFMETATYPE;}
+ ^[ \t]*%DefaultSupertype    {return TK_DEFSUPERTYPE;}
+ <INITIAL>^[ \t]*%End        {return TK_END;}
++^[ \t]*%VirtualErrorHandler {return TK_VIRTERRORHANDLER; }
+ class                       {return TK_CLASS;}
+ struct                      {return TK_STRUCT;}
+ public                      {return TK_PUBLIC;}
+Only in sip/sipgen: lexer.o
+Only in sip/sipgen: lexer.obj
+Only in sip/sipgen: main.o
+Only in sip/sipgen: main.obj
+
+diff -ru sip-4.9.1/sipgen/parser.y sip/sipgen/parser.y
+--- sip-4.9.1/sipgen/parser.y	2009-10-23 10:13:16.000000000 -0700
++++ sip/sipgen/parser.y	2009-10-23 11:00:04.138250000 -0700
+@@ -182,6 +182,7 @@
+ %token <text>   TK_PATHNAME
+ %token <text>   TK_STRING
+ %token          TK_VIRTUALCATCHERCODE
++%token          TK_VIRTERRORHANDLER
+ %token          TK_TRAVERSECODE
+ %token          TK_CLEARCODE
+ %token          TK_GETBUFFERCODE
+@@ -396,6 +397,7 @@
+     |   mappedtype
+     |   mappedtypetmpl
+     |   nsstatement
++    |   virterrorhandler
+     ;
+ 
+ nsstatement:    ifstart
+@@ -771,6 +773,11 @@
+         }
+     ;
+ 
++virterrorhandler:    TK_VIRTERRORHANDLER TK_NAME {
++            currentModule->virterrorhandler = $2;
++        }
++    ;
++
+ feature:    TK_FEATURE TK_NAME {
+             newQualifier(currentModule,-1,-1,$2,feature_qualifier);
+         }
+@@ -3350,6 +3357,12 @@
+             setHasDelayedDtors(mod);
+         }
+ 
++        if ((flg = findOptFlag(of,"VirtualErrorHandler",opt_name_flag)) != NULL)
++        {
++            cd->virterrorhandler = flg->fvalue.sval;
++        }
++
++
+         /*
+          * There are subtle differences between the add and concat methods and
+          * the multiply and repeat methods.  The number versions can have their
+@@ -4976,6 +4989,9 @@
+         }
+     }
+ 
++    of = findOptFlag(optflgs,"VirtualErrorHandler",opt_name_flag);
++    od->virterrorhandler = 0;
++
+     if (isvirt)
+     {
+         if (isSignal(od) && pluginPyQt3(pt))
+@@ -4991,6 +5007,11 @@
+         vhd->pysig = &od->pysig;
+         vhd->cppsig = (cppsig != NULL ? cppsig : &od->pysig);
+         vhd->virtcode = vcode;
++        od->virterrorhandler = ((of && of -> fvalue.sval) ? of -> fvalue.sval : 0);
++ 
++        if( od->virterrorhandler ) {
++            printf( "VirtualErrorHandler set to %s\n", od->virterrorhandler );
++        }
+ 
+         if (factory || xferback)
+             setIsTransferVH(vhd);
+@@ -5006,12 +5027,18 @@
+             vhd->next = mod->virthandlers;
+             mod->virthandlers = vhd;
+         }
++
++        if (of && !of -> fvalue.sval)
++            yyerror("%VirtualErrorHandler annotation must provide the name of the handler");
+     }
+     else
+     {
+         if (vcode != NULL)
+             yyerror("%VirtualCatcherCode provided for non-virtual function");
+ 
++        if (of != NULL)
++            yyerror("%VirtualErrorHandler provided for non-virtual function");
++
+         vhd = NULL;
+     }
+ 
+Only in sip/sipgen: sip.exe
+Only in sip/sipgen: sip.exe.manifest
+diff -ru sip-4.9.1/sipgen/sip.h sip/sipgen/sip.h
+--- sip-4.9.1/sipgen/sip.h	2009-10-23 10:13:16.000000000 -0700
++++ sip/sipgen/sip.h	2009-10-23 10:51:57.732000000 -0700
+@@ -728,6 +728,7 @@
+     int nrvirthandlers;                 /* The nr. of virtual handlers. */
+     int next_key;                       /* The next key to allocate. */
+     struct _virtHandlerDef *virthandlers;   /* The virtual handlers. */
++    char * virterrorhandler;            /* Name of the default virtual error handler */
+     licenseDef *license;                /* The software license. */
+     struct _classDef *proxies;          /* The list of proxy classes. */
+     struct _moduleDef *container;       /* The container module, if any. */
+@@ -866,6 +867,7 @@
+     virtHandlerDef *virthandler;        /* The virtual handler. */
+     char *prehook;                      /* The pre-hook name. */
+     char *posthook;                     /* The post-hook name. */
++    char *virterrorhandler;             /* Name of function used to handle python exceptions that occur in overridden virtual handlers */
+     struct _overDef *next;              /* Next in the list. */
+ } overDef;
+ 
+@@ -969,6 +971,7 @@
+     int classflags;                     /* The class flags. */
+     int pyqt4_flags;                    /* The PyQt4 specific flags. */
+     nameDef *pyname;                    /* The Python name. */
++    char * virterrorhandler;            /* Name of the default virtual error handler for the class */
+     ifaceFileDef *iff;                  /* The interface file. */
+     struct _classDef *ecd;              /* The enclosing scope. */
+     struct _classDef *real;             /* The real class if this is a proxy or extender. */
+diff -ru sip-4.9.1/sipgen/transform.c sip/sipgen/transform.c
+--- sip-4.9.1/sipgen/transform.c	2009-10-23 10:13:16.000000000 -0700
++++ sip/sipgen/transform.c	2009-10-23 11:21:42.888250000 -0700
+@@ -1590,7 +1590,13 @@
+                 for (od = mrocd->overs; od != NULL; od = od->next)
+                     if (od->common == md)
+                     {
+-                        if (isAbstract(od))
++                        /*
++                         * Mark classes as abstract if they have abstract virtual methods.
++                         * but only if the method is directly in the class, not inherited,
++                         * because the abstract method may already be implemented in a
++                         * derived class.
++                         */
++                        if (isAbstract(od) && mrocd == cd)
+                             setIsAbstractClass(cd);
+ 
+                         ifaceFilesAreUsedByOverload(&cd->iff->used, od);
+Only in sip/sipgen: transform.o
+Only in sip/sipgen: transform.obj
+Only in sip/siplib: .svn
+Only in sip/siplib: Makefile
+Only in sip/siplib: apiversions.obj
+Only in sip/siplib: bool.o
+Only in sip/siplib: bool.obj
+Only in sip/siplib: descriptors.o
+Only in sip/siplib: descriptors.obj
+Only in sip/siplib: objmap.o
+Only in sip/siplib: objmap.obj
+Only in sip/siplib: pysip.exp
+Only in sip/siplib: pysip.lib
+Only in sip/siplib: qtlib.o
+Only in sip/siplib: qtlib.obj
+Only in sip/siplib: sip.exp
+diff -ru sip-4.9.1/siplib/sip.h sip/siplib/sip.h
+--- sip-4.9.1/siplib/sip.h	2009-10-23 10:13:18.000000000 -0700
++++ sip/siplib/sip.h	2009-10-23 10:43:12.497625000 -0700
+@@ -1328,6 +1328,8 @@
+ #endif
+     int (*api_deprecated)(const char *classname, const char *method);
+     void (*api_keep_reference)(PyObject *self, int key, PyObject *obj);
++
++    sipExportedModuleDef * (*api_find_module)(const char * name);
+ } sipAPIDef;
+ 
+ 
+Only in sip/siplib: sip.lib
+Only in sip/siplib: sip.pyd
+Only in sip/siplib: sip.pyd.manifest
+Only in sip/siplib: sip_d.lib
+Only in sip/siplib: sip_d.pyd
+diff -ru sip-4.9.1/siplib/siplib.c sip/siplib/siplib.c
+--- sip-4.9.1/siplib/siplib.c	2009-10-23 10:13:18.000000000 -0700
++++ sip/siplib/siplib.c	2009-10-23 10:49:04.560125000 -0700
+@@ -137,6 +137,7 @@
+ static void sip_api_clear_any_slot_reference(sipSlot *slot);
+ static int sip_api_visit_slot(sipSlot *slot, visitproc visit, void *arg);
+ static void sip_api_keep_reference(PyObject *self, int key, PyObject *obj);
++static sipExportedModuleDef * sip_api_find_module(const char * name);
+ 
+ 
+ /*
+@@ -246,6 +247,7 @@
+     sip_api_unicode_as_wstring,
+     sip_api_deprecated,
+     sip_api_keep_reference
++    ,sip_api_find_module
+ };
+ 
+ 
+@@ -9906,3 +9908,17 @@
+ }
+ 
+ #endif
++
++
++/*
++ * Return the registered sip module's sipExportedModuleDef according
++ * to the modules name. NULL is returned if the module is not registered
++ */
++static sipExportedModuleDef * sip_api_find_module(const char *name)
++{
++    sipExportedModuleDef * em;
++    for (em = moduleList; em != NULL; em = em->em_next)
++        if (strcmp(sipNameOfModule(em),name) == 0)
++            return em;
++    return 0;
++}
+Only in sip/siplib: siplib.o
+Only in sip/siplib: siplib.obj
+Only in sip/siplib: threads.o
+Only in sip/siplib: threads.obj
+diff -ru sip-4.9.1/siputils.py sip/siputils.py
+--- sip-4.9.1/siputils.py	2009-10-23 10:13:16.000000000 -0700
++++ sip/siputils.py	2009-10-23 11:58:57.903875000 -0700
+@@ -1527,12 +1527,13 @@
+         mfile.write("\n$(TARGET): $(OFILES)\n")
+ 
+         if self.generator in ("MSVC", "MSVC.NET"):
++            implib = 'py' + self._target + '.lib'
+             if self.static:
+                 mfile.write("\t$(LIB) /OUT:$(TARGET) @<<\n")
+                 mfile.write("\t  $(OFILES)\n")
+                 mfile.write("<<\n")
+             else:
+-                mfile.write("\t$(LINK) $(LFLAGS) /OUT:$(TARGET) @<<\n")
++                mfile.write("\t$(LINK) $(LFLAGS) /OUT:$(TARGET) /IMPLIB:%s @<<\n" % implib)
+                 mfile.write("\t  $(OFILES) $(LIBS)\n")
+                 mfile.write("<<\n")
+ 
+Only in sip/: siputils.pyc
+Only in sip/specs: .svn

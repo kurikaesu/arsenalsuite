@@ -1,0 +1,11 @@
+
+
+# Array will be filled in with task numbers by assburner
+SCRIPT_TASK_NUMBERS = []
+
+def main()
+	for taskNumber in SCRIPT_TASK_NUMBERS:
+		print ("Rendering frame: %i" % taskNumber)
+		# Do work here
+	print "'INFO : Rendering done!"
+

@@ -1,0 +1,7 @@
+<software name="nuke">
+	<set key="NUKE">/opt/Nuke/5.1v3</set>
+	<set key="EPA_WORKINGDIR">$NUKE</set>
+	<set key="EPA_CMDLINE">$NUKE/Nuke5.1</set>
+	<set key="EPA_ICON">$NUKE/plugins/icons/icon48.png</set>
+	<set key="LM_LICENSE_FILE">27000@nukelic01</set>
+</software>

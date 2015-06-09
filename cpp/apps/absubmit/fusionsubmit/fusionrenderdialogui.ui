@@ -1,0 +1,452 @@
+<ui version="4.0" >
+ <class>FusionRenderDialogUI</class>
+ <widget class="QDialog" name="FusionRenderDialogUI" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>369</width>
+    <height>594</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Submit Fusion Render</string>
+  </property>
+  <layout class="QVBoxLayout" >
+   <item>
+    <layout class="QGridLayout" >
+     <property name="leftMargin" >
+      <number>0</number>
+     </property>
+     <property name="topMargin" >
+      <number>0</number>
+     </property>
+     <property name="rightMargin" >
+      <number>0</number>
+     </property>
+     <property name="bottomMargin" >
+      <number>0</number>
+     </property>
+     <property name="horizontalSpacing" >
+      <number>6</number>
+     </property>
+     <property name="verticalSpacing" >
+      <number>6</number>
+     </property>
+     <item row="0" column="2" >
+      <widget class="QPushButton" name="mChooseFileNameButton" >
+       <property name="maximumSize" >
+        <size>
+         <width>35</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text" >
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1" colspan="2" >
+      <widget class="QLineEdit" name="mFrameListEdit" />
+     </item>
+     <item row="3" column="0" >
+      <widget class="QLabel" name="label_4" >
+       <property name="text" >
+        <string>Priority:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1" colspan="2" >
+      <widget class="QComboBox" name="mOutputPathCombo" />
+     </item>
+     <item row="7" column="1" colspan="2" >
+      <widget class="QPushButton" name="mHostListButton" >
+       <property name="enabled" >
+        <bool>false</bool>
+       </property>
+       <property name="text" >
+        <string>Host List</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1" colspan="2" >
+      <widget class="ProjectCombo" name="mProjectCombo" />
+     </item>
+     <item row="2" column="0" >
+      <widget class="QLabel" name="label_3" >
+       <property name="text" >
+        <string>FrameList:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" colspan="2" >
+      <widget class="QLineEdit" name="mJobNameEdit" />
+     </item>
+     <item row="3" column="1" colspan="2" >
+      <widget class="QSpinBox" name="mPrioritySpin" >
+       <property name="minimum" >
+        <number>1</number>
+       </property>
+       <property name="value" >
+        <number>50</number>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0" >
+      <widget class="QLabel" name="label" >
+       <property name="text" >
+        <string>FileName:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0" >
+      <widget class="QCheckBox" name="mAllHostsCheck" >
+       <property name="text" >
+        <string>All Hosts</string>
+       </property>
+       <property name="checked" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1" >
+      <widget class="QLineEdit" name="mFileNameEdit" />
+     </item>
+     <item row="1" column="0" >
+      <widget class="QLabel" name="label_2" >
+       <property name="text" >
+        <string>Job Name:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0" >
+      <widget class="QLabel" name="label_10" >
+       <property name="text" >
+        <string>Output(AF View):</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0" >
+      <widget class="QLabel" name="label_9" >
+       <property name="text" >
+        <string>Project:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0" colspan="3" >
+      <widget class="QCheckBox" name="mAllFramesAsSingleTaskCheck" >
+       <property name="text" >
+        <string>Render All Frames As Single Task(AVI/QT Output)</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox" >
+     <property name="title" >
+      <string>Options</string>
+     </property>
+     <property name="flat" >
+      <bool>false</bool>
+     </property>
+     <layout class="QVBoxLayout" >
+      <item>
+       <widget class="QCheckBox" name="mSubmitSuspendedCheck" >
+        <property name="text" >
+         <string>Suspend Job When Submission Finishes</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="mDeleteOnCompleteCheck" >
+        <property name="text" >
+         <string>Delete Job On Completion</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" >
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+        <property name="leftMargin" >
+         <number>0</number>
+        </property>
+        <property name="topMargin" >
+         <number>0</number>
+        </property>
+        <property name="rightMargin" >
+         <number>0</number>
+        </property>
+        <property name="bottomMargin" >
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_6" >
+          <property name="text" >
+           <string>Render Order:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="mSequentialRadio" >
+          <property name="text" >
+           <string>Sequential</string>
+          </property>
+          <property name="checked" >
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="mRandomRadio" >
+          <property name="text" >
+           <string>Random</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" >
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+        <property name="leftMargin" >
+         <number>0</number>
+        </property>
+        <property name="topMargin" >
+         <number>0</number>
+        </property>
+        <property name="rightMargin" >
+         <number>0</number>
+        </property>
+        <property name="bottomMargin" >
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_5" >
+          <property name="text" >
+           <string>Packet Size:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="mPacketSizeSpin" >
+          <property name="enabled" >
+           <bool>false</bool>
+          </property>
+          <property name="minimum" >
+           <number>1</number>
+          </property>
+          <property name="maximum" >
+           <number>99999999</number>
+          </property>
+          <property name="value" >
+           <number>5</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="mAutoPacketSizeCheck" >
+          <property name="text" >
+           <string>Auto</string>
+          </property>
+          <property name="checked" >
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="mDeleteFramesBeforeSubmitCheck" >
+        <property name="text" >
+         <string>Delete Frames Before Submit (sleeps 60 seconds before submit)</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2" >
+     <property name="title" >
+      <string>Notifications</string>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="leftMargin" >
+       <number>6</number>
+      </property>
+      <property name="topMargin" >
+       <number>6</number>
+      </property>
+      <property name="rightMargin" >
+       <number>6</number>
+      </property>
+      <property name="bottomMargin" >
+       <number>6</number>
+      </property>
+      <property name="horizontalSpacing" >
+       <number>6</number>
+      </property>
+      <property name="verticalSpacing" >
+       <number>6</number>
+      </property>
+      <item row="1" column="0" >
+       <widget class="QLabel" name="label_8" >
+        <property name="text" >
+         <string>Completion:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" >
+       <widget class="QLabel" name="label_7" >
+        <property name="text" >
+         <string>Errors:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" >
+       <widget class="QCheckBox" name="mEmailCompletionCheck" >
+        <property name="text" >
+         <string>Email</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" >
+       <widget class="QCheckBox" name="mEmailErrorsCheck" >
+        <property name="text" >
+         <string>Email</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2" >
+       <widget class="QCheckBox" name="mJabberCompletionCheck" >
+        <property name="text" >
+         <string>Jabber</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" >
+       <widget class="QCheckBox" name="mJabberErrorsCheck" >
+        <property name="text" >
+         <string>Jabber</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" >
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <property name="leftMargin" >
+      <number>0</number>
+     </property>
+     <property name="topMargin" >
+      <number>0</number>
+     </property>
+     <property name="rightMargin" >
+      <number>0</number>
+     </property>
+     <property name="bottomMargin" >
+      <number>0</number>
+     </property>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="mOkButton" >
+       <property name="text" >
+        <string>&amp;Ok</string>
+       </property>
+       <property name="default" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="mCancelButton" >
+       <property name="text" >
+        <string>&amp;Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ProjectCombo</class>
+   <extends>QComboBox</extends>
+   <header>blur/Classesui.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>mFileNameEdit</tabstop>
+  <tabstop>mChooseFileNameButton</tabstop>
+  <tabstop>mJobNameEdit</tabstop>
+  <tabstop>mFrameListEdit</tabstop>
+  <tabstop>mPrioritySpin</tabstop>
+  <tabstop>mSequentialRadio</tabstop>
+  <tabstop>mRandomRadio</tabstop>
+  <tabstop>mPacketSizeSpin</tabstop>
+  <tabstop>mAutoPacketSizeCheck</tabstop>
+  <tabstop>mEmailErrorsCheck</tabstop>
+  <tabstop>mJabberErrorsCheck</tabstop>
+  <tabstop>mEmailCompletionCheck</tabstop>
+  <tabstop>mJabberCompletionCheck</tabstop>
+  <tabstop>mOkButton</tabstop>
+  <tabstop>mCancelButton</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>mOkButton</sender>
+   <signal>clicked()</signal>
+   <receiver>FusionRenderDialogUI</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>192</x>
+     <y>373</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>157</x>
+     <y>390</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>mCancelButton</sender>
+   <signal>clicked()</signal>
+   <receiver>FusionRenderDialogUI</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>310</x>
+     <y>378</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>312</x>
+     <y>392</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

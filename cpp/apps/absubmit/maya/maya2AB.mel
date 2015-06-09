@@ -1,0 +1,577 @@
+proc string jabberAuthenticate(string $name)
+{
+	$name = strip($name);
+	$usersStream = " " + system("curl http://intranet/_systools/getjabberlogins.cgi 2> /dev/null | xargs") + " ";
+	if ( size( match( ( " " + $name + " " ), $usersStream ) ) > 0 )
+		return ( $name + ":j" );
+	else
+	{
+		progressWindow -status "Submission Canceled!" -endProgress;
+		error("user " + $name + " is not a valid user");
+		
+		return "";
+	}
+}
+
+proc string emailAuthenticate(string $name)
+{
+	$name = strip($name);
+	$usersStream = " " + system("curl http://mail.entityfx.com/_systools/getemailnames.php 2> /dev/null | xargs") + " ";
+	if ( size( match( ( " " + $name + " " ), $usersStream ) ) > 0 )
+		return ( $name + ":e" );
+	else
+	{
+		progressWindow -status "Submission Canceled!" -endProgress;
+		error("user " + $name + " is not a valid user");
+		
+		return "";
+	}
+}
+
+global proc doMaya2AB(int $saveNeeded)
+{
+
+string $byFrame = `intFieldGrp -q -v1 byInt`;
+string $byFrameConfirm;
+
+if ($byFrame != 1)
+	{
+	$byFrameConfirm =  `confirmDialog -title "Warning" 
+		-message "By Frame is not set to 1 ... Are you sure?" 
+		-button "Yes" 
+		-button "No" 
+		-defaultButton "Yes" 
+		-cancelButton "No" 
+		-dismissString "No"`;
+	if ($byFrameConfirm == "Yes")
+		{
+		print "\n==========\nConfirmed\n==========\n";
+		}
+	else
+		{
+		error "Canceled ... Please change the By Frame value."; 
+		}
+	}
+
+  progressWindow -title "Submit Progress" -maxValue 10 -step 1 -isInterruptable true;
+  progressWindow -edit -progress 1 -status "Starting submission";
+  progressWindow -edit -progress 2 -status "Gathering options";
+
+  string $append = `textFieldGrp -q -text appendCmd`;
+  int $location = 1;
+  if( `filetest -f "/mnt/x5/_mnt_x5"`==1 )
+    $location = 2;
+  int $doChainQt = `radioButtonGrp -q -sl chainQtRadio`;
+
+	string $arch = system("arch");
+	$arch = strip($arch);
+	string $return = "cd /mnt/x5/Global/infrastructure/ab/"+$arch+"/absubmit && LD_LIBRARY_PATH=../lib ./absubmit";
+
+  int $frameRangeOpt = `radioButtonGrp -q -sl frameRangeOpt`;
+	int $startFrame = 0;
+	int $endFrame = 0;
+	if( $frameRangeOpt == 1 ) {
+		$startFrame = `intFieldGrp -q -v1 startInt`;
+		$endFrame = `intFieldGrp -q -v1 endInt`;
+    $return += (" frameStart "+$startFrame);
+	  $return += (" frameEnd "+$endFrame);
+	}
+
+  string $userName = user();
+// GENERATE A NOTIFICATION LIST
+  string $notifyOnComplete = "";
+  if ( `checkBox -q -value jMeOnComplete` )
+  {
+	if ( $notifyOnComplete != "" )
+		$notifyOnComplete += ",";
+	$notifyOnComplete += jabberAuthenticate( $userName );
+  }
+  if ( `checkBox -q -value jCoordsOnComplete` )
+  {
+	int $doRead = 0;
+	string $filePath = `checkBox -q -annotation jCoordsOnComplete`;
+	//print ( "open: ==" + $filePath + "==\n" );
+	$fp = fopen ($filePath, "r");
+	while ( !`feof $fp` )
+	{
+		$line = `fgetline $fp`;
+		if ( strip($line) == "" || size( match( "^\[", $line) ) > 0 )
+			if ( $doRead == 1 )
+				break;
+			else
+				continue;
+
+		if ( size(match( "\\\[coords_jabber\\\]", $line )) > 0 )
+		{
+			$doRead = 1;
+			//print ( "header:" + $line );
+			$line = `fgetline $fp`;
+		}
+		if ( $doRead )
+		{
+			//print ( "name line:" + $line );
+			$name = strip($line);
+			$notify = jabberAuthenticate( $name );
+			if ( size( match( $notify, $notifyOnComplete ) ) == 0 )
+			{
+				if ( size($notifyOnComplete) != 0 )
+					$notifyOnComplete += ",";
+				$notifyOnComplete += $notify;
+			}
+		}
+	}
+	fclose $fp;
+
+  }
+  string $jPeople = `textFieldGrp -q -text jPeopleOnComplete`;
+  string $toks[];
+  if ( $jPeople != "" )
+  {
+	$numToks = `tokenize $jPeople ", " $toks`;
+	for ( $i = 0; $i < $numToks; $i++ )
+	{
+		if ( $toks[$i] != "" )
+		{
+			$notify = jabberAuthenticate( $toks[$i] );
+			if ( size( match( $notify, $notifyOnComplete ) ) == 0 )
+			{
+				if ( $notifyOnComplete != "" )
+					$notifyOnComplete += ",";
+				$notifyOnComplete += $notify;
+			}
+		}
+	}
+  }
+	//EMAIL
+  if ( `checkBox -q -value eMeOnComplete` )
+  {
+	if ( $notifyOnComplete != "" )
+		$notifyOnComplete += ",";
+	$notifyOnComplete += emailAuthenticate($userName);
+  }
+  if ( `checkBox -q -value eCoordsOnComplete` )
+  {
+	int $doRead = 0;
+	string $filePath = `checkBox -q -annotation jCoordsOnComplete`;
+	//print ( "open: ==" + $filePath + "==\n" );
+	$fp = fopen ($filePath, "r");
+	while ( !`feof $fp` )
+	{
+		$line = `fgetline $fp`;
+		if ( strip($line) == "" || size( match( "^\[", $line) ) > 0 )
+			if ( $doRead == 1 )
+				break;
+			else
+				continue;
+
+		if ( size(match( "\\\[coords_email\\\]", $line )) > 0 )
+		{
+			$doRead = 1;
+			//print ( "header:" + $line );
+			$line = `fgetline $fp`;
+		}
+		if ( $doRead )
+		{
+			//print ( "name line:" + $line );
+			$name = strip($line);
+			$notify = emailAuthenticate( $name );
+			if ( size( match( $notify, $notifyOnComplete ) ) == 0 )
+			{
+				if ( size($notifyOnComplete) != 0 )
+					$notifyOnComplete += ",";
+				$notifyOnComplete += $notify;
+			}
+		}
+	}
+	fclose $fp;
+
+  }
+  string $ePeople = `textFieldGrp -q -text ePeopleOnComplete`;
+  string $toks[];
+  if ( $ePeople != "" )
+  {
+	$numToks = `tokenize $ePeople ", " $toks`;
+	for ( $i = 0; $i < $numToks; $i++ )
+	{
+		if ( $toks[$i] != "" )
+		{
+			$notify = emailAuthenticate( $toks[$i] );
+			if ( size( match( $notify, $notifyOnComplete ) ) == 0 )
+			{
+				if ( $notifyOnComplete != "" )
+					$notifyOnComplete += ",";
+				$notifyOnComplete += $notify;
+			}
+		}
+	}
+  }
+// \NOTIFICATION LIST
+
+	$return += (" user "+$userName);
+
+	string $file = `file -q -sn`;
+	$return += (" fileName "+$file);
+
+	string $renderDir = `textFieldGrp -q -text outputText`;
+	system("mkdir -p "+$renderDir);
+
+	string $project = `textFieldGrp -q -text projectText`;
+	$return += (" projectPath "+$project);
+
+	string $pName = `textFieldGrp -q -text projectNameText`;
+	$return += " projectName \""+$pName+"\"";
+
+	string $jobName = `textFieldGrp -q -text jobName`;
+
+	if( int($byFrame) > 1 )
+		$return += (" frameNth "+$byFrame);
+
+	string $packetSize = `intFieldGrp -q -v1 packetSize`;
+	$return += (" packetSize "+$packetSize);
+
+	$return += (" height "+`getAttr defaultResolution.height`);
+	$return += (" width "+`getAttr defaultResolution.width`);
+	$return += (" packetType continuous");
+	
+	if ( $notifyOnComplete != "" ) // APPEND A NOTIFICATION LIST IF NECESSARY
+		$return += (" notifyOnComplete " + $notifyOnComplete);
+
+	$return += (" noCopy true");
+
+	select defaultRenderGlobals;
+	string $AB = `getAttr .preRenderMel`;
+	if( `match "M2AB" $AB`=="" )
+		$saveNeeded = 1;
+	$AB = `getAttr .postRenderMel`;
+	if( `match "M2AB" $AB`=="" )
+		$saveNeeded = 1;
+	$AB = `getAttr .postMel`;
+	if( `match "M2AB" $AB`=="" )
+		$saveNeeded = 1;
+
+	setAttr -type "string" .preRenderMel "print(\"M2AB: starting frame\\n\");";
+	setAttr -type "string" .postRenderMel "print(\"M2AB: completed frame\\n\");";
+	setAttr -type "string" .postMel "print(\"M2AB: completed job\\n\");";
+
+  if ( `progressWindow -query -isCancelled` )
+    return;
+  progressWindow -edit -progress 4 -status "Saving project";
+
+  if( $saveNeeded == 1 ) {
+    if ( `progressWindow -query -isCancelled` )
+      return;
+    progressWindow -edit -progress 5 -status "Saving scene";
+    file -s;
+  }
+
+  if ( `progressWindow -query -isCancelled` )
+    return;
+  progressWindow -edit -progress 6 -status "Syncing files";
+	int $syncId = 0;
+  if( $location == 2 )
+    $syncId = chainSync();
+	if( $syncId > 0 )
+		$return += (" deps "+$syncId);
+
+  // if the user wants a QT generated for the frames chain it here
+  // the layer editor must be open to set the current layer
+  if ( `progressWindow -query -isCancelled` )
+    return;
+  progressWindow -edit -progress 8 -status "Talking to AB";
+  string $crl = `editRenderLayerGlobals -q -crl`;
+  string $renderLayers[] = `ls -type "renderLayer"`;
+  if(size($renderLayers)==1)
+  {
+		setAttr ($renderLayers[0]+".renderable") 1;
+  }
+  for( $lName in $renderLayers ) {
+		if( getAttr($lName+".renderable") && `gmatch $lName "*:*"`==0 ) {    
+			progressWindow -edit -progress 8 -status ("Submitting "+$lName);
+      editRenderLayerGlobals -crl $lName;
+			string $thisJob = $return;
+
+			if( $frameRangeOpt == 2 ) {
+				$startFrame = `getAttr "defaultRenderGlobals.startFrame"`;
+				$endFrame   = `getAttr "defaultRenderGlobals.endFrame"`;
+				$thisJob += (" frameStart "+$startFrame);
+				$thisJob += (" frameEnd "+$endFrame);
+			}
+
+			if( currentRenderer() == "mentalRay" ) {
+				setCurrentRenderer mentalRay;
+				mentalrayUI "";
+				setAttr mentalrayGlobals.exportVerbosity 5;
+				$thisJob += " jobType MentalRay"+version();
+				$thisJob += " renderer MentalRay";
+			} else {
+				$thisJob += " jobType Maya"+version();
+				$thisJob += " renderer Maya";
+			}
+
+			string $parts[] = imageNameParts();
+			$thisJob += " outputPath "+$renderDir+"/"+$parts[0]+".."+$parts[2];
+			if( $lName == "defaultRenderLayer" )
+				$thisJob += " job \""+ $jobName+"\"";
+			else
+				$thisJob += " job \""+ $jobName+"_"+$lName +"\"";
+			$thisJob += " append \""+ $append +" -rl "+$lName+"\"";
+			$thisJob += " 2> /dev/null | grep keyJob";
+			print ($thisJob+"\n");
+			string $result = system($thisJob);
+			string $resTokens[];
+			tokenize( $result, "|", $resTokens ); 
+			string $jobId = $resTokens[1];
+			$jobId = strip($jobId);
+			if( $doChainQt == 1 )
+			{
+				progressWindow -edit -progress 8 -status ("Quicktime for "+$lName);
+				chainQT( $jobId, $renderDir, $startFrame, $endFrame, $location );
+			}
+    }
+  }
+  editRenderLayerGlobals -crl $crl;
+
+  progressWindow -edit -progress 9 -status "Submission Complete!";
+}
+
+global proc chainQT(string $jobId, string $renderDir, int $startFrame, int $endFrame, int $location)
+{
+  print(" Render QT to:"+outputPath()+"\n");
+  string $parts[] = imageNameParts();
+
+  string $cmd = "perl /mnt/x5/tools/perl/scripts/autoqt_AB";
+  $cmd += " "+$jobId;
+  $cmd += " "+$renderDir;
+  $cmd += " "+$parts[0];
+  $cmd += " "+$parts[2];
+  $cmd += " "+$startFrame;
+  $cmd += " "+$endFrame;
+  if( $location == 2 )
+    $cmd += " 1";
+  else
+    $cmd += " 0";
+
+  print($cmd+"\n");
+  system($cmd);
+}
+
+global proc int chainSync()
+{
+  string $cmd = "perl /mnt/x5/tools/perl/scripts/sync_AB arnold pollux ";
+	       $cmd += `file -q -sn`;
+	       $cmd += " 2> /dev/null | grep keyJob";
+	print ($cmd+"\n");
+	string $result = system($cmd);
+	string $resTokens[];
+	tokenize( $result, "|", $resTokens ); 
+	string $jobId = $resTokens[1];
+	$jobId = strip($jobId);
+	return $jobId;
+}
+
+global proc maya2AB()
+{
+  string $scenePath = `file -q -sn`;
+  string $sceneName = `file -q -shn -sn`;
+  if (!size($sceneName))
+    error("Please save the scene first.");
+
+	int $renderableCameras = 0;
+  string $cameras[] = `ls -type "camera"`;
+  for( $cName in $cameras )
+		if( getAttr($cName+".renderable")==1 )
+			$renderableCameras++;
+
+	if( $renderableCameras != 1 )
+		error("Only scenes with one renderable camera allowed. Please save your scene after fixing.");
+
+	int $byFrame    = `getAttr "defaultRenderGlobals.byFrameStep"`;
+
+  string $prevFilePrefix = `getAttr defaultRenderGlobals.imageFilePrefix`;
+
+  string $renderLayers[] = `ls -type "renderLayer"`;
+  string $filePrefix = "%s%.4n%.e";
+  for( $lName in $renderLayers ) {
+		if( getAttr($lName+".renderable") && `gmatch $lName "*:*"`==0 ) {    
+			if( $lName != "defaultRenderLayer" )
+				$filePrefix = "%/l%s%_l%.4n%.e";
+		}
+	}
+
+  int $saveNeeded = 0;
+  if( $filePrefix != $prevFilePrefix )
+    $saveNeeded = 1;
+
+  setAttr -type "string" defaultRenderGlobals.imageFilePrefix $filePrefix;
+  setAttr defaultRenderGlobals.extensionPadding 4;
+  setAttr defaultRenderGlobals.imageFormat 5;
+	setMayaSoftwareFrameExt(3,0);
+
+	string $parts[];
+	string $file = `file -q -sn`;
+	tokenize($file, "/", $parts);
+	string $jobName = $parts[3] + "_" + $parts[5] + "_" + basenameEx(`file -q -shn -sn`);
+
+  string $currentDir = dirname(`file -q -sn`);
+  $currentDir = substitute( "scenes", $currentDir, "" );
+  workspace -o $currentDir;
+
+  string $project = `workspace -q -o`;
+  $project += "/";
+
+	string $pName = projectName();
+
+  string $renderDir = $project + "images/";
+  $renderDir += basenameEx(`file -q -shn -sn`) + "/";
+
+	string $window = `window -title "Maya To AB v0.52"`;
+	columnLayout -adj true;
+
+	textFieldGrp -label "Job Name" -text $jobName -width 460 -columnWidth 2 420 jobName;
+	textFieldGrp -label "Output Dir" -text $renderDir  -width 540 -columnWidth 2 500 outputText;
+	textFieldGrp -label "Project Name" -text $pName projectNameText;
+	textFieldGrp -label "Project Dir" -text $project  -width 540 -columnWidth 2 500 projectText;
+  radioButtonGrp
+		-label "Frame Range:"
+		-nrb 2
+		-sl 1
+		-labelArray2 "Timeline" "Render Settings"
+		-on1 ("intFieldGrp -e -vis 1 startInt; intFieldGrp -e -vis 1 endInt")
+		-on2 ("intFieldGrp -e -vis 0 startInt; intFieldGrp -e -vis 0 endInt")
+		frameRangeOpt;
+	intFieldGrp -label "Start Frame" -nf 1 -v1 `playbackOptions -q -min` startInt;
+	intFieldGrp -label "End Frame" -nf 1 -v1 `playbackOptions -q -max` endInt;
+
+	intFieldGrp -label "By Frame" -nf 1 -v1 $byFrame byInt;
+	intFieldGrp -label "Packet Size" -nf 1 -v1 0 -annotation "0 is 'Auto' packet size" packetSize;
+	textFieldGrp -label "Append Commands" -text ""  -width 500 -columnWidth 2 440 appendCmd;
+  radioButtonGrp -nrb 2
+        -label "QT movies"
+        -labelArray2 "Yes" "No"
+        -sl 2 chainQtRadio;
+	separator;
+
+$shotPath = substitute( "/shot.*", $scenePath, "" );
+$mayaPath = substitute( "/maya.*", $scenePath, "" );
+if ( size( $shotPath ) < size( $mayaPath ) )
+	$configsPath = ( $shotPath + "/.showConfigs" );
+else
+	$configsPath = ( $mayaPath + "/.showConfigs" );
+
+int $foundConfigs;
+	rowLayout -numberOfColumns 2 -columnWidth2 20 150;
+		text -label "";
+		columnLayout;
+			text -label "when job completes:";
+			rowLayout -numberOfColumns 2;
+				checkBox -label "jabber me" -value 0 jMeOnComplete;
+				if ( system("grep '\\\[coords_jabber\\\]' " + $configsPath) != "" ) { $foundConfigs = 1; } else { $foundConfigs = 0; }
+				checkBox -enable $foundConfigs -annotation $configsPath -label "jabber the coordinators" -value 0 jCoordsOnComplete;
+			setParent..;
+			textFieldGrp -label "jabber these people, also:" -columnWidth2 175 250 jPeopleOnComplete;
+			rowLayout -numberOfColumns 2;
+				checkBox -label "email me" -value 0 -enable 1 eMeOnComplete;
+				if ( system("grep '\\\[coords_email\\\]' " + $configsPath) != "" ) { $foundConfigs = 1; } else { $foundConfigs = 0; }
+				checkBox -enable $foundConfigs -annotation $configsPath -label "email the coordinators" -value 0 eCoordsOnComplete;
+			setParent..;
+			textFieldGrp -label "email these people, also:" -columnWidth2 175 400 ePeopleOnComplete;
+			text -width 550 -label "do not include the '@entityfx.com'";
+		setParent..;
+	setParent..;
+	separator;
+  button -label "Submit" -h 30 -c ("doMaya2AB("+$saveNeeded+");progressWindow -endProgress; deleteUI "+$window);
+
+	showWindow $window;
+	window -e -wh 640 410 $window;
+}
+
+global proc string[] imageNameParts()
+{
+	// 0 baseName
+  // 1 version
+	// 2 extension
+
+	string $sceneNames[] = `renderSettings -fin`;
+	string $ret[];
+
+	string $parts[];
+	tokenize($sceneNames[0], ".", $parts);
+	$ret[0] = $parts[0];
+
+	$ret[1] = `match "v[0-9][0-9][0-9]" $ret[0]`;
+	if( $ret[1] == "" )
+		$ret[1] = "v000";
+
+	$ret[2] = $parts[2];
+
+	string $r = currentRenderer();
+	if( $ret[2] == "sgi" && $r == "mentalRay" && int(`about -version`) == 8 )
+		$ret[2] = "rgb";
+
+	return $ret;
+}
+
+global proc string version()
+{
+	string $v = `about -version`;
+	$v = substitute("\\.0", $v, "");
+	$v = substitute("\\.", $v, "");
+	$v = substitute("Service Pack 1", $v, "");
+	if( `about -is64` )
+		$v = substitute(" x64", $v, "");
+	return $v;
+}
+
+proc imageFormat()
+{
+/*
+GIF (0), SI (1), RLA (2), Tiff (3), Tiff16 (4), SGI (5), Alias (6) IFF (7) JPEG (8) EPS (9) IFF16 (10) Cineon (11) Quantel (12) SGI16 (13) TARGA (19) BMP (20) SGIMV (21) QT (22) AVI (23) MACPAINT (30) PHOTOSHOP (31) PNG (32) QUICKDRAW (33) QTIMAGE (34) DDS (35) DDS (36) IMFplugin (50) Custom (51) SWF (60) AI (61) SVG (62) SWFT (63)
+*/
+}
+
+global proc string padFrame(int $frameNum)
+{
+	string $frame = $frameNum;
+	int $l = size($frame);
+	for($i=0;$i<4-$l;$i++)
+	{
+		$frame = "0" + $frame;
+	}
+	return $frame;
+}
+
+global proc string user()
+{
+       string $user = `system "whoami"`;
+       $user = `strip $user`;
+       return $user;
+}
+
+global proc string outputPath()
+{
+  string $project = `workspace -q -o`;
+  string $renderDir = $project + "/images/";
+  $renderDir += basenameEx(`file -q -shn -sn`) + "/";
+	string $imageParts[] = imageNameParts();
+	return $renderDir;
+}
+
+global proc string currentFramePath()
+{
+	string $imageParts[] = imageNameParts();
+	string $path = outputPath() + $imageParts[0] 
+									+"."+ padFrame(`currentTime -q`) 
+									+"."+ $imageParts[2];
+	return $path;
+}
+
+global proc string projectName()
+{
+  string $file = `file -q -sn`;
+	string $parts[];
+	tokenize($file, "/", $parts);
+	if ( $parts[0] == "Shows" )
+	return $parts[1];
+	else return $parts[3];
+}
+

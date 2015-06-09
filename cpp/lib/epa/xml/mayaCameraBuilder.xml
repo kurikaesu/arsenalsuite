@@ -1,0 +1,6 @@
+<software name="mayaCameraBuilder">
+	<set key="mayaCameraAttributes">$DRD_SOFTWARE_INT/mayaCameraBuilder/v00_01_06/cfg/mayaCameraAttributes.xml</set>
+	<set key="mayaResolutionAttributes">$DRD_SOFTWARE_INT/mayaCameraBuilder/v00_01_06/cfg/mayaResolutionAttributes.xml</set>
+	<set key="mayaCameraSlateConfig">$DRD_SOFTWARE_INT/mayaCameraBuilder/v00_01_06/cfg/slateConfig.xml</set>
+	<add key="PYTHONPATH">$DRD_SOFTWARE_INT/mayaCameraBuilder/v00_01_06</add>
+</software>

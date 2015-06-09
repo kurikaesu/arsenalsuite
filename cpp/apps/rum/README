@@ -1,0 +1,104 @@
+
+RUM - Resin Update Manager
+
+RUM is daemeon that each Resin client connects to. As clients issue update, inserts, deletes to the database they also pass a table name and list of ids for other clients to react to.
+
+A transaction log is kept, so clients can catch up to changes made to the database.
+
+
+----
+		From: Matt Newell <newellm@blur.com>
+		To: Abe Shelton <abe@blur.com>
+		Subject: Re: 'rum' questions
+		Date: Thu, 22 Sep 2005 14:01:05 -0700
+
+			On Thursday 22 September 2005 13:38, you wrote:
+
+			> What happens if something that does NOT use RUM updates a row in the
+			> database?
+			Nothing, rum enabled clients wont know about it.
+			> How are those changes propagated to rum-enabled clients?
+			They aren't
+			> What  
+			> happens if non-RUM client removes data that a RUM client thinks is still
+			> there, eg, the rum-enabled client tries to perform an operation on data
+			> that already went away at the database-level?
+			The transaction will fail.
+
+			This really isn't much of a problem now, because non-rum clients aren't 
+			working with the same data that rum clients are working with. 
+
+			This is an area that i would love to work on if i ever have time.  I've gotten 
+			a sql extension thought up in my head that would give rum functionality(and a 
+			lot more) to all postgres clients. 
+
+			> What port does the RUM daemon listen on?
+			25565
+			> What underlying protocol does 
+			> RUM use?
+			tcp
+
+			>
+			> What does the client do if the RUM daemon is not running? Does it fall
+			> back to using straight psql connections or does it not have a fail-over
+			> mode?
+			It always uses a psql connection anyway.  If rum is enabled and the connection 
+			fails, resin will pop up a dialog telling the user that they won't recieve 
+			updates and that they should contact the system admin.  There is also an icon 
+			in the statusbar to tell if you are connected.
+
+			>
+			> What are the general build prerequisites and supported platforms?
+			Rum works anywhere qt will build, but hasn't been setup to work on win32 yet.  
+			The only thing that needs changed is where to store the files.
+
+			> What directories does it use and/or expect to be in place? What data
+			> files does it create/manage? What is the format of those data files?
+			It creates the dir /var/spool/rum
+			in that dir there are two files
+			transaction.data
+			transaction.index
+
+			They are both binary files.
+
+			> How is it started? (svscan, rc.d, windows service?)
+			svscan currently
+
+			> How does it scale?
+			It uses a single thread per connect, and a thread for the transaction manager.  
+			It scales fine for all of our use cases in the past(we've tried 40 
+			connections i think and it was very fast.)  It could be made to scale even 
+			better by using just two threads.
+			> Can you limit how many connections it accepts at 
+			> once?
+			Not currently, but that would be very easy to add.
+			> Can you limit the size of its data file? What happens when the 
+			> data file gets very very large?
+			There's no limit, but in the past it hasn't gotten that large.  It doesn't 
+			actually store the record data for inserts and deletes(just the keys), only 
+			for updates.
+
+			>
+			> cpp\lib\stone\rum_protocol.txt
+			> ---
+			> see SVN
+			> ---
+			>
+			> What is a sample interaction between server and client and vice versa?
+			>
+			> What are the basic limitations/shortcomings? (UNIT32, eg, what happens
+			> when you hit 4294967296 + 1 records?) In other words, how can it break?
+			> Or, what still needs to be addressed?
+			32 bit transaction id could be seen as a limitation, but i don't think we'll 
+			run into a problem with that.  I would rather do an implementation inside 
+			postgres than extend rum past it's current capabilities anyway.
+
+			> How come the rum_protocol.txt file is in lib\stone rather than stored
+			> with rum app/server itself?
+			> Is there a seperate include/src file for rum within lib\stone or is it
+			> built-in ? etc
+
+			updatemanager.h/cpp in lib/stone implements the protocol.  rum only knows 
+			enough about the protocol to get the packet size and transaction id.
+
+

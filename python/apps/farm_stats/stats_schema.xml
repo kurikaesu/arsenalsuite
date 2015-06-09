@@ -1,0 +1,22 @@
+<!DOCTYPE Schema>
+<database>
+ <table name="user_job_counts" expireKeyCache="true" className="user_job_counts" >
+  <column type="QString" methodName="user" name="user" />
+  <column type="uint" methodName="ready" name="ready" />
+  <column type="uint" methodName="started" name="started" />
+  <column type="uint" methodName="done" name="done" />
+  <column type="uint" methodName="suspended" name="suspended" />
+  <column type="uint" methodName="holding" name="holding" />
+ </table>
+ <table name="user_render_summary" expireKeyCache="true" className="user_render_summary" >
+  <column type="QString" methodName="user" name="user" />
+  <column type="double" methodName="totalRenderTime" name="totalRenderTime" />
+  <column type="double" methodName="totalErrorTime" name="totalErrorTime" />
+  <column type="double" methodName="errorTimePercent" name="errorTimePercent" />
+ </table>
+ <table name="user_slave_summary" expireKeyCache="true" className="hosthistory_user_slave_summary" >
+  <column type="QString" methodName="user" name="user" />
+  <column type="QString" methodName="host" name="host" />
+  <column type="double" methodName="hours" name="hours" />
+ </table>
+</database>

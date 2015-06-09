@@ -1,0 +1,216 @@
+
+const var blurMenuPluginID = 1001001122;
+
+class BlurRenderSubmitMenuPlugin : MenuPlugin
+{
+public:
+	BlurRenderSubmitMenuPlugin();
+	
+	GetID();
+	
+	GetName();
+	GetHelp();
+	GetState();
+	WriteFormat(format, optionsFile);
+	WritePath(path, optionsFile);
+	WriteLayer(layerIndex, optionsFile, channels, layerId, layerName);
+	ActiveRenderData(doc);
+	OpenOptionsFile();
+	Execute(doc);
+}
+
+main()
+{
+	println("Blur Render Submit Initializing, Registering Menu Plugin");
+	Register(BlurRenderSubmitMenuPlugin);
+}
+
+BlurRenderSubmitMenuPlugin::BlurRenderSubmitMenuPlugin()
+{
+	super();
+}
+
+BlurRenderSubmitMenuPlugin::GetID()
+{
+	return blurMenuPluginID;
+}
+
+BlurRenderSubmitMenuPlugin::GetName()
+{
+	return "Blur Render Submit";
+}
+
+BlurRenderSubmitMenuPlugin::GetHelp()
+{
+	return "Launches Blur Render Submit Dialog";
+}
+
+BlurRenderSubmitMenuPlugin::GetState()
+{
+	return CMD_ENABLED;
+}
+
+BlurRenderSubmitMenuPlugin::WriteFormat(format, optionsFile)
+{
+	var formatName = "Unknown Format";
+	if( format == FILTER_TIF )
+		formatName = "TIF";
+	if( format == FILTER_TGA )
+		formatName = "TGA";
+	if( format == FILTER_BMP )
+		formatName = "BMP";
+	if( format == FILTER_IFF )
+		formatName = "IFF";
+	if( format == FILTER_JPG )
+		formatName = "JPG";
+	if( format == FILTER_PICT )
+		formatName = "PICT";
+	if( format == FILTER_PSD )
+		formatName = "PSD";
+	if( format == FILTER_RLA )
+		formatName = "RLA";
+	if( format == FILTER_RPF )
+		formatName = "RPF";
+	if( format == FILTER_B3D )
+		formatName = "B3D";
+	if( format == FILTER_AVI_SMALL || format == FILTER_AVI_BIG || format == FILTER_AVI_USER )
+		formatName = "AVI";
+	if( format == FILTER_MOVIE_SMALL || format == FILTER_MOVIE_BIG || format == FILTER_MOVIE_USER )
+		formatName = "QT";
+	if( format == FILTER_QTVRSAVER_PANORAMA || format == FILTER_QTVRSAVER_OBJECT )
+		formatName = "QTVR";
+	if( format == FILTER_HDR )
+		formatName = "HDR";
+	println( "Format:" + formatName );
+	optionsFile->WriteString( formatName + "\n" );
+}
+
+BlurRenderSubmitMenuPlugin::WritePath(path, optionsFile)
+{
+	println( "Render Path:" + path );
+	optionsFile->WriteString( path + "\n" );
+}
+
+BlurRenderSubmitMenuPlugin::WriteLayer(layerIndex, optionsFile, channels, layerId, layerName)
+{
+	var layerCont = channels->GetContainer(layerId);
+	if ( layerCont && layerCont->GetData(RDATA_MULTIPASS_ACTIVE) ) {
+		if( layerIndex > 0 )
+			optionsFile->WriteString( "," );
+		println( "Found Active Layer:" + layerName );
+		optionsFile->WriteString( layerName );
+		return layerIndex + 1;
+	}
+	return layerIndex;
+}
+
+BlurRenderSubmitMenuPlugin::ActiveRenderData(doc)
+{
+	var rd = doc->GetFirstRenderData();
+	while(rd)
+	{
+		if(rd->GetBit(BIT_ACTIVERENDERDATA))
+		{
+			break;
+		}
+		rd = rd->GetNext();
+	}
+	return rd;
+}
+
+BlurRenderSubmitMenuPlugin::OpenOptionsFile()
+{
+	var optionsFN = new(Filename);
+	optionsFN->SetFullString("C:\\blur\\absubmit\\cinema4d\\current_options.txt");
+
+	var optionsFile = new(BaseFile);
+	var openSuccess = optionsFile->Open( optionsFN, GE_WRITE, FILE_NODIALOG );
+	
+	if( !openSuccess ) {
+		//Error
+		TextDialog( "Error opening render options file", DLG_OK );
+		println( "Error opening render options file" );
+		return;
+	}
+	return optionsFile;
+}
+
+BlurRenderSubmitMenuPlugin::Execute(doc)
+{
+	println("Blur Render Submit - Executing" );
+
+	var optionsFile = OpenOptionsFile();
+	var fps = doc->GetFps();
+	var rdata = ActiveRenderData(doc);
+	var bc = rdata->GetContainer();
+	var mp = bc->GetData(RDATA_MULTIPASS_ENABLE);
+	var ch = bc->GetContainer(RDATA_MULTIPASS_CHANNELS);
+
+	optionsFile->WriteString( doc->GetFilename()->GetFullString() + "\n" );
+	optionsFile->WriteString( tostring( doc->GetMinTime()->GetFrame(fps) ) + "\n" );
+	optionsFile->WriteString( tostring( doc->GetMaxTime()->GetFrame(fps) ) + "\n" );
+
+	println( tostring(mp) + "\n" );
+
+	if ( mp != 1 || !ch ) {
+
+		WriteFormat( bc->GetData( RDATA_FORMAT ), optionsFile );
+		WritePath( bc->GetFilename( RDATA_PATH )->GetFullString(), optionsFile );
+
+	} else { // Multipass Enabled
+		
+		var saveFormat = bc->GetData(RDATA_MULTIPASS_SAVEFORMAT);
+		var fileName = bc->GetData(RDATA_MULTIPASS_FILENAME);
+		var layerCount = 0;
+
+		WriteFormat( saveFormat, optionsFile );
+		WritePath( fileName->GetFullString(), optionsFile );
+
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_RGBA, "rgb" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_AMBIENT, "ambient" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_DIFFUSE, "diffuse" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_SPECULAR, "specular" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_SHADOW, "shadow" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_REFLECTION, "refl" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_TRANSPARENCY, "trans" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_RADIOSITY, "radiosity" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_CAUSTICS, "caustics" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_ATMOSPHERE, "atmos" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_ATMOSPHERE_MUL, "atmosmul" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_DEPTH, "depth" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_MAT_COLOR, "matcolor" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_MAT_DIFFUSION, "matdif" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_MAT_LUMINANCE, "matlum" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_MAT_TRANSPARENCY, "mattrans" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_MAT_REFLECTION, "matrefl" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_MAT_ENVIRONMENT, "matenv" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_MAT_SPECULAR, "matspec" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_MAT_SPECULARCOLOR, "matspeccol" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_ILLUMINATION, "illum" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_OBJECTBUFFER, "objectbuffer" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_POSTEFFECT, "post_1_" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_POSTEFFECT_MUL, "post_2_" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_AMBIENTOCCLUSION, "occlusion" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_MAT_NORMAL, "normal" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_MAT_UV, "uv" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_MOTIONVECTOR, "motion" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_BLEND, "blend_1_" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_LIGHTBLEND, "lightblend" );
+		layerCount = WriteLayer( layerCount, optionsFile, ch, VPBUFFER_ALPHA, "alpha" );
+		if( layerCount > 0 ) {
+			optionsFile->WriteString( "\n" );
+		}
+	}
+
+	optionsFile = nil;
+	gc();
+
+	var scriptFN = new(Filename);
+	scriptFN->SetFullString("C:\\blur\\absubmit\\cinema4d\\submit.py");
+	
+	var success = GeExecuteFile( scriptFN );//, doc->GetFilename() );
+	if ( !success ) {
+		println("Error Executing command");
+	}
+
+}

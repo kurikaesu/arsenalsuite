@@ -1,0 +1,6 @@
+<software name="noodle">
+	<dependOn>mayaCameraBuilder</dependOn>
+  <set key="mayaCameraSlateConfig">$DRD_SOFTWARE_INT/noodle/v00_01_25/noodle/data/config/noodleSlateConfig.xml</set>
+  <set key="PYTHONPATH">$DRD_SOFTWARE_INT/noodle/v00_01_25</add>
+  <add key="XBMLANGPATH">$DRD_SOFTWARE_INT/noodle/v00_01_25/noodle/data/icons/%B</add>
+</software>

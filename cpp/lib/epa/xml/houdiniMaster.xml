@@ -1,0 +1,37 @@
+<software name="houdini">
+	<dependOn>python</dependOn>
+	<dependOn>3delight</dependOn>
+	<set key="HFS">$DRD_SOFTWARE_EXT/houdini/$DRD_PLATFORM/hfs9.5.343</set>
+	<set key="EPA_WORKINGDIR">$HFS/bin</set>
+	<set key="EPA_CMDLINE">./hmaster</set>
+	<set key="EPA_ICON">$HFS/houdini_logo.png</set>
+	<set key="H">$HFS</set>
+	<set key="HH">$H/houdini</set>
+	<set key="HDSO">$H/dsolib</set>
+	<set key="HB">$H/bin</set>
+	<set key="HD">$H/demo</set>
+	<set key="HHC">$HH/config</set>
+	<set key="HT">$H/toolkit</set>
+	<set key="HSB">$HH/sbin</set>
+	<set key="HSITE">=$DRD_SOFTWARE_INT/houdini</set>
+	<set key="HOUDINI_MAJOR_RELEASE">=9</set>
+	<set key="HOUDINI_MINOR_RELEASE">=5</set>
+	<set key="HOUDINI_BUILD_VERSION">=192</set>
+	<set key="HOUDINI_VERSION">=$HOUDINI_MAJOR_RELEASE.$HOUDINI_MINOR_RELEASE.$HOUDINI_BUILD_VERSION</set>
+	<set key="HOUDINI_BUILD_KERNEL">"2.6.18-6-xen-amd64"</set>
+	<set key="HOUDINI_BUILD_PLATFORM">"Debian 4.0"</set>
+	<set key="HOUDINI_BUILD_COMPILER">"4.1.2"</set>
+	<set key="HOUDINI_BUILD_LIBC">"glibc 2.3.6"</set>
+	<set key="HOUDINI_RI_SHADERPATH">$HH/ri_shaders:$HSITE/houdini9.5/ri_shaders:$DL_SHADERS_PATH</set>
+	<set key="HOUDINI_DEFAULT_RIB_RENDERER">3Delight6.5</set>
+	<set key="HOUDINI_VIEW_RMAN">renderdl</set>
+	<set key="DL_DISPLAYS_PATH">$DRD_SOFTWARE_INT/d_houdini/v_hfs9.1.350:$DL_DISPLAYS_PATH</set>
+	<set key="DL_SHADERS_PATH">$HOUDINI_RI_SHADERPATH:$DL_SHADERS_PATH</set>
+	<set key="SESI_LMHOST">houdinilic01</set>
+	<add key="LD_LIBRARY_PATH">$HDSO</add>
+	<add key="PATH">$HB</add>
+	<add key="PATH">$HSB</add>
+	<add key="PATH">$HH/scripts/python</add>
+	<add key="PYTHONPATH">$HH/scripts/python</add>
+	<add key="PYTHONPATH">$HH/scripts/pythonlibs</add>
+</software>

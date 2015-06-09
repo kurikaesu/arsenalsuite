@@ -1,0 +1,3 @@
+<software name="pylib">
+	<add key="PYTHONPATH">$DRD_SOFTWARE_INT/lib_py/v00_01_03/lib</add>
+</software>	

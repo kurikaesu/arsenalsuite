@@ -1,0 +1,2 @@
+
+SVN_REVSTR = "$WCREV$"

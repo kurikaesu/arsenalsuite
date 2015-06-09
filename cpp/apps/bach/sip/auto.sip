@@ -1,0 +1,14 @@
+%Include bachasset.sip
+%Include bachassetlist.sip
+%Include bachbucket.sip
+%Include bachbucketlist.sip
+%Include bachbucketmap.sip
+%Include bachbucketmaplist.sip
+%Include bachhistory.sip
+%Include bachhistorylist.sip
+%Include bachkeyword.sip
+%Include bachkeywordlist.sip
+%Include bachkeywordmap.sip
+%Include bachkeywordmaplist.sip
+%Include bachnamespace.sip
+%Include bachnamespacelist.sip

@@ -1,0 +1,2 @@
+
+from logredirect import *

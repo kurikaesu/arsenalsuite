@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>JobBatchSettingsWidgetUI</class>
+ <widget class="QGroupBox" name="JobBatchSettingsWidgetUI">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>GroupBox</string>
+  </property>
+  <property name="title">
+   <string>Batch Settings</string>
+  </property>
+  <layout class="QVBoxLayout" name="mVerticalLayout">
+   <property name="margin">
+    <number>4</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Command:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="FieldLineEdit" name="mCommandEdit">
+       <property name="field" stdset="0">
+        <string>cmd</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="FieldCheckBox" name="mRunAsSubmitterCheck">
+     <property name="text">
+      <string>Run process as submitting user</string>
+     </property>
+     <property name="field" >
+      <string>runasSubmitter</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="FieldCheckBox" name="mPassFramesCheck">
+     <property name="text">
+      <string>Pass task list as argument to command</string>
+     </property>
+     <property name="field" >
+      <string>passSlaveFramesAsParam</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>241</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+  <zorder>verticalSpacer</zorder>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>FieldLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>fieldlineedit.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

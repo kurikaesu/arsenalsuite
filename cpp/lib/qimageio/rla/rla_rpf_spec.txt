@@ -1,0 +1,87 @@
+
+
+RLA/RPF Spec
+
+*Big Endian*
+struct RLASWindow {
+	short left;
+	short right;
+	short bottom;
+	short top;
+};
+
+const unsigned short RLA_MAGIC_OLD = 0xFFFE;
+const unsigned short RLA_MAGIC  = 0xFFFD; // started using this with R3.1 
+const int RLA_Y_PAGE_SIZE = 32;
+
+
+*Big Endian*
+---------- FILE START ---------------------
+--------- HEADER START --------------- 
+
+RLASWindow window;
+RLASWindow active_window;
+short          frame;
+short          storage_type;
+short          num_chan;
+short          num_matte;
+short          num_aux;
+short          revision;
+char           gamma[16];
+char           red_pri[24];
+char           green_pri[24];
+char           blue_pri[24];
+char           white_pt[24];
+long           job_num;
+char           name[128];
+char           desc[128];
+char           program[64];
+char           machine[32];
+char           user[32];
+char           date[20];
+char           aspect[24];
+char           aspect_ratio[8];
+char           chan[32];
+short          field;
+char           time[12];
+char           filter[32];
+short          chan_bits;
+short          matte_type;
+short          matte_bits;
+short          aux_type;
+short          aux_bits;
+char           aux[32];
+char           space[36];
+long           next;
+
+----------- OFFSETS START ----------------
+long			scanline_offset[height]        -------- 	int h = active_window.top-active_window.bottom + 1;
+                                               -------- offsets are from the start of the file
+                                               -------- image is stored upside down
+
+
+----------- SCANLINE ---------------------
+WORD r_length
+FORMAT_TYPE(chan_bits) r_pixels_encoded[r_length]
+WORD g_length
+FORMAT_TYPE(chan_bits) g_pixels_encoded[g_length]
+WORD b_length
+FORMAT_TYPE(chan_bits) b_pixels_encoded[b_length]
+IF num_matte > 0:
+    WORD a_length
+    FORMAT_TYPE(matte_bits) a_pixels_encoded[a_length]
+
+----------- FORMAT TYPE ------------------
+IF chan_bits == 32:
+    FORMAT_TYPE = float32
+ELSE IF chan_bits == 16:
+    FORMAT_TYPE = 
+
+----------- ENCODING ---------------------
+SIGNED CHAR indicator
+IF indicator >= 0:
+   FORMAT_TYPE data -- Repeated indicator + 1 times when decoding
+ELSE
+	FORMAT_TYPE data[-indicator]
+
+repeat for all of encoded data size

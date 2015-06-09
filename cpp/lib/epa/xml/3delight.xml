@@ -1,0 +1,13 @@
+<software name="3delight">
+	<set key="DELIGHT">$DRD_SOFTWARE_EXT/delight/$DRD_PLATFORM/3delight-8.0.32</set>
+	<set key="EPA_ICON">$DRD_SOFTWARE_EXT/delight/lin64/no_steps.gif</set>
+	<set key="DL_DISPLAYS_PATH">$DELIGHT/displays</set>
+	<set key="DL_SHADERS_PATH">$DELIGHT/shaders</set>
+	<set key="MAYA_PLUG_IN_PATH">$DELIGHT/maya/2009/plug-ins:$MAYA_PLUG_IN_PATH</set>
+	<set key="MAYA_RENDER_DESC_PATH">$DELIGHT/maya/render_desc</set>
+	<set key="MAYA_SCRIPT_PATH">$DELIGHT/maya/scripts:$MAYA_SCRIPT_PATH</set>
+	<set key="XBMLANGPATH">$DELIGHT/maya/icons/%B:$XBMLANGPATH</set>
+	<set key="_3DFM_SL_INCLUDE_PATH">$DELIGHT/maya/rsl:$_3DFM_SL_INCLUDE_PATH</set>
+	<add key="PATH">$DELIGHT/bin</add>
+	<add key="LD_LIBRARY_PATH">$DELIGHT/lib</add>
+</software>

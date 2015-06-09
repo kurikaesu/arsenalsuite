@@ -1,0 +1,10 @@
+Thu Jan 28 16:23:52 2010:4530 src/connection.cpp:70 void Stone::Connection::setPort(int):Port set to 5432
+Thu Jan 28 16:24:07 2010:4538 src/connection.cpp:70 void Stone::Connection::setPort(int):Port set to 5432
+Thu Jan 28 16:24:07 2010:4538 src/connection.cpp:253 virtual bool Stone::QSqlDbConnection::reconnect():Connecting... Host: lion Port: 5432 Database: blur User: brobison Options: ;connect_timeout=10
+Thu Jan 28 16:24:07 2010:4538 src/connection.cpp:256 virtual bool Stone::QSqlDbConnection::reconnect():Couldnt reconnect to database: QPSQL: Unable to connect
+Thu Jan 28 16:24:07 2010:4538 src/connection.cpp:253 virtual bool Stone::QSqlDbConnection::reconnect():Connecting... Host: lion Port: 5432 Database: blur User: brobison Options: ;connect_timeout=10
+Thu Jan 28 16:24:07 2010:4538 src/connection.cpp:256 virtual bool Stone::QSqlDbConnection::reconnect():Couldnt reconnect to database: QPSQL: Unable to connect
+Thu Jan 28 16:24:49 2010:4583 src/connection.cpp:70 void Stone::Connection::setPort(int):Port set to 5432
+Thu Jan 28 16:24:49 2010:4583 src/connection.cpp:253 virtual bool Stone::QSqlDbConnection::reconnect():Connecting... Host: pgsql Port: 5432 Database: blur User: farmer Options: ;connect_timeout=10
+Thu Jan 28 16:24:49 2010:4583 src/pgconnection.cpp:56 void getVersion(PGConnection*, int&, int&):Got Postgres Version string: PostgreSQL 8.3.8 on x86_64-redhat-linux-gnu, compiled by GCC gcc (GCC) 4.1.2 20071124 (Red Hat 4.1.2-42)
+Thu Jan 28 16:24:49 2010:4583 src/pgconnection.cpp:61 void getVersion(PGConnection*, int&, int&):Got Postgres Version: 8.3

@@ -1,0 +1,4 @@
+<software name="maya3delightUtils">
+	<dependOn>python</dependOn>
+	<add key="PYTHONPATH">$DRD_SOFTWARE_INT/maya3delightUtils/v0_0_2</add>
+</software>

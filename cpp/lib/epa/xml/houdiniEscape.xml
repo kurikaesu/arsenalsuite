@@ -1,0 +1,4 @@
+<software name="houdini">
+	<dependOn>houdiniMaster</dependOn>
+	<set key="EPA_CMDLINE">hescape</set>
+</software>

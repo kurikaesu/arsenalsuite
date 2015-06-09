@@ -1,0 +1,334 @@
+#!/usr/bin/perl
+use strict;
+
+use Data::Dumper;
+use List::Util qw/min max/;
+
+# list sequences
+# show missing frames
+# show frame ranges
+# show clip lengths
+# handle many numbering formats
+
+my $fps = 24;
+my $recursive;
+my $showLength;
+my $showDirs = 1;
+my $showPath = 0;
+my $showType = undef;
+my $showDim;
+my $showSize;
+my $showRange;
+my $showDamaged;
+my $damagedSize = 5;
+my $damagedAge = 0;
+my $damagedHeight;
+my $damagedWidth;
+my $showMissing;
+my $missingStart = 0;
+my $missingEnd = 0;
+my $debug;
+my $baseDir;
+my @mediaExtensions = qw/png exr sgi jpg jpeg raw gif mov avi mpg mpeg tga tiff tif mp4 cr2 psd nef m4v/;
+my %validExt;
+
+my $usage = <<USAGE;
+lsq [options] [path]
+
+options:
+	-h	: display help message
+	-fps #	: set FPS for clip lengths [24]
+	-R	: recurse down directories
+	-s	: show the size of clips
+	-l	: show the length of clips
+	-r	: show clip frame ranges
+	-d 	: show damaged frames
+	-ds #	: files smaller than -ds bytes are damaged [5]
+	-da #	: files modified more than -da minutes ago are damaged [60]
+	-dh #	: frames with height different then # are damaged
+	-dw #	: frames with width different then # are damaged
+	-m	: show missing frames
+	-ms	: missing frame start frame #
+	-me	: missing frame end frame #
+	-fullpath: print the full clip path
+	-D	: print debug messages
+USAGE
+
+sub ParseArgs {
+	arg:
+	while ($#ARGV >= 0 && $ARGV[0] =~ /^-/) {
+		my $arg = shift(@ARGV);
+		if( $arg =~ /^-h$/ ) {
+			print $usage;
+			exit;
+		}
+		if( $arg =~ /^-fps$/ ) {
+			$fps = shift @ARGV;
+			next arg;
+		}
+		if( $arg =~ /^-R$/ ) {
+			$recursive = 1;
+			next arg;
+		}
+		if( $arg =~ /^-s$/ ) {
+			$showSize = 1;
+			next arg;
+		}
+		if( $arg =~ /^-l$/ ) {
+			$showLength = 1;
+			next arg;
+		}
+		if( $arg =~ /^-wh$/ ) {
+			$showDim = 1;
+			next arg;
+		}
+		if( $arg =~ /^-nodirs$/ ) {
+			$showDirs = 0;
+			next arg;
+		}
+		if( $arg =~ /^-fullpath$/ ) {
+			$showDirs = 0;
+			$showPath = 1;
+			next arg;
+		}
+		if( $arg =~ /^-type$/ ) {
+			$showType = shift @ARGV;
+			next arg;
+		}
+		if( $arg =~ /^-r$/ ) {
+			$showRange = 1;
+			next arg;
+		}
+		if( $arg =~ /^-d$/ ) {
+			$showDamaged = 1;
+			next arg;
+		}
+		if( $arg =~ /^-ds$/ ) {
+			$damagedSize = shift @ARGV;
+			next arg;
+		}
+		if( $arg =~ /^-da$/ ) {
+			$damagedAge = shift @ARGV;
+			next arg;
+		}
+		if( $arg =~ /^-dh$/ ) {
+			$damagedHeight = shift @ARGV;
+			next arg;
+		}
+		if( $arg =~ /^-dw$/ ) {
+			$damagedWidth = shift @ARGV;
+			next arg;
+		}
+		if( $arg =~ /^-m$/ ) {
+			$showMissing = 1;
+			next arg;
+		}
+		if( $arg =~ /^-ms$/ ) {
+			$missingStart = shift @ARGV;
+			next arg;
+		}
+		if( $arg =~ /^-me$/ ) {
+			$missingEnd = shift @ARGV;
+			next arg;
+		}
+		if( $arg =~ /^-D$/ ) {
+			$debug = 1;
+			next arg;
+		}
+	}
+	$baseDir = shift @ARGV;
+	$baseDir ||= $ENV{PWD};
+	$baseDir =~ s{/$}{};
+}
+
+sub frameStart {
+	return min(@_);
+}
+
+sub frameEnd {
+	return max(@_);
+}
+
+sub formatSize {
+  my ($size) = @_;
+    if ( $size>1073741824 ) {
+      return sprintf( "%4.2f GB", $size/1073741824 );
+    }
+    if ( $size>1048576 ) {
+      return sprintf( "%4.1f MB", $size/1048576 );
+    }
+    if ( $size>1024 ) {
+      return sprintf( "%4.0f kB", $size/1024 );
+    }
+    return sprintf( "%4.0f B", $size );
+}
+
+sub timeCode {
+	my( $seconds ) = shift;
+	
+	my $hours = int($seconds / 3600);
+	$seconds -= $hours * 3600;
+
+	my $minutes = int($seconds / 60);
+	$seconds -= $minutes * 60;
+
+	return join( ":", map {sprintf("%02d",$_)} ($hours, $minutes, $seconds) );
+}
+
+sub addFrame {
+	my ($clips, $dir, $fileName ) = @_;
+	my( $baseName, $frame, $ext );
+	if( $fileName =~ /^(.*)\.(\d+)\.(\w+)$/ ) {
+		# pattern 1      frame.0001.tga
+		$baseName = $1;
+		$frame    = $2;
+		$ext 	  = $3;
+	}
+	elsif( $fileName =~ /^.*?\.(\w+)$/ ) {
+		# pattern 2      frame0001.tga
+		$ext 	  = $1;
+	}
+	return unless( exists $validExt{lc($ext)} );
+
+	my @stat = stat("$dir/$fileName");
+	#$frame =~ s/^0+(\d)/$1/g;
+	if( defined $frame && $frame >= 0 ) {
+		print "1 - $fileName => $baseName.$frame.$ext\n" if $debug;
+		# this image is part of a seqeunce, so add it to the clips
+		my $padLength = length( $frame );
+
+		$clips->{$baseName}->{frames}->{$frame} = 1;
+		$clips->{$baseName}->{ext} = $ext;
+		$clips->{$baseName}->{padLength} = $padLength;
+		$clips->{$baseName}->{frameCount}++;
+		$clips->{$baseName}->{size} += $stat[7];
+		$clips->{$baseName}->{type} = "seq";
+
+		if( $showDim && !$clips->{$baseName}->{width} ) {
+			# only get this one time as it could be expensive
+			my( $w, $h ) = getDim("$dir/$fileName");
+			$clips->{$baseName}->{width} = $w;
+			$clips->{$baseName}->{height} = $h;
+		}
+
+		# damage checks, if needed
+		if( $showDamaged ) {
+			if( $stat[7] < $damagedSize ) {
+				print "$fileName damaged by size\n" if $debug;
+				$clips->{$baseName}->{damaged}->{$frame} = 1;
+			}
+			my $now = time();
+			if( $damagedAge > 0 && a$stat[9] < $now - $damagedAge ) {
+				print "$fileName damaged by age". $stat[9] if $debug;
+				$clips->{$baseName}->{damaged}->{$frame} = 1;
+			}
+			if( $damagedWidth || $damagedHeight ) {
+				print "$fileName damaged by dimensions\n" if $debug;
+				my( $w, $h ) = getDim("$dir/$fileName");
+				if( $w != $damagedWidth || $h != $damagedHeight ) {
+					$clips->{$baseName}->{damaged}->{$frame} = 1;
+				}
+			}
+		}
+	} else {
+		print "2 - $fileName\n" if $debug;
+		# it's an image or movie, not part of a seqeunce
+		$clips->{$fileName}->{size} = $stat[7];
+		$clips->{$fileName}->{type} = "image";
+
+		unless( $showDim && !$clips->{$fileName}->{width} ) {
+			# only get this one time as it could be expensive
+			my( $w, $h ) = getDim("$dir/$fileName");
+			$clips->{$fileName}->{width} = $w;
+			$clips->{$fileName}->{height} = $h;
+		}
+	}
+}
+
+sub getDim {
+	return (0,0);
+	my $fileName = shift;
+    require Image::Info;
+	my( $w, $h ) = Image::Info::dim( Image::Info::image_info( $fileName ) );
+	unless( $w && $h ) {
+		# Image::Info couldn't get data..
+		open(EXIF,"exiftool \"$fileName\"|");
+		while(my $line = <EXIF>) {
+			if( $line =~ /Image\s+Width\s*:\s*(.*)/i ) { $w = $1 }
+			elsif( $line =~ /Image\s+Height\s*:\s*(.*)/i ) { $h = $1 }
+			#$exif .= $line;
+		}
+	}
+	unless( 0 && $w && $h ) {
+		# exiftool couldn't get data..
+		my $shakeInfo = `shake $fileName -info 2>&1 | grep Size | awk '{print \$3}'`;
+		chomp($shakeInfo);
+		($w, $h) = split(/x/, $shakeInfo);
+	}
+	return( $w, $h );
+}
+
+sub lsq {
+	my( $dir, $lvl ) = @_;
+	my $clips = {};
+	opendir( DIR, $dir ) || (warn "Could not open $dir $!" && return);
+	my @entries = sort readdir(DIR);
+	closedir(DIR);
+	foreach my $entry ( @entries ) {
+		next if $entry =~ /^\./;
+		if( $recursive && -d "$dir/$entry" ) {
+#			print "DBG: $dir/$entry\n" if $debug;
+			lsq( "$dir/$entry", $lvl+1 );
+		}
+		addFrame( $clips, $dir, $entry );
+	}
+	if( keys %{ $clips } > 0 ) {
+		print "$dir\n" if $showDirs;
+		foreach my $clip (sort keys %{ $clips }) {
+            if( $showType && $showType ne $clips->{$clip}->{type} ) { next }
+            print "$dir/" if $showPath;
+            if( $clips->{$clip}->{type} eq "seq" ) {
+                print "$clip." . '#' x $clips->{$clip}->{padLength} .".".$clips->{$clip}->{ext};
+            } else {
+                print $clip;
+            }
+
+            if( $showRange && $clips->{$clip}->{type} eq "seq" ) {
+                print "\t".frameStart(keys %{ $clips->{$clip}->{frames} }).'-'.frameEnd(keys %{ $clips->{$clip}->{frames} });
+            }
+            if( $showSize ) {
+                print "\t".formatSize($clips->{$clip}->{size});
+            }
+            if( $showLength ) {
+                print "\t".timeCode( $clips->{$clip}->{frameCount}/$fps );
+            }
+            if( $showDim ) {
+                print "\t".$clips->{$clip}->{width}."x".$clips->{$clip}->{height};
+            }
+            if( $showDamaged ) {
+                my @damaged = keys %{ $clips->{$clip}->{damaged} };
+                if (scalar @damaged > 0) {
+                    print "\nDAMAGED! ". join(',',sort {$a<=>$b} @damaged);
+                }
+            }
+            if( $showMissing ) {
+                my @missing;
+                my $s = $missingStart || frameStart(keys %{ $clips->{$clip}->{frames} });
+                my $e = $missingEnd   || frameEnd(keys %{ $clips->{$clip}->{frames} });
+                foreach($s..$e) {
+                    unless( $clips->{$clip}->{frames}->{$_} ) { push @missing, $_ }
+                }
+                if (scalar @missing > 0) {
+                    print "\nMISSING! ". join(',',sort {$a<=>$b} @missing);
+                }
+            }
+            print "\n";
+		}
+	}
+}
+
+ParseArgs();
+%validExt = map{ $_ => 1 } @mediaExtensions;
+lsq( $baseDir );
+
+#print Data::Dumper->Dumper( %validExt );

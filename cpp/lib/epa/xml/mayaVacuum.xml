@@ -1,0 +1,4 @@
+<software name="mayaVacuum">
+	<add key="MAYA_PLUG_IN_PATH">$DRD_SOFTWARE_INT/mayaVacuum_cpp/lin64/200900/v00_00_32/</add>
+	<add key="MAYA_SCRIPT_PATH">$DRD_SOFTWARE_INT/mayaVacuum_cpp/lin64/200900/v00_00_32/mel</add>
+</software>

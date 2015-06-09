@@ -1,0 +1,4 @@
+<software name="pythonUnitTestCoverage">
+	<dependOn>python</dependOn>
+	<set key="EPA_CMDLINE">python2.5 /drd/software/ext/bin/coverage.py</set>
+</software>

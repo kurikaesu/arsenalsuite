@@ -1,0 +1,21 @@
+[Database]
+DatabaseDriver=QPSQL7
+DatabaseName=blur
+Host=pgsql
+Options=
+Password=yourdbpasswd
+Port=5432
+Timeout=10
+User=yourdbuser
+
+[Display Prefs]
+Icon Size=16,16
+
+[Logging]
+EchoStdOut=true
+Enabled=true
+File=classmaker.log
+MaxFiles=10
+MaxSeverity=5
+MaxSize=104857600
+

@@ -1,0 +1,8 @@
+<software name="vacuumMeshCache">
+	<add key="MAYA_PLUG_IN_PATH" arch="win32">$DRD_SOFTWARE_INT/vacuumMeshCache_cpp/win32/200900/v0_0_6/</add>
+	<add key="MAYA_SCRIPT_PATH" arch="win32">$DRD_SOFTWARE_INT/vacuumMeshCache_cpp/win32/200900/v0_0_6/mel</add>
+
+	<add key="MAYA_PLUG_IN_PATH" arch="lin64">$DRD_SOFTWARE_INT/vacuumMeshCache_cpp/win32/200900/v0_0_6/vacuumMeshCache</add>
+	<add key="MAYA_SCRIPT_PATH" arch="lin64">$DRD_SOFTWARE_INT/vacuumMeshCache_cpp/win32/200900/v0_0_6/vacuumMeshCache/mel</add>
+	<add key="LD_LIBRARY_PATH" arch="lin64">/drd/software/ext/hdf5/lin64/v1_8_1/lib</add>
+</software>

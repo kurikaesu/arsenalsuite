@@ -1,0 +1,10 @@
+<software name="mayaLasagne">
+	<dependOn>python</dependOn>
+	<dependOn>maya3delightUtils</dependOn>
+	<set key="LASAGNE_CONF">$DRD_SOFTWARE_INT/mayaLasagne/v0_0_2/mayaLasagne/lasagne.ini</set>
+	<add key="PYTHONPATH">$DRD_SOFTWARE_INT/mayaLasagne/v0_0_2</add>
+	<add key="MAYA_SCRIPT_PATH">$DRD_SOFTWARE_INT/mayaLasagne/v0_0_2/mayaLasagne</add>
+	<add key="XBMLANGPATH">$DRD_SOFTWARE_INT/mayaLasagne/v0_0_2/mayaLasagne</add>
+	<add key="MAYA_PLUG_IN_PATH">$DRD_SOFTWARE_INT/mayaLasagne/v0_0_2/mayaLasagne/plugin</add>
+	<add key="_3DFM_SL_INCLUDE_PATH">$DRD_SOFTWARE_INT/mayaLasagne/v0_0_2/mayaLasagne/3delight</add>
+</software>

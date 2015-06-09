@@ -1,0 +1,4 @@
+<software name="mayaPoseTool">
+	<add key="MAYA_SCRIPT_PATH">$DRD_SOFTWARE_INT/mayaPoseTool_mel/v0_0_2/mayaPoseTool</add>
+	<add key="MAYA_PLUG_IN_PATH">$DRD_SOFTWARE_INT/mayaPoseTool_cpp/v0_0_1/mayaPoseTool/bin</add>
+</software>

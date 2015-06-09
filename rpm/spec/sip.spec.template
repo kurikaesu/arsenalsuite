@@ -1,0 +1,28 @@
+Summary: SIP Library
+Name: sip
+Version: 4.10.2
+Release: DrD
+License: GPL
+Group: Libraries/Programming
+Distribution: CentOS
+Vendor: Dr. D Studios
+Packager: Aren Villanueva <aren.villanueva@drdstudios.com>
+BuildRoot:
+AutoReqProv: No
+
+%define _unpackaged_files_terminate_build 0
+
+%description
+test
+
+%files
+%defattr(-,root,root,-)
+/usr/bin/sip
+/usr/lib/python2.5/site-packages/sip.so
+/usr/lib/python2.5/site-packages/sipconfig.py
+/usr/lib/python2.5/site-packages/sipdistutils.py
+/usr/lib/python2.5/site-packages/libsip.a
+/usr/include/python2.5/sip.h
+
+%clean
+

@@ -1,0 +1,134 @@
+/*
+ Copyright (c) 2009 Dr. D Studios. (Please refer to license for details)
+ SVN_META_HEADURL = "$HeadURL: $"
+ SVN_META_ID = "$Id: $"
+*/
+
+body
+{
+    background-color: #FFF;
+    margin: 0;
+	color: #000;
+	font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 14px;
+}
+
+a
+{
+	color: #33F;
+	text-decoration: none;
+}
+
+a:vlink
+{
+	color: #666;
+}
+
+a:hover
+{
+	color: #000;
+}
+
+ul.collections
+{
+	padding: 5px;
+	margin: 0px;
+}
+
+ul.custom
+{
+	list-style: none;
+	padding-left: 5px;
+	padding-right: 5px;
+	white-space:nowrap;
+}
+
+ul.custom li
+{
+	border:1px solid #333333;
+	background-color:#444444;
+}
+
+ul.custom li a
+{
+	text-decoration: none;
+	display: block;
+}
+
+ul.custom li:hover
+{
+	background-color: rgb(50,50,50);
+}
+
+ul.collections li
+{
+}
+
+ul.keywords
+{
+	padding: 5px;
+	margin: 0px;
+}
+
+ul.keywords li
+{
+}
+
+ul.keywords li a
+{
+}
+
+div.image_container_print_view
+{
+	border: 1px solid grey;
+	padding : 3px;
+	text-align: left;
+	page-break-after: always;
+    font-size: 16pt;
+}
+
+div.image_container img
+{
+    vertical-align: middle;
+}
+
+div.image_container a
+{
+    text-decoration: none;
+    border: 0px;
+}
+
+.pagination
+{
+    font-size: 24pt;
+    clear:both;
+	page-break-after: always;
+}
+
+
+.pagination li
+{
+    float: none;
+    margin: 0px 0px 0px 0px;
+    list-style-type: none;
+}
+
+.sep
+{
+}
+
+.title
+{
+    font-weight: bold;
+    clear:both;
+}
+
+.strikeout
+{
+    text-decoration: line-through;
+}
+
+.msg
+{
+    color: #F88;
+}

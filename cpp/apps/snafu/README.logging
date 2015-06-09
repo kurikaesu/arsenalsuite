@@ -1,0 +1,35 @@
+
+How do Events become Events?
+
+There are several ways to get Events into the database.
+
+*) direct Perl implementation
+
+use AL::ARK::Event;
+# you will need the AL* modules located in the subversion
+# repository at http://svn/repos/perl
+
+AL::ARK::Event->record(
+	host          => "hostname",
+	event         => "message you want to appear",
+	eventSeverity => 1, #..5, 5 being the most severe
+	eventClass    => "class", # eg snmptt, AL::ARK::Object::Host,
+	eventMethod   => "method", # eg discover, scheduled_downtime
+);
+
+*) web frontend / command line
+
+The ALFarm maint scripts use this method. This perl script uses LWP
+to make a GET/POST request to http://vader.adm.al.com.au/mason/event_record
+
+event_record.pl "hostname" "event message" severity "class" "method"
+
+*) syslog
+
+Set your remote syslog host to syslog.al.com.au, all messages of crit of higher will get fed into Snafu.
+
+
+*) snmp
+
+Set your SNMP trap host to snmp.al.com.au, all received traps get fed into Snafu.
+

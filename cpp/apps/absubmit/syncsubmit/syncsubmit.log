@@ -1,0 +1,157 @@
+Thu Sep 27 11:38:44 2007 src/connection.cpp:223 virtual bool QSqlDbConnection::reconnect():QSqlDbConnection::reconnect: Connecting... Host: pgsql Database: blur User: barry Options: ;connect_timeout=2
+Thu Sep 27 11:38:44 2007 src/pgconnection.cpp:30 void getVersion(PGConnection*, int&, int&):Got Postgres Version string: PostgreSQL 8.2.4 on x86_64-pc-linux-gnu, compiled by GCC x86_64-pc-linux-gnu-gcc (GCC) 4.1.1 (Gentoo 4.1.1-r3)
+Thu Sep 27 11:38:44 2007 src/pgconnection.cpp:35 void getVersion(PGConnection*, int&, int&):Got Postgres Version: 8.2
+Thu Sep 27 11:38:54 2007 src/submitter.cpp:98 void Submitter::setJobType(const JobType&):Setting mJob to new JobSync record
+Thu Sep 27 11:38:54 2007 src/table.cpp:528 bool Table::insert(const RecordList&, bool):postInsert
+Thu Sep 27 11:38:54 2007 src/table.cpp:531 bool Table::insert(const RecordList&, bool):UpdateManager::recordsAdded
+Thu Sep 27 11:38:54 2007 src/table.cpp:533 bool Table::insert(const RecordList&, bool):recordsAdded
+Thu Sep 27 11:38:54 2007 src/table.cpp:535 bool Table::insert(const RecordList&, bool):mDatabase->recordsAdded
+Thu Sep 27 11:38:54 2007 src/table.cpp:537 bool Table::insert(const RecordList&, bool):done
+Thu Sep 27 11:38:55 2007 src/tableschema.cpp:253 Field* TableSchema::field(const QString&):TableSchema JobSync Couldn't find field: flag_xo
+Thu Sep 27 11:38:55 2007 src/recordimp.cpp:157 RecordImp* RecordImp::setColumn(int, const QVariant&):RecordImp::setColumn: Column -1 is out of range
+Thu Sep 27 11:38:55 2007 src/submitter.cpp:239 void Submitter::applyArgs(const QMap<QString, QString>&):Setting append to value --exclude-from=/mnt/x5/tools/sync.exclude
+Thu Sep 27 11:38:55 2007 src/submitter.cpp:239 void Submitter::applyArgs(const QMap<QString, QString>&):Setting filesFrom to value mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0001.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0002.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0003.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0004.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0005.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0006.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0007.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0008.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0009.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0010.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0011.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0012.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0013.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0014.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0015.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0016.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0017.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0018.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0019.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0020.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0021.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0022.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0023.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0024.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0025.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0026.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0027.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0028.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0029.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0030.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0031.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0032.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0033.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0034.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/halfhd/breath_01_cut01/breath_01_cut01.0035.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0001.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0002.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0003.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0004.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0005.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0006.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0007.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0008.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0009.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0010.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0011.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0012.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0013.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0014.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0015.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0016.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0017.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0018.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0019.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0020.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0021.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0022.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0023.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0024.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0025.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0026.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0027.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0028.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0029.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0030.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0031.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0032.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0033.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0034.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_cut01/breath_01_cut01.0035.sgi
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0001.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0002.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0003.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0004.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0005.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0006.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0007.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0008.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0009.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0010.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0011.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0012.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0013.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0014.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0015.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0016.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0017.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0018.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0019.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0020.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0021.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0022.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0023.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0024.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0025.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0026.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0027.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0028.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0029.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0030.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0031.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0032.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0033.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0034.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/hd/breath_01_offline_cut01/breath_01_offline_cut01.0035.jpg
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/qt/breath_01_cut01.mov
+mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/plates/qt/breath_01_offline_cut01.mov
+Thu Sep 27 11:38:55 2007 src/tableschema.cpp:253 Field* TableSchema::field(const QString&):TableSchema JobSync Couldn't find field: frameEnd
+Thu Sep 27 11:38:55 2007 src/tableschema.cpp:253 Field* TableSchema::field(const QString&):TableSchema JobSync Couldn't find field: frameStart
+Thu Sep 27 11:38:55 2007 src/submitter.cpp:239 void Submitter::applyArgs(const QMap<QString, QString>&):Setting hostList to value pollux
+Thu Sep 27 11:38:55 2007 src/submitter.cpp:239 void Submitter::applyArgs(const QMap<QString, QString>&):Setting job to value /mnt/x5/Shows/smallville/season7/sv702_kara/shot/breath_01/
+Thu Sep 27 11:38:55 2007 src/tableschema.cpp:253 Field* TableSchema::field(const QString&):TableSchema JobSync Couldn't find field: noCopy
+Thu Sep 27 11:38:55 2007 src/submitter.cpp:239 void Submitter::applyArgs(const QMap<QString, QString>&):Setting outputPath to value rsync://pollux/root/
+Thu Sep 27 11:38:55 2007 src/submitter.cpp:239 void Submitter::applyArgs(const QMap<QString, QString>&):Setting packetSize to value 99999
+Thu Sep 27 11:38:55 2007 src/submitter.cpp:239 void Submitter::applyArgs(const QMap<QString, QString>&):Setting packetType to value continuous
+Thu Sep 27 11:38:55 2007 src/tableschema.cpp:253 Field* TableSchema::field(const QString&):TableSchema JobSync Couldn't find field: projectName
+Thu Sep 27 11:38:55 2007 src/tableschema.cpp:253 Field* TableSchema::field(const QString&):TableSchema JobSync Couldn't find field: user
+Thu Sep 27 11:38:55 2007 base/rangefiletrackerbase.cpp:72 bool RangeFileTracker::doesTrackFile(const QString&):RFTI::vDoesTrackFile - Couldn't find frame number in 
+Thu Sep 27 11:38:55 2007 src/table.cpp:528 bool Table::insert(const RecordList&, bool):postInsert
+Thu Sep 27 11:38:55 2007 src/table.cpp:531 bool Table::insert(const RecordList&, bool):UpdateManager::recordsAdded
+Thu Sep 27 11:38:55 2007 src/table.cpp:533 bool Table::insert(const RecordList&, bool):recordsAdded
+Thu Sep 27 11:38:55 2007 src/table.cpp:535 bool Table::insert(const RecordList&, bool):mDatabase->recordsAdded
+Thu Sep 27 11:38:55 2007 src/table.cpp:537 bool Table::insert(const RecordList&, bool):done
+Thu Sep 27 11:38:55 2007 src/table.cpp:528 bool Table::insert(const RecordList&, bool):postInsert
+Thu Sep 27 11:38:55 2007 src/table.cpp:531 bool Table::insert(const RecordList&, bool):UpdateManager::recordsAdded
+Thu Sep 27 11:38:55 2007 src/table.cpp:533 bool Table::insert(const RecordList&, bool):recordsAdded
+Thu Sep 27 11:38:55 2007 src/table.cpp:535 bool Table::insert(const RecordList&, bool):mDatabase->recordsAdded
+Thu Sep 27 11:38:55 2007 src/table.cpp:537 bool Table::insert(const RecordList&, bool):done
+Thu Sep 27 11:38:55 2007 src/submitter.cpp:128 int Submitter::createTasks(QList<int>, QStringList, JobOutputList, int, bool):Creating jobtask with taskNumber : 1 output: Output1
+Thu Sep 27 11:38:55 2007 src/submitter.cpp:128 int Submitter::createTasks(QList<int>, QStringList, JobOutputList, int, bool):Creating jobtask with taskNumber : 2 output: Output1
+Thu Sep 27 11:38:55 2007 src/table.cpp:528 bool Table::insert(const RecordList&, bool):postInsert
+Thu Sep 27 11:38:55 2007 src/table.cpp:531 bool Table::insert(const RecordList&, bool):UpdateManager::recordsAdded
+Thu Sep 27 11:38:55 2007 src/table.cpp:533 bool Table::insert(const RecordList&, bool):recordsAdded
+Thu Sep 27 11:38:55 2007 src/table.cpp:535 bool Table::insert(const RecordList&, bool):mDatabase->recordsAdded
+Thu Sep 27 11:38:55 2007 src/table.cpp:537 bool Table::insert(const RecordList&, bool):done
+Thu Sep 27 11:38:55 2007 src/table.cpp:528 bool Table::insert(const RecordList&, bool):postInsert
+Thu Sep 27 11:38:55 2007 src/table.cpp:531 bool Table::insert(const RecordList&, bool):UpdateManager::recordsAdded
+Thu Sep 27 11:38:55 2007 src/table.cpp:533 bool Table::insert(const RecordList&, bool):recordsAdded
+Thu Sep 27 11:38:55 2007 src/table.cpp:535 bool Table::insert(const RecordList&, bool):mDatabase->recordsAdded
+Thu Sep 27 11:38:55 2007 src/table.cpp:537 bool Table::insert(const RecordList&, bool):done
+Thu Sep 27 11:38:55 2007 src/submitter.cpp:312 void Submitter::submit():Submitter::submit
+Thu Sep 27 11:38:55 2007 src/submitter.cpp:347 int Submitter::submitCheck():Submitter::submitCheck
+Thu Sep 27 11:38:55 2007 src/submitter.cpp:414 void Submitter::checkMd5():Submitter::checkMd5: running md5.calcMd5 on 
+Thu Sep 27 11:38:55 2007 src/submitter.cpp:416 void Submitter::checkMd5():Submitter::checkMd5: fileMd5sum being set to 
+Thu Sep 27 11:38:55 2007 src/submitter.cpp:506 void Submitter::printJobInfo():Submitter::printJobInfo()

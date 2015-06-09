@@ -1,0 +1,7 @@
+
+Run the following from psql, adjust path for renderfarm_debug dir-
+
+ALTER TABLE JobTask ADD COLUMN change_from_ip inet;
+ALTER TABLE JobTask ADD COLUMN lastchangetime timestamp;
+
+\i renderfarm_debug/jobtask_debug.sql

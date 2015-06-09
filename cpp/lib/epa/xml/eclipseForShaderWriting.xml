@@ -1,0 +1,9 @@
+<software name="eclipseForShaderWriting">
+	<dependOn>houdiniMaster</dependOn>
+	<dependOn>python</dependOn>
+	<dependOn>cmake</dependOn>
+	<set key="EPA_WORKINGDIR">$DRD_SOFTWARE_EXT/eclipse/$DRD_PLATFORM/v3_4</set>
+	<set key="EPA_CMDLINE">./eclipse</set>
+	<set key="EPA_ICON">$DRD_SOFTWARE_EXT/eclipse/$DRD_PLATFORM/v3_4/plugins/org.eclipse.platform_3.3.100.v200806172000/eclipse32.png</set>
+	<add key="PATH">/usr/java/jdk1.6.0_10/bin/</add>
+</software>

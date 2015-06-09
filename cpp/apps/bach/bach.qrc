@@ -1,0 +1,23 @@
+<RCC>
+  <qresource prefix="icons" >
+    <file>res/cancel.png</file>
+    <file>res/script_edit.png</file>
+    <file>res/textfield_rename.png</file>
+    <file>res/database_add.png</file>
+    <file>res/view-refresh.png</file>
+    <file>res/asterisk_orange.png</file>
+    <file>res/asterisk_yellow.png</file>
+    <file>res/accept.png</file>
+    <file>res/delete.png</file>
+    <file>res/add.png</file>
+    <file>res/accessories-text-editor.png</file>
+    <file>res/document-new.png</file>
+    <file>res/folder_add.png</file>
+    <file>res/folder_delete.png</file>
+    <file>res/folder_edit.png</file>
+    <file>res/go-next.png</file>
+    <file>res/list-add.png</file>
+    <file>res/list-remove.png</file>
+    <file>res/tick.png</file>
+  </qresource>
+</RCC>

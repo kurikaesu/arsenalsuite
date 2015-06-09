@@ -1,0 +1,3 @@
+<software name="mayaExtCameraTools">
+	<add key="MAYA_SCRIPT_PATH">$DRD_SOFTWARE_EXT/maya/$DRD_PLATFORM/camera</add>
+</software>

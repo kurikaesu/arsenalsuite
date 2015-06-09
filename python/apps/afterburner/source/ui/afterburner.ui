@@ -1,0 +1,56 @@
+<ui version="4.0" >
+ <class>Afterburner</class>
+ <widget class="QMainWindow" name="Afterburner" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>467</width>
+    <height>190</height>
+   </rect>
+  </property>
+  <property name="minimumSize" >
+   <size>
+    <width>450</width>
+    <height>190</height>
+   </size>
+  </property>
+  <property name="windowTitle" >
+   <string>Afterburner</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset>
+    <normaloff>icons/server.png</normaloff>icons/server.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget" >
+   <layout class="QGridLayout" name="gridLayout" >
+    <item row="0" column="0" >
+     <widget class="QGroupBox" name="jobBox" >
+      <property name="maximumSize" >
+       <size>
+        <width>16777215</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="title" >
+       <string>Running Jobs</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2" >
+       <item row="1" column="0" >
+        <widget class="QTableView" name="jobView" />
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar" />
+  <action name="actionExit" >
+   <property name="text" >
+    <string>E&amp;xit</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

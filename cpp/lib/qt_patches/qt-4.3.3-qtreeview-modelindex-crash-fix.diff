@@ -1,0 +1,24 @@
+diff -u qt-x11-opensource-src-4.3.3/src/gui/itemviews/qtreeview.cpp ../qt-x11-opensource-src-4.3.3/src/gui/itemviews/qtreeview.cpp
+--- qt-x11-opensource-src-4.3.3/src/gui/itemviews/qtreeview.cpp	2007-12-04 08:43:09.000000000 -0800
++++ src/gui/itemviews/qtreeview.cpp	2008-03-11 08:42:55.000000000 -0700
+@@ -3000,7 +3000,7 @@
+ QModelIndex QTreeViewPrivate::modelIndex(int i) const
+ {
+     return ((i < 0 || i >= viewItems.count())
+-            ? QModelIndex() : viewItems.at(i).index);
++            ? QModelIndex() : QModelIndex(viewItems.at(i).index));
+ }
+ 
+ int QTreeViewPrivate::firstVisibleItem(int *offset) const
+diff -u qt-x11-opensource-src-4.3.3/src/gui/itemviews/qtreeview_p.h ../qt-x11-opensource-src-4.3.3/src/gui/itemviews/qtreeview_p.h
+--- qt-x11-opensource-src-4.3.3/src/gui/itemviews/qtreeview_p.h	2007-12-04 08:43:09.000000000 -0800
++++ src/gui/itemviews/qtreeview_p.h	2008-03-11 08:41:48.000000000 -0700
+@@ -55,7 +55,7 @@
+ struct QTreeViewItem
+ {
+     QTreeViewItem() : expanded(false), spanning(false), total(0), level(0), height(0) {}
+-    QModelIndex index; // we remove items whenever the indexes are invalidated
++    QPersistentModelIndex index; // we remove items whenever the indexes are invalidated
+     uint expanded : 1;
+     uint spanning : 1;
+     uint total : 30; // total number of children visible

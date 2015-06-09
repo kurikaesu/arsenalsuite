@@ -1,0 +1,91 @@
+
+global proc string[] imageNameParts()
+{
+	// 0 baseName
+  // 1 version
+	// 2 extension
+
+	string $sceneNames[] = `renderSettings -fin`;
+	string $ret[];
+
+	string $parts[];
+	tokenize($sceneNames[0], ".", $parts);
+	$ret[0] = $parts[0];
+
+	$ret[1] = `match "v[0-9][0-9][0-9]" $ret[0]`;
+	if( $ret[1] == "" )
+		$ret[1] = "v000";
+
+	$ret[2] = $parts[2];
+
+	string $r = currentRenderer();
+	if( $ret[2] == "sgi" && $r == "mentalRay" && int(`about -version`) == 8 )
+		$ret[2] = "rgb";
+
+	return $ret;
+}
+
+global proc string version()
+{
+	string $v = `about -version`;
+	$v = substitute("\\.0", $v, "");
+	$v = substitute("\\.", $v, "");
+	$v = substitute("Service Pack 1", $v, "");
+	if( `about -is64` )
+		$v = substitute(" x64", $v, "");
+	return $v;
+}
+
+proc imageFormat()
+{
+/*
+GIF (0), SI (1), RLA (2), Tiff (3), Tiff16 (4), SGI (5), Alias (6) IFF (7) JPEG (8) EPS (9) IFF16 (10) Cineon (11) Quantel (12) SGI16 (13) TARGA (19) BMP (20) SGIMV (21) QT (22) AVI (23) MACPAINT (30) PHOTOSHOP (31) PNG (32) QUICKDRAW (33) QTIMAGE (34) DDS (35) DDS (36) IMFplugin (50) Custom (51) SWF (60) AI (61) SVG (62) SWFT (63)
+*/
+}
+
+global proc string padFrame(int $frameNum)
+{
+	string $frame = $frameNum;
+	int $l = size($frame);
+	for($i=0;$i<4-$l;$i++)
+	{
+		$frame = "0" + $frame;
+	}
+	return $frame;
+}
+
+global proc string user()
+{
+       string $user = `system "whoami"`;
+       $user = `strip $user`;
+       return $user;
+}
+
+global proc string outputPath()
+{
+  string $project = `workspace -q -o`;
+  string $renderDir = $project + "/images/";
+  $renderDir += basenameEx(`file -q -shn -sn`) + "/";
+	string $imageParts[] = imageNameParts();
+	return $renderDir;
+}
+
+global proc string currentFramePath()
+{
+	string $imageParts[] = imageNameParts();
+	string $path = outputPath() + $imageParts[0] 
+									+"."+ padFrame(`currentTime -q`) 
+									+"."+ $imageParts[2];
+	return $path;
+}
+
+global proc string projectName()
+{
+  string $file = `file -q -sn`;
+	string $parts[];
+	tokenize($file, "/", $parts);
+	if ( $parts[0] == "Shows" )
+	return $parts[1];
+	else return $parts[3];
+}
+

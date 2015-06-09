@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<software name="python">
+<!--
+					<set>PATH=$DRD_SOFTWARE_EXT/python/$DRD_PLATFORM/v2_5_1;$PATH</set>
+					<set>PATH=$DRD_SOFTWARE_EXT/python/$DRD_PLATFORM/v2_5_1/lib;$PATH</set>
+					<set>PATH=$DRD_SOFTWARE_EXT/python/$DRD_PLATFORM/v2_5_1/lib/site-packages/win32;$PATH</set>
+					<set>PATH=$DRD_SOFTWARE_EXT/python/$DRD_PLATFORM/v2_5_1/lib/site-packages/win32/lib;$PATH</set>
+					<set>PATH=$DRD_SOFTWARE_EXT/python/$DRD_PLATFORM/v2_5_1/Lib/site-packages/pywin32_system32;$PATH</set>
+					<set>PATH=$DRD_SOFTWARE_EXT/reviewboard/$DRD_PLATFORM/v1_0;$PATH</set>
+-->
+	<dependOn>pylib</dependOn>
+	<set key="EPA_CMDLINE" arch="lin64">python2.5</set>
+	<set key="EPA_CMDLINE" arch="win32">python</set>
+	<set key="EPA_ICON" arch="lin64">/usr/lib/python2.5/idlelib/Icons/python.gif</set>
+	<set key="EPA_ICON" arch="win32">$DRD_SOFTWARE_EXT/python/$DRD_PLATFORM/v2_5_1/DLLs/pyc.ico</set>
+	<add key="PYTHONPATH">$DRD_SOFTWARE_EXT/python/$DRD_PLATFORM/2.5</add>
+</software>

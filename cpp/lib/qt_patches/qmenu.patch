@@ -1,0 +1,13 @@
+--- qmenu.cpp.orig	2006-07-20 11:34:46.000000000 -0700
++++ qmenu.cpp	2006-07-20 11:31:00.000000000 -0700
+@@ -1713,8 +1713,8 @@
+     for(QWidget *caused = this; caused;) {
+         if (QMenu *m = qobject_cast<QMenu*>(caused)) {
+             caused = m->d_func()->causedPopup.widget;
+-            if (m->d_func()->eventLoop) // synchronous operation
+-                m->d_func()->syncAction = d->currentAction;
++            if (m->d_func()->eventLoop && action) // synchronous operation
++                m->d_func()->syncAction = d->currentAction;
+         } else {
+             break;
+         }

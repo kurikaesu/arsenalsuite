@@ -1,0 +1,25 @@
+Summary: Burner Library
+Name: burner
+Version: 1.0
+Release: DrD
+License: GPL
+Group: Libraries/Programming
+Distribution: CentOS
+Vendor: Dr. D Studios
+Packager: Aren Villanueva <aren.villanueva@drdstudios.com>
+BuildRoot:
+AutoReqProv: No
+
+%define _unpackaged_files_terminate_build 0
+
+%description
+The Arsenal Burner daemon.
+
+%files
+%defattr(-,root,root,-)
+/usr/bin/abpsmon
+/usr/lib/python2.5/site-packages/blur/libBurner.a
+/usr/local/bin/burner
+
+%clean
+

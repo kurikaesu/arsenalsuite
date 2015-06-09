@@ -1,0 +1,6 @@
+<software name="tank">
+	<set key="EPA_WORKINGDIR">/drd/software/ext/tank/hf2/current</set>
+	<set key="EPA_ICON">/drd/software/ext/tank/images/tank_32x32.png</set>
+	<add key="PYTHONPATH">$DRD_SOFTWARE_EXT/tank/hf2/current/python_src</add>
+	<add key="PYTHONPATH">$DRD_SOFTWARE_EXT/tank/hf2/third_party/python_src</add>
+</software>

@@ -1,0 +1,128 @@
+<ui version="4.0" >
+ <class>NotificationWidgetUI</class>
+ <widget class="QWidget" name="NotificationWidgetUI" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>683</width>
+    <height>544</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" >
+   <property name="margin" >
+    <number>2</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="groupBox" >
+     <property name="title" >
+      <string>Filters</string>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>6</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item row="3" column="2" colspan="2" >
+       <widget class="QPushButton" name="mRefreshButton" >
+        <property name="text" >
+         <string>&amp;Refresh</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2" >
+       <widget class="QLabel" name="label_6" >
+        <property name="text" >
+         <string>Limit:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3" >
+       <widget class="QSpinBox" name="mLimitSpin" >
+        <property name="maximum" >
+         <number>50000</number>
+        </property>
+        <property name="minimum" >
+         <number>1</number>
+        </property>
+        <property name="value" >
+         <number>500</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2" >
+       <widget class="QLabel" name="label_5" >
+        <property name="text" >
+         <string>End:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" >
+       <widget class="QLabel" name="label_4" >
+        <property name="text" >
+         <string>Start:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3" >
+       <widget class="QDateTimeEdit" name="mEndDateTime" />
+      </item>
+      <item row="0" column="3" >
+       <widget class="QDateTimeEdit" name="mStartDateTime" />
+      </item>
+      <item row="2" column="1" >
+       <widget class="QLineEdit" name="mSubjectEdit" />
+      </item>
+      <item row="1" column="1" >
+       <widget class="QLineEdit" name="mMethodEdit" />
+      </item>
+      <item row="0" column="1" >
+       <widget class="QLineEdit" name="mComponentEdit" />
+      </item>
+      <item row="0" column="0" >
+       <widget class="QLabel" name="label" >
+        <property name="text" >
+         <string>Component:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" >
+       <widget class="QLabel" name="label_3" >
+        <property name="text" >
+         <string>Subject:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" >
+       <widget class="QLabel" name="label_2" >
+        <property name="text" >
+         <string>Method:</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="NotificationView" name="mNotificationView" />
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>NotificationView</class>
+   <extends>QTreeView</extends>
+   <header>notificationview.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

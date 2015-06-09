@@ -1,0 +1,66 @@
+diff -ur qt-x11-opensource-src-4.2.0/src/gui/image/qpaintengine_pic.cpp /mnt/storage/qt-x11-opensource-src-4.2.0/src/gui/image/qpaintengine_pic.cpp
+--- qt-x11-opensource-src-4.2.0/src/gui/image/qpaintengine_pic.cpp      2006-09-29 07:45:02.000000000 -0700
++++ /mnt/storage/qt-x11-opensource-src-4.2.0/src/gui/image/qpaintengine_pic.cpp 2006-12-04 12:48:59.000000000 -0800
+@@ -245,6 +245,18 @@
+     writeCmdLength(pos, QRect(), false);
+ }
+
++void QPicturePaintEngine::updateCompositionMode(QPainter::CompositionMode cmode)
++{
++    Q_D(QPicturePaintEngine);
++#ifdef QT_PICTURE_DEBUG
++    qDebug() << " -> updateCompositionMode(): " << cmode;
++#endif
++    int pos;
++    SERIALIZE_CMD(QPicturePrivate::PdcSetCompositionMode);
++    d->s << (qint32) cmode;
++    writeCmdLength(pos, QRectF(), false);
++}
++
+ void QPicturePaintEngine::writeCmdLength(int pos, const QRectF &r, bool corr)
+ {
+     Q_D(QPicturePaintEngine);
+@@ -388,6 +400,7 @@
+     if (flags & DirtyClipPath) updateClipPath(state.clipPath(), state.clipOperation());
+     if (flags & DirtyClipRegion) updateClipRegion(state.clipRegion(), state.clipOperation());
+     if (flags & DirtyHints) updateRenderHints(state.renderHints());
++    if (flags & DirtyCompositionMode) updateCompositionMode(state.compositionMode());
+ }
+
+ #endif // QT_NO_PICTURE
+diff -ur qt-x11-opensource-src-4.2.0/src/gui/image/qpaintengine_pic_p.h /mnt/storage/qt-x11-opensource-src-4.2.0/src/gui/image/qpaintengine_pic_p.h
+--- qt-x11-opensource-src-4.2.0/src/gui/image/qpaintengine_pic_p.h      2006-09-29 07:45:02.000000000 -0700
++++ /mnt/storage/qt-x11-opensource-src-4.2.0/src/gui/image/qpaintengine_pic_p.h 2006-12-04 12:38:11.000000000 -0800
+@@ -63,6 +63,7 @@
+     void updateClipRegion(const QRegion &region, Qt::ClipOperation op);
+     void updateClipPath(const QPainterPath &path, Qt::ClipOperation op);
+     void updateRenderHints(QPainter::RenderHints hints);
++    void updateCompositionMode(QPainter::CompositionMode cmode);
+
+     void drawPath(const QPainterPath &path);
+     void drawPolygon(const QPointF *points, int numPoints, PolygonDrawMode mode);
+diff -ur qt-x11-opensource-src-4.2.0/src/gui/image/qpicture.cpp /mnt/storage/qt-x11-opensource-src-4.2.0/src/gui/image/qpicture.cpp
+--- qt-x11-opensource-src-4.2.0/src/gui/image/qpicture.cpp      2006-09-29 07:45:02.000000000 -0700
++++ /mnt/storage/qt-x11-opensource-src-4.2.0/src/gui/image/qpicture.cpp 2006-12-04 12:45:37.000000000 -0800
+@@ -736,6 +736,10 @@
+             painter->setRenderHint(QPainter::SmoothPixmapTransform,
+                                    bool(ul & QPainter::SmoothPixmapTransform));
+             break;
++        case QPicturePrivate::PdcSetCompositionMode:
++            s >> ul;
++            painter->setCompositionMode( (QPainter::CompositionMode)ul );
++            break;
+         default:
+             qWarning("QPicture::play: Invalid command %d", c);
+             if (len)                        // skip unknown command
+diff -ur qt-x11-opensource-src-4.2.0/src/gui/image/qpicture_p.h /mnt/storage/qt-x11-opensource-src-4.2.0/src/gui/image/qpicture_p.h
+--- qt-x11-opensource-src-4.2.0/src/gui/image/qpicture_p.h      2006-09-29 07:45:02.000000000 -0700
++++ /mnt/storage/qt-x11-opensource-src-4.2.0/src/gui/image/qpicture_p.h 2006-12-04 12:40:22.000000000 -0800
+@@ -112,6 +112,7 @@
+         PdcSetClipRegion = 61, // rgn
+         PdcSetClipPath = 62, // path
+         PdcSetRenderHint = 63, // ival
++        PdcSetCompositionMode = 64, // ival
+
+         PdcReservedStart = 0, // codes 0-199 are reserved
+         PdcReservedStop = 199 //   for Qt

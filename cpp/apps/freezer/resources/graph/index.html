@@ -1,0 +1,221 @@
+<html> 
+    <head> 
+        <script language='javascript' type='text/javascript' src='js/jquery.min.js'></script> 
+        <script language='javascript' type='text/javascript' src='js/jquery.flot.js'></script> 
+        <script language='javascript' type='text/javascript' src='js/jquery.flot.stack.js'></script> 
+        <script type='text/javascript'>
+            function plot(stats) {
+              
+                var colors = new Array(); 
+                colors[0]  = 'rgb(202, 170, 68)';  // Orange
+                colors[1]  = 'rgb(160, 196, 224)'; // Blue
+                colors[2]  = 'rgb(178, 66, 66)';   // Red
+                colors[3]  = 'rgb(63, 136, 63)';   // Green
+                colors[4]  = 'rgb(111, 169, 255)';   // Dark Blue
+                colors[5]  = 'rgb(181, 253, 249)'; // Light Blue
+
+                // Do something with the data    
+                $.plot($('#time'), [ 
+                    { data: stats['cputime_done'], label: "Done (CPU Time)", color: colors[0], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['cputime_busy'], label: "Busy (CPU Time)", color: colors[3], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['cputime_suspended'], label: "Suspended (CPU Time)", color: colors[2], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['cputime_cancelled'], label: "Cancelled (CPU Time)", color: colors[1], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['cputime_holding'], label: "Holding (CPU Time)", color: colors[4], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['cputime_new'], label: "New (CPU Time)", color: colors[5], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['walltime_done'], label: "Done (Wallclock)", color: colors[0], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['walltime_busy'], label: "Busy (Wallclock)", color: colors[3], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['walltime_suspended'], label: "Suspended (Wallclock)", color: colors[2], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['walltime_cancelled'], label: "Cancelled (Wallclock)", color: colors[1], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['walltime_holding'], label: "Holding (Wallclock)", color: colors[4], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['walltime_new'], label: "New (Wallclock)", color: colors[5], bars: { show: true, lineWidth: 1 } }
+                ], {
+                    grid: {
+                        hoverable: true
+                    },
+                    legend: {
+                        show: false
+                    }, 
+                    yaxis: { 
+                        labelWidth: 40,
+                        min: 0
+                    } 
+                } );
+
+                $.plot($('#memory'), [ 
+                    { data: stats['memory_done'], label: "Done", color: colors[0], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['memory_busy'], label: "Busy", color: colors[3], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['memory_suspended'], label: "Suspended", color: colors[2], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['memory_cancelled'], label: "Cancelled", color: colors[1], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['memory_holding'], label: "Holding", color: colors[4], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['memory_new'], label: "New", color: colors[5], bars: { show: true, lineWidth: 1 } }
+                ], {
+                    grid: {
+                        hoverable: true
+                    },
+                    legend: {
+                        show: false
+                    },
+                    yaxis: {
+                        labelWidth: 40,
+                        min: 0
+                    }
+                });                
+
+                $.plot($('#ops'), [ 
+                    { data: stats['opsread_done'], label: "Done (Read)", color: colors[0], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['opsread_busy'], label: "Busy (Read)", color: colors[3], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['opsread_suspended'], label: "Suspended (Read)", color: colors[2], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['opsread_cancelled'], label: "Cancelled (Read)", color: colors[1], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['opsread_holding'], label: "Holding (Read)", color: colors[4], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['opsread_new'], label: "New (Read)", color: colors[5], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['opswrite_done'], label: "Done (Write)", color: colors[0], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['opswrite_busy'], label: "Busy (Write)", color: colors[3], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['opswrite_suspended'], label: "Suspended (Write)", color: colors[2], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['opswrite_cancelled'], label: "Cancelled (Write)", color: colors[1], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['opswrite_holding'], label: "Holding (Write)", color: colors[4], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['opswrite_new'], label: "New (Write)", color: colors[5], bars: { show: true, lineWidth: 1 } }
+                ], {
+                    grid: {
+                        hoverable: true
+                    },
+                    legend: {
+                        show: false
+                    }, 
+                    yaxis: {
+                        labelWidth: 100,
+                    }
+                });
+
+                $.plot($('#bytes'), [ 
+                    { data: stats['bytesread_done'], label: "Done (Read)", color: colors[0], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['bytesread_busy'], label: "Busy (Read)", color: colors[3], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['bytesread_suspended'], label: "Suspended (Read)", color: colors[2], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['bytesread_cancelled'], label: "Cancelled (Read)", color: colors[1], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['bytesread_holding'], label: "Holding (Read)", color: colors[4], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['bytesread_new'], label: "New (Read)", color: colors[5], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['byteswrite_done'], label: "Done (Write)", color: colors[0], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['byteswrite_busy'], label: "Busy (Write)", color: colors[3], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['byteswrite_suspended'], label: "Suspended (Write)", color: colors[2], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['byteswrite_cancelled'], label: "Cancelled (Write)", color: colors[1], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['byteswrite_holding'], label: "Holding (Write)", color: colors[4], bars: { show: true, lineWidth: 1 } },
+                    { data: stats['byteswrite_new'], label: "New (Write)", color: colors[5], bars: { show: true, lineWidth: 1 } }
+                ], {
+                    grid: {
+                        hoverable: true
+                    },
+                    legend: {
+                        show: false
+                    }, 
+                    yaxis: {
+                        labelWidth: 100,
+                    }
+                });
+
+                var previousPoint = null;
+                $("#time").bind("plothover", function (event, pos, item) {
+                    plotHover(item, "minutes");
+                });
+
+                $("#memory").bind("plothover", function (event, pos, item) {
+                    plotHover(item, "MB");
+                });
+
+                $("#ops").bind("plothover", function (event, pos, item) {
+                    plotHover(item, "Ops");
+                });
+
+                $("#bytes").bind("plothover", function (event, pos, item) {
+                    plotHover(item, "MB");
+                });
+            }
+
+            function plotHover(item, label) {
+            
+                if (item) {
+                    if (previousPoint != item.dataIndex) {
+                        previousPoint = item.dataIndex;
+                        
+                        $("#tooltip").remove();
+                        var x = item.datapoint[0];
+                        var y = item.datapoint[1] < 0 ? item.datapoint[1] * -1 : item.datapoint[1];
+                       
+                         
+                        showTooltip(item.pageX, item.pageY, x + ": " + y + " " + label + ", " + item.series.label);
+                    }
+                }
+                else {
+                    $("#tooltip").remove();
+                    previousPoint = null;            
+                } 
+            }
+
+            function showTooltip(x, y, contents) {
+                $('<div id="tooltip">' + contents + '</div>').css( {
+                    position: 'absolute',
+                    display: 'none',
+                    top: y + 5,
+                    left: x + 5,
+                    border: '1px solid #fdd',
+                    padding: '2px',
+                    'background-color': '#fee',
+                    opacity: 0.80
+                }).appendTo("body").fadeIn(50);
+            }
+
+        </script>
+    </head> 
+    <body> 
+        <table width="100%" height="100%">
+            <tr>
+                <td width="50% "align="center" valign="middle">
+                    <table width="100%" height="100%">
+                        <tr>
+                            <td>
+                                <h5>Frame Times (minutes)</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <div id='time' style='width:90%;height:150px;'>...</div> 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h5>Frame Memory (MB)</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <div id='memory' style='width:90%;height:150px;'>...</div> 
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td width="50%" align="center" valign="middle">
+                    <table width="100%" height="100%">
+                        <tr>
+                            <td>
+                                <h5>Disk Read/Write (Ops)</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <div id='ops' style='width:90%;height:150px;'>...</div> 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h5>Disk Read/Write (MB)</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <div id='bytes' style='width:90%;height:150px;'>...</div> 
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body> 
+</html>

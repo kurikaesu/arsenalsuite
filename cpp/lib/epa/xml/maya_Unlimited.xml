@@ -1,0 +1,4 @@
+<software>
+	<dependOn>maya_2009</dependOn>
+	<set key="MAYA_LICENSE">unlimited</set>
+</software>

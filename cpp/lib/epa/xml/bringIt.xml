@@ -1,0 +1,3 @@
+<software name="bringIt">
+	<add key="PYTHONPATH">$DRD_SOFTWARE_INT/bringIt_py/v00_00_07</add>
+</software>

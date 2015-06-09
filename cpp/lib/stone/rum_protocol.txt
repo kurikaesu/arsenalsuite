@@ -1,0 +1,76 @@
+
+
+RUM Stream protocol
+
+
+
+Packet structure
+	
+	Client to RUM packets
+	
+		Q_UINT32 size;
+		Q_UINT32 type;
+		data
+	
+	RUM to client packets
+	
+		Q_UINT32 size
+		Q_UINT32 transactionid
+		Q_UINT32 type
+		data
+	
+Packet types
+	ACK - 0x0
+	REPLAY - 0x1
+	RECORDS ADDED - 0x2
+	RECORD UPDATED - 0x3
+	RECORDS REMOVED - 0x4
+	LISTEN - 0x5
+
+	
+data fields
+
+ACK: empty
+
+
+REPLAY:
+	Q_UINT32 transactionStart
+	Q_UINT32 transactionEnd
+
+LISTEN:
+	Q_UINT32 transactionStart
+
+RECORDS Added:
+	QString tableName
+	Q_UINT32 recordCount
+	Q_UINT32 fieldCount
+	foreach fieldCount - Not including primary key
+		QString fieldName
+	foreach recordCount
+		Q_UINT32 pkey
+		foreach fieldCount
+			QVariant value
+
+		
+RECORD UPDATED:
+	QString tableName
+	Q_UINT32 pkey
+	Q_UINT32 fieldCount
+	foreach fieldCount
+		QString field
+		QVariant value
+
+		
+RECORDS DELETED:
+	QString tableName
+	Q_UINT32 recordCount
+	foreach recordCount
+		Q_UINT32 key
+	
+
+ACK packets must be recieved once every hour
+or the connection will time out
+
+
+
+

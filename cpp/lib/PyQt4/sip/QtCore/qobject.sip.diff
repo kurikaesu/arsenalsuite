@@ -1,0 +1,48 @@
+--- qobject3.sip	2007-02-27 15:24:04.000000000 -0800
++++ qobject2.sip	2007-02-27 15:23:03.000000000 -0800
+@@ -904,9 +904,11 @@
+         switch (_id)
+         {
+         case 0:
+-            if (sigmo)
++            if (sigmo) {
++                Py_BEGIN_ALLOW_THREADS
+                 QMetaObject::activate(this, sigmo, 0, _a);
+-            else if (sender()->metaObject() == &staticMetaObject)
++                Py_END_ALLOW_THREADS
++            } else if (sender()->metaObject() == &staticMetaObject)
+                 pysignal(*reinterpret_cast<const PyQt_PyObject *>(_a[1]));
+             break;
+ 
+@@ -928,7 +930,9 @@
+ {
+     void *_a[] = {0, const_cast<void *>(reinterpret_cast<const void *>(&pyargs))};
+ 
++    Py_BEGIN_ALLOW_THREADS
+     QMetaObject::activate(this, &staticMetaObject, 0, _a);
++    Py_END_ALLOW_THREADS
+ }
+ 
+ 
+@@ -1235,11 +1239,7 @@
+         if (up->qtx == tx && up->pysig_name && qstrcmp(up->pysig_name, sig) == 0)
+         {
+             PyQt_PyObject wrapped_args(sigargs);
+-
+-            Py_BEGIN_ALLOW_THREADS
+             up->pysignal(wrapped_args);
+-            Py_END_ALLOW_THREADS
+-
+             break;
+         }
+ 
+@@ -2588,7 +2588,9 @@
+             if (_id < qo->nr_signals)
+             {
+                 QObject *qthis = reinterpret_cast<QObject *>(sipGetCppPtr(pySelf, sipClass_QObject));
++                Py_BEGIN_ALLOW_THREADS
+                 QMetaObject::activate(qthis, &qo->mo, _id, _a);
++                Py_END_ALLOW_THREADS
+             }
+             else
+             {

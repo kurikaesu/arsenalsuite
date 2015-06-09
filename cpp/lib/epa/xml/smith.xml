@@ -1,0 +1,6 @@
+<software name="smith">
+	<dependOn>bedlam</dependOn>
+	<dependOn>mayaUtils</dependOn>
+	<add key="PYTHONPATH">/drd/software/int/smith_py/v00_00_23</add>
+	<add key="PYTHONPATH">/drd/software/ext/networkx/networkx-0.99/lib/python2.5/site-packages</add>
+</software>

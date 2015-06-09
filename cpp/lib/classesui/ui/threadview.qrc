@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="threadview" >
+    <file>attach.png</file>
+    <file>message.png</file>
+    <file>tree_win.png</file>
+  </qresource>
+</RCC>

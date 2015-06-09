@@ -1,0 +1,16 @@
+<RCC>
+  <qresource prefix="/stonegui/">
+    <file>images/emptyicon.png</file>
+    <file>images/insertimage.png</file>
+    <file>images/textanchor.png</file>
+    <file>images/textbold.png</file>
+    <file>images/textcenter.png</file>
+    <file>images/textitalic.png</file>
+    <file>images/textjustify.png</file>
+    <file>images/textleft.png</file>
+    <file>images/textright.png</file>
+    <file>images/textsubscript.png</file>
+    <file>images/textsuperscript.png</file>
+    <file>images/textunder.png</file>
+  </qresource>
+</RCC>

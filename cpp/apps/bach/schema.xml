@@ -1,0 +1,106 @@
+<!DOCTYPE Schema>
+<database schemaName="bach" >
+ <table useCodeGen="true" name="BachAsset" expireKeyCache="true" className="BachAsset" >
+  <column type="uint" methodName="keyBachAsset" name="keyBachAsset" pkey="true" />
+  <column type="QString" methodName="path" name="path" />
+  <column pluralMethodName="tags" type="QString" methodName="tags" name="tags" />
+  <column type="QDateTime" methodName="importedDatetime" name="importedDatetime" />
+  <column pluralMethodName="exif" type="QString" methodName="exif" name="exif" />
+  <column type="uint" methodName="width" name="width" />
+  <column type="uint" methodName="height" name="height" />
+  <column displayName="cachePrefix" pluralMethodName="cachePrefixes" type="QString" methodName="cachePrefix" name="cachePrefix" />
+  <column type="uint" methodName="filetype" name="filetype" />
+  <column type="uint" methodName="filesize" name="filesize" />
+  <column type="uint" methodName="cliplength" name="cliplength" />
+  <column type="uint" methodName="frameStart" name="frameStart" />
+  <column type="uint" methodName="frameEnd" name="frameEnd" />
+  <column type="uint" methodName="padLength" name="padLength" />
+  <column type="QString" methodName="directory" name="directory" />
+  <column type="float" methodName="aperture" name="aperture" />
+  <column pluralMethodName="shutterSpeeds" type="float" methodName="shutterSpeed" name="shutterSpeed" />
+  <column type="uint" methodName="isoSpeedRating" name="isoSpeedRating" />
+  <column type="QDateTime" methodName="creationDatetime" name="creationDatetime" />
+  <column type="float" methodName="focalLength" name="focalLength" />
+  <column type="uint" methodName="camera" name="camera" />
+  <column displayName="Camera Serial Number" type="uint" methodName="cameraSN" name="cameraSN" />
+  <column type="uint" methodName="lens" name="lens" />
+  <column pluralMethodName="cachedKeywords" type="QString" methodName="cachedKeywords" name="cachedKeywords" />
+  <column type="int" methodName="tnRotate" name="tnRotate" />
+  <column type="bool" methodName="exclude" name="exclude" />
+  <column type="QString" methodName="hash" name="hash" />
+  <variable type="int" name="position" />
+  <index useCache="false" type="single" name="Path" >
+   <column name="path" />
+  </index>
+  <index useCache="false" type="single" name="Hash" >
+   <column name="hash" />
+  </index>
+ </table>
+ <table useCodeGen="true" name="BachBucket" expireKeyCache="true" className="BachBucket" >
+  <column type="uint" methodName="keyBachBucket" name="keyBachBucket" pkey="true" />
+  <column type="QString" methodName="name" name="name" />
+  <column reverseAccess="true" type="uint" methodName="BachNamespace" name="fkeyBachNamespace" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="BachNamespace" indexUseCache="false" table="BachNamespace" type="multi" hasIndex="true" />
+  </column>
+  <index useCache="true" type="multi" name="Name" >
+   <column name="name" />
+  </index>
+ </table>
+ <table useCodeGen="true" name="BachBucketMap" expireKeyCache="true" className="BachBucketMap" >
+  <column type="uint" methodName="keyBachBucketMap" name="keyBachBucketMap" pkey="true" />
+  <column reverseAccess="true" type="uint" methodName="BachBucket" name="fkeyBachBucket" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="BachBucket" indexUseCache="true" table="BachBucket" type="multi" hasIndex="true" />
+  </column>
+  <column reverseAccess="true" type="uint" methodName="BachAsset" name="fkeyBachAsset" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="BachAsset" indexUseCache="true" table="BachAsset" type="multi" hasIndex="true" />
+  </column>
+  <column type="int" methodName="position" name="position" />
+  <index useCache="true" type="single" name="BucketAndAsset" >
+   <column name="fkeyBachBucket" />
+   <column name="fkeyBachAsset" />
+  </index>
+  <index useCache="true" type="multi" name="BucketAndAssets" >
+   <column name="fkeyBachBucket" />
+   <column name="fkeyBachAsset" />
+  </index>
+ </table>
+ <table useCodeGen="true" name="BachHistory" expireKeyCache="true" className="BachHistory" >
+  <column type="uint" methodName="keyBachHistory" name="keyBachHistory" pkey="true" />
+  <column type="QString" methodName="action" name="action" />
+  <column type="QString" methodName="user" name="user" />
+  <column displayName="Table" type="QString" methodName="tableName" name="tableName" />
+ </table>
+ <table useCodeGen="true" name="BachKeyword" expireKeyCache="true" className="BachKeyword" >
+  <column type="uint" methodName="keyBachKeyword" name="keyBachKeyword" pkey="true" />
+  <column type="QString" methodName="name" name="name" />
+  <variable type="int" name="HasKeyword" />
+  <variable type="uint" name="Count" />
+  <index useCache="true" type="single" name="Name" >
+   <column name="name" />
+  </index>
+ </table>
+ <table useCodeGen="true" name="BachKeywordMap" expireKeyCache="true" className="BachKeywordMap" >
+  <column type="uint" methodName="keyBachKeywordMap" name="keyBachKeywordMap" pkey="true" />
+  <column reverseAccess="true" type="uint" methodName="BachAsset" name="fkeyBachAsset" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="BachAsset" indexUseCache="true" table="BachAsset" type="multi" hasIndex="true" />
+  </column>
+  <column reverseAccess="true" type="uint" methodName="BachKeyword" name="fkeyBachKeyword" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="BachKeyword" indexUseCache="true" table="BachKeyword" type="multi" hasIndex="true" />
+  </column>
+  <column reverseAccess="true" type="uint" methodName="BachNamespace" name="fkeyBachNamespace" >
+   <fkey indexDeleteMode="DoNothingOnDelete" indexName="BachNamespace" indexUseCache="false" table="BachNamespace" type="multi" hasIndex="true" />
+  </column>
+  <index useCache="true" type="single" name="KeywordAndAsset" >
+   <column name="fkeyBachKeyword" />
+   <column name="fkeyBachAsset" />
+  </index>
+  <index useCache="true" type="multi" name="KeywordAndAssets" >
+   <column name="fkeyBachKeyword" />
+   <column name="fkeyBachAsset" />
+  </index>
+ </table>
+ <table useCodeGen="true" name="BachNamespace" expireKeyCache="true" className="BachNamespace" >
+  <column type="uint" methodName="keyBachNamespace" name="keyBachNamespace" pkey="true" />
+  <column type="QString" methodName="name" name="name" />
+ </table>
+</database>

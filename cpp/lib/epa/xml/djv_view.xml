@@ -1,0 +1,4 @@
+<software name="djv_view">
+	<set key="EPA_CMDLINE">/usr/bin/djv_view</set>
+	<set key="EPA_ICON">/usr/local/djv/doc/icon_playback_forward.png</set>
+</software>

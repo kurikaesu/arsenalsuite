@@ -1,0 +1,8 @@
+<software name="releaseMaster">
+<set key="EPA_WORKINGDIR">$DRD_SOFTWARE_INT</set>
+<set key="EPA_CMDLINE">terminal -x $DRD_SOFTWARE_INT/releaseMaster_py/v00_00_12/releaseMasterUI.sh</set>
+<add key="PATH">$DRD_SOFTWARE_INT/releaseMaster_py/v00_00_12</add>
+<add key="PYTHONPATH">$DRD_SOFTWARE_INT/releaseMaster_py/v00_00_12</add>
+<add key="PYTHONPATH">$DRD_SOFTWARE_INT/lib_py/v00_01_03/lib</add>
+<add key="PYTHONPATH">$DRD_SOFTWARE_EXT/python/lin64/2.5</add>
+</software>

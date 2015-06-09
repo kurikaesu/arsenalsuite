@@ -1,0 +1,4 @@
+<software name="pointCloudViewerNode">
+	<add key="MAYA_PLUG_IN_PATH">$DRD_SOFTWARE_INT/pointCloudViewerNode_cpp/lin64/200900/v0_0_2/pointCloudViewerNode</add>
+	<add key="MAYA_SCRIPT_PATH">$DRD_SOFTWARE_INT/pointCloudViewerNode_cpp/lin64/200900/v0_0_2/pointCloudViewerNode/mel</add>
+</software>

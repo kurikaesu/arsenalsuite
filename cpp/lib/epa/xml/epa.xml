@@ -1,0 +1,71 @@
+<envs>	
+<project name="hf2">
+<department name="previz">
+		<software name="maya_Complete" version="2009_previz"/>
+		<software name="maya_Unlimited" version="2008_complete_previz"/>
+		<software name="bedlamGui" version="0_0_14"/>
+		<software name="gimp" version="2_6_2"/>
+		<software name="xnview" version="1_7_0"/>
+		<software name="mplay" version="NI_9_5_343"/>
+		<software name="vlc" version="0_9_4"/>
+		<software name="djv_view" version="0_8_2"/>
+		<software name="nuke" version="5_1_3"/>
+		<software name="bach" version="6997"/>
+</department>
+
+	<department name="modeling">
+		<software name="maya_Complete" version="2009_modeling"/>
+		<software name="maya_Unlimited" version="2009_unlimited_modeling"/>
+		<software name="bedlamGui" version="0_0_14"/>
+		<software name="gimp" version="2_6_2"/>
+		<software name="xnview" version="1_7_0"/>
+		<software name="mplay" version="NI_9_5_343"/>
+		<software name="vlc" version="0_9_4"/>
+		<software name="djv_view" version="0_8_2"/>
+		<software name="nuke" version="5_1_3"/>
+		<software name="bach" version="6997"/>
+		<software name="meshlab" version="111"/>
+	</department>
+
+	<department name="rigging">
+		<software name="maya" version="2009_rigging"/>
+		<software name="python" version="2_5_1"/>
+		<software name="eclipse" version="3_4_0"/>
+		<software name="eclipseForPythonMaya" version="3_4_0"/>
+		<software name="houdiniMaster" version="NI_hmaster_9_5_343"/>
+		<software name="houdiniEscape" version="NI_hescape_9_5_343"/>
+		<software name="gimp" version="2_6_2"/>
+		<software name="bedlamGui" version="0_0_14"/>
+		<software name="bach" version="6997"/>
+	</department>
+
+	<department name="rnd">
+		<software name="maya_Complete" version="2009_modeling"/>
+		<software name="maya_Unlimited" version="2009_unlimited_modeling"/>
+		<software name="python" version="2_5_1"/>
+		<software name="eclipse" version="3_4_0"/>
+		<software name="eclipseForPythonMaya" version="3_4_0"/>
+		<software name="eclipseForShaderWriting" version="3_4_0"/>
+		<software name="houdiniMaster" version="NI_hmaster_9_5_343"/>
+		<software name="houdiniEscape" version="NI_hescape_9_5_343"/>
+		<software name="bedlamGui" version="0_0_14"/>
+		<software name="bach" version="6997"/>
+		<software name="releaseMaster" version="00_00_12"/>
+		<software name="tank" version="hf2_001"/>
+	</department>
+
+	<department name="visdev">
+		<software name="maya_Complete" version="2009_modeling"/>
+		<software name="maya_Unlimited" version="2009_unlimited_modeling"/>
+		<software name="houdiniMaster" version="NI_hmaster_9_5_343"/>
+		<software name="houdiniEscape" version="NI_hescape_9_5_343"/>
+		<software name="bedlamGui" version="0_0_14"/>
+		<software name="gimp" version="2_6_2"/>
+		<software name="xnview" version="1_7_0"/>
+		<software name="mplay" version="NI_9_5_343"/>
+		<software name="djv_view" version="0_8_2"/>
+		<software name="nuke" version="5_1_3"/>
+		<software name="bach" version="6997"/>
+	</department>
+
+</project>

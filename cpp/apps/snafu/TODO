@@ -1,0 +1,16 @@
+* Host Tree 
+ * set ostype for all Hosts - 2 hours
+ 	- mostly done, nmap isn't detecting in an entirely reliable way
+
+* event log
+	* filter by priority, eventClass, eventMethod - 2 hours
+	  - eventClass done
+
+* alerts tab
+	* edit alert threshholds
+	* delete alerts
+	* silence alert checkbox
+
+* map tab
+	* make a couple correctly sized example maps
+

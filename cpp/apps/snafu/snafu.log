@@ -1,0 +1,2 @@
+Mon Mar 1 12:27:05 2010:18618 src/connection.cpp:48 static Stone::Connection* Stone::Connection::create(const QString&):Unable to create connection for dbType: 
+Mon Mar 1 12:27:05 2010:18618 src/connection.cpp:48 static Stone::Connection* Stone::Connection::create(const QString&):Unable to create connection for dbType: 

@@ -1,0 +1,6 @@
+<software name="gimp">
+	<set key="EPA_WORKINGDIR">$DRD_SOFTWARE_EXT/gimp/$DRD_PLATFORM/2.6/</set>
+	<set key="EPA_CMDLINE">bin/gimp</set>
+	<set key="EPA_ICON">$EPA_WORKINGDIR/share/icons/hicolor/24x24/apps/gimp.png</set>
+	<add key="LD_LIBRARY_PATH">$EPA_WORKINGDIR/lib</add>
+</software>

@@ -1,0 +1,11 @@
+
+[Database]
+Host=lion
+Port=5432
+User=brobison
+Password=
+
+[Update Server]
+Host=leopard
+Port=25565
+
