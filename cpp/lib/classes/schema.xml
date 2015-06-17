@@ -832,6 +832,10 @@
   <column docs="passes 'p' as the first parameter of script" type="QString" methodName="jobscriptparam" name="jobscriptparam"/>
   <column docs="Override the default call to &quot;renderdl&quot; binary." type="QString" methodName="renderdlCmd" name="renderdlCmd"/>
  </table>
+ <table useCodeGen="true" parent="Job" name="JobAfterEffects" expireKeyCache="true" className="JobAfterEffects">
+  <column type="bool" methodName="ignoreMissingEffects" name="ignoreMissingEffects"/>
+  <column type="QString" methodName="comp" name="comp"/>
+ </table>
  <table useCodeGen="true" name="JobAssignment" expireKeyCache="false" className="JobAssignment">
   <column type="uint" methodName="keyJobAssignment" name="keyJobAssignment" pkey="true"/>
   <column type="uint" methodName="job" name="fkeyjob">
@@ -858,16 +862,12 @@
   <column type="double" methodName="iowait" name="iowait"/>
   <column pluralMethodName="bytesRead" type="double" methodName="bytesRead" name="bytesRead"/>
   <column pluralMethodName="bytesWrite" type="double" methodName="bytesWrite" name="bytesWrite"/>
-  <column type="float" methodName="efficiency" name="efficiency"/>
+  <column type="double" methodName="efficiency" name="efficiency"/>
   <column pluralMethodName="opsRead" type="double" methodName="opsRead" name="opsRead"/>
   <column pluralMethodName="opsWrite" type="double" methodName="opsWrite" name="opsWrite"/>
   <column pluralMethodName="assignSlots" type="uint" methodName="assignSlots" name="assignslots"/>
   <column type="uint" methodName="assignMaxMemory" name="assignMaxMemory"/>
   <column type="uint" methodName="assignMinMemory" name="assignMinMemory"/>
- </table>
- <table useCodeGen="true" parent="Job" name="JobAfterEffects" expireKeyCache="true" className="JobAfterEffects">
-  <column type="bool" methodName="ignoreMissingEffects" name="ignoreMissingEffects"/>
-  <column type="QString" methodName="comp" name="comp"/>
  </table>
  <table preload="true" useCodeGen="true" name="JobAssignmentStatus" expireKeyCache="true" className="JobAssignmentStatus">
   <column type="uint" methodName="keyJobAssignmentStatus" name="keyJobAssignmentStatus" pkey="true"/>
@@ -879,7 +879,6 @@
    <column name="status"/>
   </index>
  </table>
- <table useCodeGen="true" parent="JobAfterEffects" name="JobAfterEffects10" expireKeyCache="true" className="JobAfterEffects10"/>
  <table useCodeGen="true" parent="Job" name="JobAutodeskBurn" expireKeyCache="true" className="JobAutodeskBurn">
   <column type="uint" methodName="frameStart" name="frameStart"/>
   <column type="uint" methodName="frameEnd" name="frameEnd"/>
@@ -997,7 +996,7 @@
   </column>
   <column reverseAccess="true" type="uint" methodName="JobFilterSet" name="fkeyJobFilterSet">
    <fkey indexDeleteMode="DoNothingOnDelete" indexName="JobFilterSet" indexUseCache="false" table="JobFilterSet" type="multi" hasIndex="true"/>
-   </column>
+  </column>
   <column type="QString" methodName="regex" name="regex"/>
   <column type="QString" methodName="comment" name="comment"/>
   <column type="bool" methodName="enabled" name="enabled"/>
@@ -1009,7 +1008,7 @@
    <column name="name"/>
   </index>
  </table>
-<table docs="JobFilterType stores a list of possible things that can happen when a particular regex is matched in the sdtout/stderr of a job. This list includes&#xa;&#xa;Error-TaskCancel&#xa;Error-TaskRetry&#xa;Error-JobSuspend" useCodeGen="true" name="JobFilterType" expireKeyCache="false" className="JobFilterType">
+ <table docs="JobFilterType stores a list of possible things that can happen when a particular regex is matched in the sdtout/stderr of a job. This list includes&#xa;&#xa;Error-TaskCancel&#xa;Error-TaskRetry&#xa;Error-JobSuspend" useCodeGen="true" name="JobFilterType" expireKeyCache="false" className="JobFilterType">
   <column type="uint" methodName="keyJobFilterType" name="keyJobFilterType" pkey="true"/>
   <column type="QString" methodName="name" name="name"/>
   <index useCache="true" type="multi" name="Name">
@@ -1109,9 +1108,6 @@
   <column type="bool" methodName="passOutputPath" name="passOutputPath"/>
   <column type="bool" methodName="canModifyOutputPath" name="canModifyOutputPath"/>
  </table>
- <table useCodeGen="true" parent="JobMax" name="JobMax10" expireKeyCache="true" className="JobMax10"/>
- <table useCodeGen="true" parent="JobMax" name="JobMax2009" expireKeyCache="true" className="JobMax2009"/>
- <table useCodeGen="true" parent="JobMax" name="JobMax2010" expireKeyCache="true" className="JobMax2010"/>
  <table useCodeGen="true" parent="Job" name="JobMaxScript" expireKeyCache="true" className="JobMaxScript">
   <column type="QString" methodName="script" name="script"/>
   <column type="uint" methodName="maxTime" name="maxTime"/>
@@ -1133,16 +1129,6 @@
   <column type="uint" methodName="height" name="height"/>
   <column type="QString" methodName="append" name="append"/>
  </table>
- <table useCodeGen="true" parent="JobMaya" name="JobMaya2008" expireKeyCache="true" className="JobMaya2008"/>
- <table useCodeGen="true" parent="JobMaya" name="JobMaya2009" expireKeyCache="true" className="JobMaya2009"/>
- <table useCodeGen="true" parent="JobMaya" name="JobMaya2011" expireKeyCache="true" className="JobMaya2011"/>
- <table useCodeGen="true" parent="JobMaya" name="JobMaya2012" expireKeyCache="true" className="JobMaya2012"/>
- <table useCodeGen="true" parent="JobMaya" name="JobMaya7" expireKeyCache="true" className="JobMaya7"/>
- <table useCodeGen="true" parent="JobMaya" name="JobMaya8" expireKeyCache="true" className="JobMaya8"/>
- <table useCodeGen="true" parent="JobMaya" name="JobMaya85" expireKeyCache="true" className="JobMaya85"/>
- <table useCodeGen="true" parent="JobMaya" name="JobMentalRay2009" expireKeyCache="true" className="JobMentalRay2009"/>
- <table useCodeGen="true" parent="JobMaya" name="JobMentalRay2011" expireKeyCache="true" className="JobMentalRay2011"/>
- <table useCodeGen="true" parent="JobMaya" name="JobMentalRay2012" expireKeyCache="true" className="JobMentalRay2012"/>
  <table docs="Job type for Naiad dynamic simulations." useCodeGen="true" parent="Job" name="JobNaiad" expireKeyCache="true" className="JobNaiad">
   <column type="uint" methodName="frameStart" name="frameStart"/>
   <column type="uint" methodName="frameEnd" name="frameEnd"/>
@@ -1160,7 +1146,6 @@
   <column pluralMethodName="nodes" docs="Only execute these nodes (comma-seperated list)" type="QString" methodName="nodes" name="nodes"/>
   <column pluralMethodName="terminalOnly" type="bool" methodName="terminalOnly" name="terminalOnly"/>
  </table>
- <table useCodeGen="true" parent="JobNuke" name="JobNuke6" expireKeyCache="true" className="JobNuke6"/>
  <table useCodeGen="true" name="JobOutput" expireKeyCache="true" className="JobOutput">
   <column type="uint" methodName="keyJobOutput" name="keyJobOutput" pkey="true"/>
   <column reverseAccess="true" type="uint" methodName="Job" name="fkeyJob">
@@ -1247,9 +1232,9 @@
   <column type="uint" methodName="minMemory" name="minmemory"/>
   <column type="uint" methodName="maxMemory" name="maxmemory"/>
   <column type="uint" methodName="avgMemory" name="avgmemory"/>
-  <column type="float" methodName="minEfficiency" name="minefficiency"/>
-  <column type="float" methodName="maxEfficiency" name="maxefficiency"/>
-  <column type="float" methodName="avgEfficiency" name="avgefficiency"/>
+  <column type="double" methodName="minEfficiency" name="minefficiency"/>
+  <column type="double" methodName="maxEfficiency" name="maxefficiency"/>
+  <column type="double" methodName="avgEfficiency" name="avgefficiency"/>
   <column type="uint" methodName="totalBytesRead" name="totalbytesread"/>
   <column type="uint" methodName="minBytesRead" name="minbytesread"/>
   <column type="uint" methodName="maxBytesRead" name="maxbytesread"/>
@@ -1276,7 +1261,7 @@
   <column type="Interval" methodName="minCopyTime" name="mincopytime"/>
   <column type="Interval" methodName="maxCopyTime" name="maxcopytime"/>
   <column type="Interval" methodName="avgCopyTime" name="avgcopyTime"/>
-  <column type="float" methodName="efficiency" name="efficiency"/>
+  <column type="double" methodName="efficiency" name="efficiency"/>
   <column type="double" methodName="totaltime" name="totaltime"/>
   <column pluralMethodName="queueOrder" type="uint" methodName="queueOrder" name="queueorder"/>
   <column type="QString" methodName="taskBitmap" name="taskbitmap"/>
@@ -1318,7 +1303,7 @@
   <column type="uint" methodName="errorCount" name="errorCount"/>
   <column type="uint" methodName="lastNotifiedErrorCount" name="lastNotifiedErrorCount"/>
   <column docs="Average memory used per task in kilobytes." type="uint" methodName="averageMemory" name="averageMemory"/>
-  <column type="float" methodName="efficiency" name="efficiency"/>
+  <column type="double" methodName="efficiency" name="efficiency"/>
   <column type="double" methodName="cputime" name="cputime"/>
   <column type="double" methodName="bytesWrite" name="bytesWrite"/>
   <column type="double" methodName="bytesRead" name="bytesRead"/>
@@ -1475,8 +1460,8 @@
   <column type="QDateTime" methodName="created" name="created"/>
   <column type="QString" methodName="subject" name="subject"/>
   <column type="QString" methodName="message" name="message"/>
-  <column type="QString" methodName="component" name="component"/>
-  <column type="QString" methodName="event" name="event"/>
+  <column displayName="Component" type="QString" methodName="componentCompat" name="component"/>
+  <column displayName="Event" type="QString" methodName="eventCompat" name="event"/>
   <column type="QDateTime" methodName="routed" name="routed"/>
   <column type="uint" methodName="Element" name="fkeyElement">
    <fkey indexDeleteMode="DoNothingOnDelete" table="Element" type="multi" hasIndex="false"/>
@@ -1490,8 +1475,6 @@
   <column pluralMethodName="NotificationEvents" type="uint" methodName="notificationEvent" name="fkeynotificationevent">
    <fkey indexDeleteMode="DoNothingOnDelete" table="NotificationEvent" type="multi" hasIndex="false"/>
   </column>
-  <column displayName="Component" type="QString" methodName="componentCompat" name="component"/>
-  <column displayName="Event" type="QString" methodName="eventCompat" name="event"/>
  </table>
  <table preload="true" useCodeGen="true" name="NotificationComponent" expireKeyCache="true" className="NotificationComponent">
   <column type="uint" methodName="keyNotificationComponent" name="keyNotificationComponent" pkey="true"/>
