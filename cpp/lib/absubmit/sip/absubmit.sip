@@ -1,5 +1,5 @@
 
-%Module blur.absubmit 0
+%Module(name=blur.absubmit,version=1)
 
 %Import QtCore/QtCoremod.sip
 %Import QtGui/QtGuimod.sip

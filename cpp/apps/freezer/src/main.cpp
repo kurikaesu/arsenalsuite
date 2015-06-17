@@ -82,6 +82,7 @@ extern "C" void initClasses(void);
 extern "C" void initStonegui(void);
 extern "C" void initClassesui(void);
 extern "C" void initFreezer(void);
+extern "C" void initabsubmit(void);
 #endif
 
 // Return the named attribute object from the named module.
@@ -132,6 +133,7 @@ void loadPythonPlugins()
 		{"blur.Stonegui",initStonegui},
 		{"blur.Classesui",initClassesui},
 		{"blur.Freezer", initFreezer},
+		{"blur.absubmit", initabsubmit},
 		{NULL, NULL}
 	};
 
@@ -152,8 +154,8 @@ void loadPythonPlugins()
 		"\t\tself.modules['blur.Classes'] = imp.load_module('blur.Classes',None,'',('','',imp.C_BUILTIN))\n"
 		"\t\tself.modules['blur.Stonegui'] = imp.load_module('blur.Stonegui',None,'',('','',imp.C_BUILTIN))\n"
 		"\t\tself.modules['blur.Classesui'] = imp.load_module('blur.Classesui',None,'',('','',imp.C_BUILTIN))\n"
-		//"\t\tself.modules['blur.absubmit'] = imp.load_module('blur.absubmit',None,'',('','',imp.C_BUILTIN))\n"
 		"\t\tself.modules['blur.Freezer'] = imp.load_module('blur.Freezer',None,'',('','',imp.C_BUILTIN))\n"
+		"\t\tself.modules['blur.absubmit'] = imp.load_module('blur.absubmit',None,'',('','',imp.C_BUILTIN))\n"
 		"\tdef find_module(self,fullname,path=None):\n"
 		"\t\tif fullname in self.modules:\n"
 		"\t\t\treturn self.modules[fullname]\n"

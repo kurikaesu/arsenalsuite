@@ -1,5 +1,5 @@
 
-%Module blur.Freezer
+%Module(name=blur.Freezer, version=1)
 
 %Import QtCore/QtCoremod.sip
 %Import QtGui/QtGuimod.sip

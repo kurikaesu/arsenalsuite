@@ -10,16 +10,22 @@ opt_static=0
 opt_debug=0
 opt_generate_code=1
 
-class StoneguiModuleMakefile(pyqtconfig.QtCoreModuleMakefile):
-    """The Makefile class for modules that %Import QtXml.
-    """
-    def __init__(self, *args, **kw):
-        """Initialise an instance of a module Makefile.
-        """
-        if not kw.has_key("qt"):
-            kw["qt"] = ["QtCore", "QtXml", "QtSql","QtNetwork","QtGui"]
-
-        apply(pyqtconfig.QtCoreModuleMakefile.__init__, (self, ) + args, kw)
+class AbsubmitModuleMakefile(pyqtconfig.QtCoreModuleMakefile):
+	"""The Makefile class for modules that %Import QtXml.
+	"""
+	def __init__(self, *args, **kw):
+		"""Initialise an instance of a module Makefile.
+		"""
+		if not kw.has_key("qt"):
+			kw["qt"] = ["QtCore", "QtXml", "QtSql","QtNetwork","QtGui"]
+			
+		apply(pyqtconfig.QtCoreModuleMakefile.__init__, (self, ) + args, kw)
+		
+	# Override target for static builds
+	def finalise(self):
+		pyqtconfig.QtCoreModuleMakefile.finalise(self)
+		if self.static:
+			self._target = 'py' + self._target
 
 def doit():
 	global opt_static
@@ -60,7 +66,7 @@ def doit():
 	# Create the Makefile.  The QtModuleMakefile class provided by the
 	# pyqtconfig module takes care of all the extra preprocessor, compiler and
 	# linker flags needed by the Qt library.
-	makefile = StoneguiModuleMakefile(
+	makefile = AbsubmitModuleMakefile(
 		configuration=config,
 		build_file=build_file,
 		static=opt_static,

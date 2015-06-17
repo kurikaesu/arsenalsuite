@@ -22,16 +22,17 @@ win32{
 	INCLUDEPATH+=$$system("python -c \"from distutils.sysconfig import get_python_inc; print get_python_inc()\"")
 	PY_VERSION=$$system("python -c \"from distutils.sysconfig import get_python_version; print get_python_version().replace('.','')\"")
 	message(Python Version is $$PY_VERSION Python lib path is $$PY_LIB_PATH)
-	LIBS+=-L$${PY_PATH}\\libs -lpython$${PY_VERSION}
+	LIBS+=-L$${PY_PATH}/libs -lpython$${PY_VERSION}
 	LIBS += -lpsapi -lMpr -lws2_32 -lgdi32
 
-	LIBS+=-L..\\..\\lib\\freezer -lfreezer
-	LIBS+=-L..\\..\\lib\\classesui -lclassesui
-	LIBS+=-L..\\..\\lib\\stonegui -lstonegui
-	LIBS+=-L..\\..\\lib\\classes -lclasses
-	LIBS+=-L..\\..\\lib\\stone -lstone
+	LIBS+=-L../../lib/freezer -lfreezer
+	LIBS+=-L../../lib/classesui -lclassesui
+	LIBS+=-L../../lib/stonegui -lstonegui
+	LIBS+=-L../../lib/classes -lclasses
+	LIBS+=-L../../lib/stone -lstone
+	LIBS+=-L../../lib/absubmit -labsubmit
 
-	INCLUDEPATH+=c:\\nvidia\\cg\\include
+	INCLUDEPATH+=c:/nvidia/cg/include
 	LIBS+=-lpsapi -lMpr
 	LIBS+=-lws2_32
 	LIBS+=-lopengl32
@@ -83,7 +84,7 @@ Release:win32 {
 	LIBS+=-L../../lib/classesui/sipClassesui -lpyClassesui
 	LIBS+=-L../../lib/stone/sipStone -lpyStone
 	LIBS+=-L../../lib/stonegui/sipStonegui -lpyStonegui
-	LIBS+=-L../../lib/absubmit/sipAbsubmit -lpyAbsubmit
+	LIBS+=-L../../lib/absubmit/sipAbsubmit -lpyabsubmit
 	LIBS+=-L../../lib/sip/siplib -lsip
 }
 
