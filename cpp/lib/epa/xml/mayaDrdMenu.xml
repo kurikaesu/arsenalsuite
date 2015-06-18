@@ -1,3 +1,0 @@
-<software name="mayaDrdMenu">
-	<add key="MAYA_SCRIPT_PATH">$DRD_SOFTWARE_INT/mayaDrdMenu_mel/v0_0_9/mayaDrdMenu</add>
-</software>
