@@ -11,6 +11,6 @@ path = os.path.dirname(os.path.abspath(__file__))
 # Create the nsi installer
 pyqt_modules_installer = NSISTarget( "pyqt_modules_installer", path, "pyqt.nsi", [], makensis_extra_options = ['/DPYTHON_PATH=%s' % sysconfig.get_config_vars()['prefix'] ] )
 
-Target( "pyqt_modules", path, ["pystone","pyclasses","pystonegui","pyclassesui","pyabsubmit"], [pyqt_modules_installer] )
+Target( "pyqt_modules", path, ["pystone","pyclasses","pystonegui","pyclassesui","pyfreezer", "pyabsubmit"], [pyqt_modules_installer] )
 
 
