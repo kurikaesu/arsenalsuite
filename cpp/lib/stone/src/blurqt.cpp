@@ -47,6 +47,8 @@
 #include <qpainter.h>
 #include <qbitmap.h>
 
+#include <stdlib.h>
+
 #include "blurqt.h"
 #include "database.h"
 #include "freezercore.h"
@@ -178,6 +180,49 @@ bool initConfig( const QString & configName, const QString & logfile )
 		int argc = 0;
 		new QCoreApplication(argc, (char**)0);
 	}
+	
+#ifdef Q_OS_WIN
+	size_t requiredSize;
+	QString arsenalDir = "";
+	
+	getenv_s(&requiredSize, NULL, 0, "ARSENALDIR");
+	if (requiredSize == 0)
+	{
+		fprintf( stderr, "ARSENALDIR environment variable doesn't exist\n");
+	}
+	else
+	{
+		char* arsevar;
+		arsevar = new char[requiredSize];
+		if (!arsevar)
+		{
+			fprintf(stderr, "Couldn't allocate enough memory for ARSENALDIR enviornment variable\n");
+		}
+		else
+		{
+			getenv_s(&requiredSize, arsevar, requiredSize, "ARSENALDIR");
+			arsenalDir = arsevar;
+			delete[] arsevar;
+		}
+	}
+#else
+	{
+		char* arseVar;
+		arseVar = getenv("ARSENALDIR");
+		if (arseVar != NULL)
+			arsenalDir = arseVar;
+		else
+			fprintf( stderr, "ARSENALDIR environment variable doesn't exist\n");
+	}
+#endif
+	arsenalDir.replace('\\', '/');
+	if (arsenalDir.startsWith("\""))
+	{
+		arsenalDir.remove(0,1);
+		arsenalDir.remove(arsenalDir.size()-1,1);
+	}
+	if (!arsenalDir.endsWith("/") && !arsenalDir.isEmpty())
+		arsenalDir += "/";
 
 	if( !sConfig ) {
 		sConfig = new IniConfig();
@@ -195,16 +240,16 @@ bool initConfig( const QString & configName, const QString & logfile )
 	}
 
 	// Check to see if the configuration file exists
-	bool configExists = QFile::exists( configName );
+	bool configExists = QFile::exists( arsenalDir + configName );
 	if( !configExists )
-		printf("Could not find %s\n", qPrintable(configName));
+		printf("Could not find %s\n", qPrintable(arsenalDir + configName));
 
 	if( configExists ) {
 		// The first config file that is found will become the primary and will be the destination
 		// of saved settings when shutdown is called.
 		if( sConfigName.isEmpty() )
-			sConfigName = configName;
-		sConfig->setFileName( configName );
+			sConfigName = arsenalDir + configName;
+		sConfig->setFileName( arsenalDir + configName );
 		sConfig->readFromFile();
 	}
 	
