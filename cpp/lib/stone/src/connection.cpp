@@ -262,6 +262,15 @@ QSqlQuery QSqlDbConnection::fakePrepare( const QString & sql )
 
 QSqlQuery QSqlDbConnection::exec( const QString & sql, const QList<QVariant> & vars, bool reExecLostConn, Table * table )
 {
+#ifdef Q_OS_WIN
+	if (sql.toLower().startsWith("create"))
+	{
+		checkConnection();
+		QSqlQuery squery(mDb);
+		squery.exec(sql);
+		return squery;
+	}
+#endif
 	QSqlQuery query = fakePrepare(sql);
 	foreach( QVariant v, vars )
 		query.addBindValue( v );

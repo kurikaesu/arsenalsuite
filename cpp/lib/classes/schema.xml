@@ -1054,7 +1054,7 @@
    <column name="type"/>
   </index>
  </table>
- <table useCodeGen="true" parent="Job" name="JobMantra100" expireKeyCache="true" className="JobMantra100">
+ <table useCodeGen="true" parent="Job" name="JobMantra" expireKeyCache="true" className="JobMantra">
   <column type="bool" methodName="forceRayTrace" name="forceRayTrace"/>
   <column type="uint" methodName="geoCacheSize" name="geoCacheSize"/>
   <column type="uint" methodName="height" name="height"/>
