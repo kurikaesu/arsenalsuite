@@ -1159,7 +1159,10 @@ class Makefile:
 
         mfile.write("CC = %s\n" % self.required_string("CC"))
         mfile.write("CXX = %s\n" % self.required_string("CXX"))
-        mfile.write("LINK = %s\n" % self.required_string("LINK"))
+        if self.generator in ("MSVC", "MSVC.NET", "MSBUILD"):
+            mfile.write("_LINK = %s\n" % self.required_string("LINK"))
+        else:
+            mfile.write("LINK = %s\n" % self.required_string("LINK"))
 
         cppflags = []
 
@@ -1693,7 +1696,7 @@ class ModuleMakefile(Makefile):
                 mfile.write("\t  $(OFILES)\n")
                 mfile.write("<<\n")
             else:
-                mfile.write("\t$(LINK) $(LFLAGS) /OUT:$(TARGET) @<<\n")
+                mfile.write("\t$(_LINK) $(LFLAGS) /OUT:$(TARGET) @<<\n")
                 mfile.write("\t  $(OFILES) $(LIBS)\n")
                 mfile.write("<<\n")
 
@@ -1985,7 +1988,7 @@ class ProgramMakefile(Makefile):
         mfile.write("\n$(TARGET): $(OFILES)\n")
 
         if self.generator in ("MSVC", "MSVC.NET", "MSBUILD"):
-            mfile.write("\t$(LINK) $(LFLAGS) /OUT:$(TARGET) @<<\n")
+            mfile.write("\t$(_LINK) $(LFLAGS) /OUT:$(TARGET) @<<\n")
             mfile.write("\t  $(OFILES) $(LIBS)\n")
             mfile.write("<<\n")
         elif self.generator == "BMAKE":
