@@ -37,7 +37,7 @@ struct HostServiceItem : public RecordItem
 		mHostServices = hsl;
 		foreach( HostService hs, hsl ) {
 			int col = services.findIndex( hs.service() );
-			if( col >= 0 )
+			if (col >= 0)
 				mHostServiceByColumn[col] = hs;
 		}
 	}
@@ -49,7 +49,7 @@ struct HostServiceItem : public RecordItem
 	QVariant serviceData( int column ) const
 	{
 		HostService hs = hostServiceByColumn( column );
-		if( hs.isRecord() )
+		if (hs.isRecord())
 			return hs.enabled() ? "Enabled" : "Disabled";
 		return "No Service";
 	}
@@ -364,6 +364,12 @@ void HostServiceModel::refreshIndexes( QModelIndexList indexes )
 	}
 }
 
+void HostServiceModel::setRootList(HostList hl)
+{
+	RecordSuperModel::setRootList(hl);
+	updateHosts(hl);
+}
+
 class HostServiceDelegate : public RecordDelegate
 {
 public:
@@ -415,6 +421,7 @@ HostServiceMatrix::HostServiceMatrix( QWidget * parent )
 {
 	mModel = new HostServiceModel(this);
 	setModel( mModel );
+	
 	setItemDelegate( new HostServiceDelegate(this) );
 	connect( this, SIGNAL( showMenu( const QPoint &, const QModelIndex & ) ), SLOT( slotShowMenu( const QPoint &, const QModelIndex & ) ) );
 
@@ -433,9 +440,9 @@ HostServiceMatrix::HostServiceMatrix( QWidget * parent )
 	setSelectionBehavior( QAbstractItemView::SelectItems );
 	header()->setStretchLastSection( false );
 
-	connect( Service::table(), SIGNAL( added(RecordList) ), SLOT( updateServices() ) );
-	connect( Service::table(), SIGNAL( removed(RecordList) ), SLOT( updateServices() ) );
-	connect( Service::table(), SIGNAL( updated(Record,Record) ), SLOT( updateServices() ) );
+	connect( Service::table(), SIGNAL( added(RecordList) ), this, SLOT( updateServices() ) );
+	connect( Service::table(), SIGNAL( removed(RecordList) ), this, SLOT( updateServices() ) );
+	connect( Service::table(), SIGNAL( updated(Record,Record) ), this, SLOT( updateServices() ) );
 
 	userFiltering = false;
 	useLoggedIn = true;
@@ -610,8 +617,7 @@ HostServiceMatrixWidget::HostServiceMatrixWidget( QWidget * parent )
 	mHostGroupCombo->setColumn( "name" );
 
 	refreshHostGroups();
-
-}
+}  
 
 void HostServiceMatrixWidget::newService()
 {
