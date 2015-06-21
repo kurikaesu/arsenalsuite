@@ -280,7 +280,9 @@ int main( int argc, char * argv[] )
     signal(SIGSEGV, oops_handler);
     signal(SIGABRT, oops_handler);
 	QApplication a(argc, argv);
-
+	
+	a.addLibraryPath("./plugins");
+	
     if( !initConfig( "freezer.ini" ) ) {
 #ifndef Q_OS_WIN
         // Fallback if the config file does not exist in the current folder
