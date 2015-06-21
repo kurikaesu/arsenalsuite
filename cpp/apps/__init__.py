@@ -1,4 +1,4 @@
-import burner
-import classmaker
-import freezer
-import absubmit
+from . import burner
+from . import classmaker
+from . import freezer
+from . import absubmit

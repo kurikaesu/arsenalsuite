@@ -75,7 +75,7 @@ def cmd_output(cmd,outputObject=None,shell=None):
             p = popen2.Popen4(cmd)
             pollRunVal = -1
             outputFd = p.fromchild
-    except Exception, e:
+    except Exception as e:
         print "Error starting command: " + str(cmd)
         raise e
 

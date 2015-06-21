@@ -1,1 +1,1 @@
-import blur_build
+from . import blur_build

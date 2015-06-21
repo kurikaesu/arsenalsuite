@@ -1,3 +1,2 @@
-
-import lib
-import apps
+from . import lib
+from . import apps

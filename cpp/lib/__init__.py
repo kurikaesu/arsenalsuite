@@ -1,9 +1,9 @@
-import absubmit
-import stone
-import classes
-import pyqt_modules
-import PyQt4.build
-import sip
-import stonegui
-import freezer
-import classesui
+from . import absubmit
+from . import stone
+from . import classes
+from . import pyqt_modules
+from .PyQt4 import build
+from . import sip
+from . import stonegui
+from . import freezer
+from . import classesui

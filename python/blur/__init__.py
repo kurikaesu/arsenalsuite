@@ -1,2 +1,1 @@
-
-from logredirect import *
+from .logredirect import *
