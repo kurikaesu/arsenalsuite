@@ -1,2 +1,1 @@
-
-import farm_stats
+from . import farm_stats

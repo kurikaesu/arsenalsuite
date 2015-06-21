@@ -17,7 +17,7 @@ class PyQtTarget(SipTarget):
             self.config += " -w"
 
         if "DESTDIR" in os.environ:
-            print "DESTDIR found, building without designer plugin"
+            print ("DESTDIR found, building without designer plugin")
             python_version = "python" + sys.version[:3]
             self.config += " -b %s/usr/bin" % os.environ['DESTDIR']
             self.config += " -d %s/usr/lib/%s/site-packages" % (os.environ['DESTDIR'], python_version)

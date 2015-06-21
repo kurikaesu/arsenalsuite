@@ -5,11 +5,19 @@ import string
 import re
 import shutil
 import traceback
-import cPickle
-import ConfigParser
-import exceptions
-import psutil
-from defaultdict import *
+versionInfo = sys.version_info;
+if versionInfo[0] == 2:
+	from printf2 import *
+	import cPickle
+	import ConfigParser
+	import exceptions
+	import psutil
+elif versionInfo[0] == 3:
+	from .printf3 import *
+	import pickle
+	import configparser
+	from . import psutil3
+from .defaultdict import *
 
 All_Targets = []
 Targets = []
@@ -76,7 +84,7 @@ def cmd_output(cmd,outputObject=None,shell=None):
             pollRunVal = -1
             outputFd = p.fromchild
     except Exception as e:
-        print "Error starting command: " + str(cmd)
+        print ("Error starting command: %s\n" % (str(cmd)))
         raise e
 
     output = ''
@@ -113,7 +121,7 @@ class Target:
     
     def check_arg_sanity(self):
         if self.has_arg('install') and self.has_arg('clean') and not self.has_arg('build'):
-            print term.render("${RED}Asked to clean then install without building. Bailing out${NORMAL}")
+            print (term.render("${RED}Asked to clean then install without building. Bailing out${NORMAL}"))
             sys.exit(1)
 
     # Returns true if this target has already been built
@@ -154,7 +162,7 @@ class Target:
     
     def output(self,output):
         if self.has_arg('verbose'):
-            print output,
+            printf (output, None, False)
         elif self.has_arg('progress'):
             for line in output.splitlines():
                 match = re.match("^(g\+\+|gcc)",line)
@@ -163,29 +171,29 @@ class Target:
                     if re.search(r"\s-c\s",line):
                         match = re.search(r'([\w\._-]+)\s*$',line)
                         if match:
-                            print "Compiling", match.group(1)
+                            printf ("Compiling %s", match.group(1))
                     # Link
                     else:
                         match = re.search(r'-o\s+([\w\._-]+)',line)
                         if match:
-                            print "Linking", match.group(1)
+                            printf ("Linking %s", match.group(1))
                 match = re.match(r"^\S+uic\s+(\S+)",line)
                 if match:
-                    print "Uic", match.group(1)
+                    printf ("Uic %s", match.group(1))
     
     def cmd_error(self,cmd,output):
         if not self.has_arg('verbose'):
-            print output,
-        print term.render("${RED}Error Building Target${NORMAL}: %s, cmd was: %s" % (self.name,cmd))
+            printf (output, None, False)
+        printf (term.render("${RED}Error Building Target${NORMAL}: %s, cmd was: %s" % (self.name,cmd)))
         raise Exception()
         
     def run_cmd(self,cmd,shell=None,noThrow=False):
         if self.has_arg('verbose') or self.has_arg('show-commands'):
-            print term.render('${BLUE}Running Command${NORMAL}:'), str(cmd)
+            printf(term.render('${BLUE}Running Command${NORMAL}:'), str(cmd))
         try:
             (ret,output) = cmd_output(cmd,self,shell)
         except:
-            print "Exception while running cmd:", cmd
+            printf("Exception while running cmd: %s", cmd)
             traceback.print_exc()
             raise
         if ret and not noThrow:
@@ -244,7 +252,7 @@ class Target:
         self.build_deps(self.pre_deps)
         cwd = os.getcwd()
         nwd = os.path.join(cwd,self.dir)
-        print term.render("${YELLOW}Building${NORMAL}: %s\t\t%s" % (self.name, nwd))
+        print(term.render("${YELLOW}Building${NORMAL}: %s\t\t%s" % (self.name, nwd)))
         #print "Target.build: doing ", self.name
         #print "Target.build: chdir to ", nwd
         os.chdir( nwd )
@@ -332,7 +340,7 @@ class SipTarget(Target):
             self.InstallDone = False
             if os.name == 'nt':
                 wantedName = self.name.replace("static","").replace("py","",1)
-                print "Cleaning sip working dir"
+                printf("Cleaning sip working dir")
                 if os.path.isfile('sip' + wantedName + '/' + wantedName + '.lib'):
                     os.remove('sip' + wantedName + '/' + wantedName + '.lib')
                 if os.path.isfile('sip' + wantedName + '/py' + wantedName + '.lib'):
@@ -457,7 +465,7 @@ class NSISTarget(Target):
         for p in self.NSIS_PATHS:
             if os.access(p,os.F_OK):
                 return p + "makensis.exe"
-		raise Exception("Couldn't find nsis cmd, searched " + str(self.NSIS_PATHS))
+        raise Exception("Couldn't find nsis cmd, searched " + str(self.NSIS_PATHS))
         return None
     
     def makensis_options(self):
@@ -490,7 +498,7 @@ class NSISTarget(Target):
         Generated_Installers[self.name] = outputFile
         if self.has_arg('install'):
             if self.has_arg('progress') or self.has_arg('-verbose'):
-                print term.render("${YELLOW}Installing${NORMAL}"), outputFile
+                printf (term.render("${YELLOW}Installing${NORMAL} %s"), outputFile)
             self.run_cmd( [outputFile,'/S'] )
 
 class KillTarget(Target):
@@ -504,11 +512,11 @@ class KillTarget(Target):
         for proc in psutil.process_iter():
             try:
                 if proc.name() in self.apps:
-                    print "Terminating process (%s)" % (proc.name())
+                    printf("Terminating process (%s)", (proc.name()))
                     try:
                         proc.kill()
-                    except AccessDenied, ad:
-                        print "Unable to kill the process"
+                    except AccessDenied as ad:
+                        printf("Unable to kill the process")
             except:
                 # We can't read process names of system owned procs, so we ignore these errors
                 pass
@@ -624,7 +632,7 @@ class IniConfigTarget(Target):
         open(self.OutputIni,"w").write( ''.join(outLines) )
         if self.has_arg('install') and not self.InstallDir == None:
             if self.has_arg('verbose'):
-                print "${GREEN}Installing config file${NORMAL} %s" % (self.InstallDir + "/" + self.OutputIni)
+                printf("${GREEN}Installing config file${NORMAL} %s", (self.InstallDir + "/" + self.OutputIni))
 
             if not os.path.exists(self.InstallDir):
                 os.makedirs(self.InstallDir)
@@ -761,7 +769,7 @@ class RPMTarget(Target):
                 res = re.match('Wrote: (.+)$',line)
                 if res:
                     self.BuiltRPMS.append(res.group(1))
-                    print line
+                    printf(line)
 
         if self.has_arg('install') and not self.InstallDone:
             for rpm in self.BuiltRPMS:
@@ -834,7 +842,7 @@ def build():
             Args = cPickle.load(pf)
         except:
             traceback.print_exc()
-            print "Unable to load build resume cache."
+            printf("Unable to load build resume cache.")
             return
         
     if Args.count('-config-replacement-file'):
@@ -844,7 +852,7 @@ def build():
             del Args[idx+1]
             del Args[idx]
         except:
-            print "Unable to load config replacement file"
+            print("Unable to load config replacement file")
     
     # Gather the targets
     for a in argv[1:]:
@@ -889,9 +897,9 @@ def build():
         term = TerminalController()
     
     # These Options are passed to the module build scripts
-    print term.render('${YELLOW}Starting Build${NORMAL}')
-    print "Targets: ", Targets
-    print "Args: ", Args
+    printf(term.render('${YELLOW}Starting Build${NORMAL}'))
+    printf("Targets: %s", Targets)
+    printf("Args: %s", Args)
 
     for t in Targets:
         #print "Entering Target.build(args) on target ", t.name
@@ -900,16 +908,16 @@ def build():
         #print "\n [build process starts here] \n"
         try:
             t.build()
-        except Exception,e:
+        except Exception as e:
             if not e.__class__ == exceptions.KeyboardInterrupt:
                 traceback.print_exc()
-            print "Writing build resume file to",build_resume_path
+            printf("Writing build resume file to %s", build_resume_path)
             pf = open(build_resume_path,'wb')
             cPickle.dump(All_Targets,pf,-1)
             cPickle.dump(Targets,pf,-1)
             cPickle.dump(Args,pf,-1)
             pf.close()
-            print "Exiting"
+            printf("Exiting")
             sys.exit(1)
 
     if '--write-installers-file' in Args:
