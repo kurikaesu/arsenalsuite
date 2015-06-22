@@ -90,7 +90,7 @@ def cmd_output(cmd,outputObject=None,shell=None):
     output = ''
     ret = 0
     def processOutput(existing, new, outputProgress):
-        existing += new
+        existing += new.decode()
         if outputProgress:
             outputObject.output(new)
         return existing
@@ -317,7 +317,7 @@ class SipTarget(Target):
     def build_run(self):
         self.check_arg_sanity()
 
-        if os.environ.has_key('PYTHON'):
+        if "PYTHON" in os.environ:
             self.config = os.environ['PYTHON'] + " configure.py"
         else:
             self.config = "python configure.py"
@@ -408,11 +408,11 @@ class QMakeTarget(Target):
             Args.append("CONFIG+=console")
         for d in self.Defines:
             Args.append("DEFINES+=\"" + d + "\"")
-        if os.environ.has_key('PYTHON'):
+        if "PYTHON" in os.environ:
             Args.append("PYTHON="+os.environ['PYTHON'])
         if self.Target:
             Args.append(self.Target)
-        return string.join(Args,' ')
+        return ' '.join(Args)
     
     # Runs qmake, make clean(option), make, make install(option)
     def build_run(self):
@@ -909,13 +909,18 @@ def build():
         try:
             t.build()
         except Exception as e:
-            if not e.__class__ == exceptions.KeyboardInterrupt:
+            if not e.__class__ == KeyboardInterrupt:
                 traceback.print_exc()
             printf("Writing build resume file to %s", build_resume_path)
             pf = open(build_resume_path,'wb')
-            cPickle.dump(All_Targets,pf,-1)
-            cPickle.dump(Targets,pf,-1)
-            cPickle.dump(Args,pf,-1)
+            if versionInfo[0] == 2:
+                cPickle.dump(All_Targets,pf,-1)
+                cPickle.dump(Targets,pf,-1)
+                cPickle.dump(Args,pf,-1)
+            elif versionInfo[0] == 3:
+                pickle.dump(All_Targets,pf,-1)
+                pickle.dump(Targets,pf,-1)
+                pickle.dump(Args,pf,-1)
             pf.close()
             printf("Exiting")
             sys.exit(1)
