@@ -37,17 +37,17 @@ int main( int argc, char * argv [] )
 
 	QString procArgs;
 #ifdef Q_OS_WIN
-	QString procName = "assburner.exe";
+	QString procName = "burner.exe";
 	bool useGUI = true;
 #else
-	QString procName = "assburner";
+	QString procName = "burner";
 	bool useGUI = getenv( "DISPLAY" ) != 0;
 #endif
 
 	if (!useGUI)
 		procArgs = " -nogui";
 
-	if( !initConfig( "assburner.ini", "abpsmon.log" ) )
+	if( !initConfig( "burner.ini", "abpsmon.log" ) )
         return -1;
 
 	bool crashMailSent = false;
@@ -55,7 +55,7 @@ int main( int argc, char * argv [] )
 	while( 1 ) {
 		if( pidsByName( procName ) == 0 ) {
 			// Check for recently crashed assburner
-			QFileInfo backtrace( "assburner.RPT" );
+			QFileInfo backtrace( "burner.RPT" );
 			if( !crashMailSent && backtrace.exists() && backtrace.lastModified() > started ) {
 				crashMailSent = true;
 				QStringList msg;
@@ -63,15 +63,15 @@ int main( int argc, char * argv [] )
 				msg << "Host: " + QHostInfo::localHostName();
 				msg << "User: " + getUserName();
 				msg << "Time: " + QDateTime::currentDateTime().toString();
-				sendEmail( QStringList() << "newellm@blur.com",
+				sendEmail( QStringList() << "arenvillanueva@yomogi-soft.com",
 					"Assburner Crash",
 					msg.join("\n") + "\n",
-					"thePipe@blur.com",
-					QStringList() << "C:/blur/assburner/assburner.RPT" << "C:/blur/assburner/assburner.log" );
+					"thePipe@yomogi-soft.com",
+					QStringList() << "C:/blur/burner/assburner.RPT" << "C:/blur/burner.log" );
 			}
 
 			// try to avoid starting a shitload of processes rapidly
-			if( started.secsTo(QDateTime::currentDateTime()) > 60 * 30 ) {
+			if( started.secsTo(QDateTime::currentDateTime()) > 30 ) {
 				QProcess::startDetached( procName+procArgs );
 				started = QDateTime::currentDateTime();
 				crashMailSent = false;
