@@ -27,12 +27,8 @@ def doThis(job):
 
     if( job.jobType().name().contains( "Nuke" ) ):
         job.setAssignmentSlots(2)
-        if( job.user().name().contains("maximilian.macewan") and (job.project().name() == "hf2-light" or job.project().name() == "hf2-comp") and job.name().contains("SkyLibrary: Create Proxy")):
-            job.setMinMemory(9000000)
-            job.setMaxMemory(16000000)
-        else:
-            job.setMinMemory(6000000)
-            job.setMaxMemory(8000000)
+        job.setMinMemory(6000000)
+        job.setMaxMemory(8000000)
     if( job.jobType().name().contains( "Naiad" ) ):
         job.setMinMemory(20000000)
         job.setMaxMemory(24000000)
