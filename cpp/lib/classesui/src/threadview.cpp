@@ -407,7 +407,7 @@ void ThreadViewInternal::setJobList( JobList jobs )
         VarList vars;
         for( unsigned int i=0; i<keys.size(); ++i ) {
             vars << keys[i];
-            temp << "'?'";
+            temp << "?";
         }
 
         ThreadList tl = Thread::select("fkeyjob in (" + temp.join(",") + ")", vars);

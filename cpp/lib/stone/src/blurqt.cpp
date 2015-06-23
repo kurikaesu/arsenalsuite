@@ -180,10 +180,10 @@ bool initConfig( const QString & configName, const QString & logfile )
 		int argc = 0;
 		new QCoreApplication(argc, (char**)0);
 	}
-	
+	QString arsenalVer = "";
+	QString arsenalDir = "";
 #ifdef Q_OS_WIN
 	size_t requiredSize;
-	QString arsenalDir = "";
 	
 	getenv_s(&requiredSize, NULL, 0, "ARSENALDIR");
 	if (requiredSize == 0)
@@ -196,12 +196,33 @@ bool initConfig( const QString & configName, const QString & logfile )
 		arsevar = new char[requiredSize];
 		if (!arsevar)
 		{
-			fprintf(stderr, "Couldn't allocate enough memory for ARSENALDIR enviornment variable\n");
+			fprintf(stderr, "Couldn't allocate enough memory for ARSENALDIR environment variable\n");
 		}
 		else
 		{
 			getenv_s(&requiredSize, arsevar, requiredSize, "ARSENALDIR");
 			arsenalDir = arsevar;
+			delete[] arsevar;
+		}
+	}
+	
+	getenv_s(&requiredSize, NULL, 0, "ARSENALVER");
+	if (requiredSize == 0)
+	{
+		fprintf( stderr, "ARSENALVER environment variable doesn't exist\n");
+	}
+	else
+	{
+		char* arsevar;
+		arsevar = new char[requiredSize];
+		if (!arsevar)
+		{
+			fprintf(stderr, "Couldn't allocate enough memory for ARSENALVER environment variable\n");
+		}
+		else
+		{
+			getenv_s(&requiredSize, arsevar, requiredSize, "ARSENALVER");
+			arsenalVer = arsevar;
 			delete[] arsevar;
 		}
 	}
@@ -213,6 +234,12 @@ bool initConfig( const QString & configName, const QString & logfile )
 			arsenalDir = arseVar;
 		else
 			fprintf( stderr, "ARSENALDIR environment variable doesn't exist\n");
+		
+		arseVar = getenv("ARSENALVER");
+		if (arseVar != NULL)
+			arsenalVer = arseVar;
+		else
+			fprintf( stderr, "ARSENALVER environment variable doesn't exist\n");
 	}
 #endif
 	arsenalDir.replace('\\', '/');
@@ -221,6 +248,10 @@ bool initConfig( const QString & configName, const QString & logfile )
 		arsenalDir.remove(0,1);
 		arsenalDir.remove(arsenalDir.size()-1,1);
 	}
+	if (!arsenalDir.endsWith("/") && !arsenalDir.isEmpty())
+		arsenalDir += "/";
+	
+	arsenalDir += arsenalVer;
 	if (!arsenalDir.endsWith("/") && !arsenalDir.isEmpty())
 		arsenalDir += "/";
 

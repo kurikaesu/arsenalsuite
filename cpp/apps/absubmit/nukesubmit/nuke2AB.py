@@ -1,13 +1,13 @@
 #!/usr/bin/python2.5
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4.uic import *
 from blur.Stone import *
 from blur.Classes import *
 from blur.Classesui import HostSelector
 from blur.absubmit import Submitter
 from blur import RedirectOutputToLog
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
+from PyQt4.uic import *
 import os
 import sys
 import time
@@ -16,7 +16,10 @@ import subprocess
 class NukeRenderDialog(QDialog):
     def __init__(self,parent=None):
         QDialog.__init__(self,parent)
-        loadUi(os.environ["ABSUBMIT"]+"/nukesubmit/nukerenderdialogui.ui",self)
+        arseVer = ""
+        if "ARSENALVER" in os.environ:
+            arseVer = os.environ["ARSENALVER"] + "/"
+        loadUi(os.environ["ARSENALDIR"]+"/"+arseVer+"submitterScripts/nukesubmit/nukerenderdialogui.ui",self)
         self.connect( self.mAutoPacketSizeCheck, SIGNAL('toggled(bool)'), self.autoPacketSizeToggled )
         self.connect( self.mChooseFileNameButton, SIGNAL('clicked()'), self.chooseFileName )
         self.connect( self.mAllHostsCheck, SIGNAL('toggled(bool)'), self.allHostsToggled )
@@ -133,7 +136,7 @@ class NukeRenderDialog(QDialog):
 
     def buildSubmitArgs(self):
         sl = {}
-        sl['jobType'] = "Nuke52"
+        sl['jobType'] = "Nuke"
         sl['noCopy'] = 'true'
         sl['packetType'] = 'continuous'
         sl['priority'] = str(self.mPrioritySpin.value())
@@ -142,11 +145,11 @@ class NukeRenderDialog(QDialog):
         sl['fileName'] = str(self.mFileNameEdit.text())
         sl['append'] = str(self.mAppendEdit.text())
         launcherPreset = "ext/nuke/nuke"
+        self.Services.append("Nuke")
         if self.mOculaCheck.isChecked():
             launcherPreset = "ext/nuke/nuke_ocula"
-            self.Services.append("Nuke")
             self.Services.append("ocula")
-        sl['environment'] = subprocess.Popen(["/drd/software/int/bin/launcher.sh","-p", os.environ["DRD_JOB"], "-d", os.environ["DRD_DEPT"], "-e", launcherPreset], stdout=subprocess.PIPE).communicate()[0]
+        #sl['environment'] = subprocess.Popen(["/drd/software/int/bin/launcher.sh","-p", os.environ["DRD_JOB"], "-d", os.environ["DRD_DEPT"], "-e", launcherPreset], stdout=subprocess.PIPE).communicate()[0]
 
         sl['minMemory'] = "1388608"
         sl['maxMemory'] = "8388608"
@@ -243,7 +246,7 @@ class NukeRenderDialog(QDialog):
 print("nuke2ABSubmit()")
 app = QApplication(sys.argv)
 print("nuke2ABSubmit(): initialize db connection")
-initConfig(os.environ['ABSUBMIT']+"/ab.ini", os.environ['TEMP']+"nukesubmit.log")
+initConfig("submitter.ini", os.environ['TEMP']+"nukesubmit.log")
 classes_loader()
 args = sys.argv
 thisScript = args.pop(0)
