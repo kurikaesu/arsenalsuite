@@ -17,6 +17,7 @@
 #include "joberror.h"
 #include "jobfilterset.h"
 #include "jobservice.h"
+#include "jobstatus.h"
 #include "rangefiletracker.h"
 #include "service.h"
 
@@ -177,6 +178,19 @@ int Submitter::createTasks( QList<int> taskNumbers, QStringList labels, JobOutpu
 
 	mTasks += tasks;
 	return tasks.size();
+}
+
+void Submitter::createJobStatus()
+{
+	JobStatus status;
+	status.setJob(mJob);
+	status.setTasksUnassigned(mTasks.size());
+	status.setTasksCount(mTasks.size());
+	status.setTasksDone(0);
+	status.setTasksCancelled(0);
+	status.setTasksSuspended(0);
+	status.setTasksAssigned(0);
+	status.commit();
 }
 
 void Submitter::setFrameList( const QString & frameList, const QString & taskLabels, int frameNth, bool frameFill )
@@ -495,6 +509,7 @@ void Submitter::submit()
 		//	checkMd5();
 		mJob.setStatus( mSubmitSuspended ? "verify-suspended" : "verify" );
 		mJob.commit();
+		createJobStatus();
 		printJobInfo();
 		_success();
 	}

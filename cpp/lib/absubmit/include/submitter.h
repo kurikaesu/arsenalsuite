@@ -147,6 +147,7 @@ protected:
 	int submitCheck();
 
 	int createTasks( QList<int> taskNumbers, QStringList labels, JobOutputList outputs, int frameNth, bool frameFill );
+	void createJobStatus();
 
 	void _success();
 	void exitWithError( const QString & );
