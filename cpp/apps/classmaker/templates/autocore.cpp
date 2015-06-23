@@ -35,14 +35,14 @@ t__ & t__::operator=( const t__ & other ) {
 <%METHODS%>
 <%INDEXMETHODS%>
 <%ELEMENTMETHODS%>
-t__List t__::select( const QString & where, const VarList & args )
+t__List t__::select( const QString & where, const VarList & args, bool selectChildren )
 {
-	return table()->select( where, args );
+	return table()->select( where, args, selectChildren );
 }
 
-t__List t__::select( const Expression & exp )
+t__List t__::select( const Expression & exp, bool selectChildren )
 {
-	return table()->select( exp );
+	return table()->select( exp, selectChildren );
 }
 
 Table * t__::table() {

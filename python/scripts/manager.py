@@ -682,7 +682,7 @@ SELECT * from running_shots_averagetime_4
     def refreshJobList(self):
         # Gather the jobs 
         self.jobList = Job.select( """WHERE status IN ('ready','started') 
-                                        AND ((SELECT count(*) FROM jobtask WHERE fkeyjob = keyjob AND status = 'new') > 0)""")
+                                        AND ((SELECT count(*) FROM jobtask WHERE fkeyjob = keyjob AND status = 'new') > 0)""", None, False)
         statuses = JobStatusList()
         if self.jobList.size() > 0:
             #statuses = JobStatus.select("fkeyjob IN("+self.jobList.keyString()+")")

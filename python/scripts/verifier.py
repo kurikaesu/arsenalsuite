@@ -193,7 +193,7 @@ def checkNewJob(job):
     return True
 
 def retrieveVerifiable():
-	jobList = Job.select("status IN ('verify','verify-suspended')")
+	jobList = Job.select("status IN ('verify','verify-suspended')", None, False)
 	if not jobList.isEmpty():
 		JobStatus.select("fkeyjob IN ("+jobList.keyString()+")")
 	return jobList

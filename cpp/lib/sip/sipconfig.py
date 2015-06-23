@@ -35,7 +35,7 @@ _pkg_config = {
     'py_conf_inc_dir':    'C:\\Python27\\include',
     'py_inc_dir':         'C:\\Python27\\include',
     'py_lib_dir':         'C:\\Python27\\libs',
-    'py_version':         0x02070a,
+    'py_version':         0x020709,
     'qt_framework':       0,
     'sip_bin':            'C:\\Python27\\sip',
     'sip_config_args':    '-k -p win32-msvc2013',

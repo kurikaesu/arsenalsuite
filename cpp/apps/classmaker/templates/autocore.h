@@ -77,8 +77,8 @@ public:
 
 <%METHODDEFS%>
 
-	static t__List select( const QString & where = QString(), const VarList & args = VarList() );
-	static t__List select( const Expression & exp );
+	static t__List select( const QString & where = QString(), const VarList & args = VarList(), bool selectChildren = true );
+	static t__List select( const Expression & exp, bool selectChildren = true );
 	// Usage
 	// Employee::join<UserGroup>().join<Group>().select()
 	template<typename T> static JoinedSelect join( QString condition = QString(), JoinType joinType = InnerJoin, bool ignoreResults = false, const QString & alias = QString() )

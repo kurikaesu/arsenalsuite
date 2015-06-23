@@ -55,8 +55,8 @@ public:
 
 <%METHODDEFS%>
 
-	static Mappedt__List select( const QString & where = QString::null, const QList<QVariant> & args = QList<QVariant>() ) throw(SqlException,LostConnectionException,PythonException);
-	static Mappedt__List select( const Expression & ) throw(SqlException,LostConnectionException,PythonException);
+	static Mappedt__List select( const QString & where = QString::null, const QList<QVariant> & args = QList<QVariant>(), bool selectChildren = true ) throw(SqlException,LostConnectionException,PythonException);
+	static Mappedt__List select( const Expression &, bool selectChildren = true ) throw(SqlException,LostConnectionException,PythonException);
 
 	static JoinedSelect join( SIP_PYOBJECT cls, QString condition = QString(), JoinType joinType = InnerJoin, bool ignoreResults = false, const QString & alias = QString() );
 %MethodCode
