@@ -271,16 +271,23 @@ bool initConfig( const QString & configName, const QString & logfile )
 	}
 
 	// Check to see if the configuration file exists
-	bool configExists = QFile::exists( arsenalDir + configName );
+	QString configLocation = configName;
+	bool configExists = QFile::exists(configLocation);
+	if (!configExists)
+	{
+		configLocation = arsenalDir + configName;
+		configExists = QFile::exists(configLocation);
+	}
+		
 	if( !configExists )
-		printf("Could not find %s\n", qPrintable(arsenalDir + configName));
+		printf("Could not find %s\n", qPrintable(configLocation));
 
 	if( configExists ) {
 		// The first config file that is found will become the primary and will be the destination
 		// of saved settings when shutdown is called.
 		if( sConfigName.isEmpty() )
 			sConfigName = arsenalDir + configName;
-		sConfig->setFileName( arsenalDir + configName );
+		sConfig->setFileName( configLocation );
 		sConfig->readFromFile();
 	}
 	
