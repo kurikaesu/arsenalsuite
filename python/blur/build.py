@@ -90,7 +90,7 @@ def cmd_output(cmd,outputObject=None,shell=None):
     output = ''
     ret = 0
     def processOutput(existing, new, outputProgress):
-        existing += new.decode()
+        existing += new.decode('utf-8')
         if outputProgress:
             outputObject.output(new)
         return existing
@@ -352,12 +352,9 @@ class SipTarget(Target):
                 wantedName = self.name.replace("static","").replace("py","",1)
                 if self.has_arg("debug"):
                     wantedName += "_d"
-                #print "Checking for the existence of (%s)" % ('sip' + wantedName + '/' + wantedName + '.lib')
                 if os.path.isfile('sip' + wantedName + '/' + wantedName + '.lib'):
                     shutil.copyfile('sip' + wantedName + '/' + wantedName + '.lib', 'sip' + wantedName + '/py' + wantedName + '.lib')
                     os.remove('sip' + wantedName + '/' + wantedName + '.lib')
-                #if os.path.isfile('sip' + wantedName + '/py' + wantedName + '.lib'):
-                    #os.remove('sip' + wantedName + '/py' + wantedName + '.lib')
         if self.has_arg('install') and not self.InstallDone:
             cmd = 'install'
             try:

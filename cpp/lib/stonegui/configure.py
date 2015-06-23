@@ -86,6 +86,10 @@ def doit():
 	# Use the sip mod dir instead for DESTDIR adherance
 	#installs.append(["stoneguiconfig.py", config.sip_mod_ri])
 	#installs.append(["stoneguiconfig.py", config.default_mod_dir])
+	
+	if opt_static == 0:
+		if os.name == 'nt':
+			installs.append(["stonegui.dll", os.path.join(config.default_mod_dir, "blur")])
 
 	sipconfig.ParentMakefile(
 		configuration=config,

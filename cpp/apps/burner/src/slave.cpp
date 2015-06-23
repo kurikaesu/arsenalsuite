@@ -382,10 +382,10 @@ void Slave::loadEmbeddedPython()
 
     LOG_5( "Loading python plugins" );
     
-    QDir plugin_dir( "plugins" );
+    QDir plugin_dir( "abplugins" );
     QStringList el = plugin_dir.entryList(QStringList() << "*.py" << "*.pys" << "*.pyw", QDir::Files);
     foreach( QString plug, el ) {
-        QString name("plugins/" + plug);
+        QString name("abplugins/" + plug);
         LOG_5( "Loading plugin: " + name );
         QFile f( name );
         f.open( QIODevice::ReadOnly );

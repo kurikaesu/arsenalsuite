@@ -93,6 +93,10 @@ def doit():
 	installs.append(["stoneconfig.py", config.sip_mod_dir])
 #   installs.append(["stoneconfig.py", config.default_mod_dir])
 
+	if opt_static == 0:
+		if os.name == 'nt':
+			installs.append(["stone.dll", os.path.join(config.default_mod_dir, "blur")])
+
 	sipconfig.ParentMakefile(
 		configuration=config,
 		installs=installs,

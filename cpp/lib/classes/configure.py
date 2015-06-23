@@ -87,6 +87,10 @@ def doit():
 	installs.append(["classesconfig.py", config.sip_mod_dir])
 #   installs.append(["classesconfig.py", config.default_mod_dir])
 
+	if opt_static == 0:
+		if os.name == 'nt':
+			installs.append(["classes.dll", os.path.join(config.default_mod_dir, "blur")])
+
 	sipconfig.ParentMakefile(
 		configuration=config,
 		installs=installs,

@@ -241,7 +241,7 @@ int main(int argc, char * argv[])
 	else
 		a = new QCoreApplication( argc, argv );
 	
-	a->addLibraryPath("./plugins");
+	a->addLibraryPath("./abplugins");
 
 	// Use default log file from config file unless we are in burn only mode
 	QString logFile;

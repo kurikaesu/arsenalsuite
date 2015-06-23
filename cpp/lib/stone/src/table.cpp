@@ -581,20 +581,44 @@ RecordList Table::select( const Expression & exp, bool selectChildren, bool expe
 	RecordList ret;
 	TableList tables;
 
-	// Fill mgl with tables to select from
-	if( selectChildren )
-		tables = tableTree();
-	else
-		tables += this;
-
-	if( tables.size() > 1 && (connection()->capabilities() & Connection::Cap_MultiTableSelect) ) {
-		ret = selectMulti( tables, exp, needResults, false );
-	} else
+	Connection * conn = connection();
+	FieldList fields = schema()->defaultSelectFields();
+	bool reflectsChangeset = false;
+	
+	if (conn->type() == "QPSQL7") // Take advantage of postgres' table inheritance
 	{
-		foreach( Table * t, tables ) {
-			ret += t->selectOnly( exp, needResults, false );
-			if( ret.size() && expectSingle )
-				break;
+		if (selectChildren) 
+		{
+			Expression transformed = Query( fields, Expression(this,false), exp ).prepareForExec(conn,&reflectsChangeset);
+			RecordList ret = processIncoming( conn->executeExpression(this,fields,transformed), false );
+			if( !reflectsChangeset )
+				ret = applyChangeSet( QList<Table*>() << this, ret, exp );
+		}
+		else
+		{
+			Expression transformed = Query( fields, Expression(this,true), exp ).prepareForExec(conn,&reflectsChangeset);
+			RecordList ret = processIncoming( conn->executeExpression(this,fields,transformed), false );
+			if( !reflectsChangeset )
+				ret = applyChangeSet( QList<Table*>() << this, ret, exp );
+		}
+	}
+	else
+	{
+		// Fill mgl with tables to select from
+		if( selectChildren )
+			tables = tableTree();
+		else
+			tables += this;
+	
+		if( tables.size() > 1 && (connection()->capabilities() & Connection::Cap_MultiTableSelect) ) {
+			ret = selectMulti( tables, exp, needResults, false );
+		} else
+		{
+			foreach( Table * t, tables ) {
+				ret += t->selectOnly( exp, needResults, false );
+				if( ret.size() && expectSingle )
+					break;
+			}
 		}
 	}
 
@@ -608,36 +632,50 @@ RecordList Table::select( const QString & where, const VarList & args, bool sele
 	QString w = where;
 	bool cacheCandidate = where.simplified().isEmpty();
 
-	// Fill mgl with tables to select from
-	if( selectChildren )
-		mgl = tableTree();
+	if (connection()->type() == "QPSQL7") // Take advantage of postgres' table inheritance
+	{
+		if ( selectChildren )
+		{
+			RecordList res = this->selectFrom(this->tableName() + " " + w, args);
+		}
+		else
+		{
+			RecordList res = this->selectOnly(w, args, needResults, cacheCandidate);
+		}
+	}
 	else
-		mgl += this;
+	{
+		// Fill mgl with tables to select from
+		if( selectChildren )
+			mgl = tableTree();
+		else
+			mgl += this;
 
-	if( mgl.size() > 1 && (connection()->capabilities() & Connection::Cap_MultiTableSelect) ) {
-		ret = selectMulti( mgl, w, args, QString(), VarList(), needResults, cacheCandidate );
-	} else {
-		for( TableIter it = mgl.begin(); ; ){
-			Table * man = *it;
+		if( mgl.size() > 1 && (connection()->capabilities() & Connection::Cap_MultiTableSelect) ) {
+			ret = selectMulti( mgl, w, args, QString(), VarList(), needResults, cacheCandidate );
+		} else {
+			for( TableIter it = mgl.begin(); ; ){
+				Table * man = *it;
 	
-			//LOG_5( "Selecting from table: " + man->tableName() );
-			// Perform the select
-			RecordList res = man->selectOnly( w, args, needResults, cacheCandidate && (selectChildren || man->children().isEmpty()) );
+				//LOG_5( "Selecting from table: " + man->tableName() );
+				// Perform the select
+				RecordList res = man->selectOnly( w, args, needResults, cacheCandidate && (selectChildren || man->children().isEmpty()) );
 	
-			if( res.size() )
-			{
-				// Add results to return list
-				ret += res;
-			}
+				if( res.size() )
+				{
+					// Add results to return list
+					ret += res;
+				}
 			
-			++it;
+				++it;
 	
-			// Return if that was the last table or if we have enough results
-			if( it == mgl.end() || (ret.size() && expectSingle) )
-				break;
+				// Return if that was the last table or if we have enough results
+				if( it == mgl.end() || (ret.size() && expectSingle) )
+					break;
 	
-			// Massage where clause for next table
-			w.replace( man->schema()->tableName() + ".", (*it)->schema()->tableName() + ".", Qt::CaseInsensitive);
+				// Massage where clause for next table
+				w.replace( man->schema()->tableName() + ".", (*it)->schema()->tableName() + ".", Qt::CaseInsensitive);
+			}
 		}
 	}
 	
@@ -765,7 +803,7 @@ RecordList Table::selectMulti( TableList tables, const Expression & exp, bool ne
 	if( rrl.size() == 1 )
 		resultsByTable = connection()->executeExpression( this, rrl[0], transformed );
 	else
-		LOG_1( "Unable to execute expression, the number of RecordReturn records isnt 1" );
+		LOG_1( "Unable to execute expression, the number of RecordReturn records isn't 1" );
 	
 	for( QMap<Table*,RecordList>::iterator it = resultsByTable.begin(); it != resultsByTable.end(); ++it ) {
 		Table * t = it.key();

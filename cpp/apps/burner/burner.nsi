@@ -34,7 +34,7 @@ Section "install"
 	CreateShortCut "$DESKTOP\Burner.lnk" "$INSTDIR\burner.exe" ""
 	CreateShortCut "$QUICKLAUNCH\Burner.lnk" "$INSTDIR\burner.exe" ""
     SetOutPath $INSTDIR\plugins
-    File /r "plugins\*.*"
+    File /r "abplugins\*.*"
 	; Delete everything from spool directory, then re-create it
 	RMDir /r "$INSTDIR\spool"
 	CreateDirectory "$INSTDIR\spool"

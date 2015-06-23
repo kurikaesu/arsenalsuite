@@ -183,6 +183,7 @@ QSqlDbConnection::QSqlDbConnection( const QString & driverName )
 : mInsideTransaction( false )
 {
 	mDb = QSqlDatabase::addDatabase( driverName, "QSqlDbConnection" + QString::number(qSqlConnNumber()) );
+	mDatabaseType = driverName;
 }
 
 QSqlDbConnection::~QSqlDbConnection()

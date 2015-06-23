@@ -11,7 +11,7 @@ Name "${MUI_PRODUCT} ${MUI_VERSION} ${PLATFORM}"
 
 ; Name of resulting executable installer
 OutFile "absubmit_install_${PLATFORM}.exe"
-InstallDir "C:\\blur\\absubmit\\"
+InstallDir "C:\\arsenalsuite\\absubmit\\"
 
 #!define MUI_FINISHPAGE
 #!define MUI_FINISHPAGE_NOREBOOTSUPPORT

@@ -78,6 +78,10 @@ def doit():
 	installs.append([sipfiles, os.path.join(config.default_sip_dir, "blur")])
 
 	#installs.append(["absubmitconfig.py", config.default_mod_dir])
+	
+	if opt_static == 0:
+		if os.name == 'nt':
+			installs.append(["freezer.dll", os.path.join(config.default_mod_dir, "blur")])
 
 	sipconfig.ParentMakefile(
 		configuration=config,
