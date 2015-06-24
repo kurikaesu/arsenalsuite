@@ -42,7 +42,6 @@ unix {
 macx:CONFIG-=app_bundle
 
 SOURCES += \
-	src/batchburner.cpp \
 	src/builtinburnerplugin.cpp \
 	src/common.cpp \
 	src/jobburnerfactory.cpp \
@@ -51,11 +50,6 @@ SOURCES += \
 	src/maindialog.cpp \
 	src/main.cpp \
 	src/mapwarningdialog.cpp \
-	src/aftereffectsburner.cpp \
-	src/max7burner.cpp \
-	src/maxscriptburner.cpp \
-	src/mayaburner.cpp \
-	src/shakeburner.cpp \
 	src/settingsdialog.cpp \
 	src/slave.cpp \
 	src/spooler.cpp \
@@ -64,18 +58,12 @@ SOURCES += \
 	src/win32sharemanager.cpp
 
 HEADERS += \
-	include/batchburner.h \
 	include/builtinburnerplugin.h \
 	include/common.h \
 	include/jobburnerfactory.h \
 	include/jobburnerplugin.h \
 	include/jobburner.h \
 	include/mapwarningdialog.h \
-	include/aftereffectsburner.h \
-	include/max7burner.h \
-	include/maxscriptburner.h \
-	include/mayaburner.h \
-	include/shakeburner.h \
 	include/killdialog.h \
 	include/maindialog.h \
 	include/settingsdialog.h \
