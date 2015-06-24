@@ -574,9 +574,11 @@ void JobBurner::cleanup()
             if (qprocessId(mCmd) > 1) {
                 QList<int> descendants = processChildrenIds( qprocessId(mCmd), true );
                 foreach( int processId, descendants ) {
-                    logMessage( "JobBurner::cleanup() Killing child pid: "+ processId );
-                    if( processId > 1 )
+					if( processId > 1 )
+					{
+						logMessage( "JobBurner::cleanup() Killing child pid: "+ processId );
                         killProcess( processId );
+					}
                 }
             }
 			logMessage("attempting to kill process "+ QString::number(qprocessId(mCmd)));

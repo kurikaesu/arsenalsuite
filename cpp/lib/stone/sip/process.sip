@@ -66,6 +66,7 @@ struct ProcessMemInfo {
 };
 
 int qprocessId( QProcess * );
+int qpidToId( Q_PID qpid );
 
 ProcessMemInfo processMemoryInfo( int pid, bool recursive = false );
 
