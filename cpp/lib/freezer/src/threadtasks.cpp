@@ -130,7 +130,7 @@ void JobListTask::run()
 		JobTypeList allJobTypes = JobType::select();
 		if (mJobFilter.typesToShow.size() == allJobTypes.size())
 		{
-			mReturn = Database::current()->tableByName("job")->select();
+			mReturn = Database::current()->tableByName("job")->select(e);
 		}
 		else
 		{
