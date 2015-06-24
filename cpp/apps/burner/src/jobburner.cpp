@@ -88,7 +88,7 @@ JobBurner::JobBurner( const JobAssignment & jobAssignment, Slave * slave, int op
 	mCheckupTimer = new QTimer( this );
 	connect( mCheckupTimer, SIGNAL( timeout() ), SLOT( checkup() ) );
     mCheckupTimer->start(30000);
-
+	
 	/* Ensure we are actually assigned some tasks to work on */
 	mTaskAssignments = mJobAssignment.jobTaskAssignments();
 	if( mTaskAssignments.isEmpty() ) {
@@ -103,8 +103,6 @@ JobBurner::JobBurner( const JobAssignment & jobAssignment, Slave * slave, int op
 		cancel();
 		return;
 	}
-    // get any changed Job params ( like environment, command, etc )
-    mJob.reload();
 
 	/* Make sure each of the tasks are still valid, some could have already been unassigned or cancelled */
 	/* Also verify that the jobtask record matches the assignment */
@@ -324,7 +322,7 @@ bool JobBurner::taskStart( int task, const QString & outputName, int secondsSinc
 	VarList vl;
 	vl += mJob.key();
 	vl += task;
-
+	
 	if( !outputName.isEmpty() ) {
 		JobOutput jo = JobOutput::recordByJobAndName( mJob, outputName );
 		if( jo.isRecord() ) {
@@ -603,11 +601,19 @@ void JobBurner::updateOutput()
 		QStringList colUpdates;
 		if( !mStdOut.isEmpty() ) {
 			vl += mStdOut;
+#ifdef Q_OS_WIN
+			colUpdates += "\"stdout\" = \"stdout\" || ?";
+#else
 			colUpdates += "\"stdout\" = \"stdout\" || E?";
+#endif
 		}
 		if( !mStdErr.isEmpty() ) {
 			vl += mStdErr;
+#ifdef Q_OS_WIN
+			colUpdates += "\"stderr\" = \"stderr\" || ?";
+#else
 			colUpdates += "\"stderr\" = \"stderr\" || E?";
+#endif
 		}
 		if( colUpdates.size() ) {
 			vl += mJobAssignment.key();

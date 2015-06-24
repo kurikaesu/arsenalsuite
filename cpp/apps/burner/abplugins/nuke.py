@@ -9,7 +9,7 @@ import re, traceback, os
 class NukeBurner(JobBurner):
     def __init__(self,jobAss,slave):
         JobBurner.__init__(self,jobAss,slave)
-        self.Job = JobNuke(jobAss.getValue("fkeyjob").toLongLong()[0])
+        self.Job = JobNuke(jobAss.job().key())
         self.Slave = slave
 
         self.CurrentFrame = None
@@ -139,7 +139,6 @@ class NukeBurner(JobBurner):
         #Log( "NukeBurner::slotReadOutput() called, ready to read output" )
         # Frame status
         for errLine in self.frameErrorRes:
-            print errLine.indexIn(line)
             if errLine.indexIn(line) >= 0:
                 self.jobErrored(line)
         if self.frameDone.indexIn(line) >= 0:

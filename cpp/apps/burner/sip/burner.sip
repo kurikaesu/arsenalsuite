@@ -106,7 +106,7 @@ class JobBurner : QObject /VirtualErrorHandler=JobBurnerVirtualErrorHandler/
 #include "pyembed.h"
 %End
 public:
-	JobBurner( const JobAssignment & job, Slave * slave /TransferThis/ );
+	JobBurner( const JobAssignment & job /TransferThis/, Slave * slave /TransferThis/ );
 	~JobBurner();
 
 	enum State {
