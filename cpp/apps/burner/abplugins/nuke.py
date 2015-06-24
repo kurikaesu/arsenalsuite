@@ -9,7 +9,7 @@ import re, traceback, os
 class NukeBurner(JobBurner):
     def __init__(self,jobAss,slave):
         JobBurner.__init__(self,jobAss,slave)
-        self.Job = jobAss.job()
+        self.Job = JobNuke(jobAss.getValue("fkeyjob").toLongLong()[0])
         self.Slave = slave
 
         self.CurrentFrame = None
@@ -24,7 +24,10 @@ class NukeBurner(JobBurner):
 
         self.frameDone = QRegExp("^Writing .*\.(\d{4,})\.\w+ took")
         self.frameStart = QRegExp("^Writing .*\.(\d{4,})\.\w+")
+        self.frameErrorRes = []
+        self.frameErrorRes.append(QRegExp("Traceback"))
         self.jobDone = QRegExp("^Total render time:")
+        print "Burner init done"
 
     def __del__(self):
         # Nothing is required
@@ -67,10 +70,16 @@ class NukeBurner(JobBurner):
         return env.split("\n")
 
     def executable(self):
-        timeCmd = "/usr/bin/time --format=baztime:real:%e:user:%U:sys:%S:iowait:%w ";
-        cmd = timeCmd + "/bin/su %s -c \"$NUKE/Nuke$NUKE_MAJOR " % self.Job.user().name()
+        print "executable called"
+        cmd = ""
+        if os.name == 'nt':
+            cmd = "\"C:\\Program Files\\Nuke9.0v6\\Nuke9.0.exe\" "
+        else:
+            timeCmd = "/usr/bin/time --format=baztime:real:%e:user:%U:sys:%S:iowait:%w ";
+            cmd = timeCmd + "/bin/su %s -c \"$NUKE/Nuke$NUKE_MAJOR " % self.Job.user().name()
 
         args = QStringList()
+        args << "--nc"
         # verbose
         args << "-V"
         # execute
@@ -97,9 +106,18 @@ class NukeBurner(JobBurner):
         # frame range
         args << "-F"
         args << self.assignedTasks()
-        args << self.burnFile()
+        if (self.burnFile().size() == 0):
+            args << self.Job.fileName()
+        else:
+            args << self.burnFile()
 
-        cmd = cmd + args.join(" ") + "\""
+        print "Burnfile: ", self.Job.fileName()
+			
+        if os.name == 'nt':
+            cmd = cmd + args.join(" ")
+        else:
+            cmd = cmd + args.join(" ") + "\""
+        print "Built exe string (%s)" % (cmd)
         return cmd
 
     def startProcess(self):
@@ -120,6 +138,10 @@ class NukeBurner(JobBurner):
         JobBurner.slotProcessOutputLine(self,line,channel)
         #Log( "NukeBurner::slotReadOutput() called, ready to read output" )
         # Frame status
+        for errLine in self.frameErrorRes:
+            print errLine.indexIn(line)
+            if errLine.indexIn(line) >= 0:
+                self.jobErrored(line)
         if self.frameDone.indexIn(line) >= 0:
         #elif self.frameStart.indexIn(line) >= 0:
             self.OutputsReported = self.OutputsReported + 1
@@ -149,10 +171,6 @@ class NukeBurnerPlugin(JobBurnerPlugin):
 
     def createBurner(self,jobAss,slave):
         Log( "NukeBurnerPlugin::createBurner() called, Creating NukeBurner" )
-        if jobAss.job().jobType().name() == 'Nuke51':
-            return NukeBurner(jobAss,slave)
-        if jobAss.job().jobType().name() == 'Nuke52':
-            return NukeBurner(jobAss,slave)
         if jobAss.job().jobType().name() == 'Nuke':
             return NukeBurner(jobAss,slave)
 

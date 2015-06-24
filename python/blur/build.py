@@ -340,7 +340,6 @@ class SipTarget(Target):
             self.InstallDone = False
             if os.name == 'nt':
                 wantedName = self.name.replace("static","").replace("py","",1)
-                printf("Cleaning sip working dir")
                 if os.path.isfile('sip' + wantedName + '/' + wantedName + '.lib'):
                     os.remove('sip' + wantedName + '/' + wantedName + '.lib')
                 if os.path.isfile('sip' + wantedName + '/py' + wantedName + '.lib'):
