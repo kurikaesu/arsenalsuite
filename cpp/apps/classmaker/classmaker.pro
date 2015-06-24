@@ -1,31 +1,32 @@
 
 HEADERS += \
-	mainwindow.h \
-	sourcegen.h \
-	tabledialog.h \
-	fielddialog.h \
-	indexdialog.h \
-	createdatabasedialog.h \
+	includes/mainwindow.h \
+	includes/sourcegen.h \
+	includes/tabledialog.h \
+	includes/fielddialog.h \
+	includes/indexdialog.h \
+	includes/createdatabasedialog.h \
 
 SOURCES += \
-	mainwindow.cpp \
-	sourcegen.cpp \
-	main.cpp \
-	tabledialog.cpp \
-	fielddialog.cpp \
-	indexdialog.cpp \
-	createdatabasedialog.cpp \
+	src/mainwindow.cpp \
+	src/sourcegen.cpp \
+	src/main.cpp \
+	src/tabledialog.cpp \
+	src/fielddialog.cpp \
+	src/indexdialog.cpp \
+	src/createdatabasedialog.cpp \
 
 FORMS += \
-	mainwindowui.ui \
-	tabledialogui.ui \
-	fielddialogui.ui \
-	indexdialogui.ui \
-	createdatabasedialogui.ui \
-	docsdialogui.ui
+	ui/mainwindowui.ui \
+	ui/tabledialogui.ui \
+	ui/fielddialogui.ui \
+	ui/indexdialogui.ui \
+	ui/createdatabasedialogui.ui \
+	ui/docsdialogui.ui
 	
 TARGET=classmaker
 
+INCLUDEPATH+=includes
 INCLUDEPATH+=../../lib/stonegui/include ../../lib/stonegui/.out
 INCLUDEPATH+=../../lib/stone/ ../../lib/stone/include ../../lib/stone/.out 
 INCLUDEPATH+=/usr/include/stone /usr/include/stonegui

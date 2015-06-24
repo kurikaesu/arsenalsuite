@@ -28,8 +28,7 @@
 #include <QMainWindow>
 
 #include "afcommon.h"
-
-const QString VERSION("1.1.16");
+#include "version.h"
 
 class QLabel;
 class QTimer;

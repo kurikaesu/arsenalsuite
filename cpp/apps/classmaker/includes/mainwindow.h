@@ -28,6 +28,7 @@
 #include <qmainwindow.h>
 
 #include "ui_mainwindowui.h"
+#include "version.h"
 
 class QPoint;
 

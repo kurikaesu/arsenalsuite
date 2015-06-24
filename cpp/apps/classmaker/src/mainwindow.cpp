@@ -203,6 +203,8 @@ MainWindow::MainWindow( Schema * schema )
 
 	mUI.mTreeView->setModel(mModel);
 	
+	setWindowTitle("Classmaker - Version " + VERSION);
+	
 	setSchema( 0 );
 }
 

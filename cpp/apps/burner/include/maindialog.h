@@ -34,13 +34,12 @@
 #include "iniconfig.h"
 #include "slave.h"
 #include "common.h"
+#include "version.h"
 
 class QTimer;
 class QFile;
 class QMenu;
 class QCloseEvent;
-
-const QString VERSION("1.5.20");
 
 /* Note:
  * init() must be called after construction
