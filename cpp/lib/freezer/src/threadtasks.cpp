@@ -127,25 +127,33 @@ void JobListTask::run()
 		TableList tables;
 
 		CHECK_CANCEL
-		foreach( uint type, mJobFilter.typesToShow ) {
-			JobType jt( type );
-			if( !jt.isRecord() ) {
-				LOG_5( "JobType filter was not a valid record: " + jt.name() );
-				continue;
-			}
-			Table * tbl = Database::current()->tableByName( "job" + jt.name() );
-			if( !tbl ) {
-				LOG_5( "Couldn't find table for jobtype: " + jt.name() );
-				continue;
+		JobTypeList allJobTypes = JobType::select();
+		if (mJobFilter.typesToShow.size() == allJobTypes.size())
+		{
+			mReturn = Database::current()->tableByName("job")->select();
+		}
+		else
+		{
+			foreach( uint type, mJobFilter.typesToShow ) {
+				JobType jt( type );
+				if( !jt.isRecord() ) {
+					LOG_5( "JobType filter was not a valid record: " + jt.name() );
+					continue;
+				}
+				Table * tbl = Database::current()->tableByName( "job" + jt.name() );
+				if( !tbl ) {
+					LOG_5( "Couldn't find table for jobtype: " + jt.name() );
+					continue;
+				}
+				if( supportsMultiSelect )
+					tables += tbl;
+				else
+					mReturn += tbl->selectOnly( e );
+				CHECK_CANCEL
 			}
 			if( supportsMultiSelect )
-				tables += tbl;
-			else
-				mReturn += tbl->selectOnly( e );
-			CHECK_CANCEL
+				mReturn = Database::current()->tableByName( "job" )->selectMulti( tables, e );
 		}
-		if( supportsMultiSelect )
-			mReturn = Database::current()->tableByName( "job" )->selectMulti( tables, e );
 		CHECK_CANCEL
 	}
 

@@ -59,8 +59,8 @@ public:
 		{ return t__List( RecordList::filter( column, value, keepMatches ) ); }
 	t__List filter( const QString & column, const QRegExp & re, bool keepMatches = true ) const
 		{ return t__List( RecordList::filter( column, re, keepMatches ) ); }
-        t__List filter( const Expression & exp, bool keepMatches = true ) const
-                { return t__List( RecordList::filter( exp, keepMatches ) ); }
+	t__List filter( const Expression & exp, bool keepMatches = true ) const
+		{ return t__List( RecordList::filter( exp, keepMatches ) ); }
 
 	t__List sorted( const QString & c, bool a = true ) const { return t__List( RecordList::sorted( c, a ) ); }
 

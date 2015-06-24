@@ -636,11 +636,13 @@ RecordList Table::select( const QString & where, const VarList & args, bool sele
 	{
 		if ( selectChildren )
 		{
-			RecordList res = this->selectFrom(this->tableName() + " " + w, args);
+			if ((args.size() || w.trimmed().size()) && !w.contains("where", Qt::CaseInsensitive))
+				w = " WHERE " + where;
+			ret += this->selectFrom(this->tableName() + " " + w, args);
 		}
 		else
 		{
-			RecordList res = this->selectOnly(w, args, needResults, cacheCandidate);
+			ret += this->selectOnly(w, args, needResults, cacheCandidate);
 		}
 	}
 	else
