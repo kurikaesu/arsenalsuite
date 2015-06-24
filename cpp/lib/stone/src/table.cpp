@@ -590,14 +590,14 @@ RecordList Table::select( const Expression & exp, bool selectChildren, bool expe
 		if (selectChildren) 
 		{
 			Expression transformed = Query( fields, Expression(this,false), exp ).prepareForExec(conn,&reflectsChangeset);
-			RecordList ret = processIncoming( conn->executeExpression(this,fields,transformed), false );
+			ret = processIncoming( conn->executeExpression(this,fields,transformed), false );
 			if( !reflectsChangeset )
 				ret = applyChangeSet( QList<Table*>() << this, ret, exp );
 		}
 		else
 		{
 			Expression transformed = Query( fields, Expression(this,true), exp ).prepareForExec(conn,&reflectsChangeset);
-			RecordList ret = processIncoming( conn->executeExpression(this,fields,transformed), false );
+			ret = processIncoming( conn->executeExpression(this,fields,transformed), false );
 			if( !reflectsChangeset )
 				ret = applyChangeSet( QList<Table*>() << this, ret, exp );
 		}
