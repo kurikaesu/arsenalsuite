@@ -35,6 +35,7 @@
 #include <qtextstream.h>
 
 //#include <unistd.h>
+#include <errno.h>
 
 #include "process.h"
 #include "blurqt.h"
@@ -109,7 +110,16 @@ int pidsByName( const QString & name , QList<int> * pidList , bool )
 
 bool killProcess(int pid)
 {
-	return kill( pid, SIGKILL )==0;
+	int ret = kill( pid, SIGKILL );
+	if (ret != 0)
+	{
+		char* errString = strerror(errno);
+		LOG_5("Failed to kill PID: " + QString::number(pid));
+		LOG_5(errString);
+	}
+	else
+		LOG_5("Killed PID: " + QString::number(pid));
+	return ret==0;
 }
 
 bool systemShutdown( bool reboot, const QString & )
