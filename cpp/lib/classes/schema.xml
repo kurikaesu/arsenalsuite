@@ -894,6 +894,7 @@
   <column type="bool" methodName="passSlaveFramesAsParam" name="passSlaveFramesAsParam"/>
   <column type="bool" methodName="disableWow64FsRedirect" name="disableWow64FsRedirect"/>
  </table>
+ <table useCodeGen="true" parent="Job" name="JobBlender" expireKeyCache="true" className="JobBlender"/>
  <table docs="Represents a &quot;canned&quot; batch job, that can be submitted as a batch job at any time by just selecting the hosts to run it on." useCodeGen="true" name="JobCannedBatch" expireKeyCache="true" className="JobCannedBatch">
   <column type="uint" methodName="keyJobCannedBatch" name="keyJobCannedBatch" pkey="true"/>
   <column type="QString" methodName="name" name="name"/>

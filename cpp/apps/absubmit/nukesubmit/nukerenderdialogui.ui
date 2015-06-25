@@ -353,7 +353,7 @@
       <item row="1" column="2">
        <widget class="QCheckBox" name="mJabberCompletionCheck">
         <property name="text">
-         <string>Jabber</string>
+         <string>XMPP</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -363,7 +363,7 @@
       <item row="0" column="2">
        <widget class="QCheckBox" name="mJabberErrorsCheck">
         <property name="text">
-         <string>Jabber</string>
+         <string>XMPP</string>
         </property>
         <property name="checked">
          <bool>true</bool>
