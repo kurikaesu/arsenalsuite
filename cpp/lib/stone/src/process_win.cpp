@@ -1075,22 +1075,39 @@ int processID()
 	return GetCurrentProcessId();
 }
 
+void logLastErrorMessage(int logLevel)
+{
+	LPVOID lpMsgBuf;
+	int msgLength = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
+								  FORMAT_MESSAGE_FROM_SYSTEM |
+								  FORMAT_MESSAGE_IGNORE_INSERTS,
+								  NULL,
+								  GetLastError(),
+								  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+								  (LPTSTR) &lpMsgBuf,
+								  0, 
+								  NULL);
+	
+	if (msgLength > 0)
+	{
+		QString message = QString::fromWCharArray(static_cast<const wchar_t*>(lpMsgBuf),msgLength);
+		Log(message, logLevel, __get_loc__);
+	}
+}
+
 bool killProcess(int pid)
 {
 	HANDLE hProcess = OpenProcess( PROCESS_TERMINATE, false, pid );
 	if( !hProcess ) {
 		LOG_5( "Unable to open process with pid: " + QString::number( pid ) );
+		logLastErrorMessage(5);
 		return false;
 	}
 	// Set a notable exit code so we can check for it in pidsByName
-	bool ret = TerminateProcess( hProcess, 666 ) != 0;
+	bool ret = TerminateProcess( hProcess, 666 );
 	LOG_5( (ret ? "Killed PID: " : "Failed to kill PID: ") + QString::number( pid ) );
 	if (!ret)
-	{
-		WCHAR buffer[1024];
-		FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM|FORMAT_MESSAGE_ARGUMENT_ARRAY, NULL, GetLastError(), LANG_NEUTRAL, buffer, 0, NULL);
-		LOG_5(QString("Error message: (") + QString::fromWCharArray(buffer) + ")");
-	}
+		logLastErrorMessage(1);
 
 	CloseHandle( hProcess );
 	return ret;
