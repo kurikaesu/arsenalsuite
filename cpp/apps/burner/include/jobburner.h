@@ -43,6 +43,7 @@
 #include "joberror.h"
 #include "jobtask.h"
 #include "jobfiltermessage.h"
+#include "process.h"
 
 #include "spooler.h"
 #include "slave.h"
@@ -121,6 +122,8 @@ public:
 	virtual QStringList environment();
 
 	QProcess * process() const { return mCmd; }
+	
+	int processId() const { return qprocessId(mCmd); }
 
 	QString burnFile() const { return mBurnFile; }
 

@@ -1083,7 +1083,7 @@ bool killProcess(int pid)
 		return false;
 	}
 	// Set a notable exit code so we can check for it in pidsByName
-	bool ret = bool(TerminateProcess( hProcess, 666 ));
+	bool ret = TerminateProcess( hProcess, 666 ) != 0;
 	LOG_5( (ret ? "Killed PID: " : "Failed to kill PID: ") + QString::number( pid ) );
 
 	CloseHandle( hProcess );

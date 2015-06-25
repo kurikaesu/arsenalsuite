@@ -39,15 +39,17 @@ class NukeBurner(JobBurner):
         if not self.process(): return
 
         mProcessId = self.process().pid()
-        Log( "NukeBurner::cleanup() Getting pid: %s" % mProcessId )
+        realProcessId = self.processId()
+        Log( "NukeBurner::cleanup() Getting pid: %s" % (realProcessId))
 
         # Need to find the correct PID space ..
-        if mProcessId > 10:
-            descendants = processChildrenIds( mProcessId, True )
+        if realProcessId > 1:
+            descendants = processChildrenIds( realProcessId, True )
             for processId in descendants:
-                Log( "NukeBurner::cleanup() Killing child pid: %s" % processId )
-                killProcess( processId )
-            killProcess( mProcessId )
+                if processId > 1:
+                    Log( "NukeBurner::cleanup() Killing child pid: %s" % (processId) )
+                    killProcess( processId )
+            killProcess( realProcessId )
 
         JobBurner.cleanup(self)
         Log( "NukeBurner::cleanup() done" )

@@ -148,6 +148,8 @@ public:
 	virtual QStringList environment();
 
 	QProcess * process() const;
+	
+	int processId() const;
 
 	QString burnFile() const;
 
