@@ -935,14 +935,7 @@ void Slave::cleanupJobBurner( JobBurner * burner )
 {
     LOG_TRACE
     burner->disconnect(this);
-	try
-	{
-		burner->cleanup();
-	}
-	catch (...)
-	{
-		LOG_1("Burner cleanup resulted in an exception");
-	}
+	burner->cleanup();
     mBurnersToDelete += burner;
     mActiveBurners.removeAll(burner);
     setActiveAssignments( mActiveAssignments - burner->jobAssignment() );
