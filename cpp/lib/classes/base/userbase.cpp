@@ -226,16 +226,21 @@ bool User::hasPerms( const QString & key, bool modify, const Project &  )
 	if( modify )
 		cacheKey += "_modify";
 	
+	int foundKey = 0;
+	
 	if( permCache.contains( cacheKey ) ) {
-		int key = permCache[cacheKey];
-		if( key == 0 )
+		foundKey = permCache[cacheKey];
+		if( foundKey == 0 )
 			LOG_3( "[Cached] Permission denied for key: " + classKey );
 		else
-			LOG_3( "[Cached] Permission granted for key: " + cacheKey + " from record: " + QString::number( key ) );
-		return key > 0;
+			LOG_3( "[Cached] Permission granted for key: " + cacheKey + " from record: " + QString::number( foundKey ) );
+		return foundKey > 0;
 	}
 	
 	PermissionList pl = Permission::select();
+	
+	bool grantedUser = false;
+	bool grantedGroup = false;
 	
 	GroupList gl = currentUser().userGroups().groups();
 	foreach( Permission p, pl ) {
@@ -243,10 +248,39 @@ bool User::hasPerms( const QString & key, bool modify, const Project &  )
 		{
 			if (modify == p.modify())
 			{
-				permCache[cacheKey] = p.key();
-				LOG_3("Permission granted for key: " + cacheKey + " from record: " + QString::number( p.key() ) );
+				if (p.user().key() == currentUser().key())
+				{
+					if (p.enabled())
+					{
+						grantedUser = true;
+						foundKey = p.key();
+						break;
+					}
+					else
+					{
+						grantedUser = false;
+						grantedGroup = false;
+						break;
+					}
+				}
+					
+				if (gl.find(p.group()) != gl.end())
+				{
+					if (p.enabled())
+					{
+						grantedGroup = true;
+						foundKey = p.key();
+					}
+				}
 			}
 		}
+	}
+	
+	if (grantedUser || grantedGroup)
+	{
+		permCache[cacheKey] = foundKey;
+		LOG_3("Permission granted for key: " + cacheKey + " from record: " + QString::number( foundKey ) );
+		return true;
 	}
 	
 	LOG_3( "Permission denied for key: " + cacheKey );

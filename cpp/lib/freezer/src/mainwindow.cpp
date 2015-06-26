@@ -47,7 +47,6 @@
 #include "hostlistwidget.h"
 #include "hostservicematrix.h"
 #include "userservicematrix.h"
-#include "usermanager.cpp"
 #include "joblistwidget.h"
 #include "projectweightdialog.h"
 #include "projectreservedialog.h"
@@ -57,6 +56,7 @@
 #include "threadtasks.h"
 #include "viewmanager.h"
 #include "webview.h"
+#include "dialogfactory.h"
 
 #include "mainwindow.h"
 #include "ui_aboutdialog.h"
@@ -155,7 +155,7 @@ MainWindow::MainWindow( QWidget * parent )
 	connect( DisplayPrefsAction, SIGNAL( triggered(bool) ), SLOT( showDisplayPrefs() ) );
 	connect( AdminAction, SIGNAL( triggered(bool) ), SLOT( enableAdmin() ) );
 	
-	connect( UserPermissionsManagerAction, SIGNAL( trigger(bool) ), SLOT( openUserPermissionsWindow() ) );
+	connect( UserPermissionsManagerAction, SIGNAL( triggered(bool) ), SLOT( openUserPermissionsWindow() ) );
 
 	/* Setup counter */
 	mCounterLabel = new QLabel("", statusBar());
@@ -1113,7 +1113,8 @@ void MainWindow::openUserServiceMatrixWindow()
 
 void MainWindow::openUserPermissionsWindow()
 {
-	(new UserPermissionsWindow(this))->show();
+	LOG_1("Trying to edit permissions");
+	DialogFactory::instance()->editPermissions(this);
 }
 
 // Turns the update counter on or off

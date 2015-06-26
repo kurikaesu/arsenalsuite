@@ -14,7 +14,7 @@
 #include "notificationroutedialog.h"
 #include "notificationwidget.h"
 #include "pathtemplatesdialog.h"
-//#include "permsdialog.h"
+#include "permsdialog.h"
 #include "project.h"
 #include "projectdialog.h"
 #include "scenedialog.h"
@@ -191,7 +191,6 @@ void DialogFactory::newTask( ElementList parents, QWidget * pw )
 	//Database::instance()->commitTransaction();
 }
 
-/*
 void DialogFactory::editPermissions( QWidget * pw )
 {
 	if( !pw && qApp->activeWindow() )
@@ -200,7 +199,6 @@ void DialogFactory::editPermissions( QWidget * pw )
 	pm->exec();
 	delete pm;
 }
-*/
 
 void DialogFactory::editNotificationRoutes( QWidget * pw )
 {

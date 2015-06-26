@@ -20,9 +20,11 @@ public:
 		int col = i.column();
 		switch( col ) {
 			case 0:
-				if( role == Qt::DisplayRole || role == Qt::EditRole )
-					return perm._class();
+			{
+				if( role == Qt::DisplayRole )
+					return perm.key();
 				break;
+			}	
 			case 1:
 			{
 				if( role == Qt::DisplayRole )
@@ -56,12 +58,14 @@ public:
 				break;
 			}
 			case 3:
+			{
 				if( role == Qt::DisplayRole || role == Qt::EditRole )
-					return perm.permission();
+					return perm._class();
 				break;
+			}
 			case 4:
-				if( role == Qt::DisplayRole )
-					return perm.key();
+				if( role == Qt::DisplayRole || role == Qt::EditRole )
+					return perm.modify();
 				break;
 		}
 		return QVariant();
@@ -71,8 +75,7 @@ public:
 		if( role == Qt::EditRole ) {
 			switch( col ) {
 				case 0:
-					perm.set_class(v.toString());
-					break;
+					return false;
 				case 1:
 				{
 					User u = qvariant_cast<Record>(v);
@@ -89,16 +92,19 @@ public:
 				}
 				case 3:
 				{
+					perm.set_class(v.toString());
+					break;
+				}
+				case 4:
+				{
 					QString p = v.toString();
 					if( !QRegExp( "^[0-7]{4}$" ).exactMatch( p ) ) {
 						// TODO: Warning dialog
 						return false;
 					}
-					perm.setPermission( v.toString() );
+					//perm.setPermission( v.toString() );
 					break;
 				}
-				case 4:
-					return false;
 			}
 			perm.commit();
 			return true;
@@ -106,7 +112,7 @@ public:
 		return false;
 	}
 	Qt::ItemFlags modelFlags( const QModelIndex & index ) {
-		if( index.column() < 4 )
+		if( index.column() > 1 )
 			return Qt::ItemFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable );
 		return Qt::ItemFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
 	}
@@ -122,7 +128,7 @@ PermsDialog::PermsDialog( QWidget * parent )
 	mModel = new RecordSuperModel(mTreeView);
 	new PermissionTranslator(mModel->treeBuilder());
 	mTreeView->setModel(mModel);
-	mModel->setHeaderLabels( QStringList() << "Class" << "User" << "Group" << "Permission" << "Key" );
+	mModel->setHeaderLabels( QStringList() << "Key" << "User" << "Group" << "Class" << "Modify" );
 	mModel->listen( Permission::table() );
 	connect( mTreeView, SIGNAL( currentChanged( const Record & ) ), SLOT( slotCurrentChanged( const Record & ) ) );
 	connect( mNewMethodButton, SIGNAL( clicked() ), SLOT( slotNewMethod() ) );
@@ -139,7 +145,8 @@ void PermsDialog::refresh()
 void PermsDialog::slotNewMethod()
 {
 	Permission p;
-	p.setPermission( "0700" );
+	p.setEnabled(false);
+	p.setModify(false);
 	mModel->append( p );
 }
 

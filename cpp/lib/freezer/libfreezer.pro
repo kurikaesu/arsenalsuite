@@ -55,8 +55,7 @@ SOURCES+= \
 	src/tabtoolbar.cpp \
 	src/threadtasks.cpp \
 	src/viewmanager.cpp \
-	src/webview.cpp \
-	src/usermanager.cpp
+	src/webview.cpp
 
 HEADERS+= \
 	include/abadminplugins.h \
@@ -114,8 +113,7 @@ HEADERS+= \
 	include/tabtoolbar.h \
 	include/threadtasks.h \
 	include/viewmanager.h \
-	include/webview.h \
-	include/usermanager.h
+	include/webview.h
 
 INTERFACES+= \
 	ui/aboutdialog.ui \
@@ -141,9 +139,7 @@ INTERFACES+= \
 	ui/jobxsisettingswidgetui.ui \
 	ui/projectweightdialogui.ui \
 	ui/projectreservedialogui.ui \
-	ui/settingsdialogui.ui \
-	ui/userpermissionseditorui.ui \
-	ui/userpermissionseditorwidgetui.ui
+	ui/settingsdialogui.ui
 
 LIBS+=-L../absubmit -labsubmit
 LIBS+=-L../classesui -lclassesui
