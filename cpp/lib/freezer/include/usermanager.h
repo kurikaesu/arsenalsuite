@@ -11,7 +11,8 @@
 
 #include "afcommon.h"
 
-#include "ui_userpermissionseditorui.h"
+//#include "ui_userpermissionseditorui.h"
+#include "ui_userpermissionseditorwidgetui.h"
 
 class FREEZER_EXPORT UserPermissionsModel : public RecordSuperModel
 {
@@ -23,18 +24,18 @@ public slots:
 	void userPermissionsUpdated(Record up, Record);
 protected:
 
-}
+};
 
 class FREEZER_EXPORT UserPermissionsView : public RecordTreeView
 {
 Q_OBJECT
 public:
-	UserPermissionsView( QWidget * parent = 0 )
+	UserPermissionsView( QWidget * parent = 0 );
 	UserPermissionsModel * getModel() const;
 		
 protected:
 	UserPermissionsModel * mModel;
-}
+};
 
 class FREEZER_EXPORT UserPermissionsWidget : public QWidget, public Ui::UserPermissionsWidgetUi
 {
@@ -46,7 +47,7 @@ public slots:
 
 protected:
 	UserPermissionsView * mView;
-}
+};
 
 class FREEZER_EXPORT UserPermissionsWindow : public QMainWindow
 {
@@ -54,6 +55,6 @@ Q_OBJECT
 public:
 	UserPermissionsWindow( QWidget * parent = 0 );
 	
-}
+};
 
 #endif

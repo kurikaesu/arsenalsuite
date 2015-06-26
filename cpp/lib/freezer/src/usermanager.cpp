@@ -9,6 +9,7 @@ struct UserPermissionsItem : public RecordItem
 	{
 		mUser = u;
 	}
+	
 	bool permissionByColumn(int col) const {
 		switch(col)
 		{
@@ -22,6 +23,7 @@ struct UserPermissionsItem : public RecordItem
 		case 8: // modify services
 		case 9: // modify licenses
 		default:
+			break;
 		}
 		return false;
 	}
@@ -46,14 +48,14 @@ UserPermissionsModel* UserPermissionsItem::model(const QModelIndex& idx)
 	return const_cast<UserPermissionsModel*>(qobject_cast<const UserPermissionsModel*>(idx.model()));
 }
 
-void UserServiceItem::setup(const Record& r, const QModelIndex&)
+void UserPermissionsItem::setup(const Record& r, const QModelIndex&)
 {
 	mUser = r;
 }
 
 static int upSortVal(const User& u)
 {
-	if (!u.isRecord()).return 0;
+	if (!u.isRecord()) return 0;
 	return 1;
 }
 
@@ -62,7 +64,7 @@ UserPermissionsModel::UserPermissionsModel( QObject* parent )
 {
 	new UserPermissionsTranslator(treeBuilder());
 	
-	connect( Permissions::table(), SIGNAL( updated(Record,Record) ), SLOT(userPermissionsUpdated(Record,Record)));
+	connect( Permission::table(), SIGNAL( updated(Record,Record) ), SLOT(userPermissionsUpdated(Record,Record)));
 }
 
 void UserPermissionsModel::userPermissionsUpdated(Record up, Record)

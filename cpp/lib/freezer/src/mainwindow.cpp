@@ -47,6 +47,7 @@
 #include "hostlistwidget.h"
 #include "hostservicematrix.h"
 #include "userservicematrix.h"
+#include "usermanager.cpp"
 #include "joblistwidget.h"
 #include "projectweightdialog.h"
 #include "projectreservedialog.h"
@@ -108,7 +109,7 @@ MainWindow::MainWindow( QWidget * parent )
 	ProjectReserveAction = new QAction( "Project Reserves", this );
 	ProjectReserveAction->setIcon( QIcon( ":/images/projectweighting" ) );
 	
-	UserManagerAction = new QAction("User Manager", this);
+	UserPermissionsManagerAction = new QAction("User Manager", this);
 	ProjectManagerAction = new QAction("Project Manager", this);
 	JobTypeManagerAction = new QAction("Job Type Manager", this);
 	ServiceManagerAction = new QAction("Service Manager", this);
@@ -154,7 +155,7 @@ MainWindow::MainWindow( QWidget * parent )
 	connect( DisplayPrefsAction, SIGNAL( triggered(bool) ), SLOT( showDisplayPrefs() ) );
 	connect( AdminAction, SIGNAL( triggered(bool) ), SLOT( enableAdmin() ) );
 	
-	connect( UserManagerAction, SIGNAL( trigger(bool) ), SLOT( openUserManagementWindow() ) );
+	connect( UserPermissionsManagerAction, SIGNAL( trigger(bool) ), SLOT( openUserPermissionsWindow() ) );
 
 	/* Setup counter */
 	mCounterLabel = new QLabel("", statusBar());
@@ -978,7 +979,7 @@ void MainWindow::populateToolsMenu()
 		mToolsMenu->addAction( ProjectReserveAction );
 	
 	if ( User::hasPerms( "UserManagement", true ) )
-		mToolsMenu->addAction( UserManagerAction );
+		mToolsMenu->addAction( UserPermissionsManagerAction );
 	if ( User::hasPerms( "ProjectManagement", true ) )
 		mToolsMenu->addAction( ProjectManagerAction );
 	if ( User::hasPerms( "JobTypeManagement", true ) )
@@ -1110,9 +1111,9 @@ void MainWindow::openUserServiceMatrixWindow()
 	(new UserServiceMatrixWindow(this))->show();
 }
 
-void MainWindow::openUserManagementWindow()
+void MainWindow::openUserPermissionsWindow()
 {
-	(new UserManagementWindow(this))->show();
+	(new UserPermissionsWindow(this))->show();
 }
 
 // Turns the update counter on or off
