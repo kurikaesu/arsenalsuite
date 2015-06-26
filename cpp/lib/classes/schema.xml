@@ -1596,17 +1596,23 @@
    <column name="path"/>
   </index>
  </table>
- <table preload="true" useCodeGen="true" name="Permission" expireKeyCache="false" className="Permission">
-  <column type="uint" methodName="key" name="keyPermission" pkey="true"/>
-  <column type="QString" methodName="methodPattern" name="methodpattern"/>
-  <column type="uint" methodName="User" name="fkeyUsr">
-   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="multi" hasIndex="false"/>
+ <table useCodeGen="true" name="Permission" expireKeyCache="true" className="Permission">
+  <column displayName="Key Permission" pluralMethodName="keyPermissions" type="uint" methodName="key" name="keyPermission" pkey="true"/>
+  <column pluralMethodName="Users" type="uint" methodName="user" name="fkeyUsr">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="User" type="single" hasIndex="false"/>
   </column>
-  <column type="QString" methodName="permission" name="permission"/>
-  <column type="uint" methodName="Group" name="fkeyGrp">
-   <fkey indexDeleteMode="DoNothingOnDelete" table="Group" type="multi" hasIndex="false"/>
+  <column displayName="Class" pluralMethodName="Classes" type="QString" methodName="_class" name="Class"/>
+  <column pluralMethodName="Enabled" type="bool" methodName="enabled" name="Enabled"/>
+  <column pluralMethodName="Groups" type="uint" methodName="group" name="fkeyGrp">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="Group" type="single" hasIndex="false"/>
   </column>
-  <column type="QString" methodName="_class" name="Class"/>
+  <column type="bool" methodName="modify" name="modify"/>
+  <index useCache="false" type="multi" name="keyusr_idx">
+   <column name="fkeyUsr"/>
+  </index>
+  <index useCache="false" type="multi" name="keygrp_idx">
+   <column name="fkeyGrp"/>
+  </index>
  </table>
  <table name="PhoneNo" expireKeyCache="true" className="PhoneNo">
   <column type="uint" methodName="key" name="keyPhoneNo" pkey="true"/>

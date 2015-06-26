@@ -56,6 +56,7 @@
 #include "threadtasks.h"
 #include "viewmanager.h"
 #include "webview.h"
+#include "dialogfactory.h"
 
 #include "mainwindow.h"
 #include "ui_aboutdialog.h"
@@ -108,7 +109,7 @@ MainWindow::MainWindow( QWidget * parent )
 	ProjectReserveAction = new QAction( "Project Reserves", this );
 	ProjectReserveAction->setIcon( QIcon( ":/images/projectweighting" ) );
 	
-	UserManagerAction = new QAction("User Manager", this);
+	UserPermissionsManagerAction = new QAction("User Manager", this);
 	ProjectManagerAction = new QAction("Project Manager", this);
 	JobTypeManagerAction = new QAction("Job Type Manager", this);
 	ServiceManagerAction = new QAction("Service Manager", this);
@@ -153,6 +154,8 @@ MainWindow::MainWindow( QWidget * parent )
 	connect( SettingsAction, SIGNAL( triggered(bool) ), SLOT( showSettings() ) );
 	connect( DisplayPrefsAction, SIGNAL( triggered(bool) ), SLOT( showDisplayPrefs() ) );
 	connect( AdminAction, SIGNAL( triggered(bool) ), SLOT( enableAdmin() ) );
+	
+	connect( UserPermissionsManagerAction, SIGNAL( triggered(bool) ), SLOT( openUserPermissionsWindow() ) );
 
 	/* Setup counter */
 	mCounterLabel = new QLabel("", statusBar());
@@ -976,7 +979,7 @@ void MainWindow::populateToolsMenu()
 		mToolsMenu->addAction( ProjectReserveAction );
 	
 	if ( User::hasPerms( "UserManagement", true ) )
-		mToolsMenu->addAction( UserManagerAction );
+		mToolsMenu->addAction( UserPermissionsManagerAction );
 	if ( User::hasPerms( "ProjectManagement", true ) )
 		mToolsMenu->addAction( ProjectManagerAction );
 	if ( User::hasPerms( "JobTypeManagement", true ) )
@@ -1106,6 +1109,12 @@ void MainWindow::openHostServiceMatrixWindow()
 void MainWindow::openUserServiceMatrixWindow()
 {
 	(new UserServiceMatrixWindow(this))->show();
+}
+
+void MainWindow::openUserPermissionsWindow()
+{
+	LOG_1("Trying to edit permissions");
+	DialogFactory::instance()->editPermissions(this);
 }
 
 // Turns the update counter on or off
