@@ -5,32 +5,66 @@
 struct UserPermissionsItem : public RecordItem
 {
 	User mUser;
-	UserPermissionsItem() {}
+	PermissionList mPerms;
+	UserPermissionsItem() { setupPermTypes(); }
 	UserPermissionsItem(const User& u)
 	{
+		setupPermTypes();
+		
 		mUser = u;
+		mPerms.resize(UserPermissionsItem::permTypes->size());
+		PermissionList temp = Permission::select("fkeyusr=" + mUser.key());
+		foreach (Permission perm, temp)
+		{
+			QString permClass = perm._class();
+			if (permClass.contains("Arsenal::Perm::"))
+			{
+				QStringRef key(permString, 15, permString.size() - 15);
+				int idx = permTypes.indexOf(key);
+				if (idx >= 0)
+					mPerms[idx] = perm;
+			}
+		}
 	}
 	
-	bool permissionByColumn(int col) const {
-		switch(col)
+	void setupPermTypes()
+	{
+		if (UserPermissionsItem::permTypes == 0)
 		{
-		case 1: // modify hosts
-		case 2: // modify users
-		case 3: // modify projects
-		case 4: // modify project weights
-		case 5: // modify host services
-		case 6: // modify user services
-		case 7: // modify job types
-		case 8: // modify services
-		case 9: // modify licenses
-		default:
-			break;
+			UserPermissionsItem::permTypes = new QList<QString>();
+			
+			UserPermissionsItem::permTypes.append("HostService");
+			UserPermissionsItem::permTypes.append("UserService");
+			UserPermissionsItem::permTypes.append("Projects");
+			UserPermissionsItem::permTypes.append("ProjectWeights");
+			UserPermissionsItem::permTypes.append("ProjectReserve");
+			UserPermissionsItem::permTypes.append("HostService");
+			UserPermissionsItem::permTypes.append("UserService");
+			UserPermissionsItem::permTypes.append("JobTypes");
+			UserPermissionsItem::permTypes.append("Services");
+			UserPermissionsItem::permTypes.append("Licenses");
 		}
-		return false;
+	}
+	
+	int permissionByColumn(int col) const {
+		if (col > mPerms.size()) return 0;
+		if (!mPerms[col].isRecord()) return 0;
+		if (!mPerms[col].modify())
+			return 1;
+		return 2;
 	}
 	QVariant serviceData(int column) const
 	{
-		return permissionByColumn(column) ? "YES" : "NO";
+		switch (permissionByColumn(column))
+		{
+		case 0:
+			return "UNSET";
+		case 1:
+			return "VIEW";
+		case 2:
+			return "MODIFY";
+		}
+		return "UNKNOWN";
 	}
 	
 	void setup(const Record & r, const QModelIndex&);
@@ -40,6 +74,7 @@ struct UserPermissionsItem : public RecordItem
 	Qt::ItemFlags modelFlags( const QModelIndex & );
 	Record getRecord();
 	static UserPermissionsModel * model(const QModelIndex &);
+	static QList<QString> * permTypes = 0;
 };
 
 typedef TemplateRecordDataTranslator<UserPermissionsItem> UserPermissionsTranslator;
@@ -61,11 +96,32 @@ int UserPermissionsItem::compare(const QModelIndex& a, const QModelIndex& b, int
 
 QVariant UserPermissionsItem::modelData(const QModelIndex& idx, int role) const
 {
+	if (role == Qt::DisplayerRole || role == Qt::EditRole || role == Qt::ForegroundRole) {
+		if (idx.column() == 0) return mUser.name();
+		if (role == Qt::EditRole)
+			return qVariantFromValue<bool>(permissionByColumn(idx.column() - 1));
+		QVariant d = serviceData(idx.column() - 1);
+		if (role == Qt::ForegroundRole) {
+			QString txt = d.toString();
+			return (txt == "MODIFY" ? Qt::green : (txt == "VIEW" ? Qt::blue : Qt::black));
+		}
+		return d;
+	}
 	return QVariant();
 }
 
 bool UserPermissionsItem::setModelData(const QModelIndex& idx, const QVariant& v, int role)
 {
+	if (role == Qt::EditRole && idx.column() > 1) {
+		switch (v.toInt()) {
+			case 0:
+			case 1:
+				
+			default:
+				break;
+		}
+		return true;
+	}
 	return false;
 }
 

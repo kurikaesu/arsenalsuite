@@ -77,7 +77,7 @@ public slots:
 
 	void showConfigDBDialog( QWidget * pw=0 );
 
-	void editPermissions( QWidget * pw = 0 );
+	//void editPermissions( QWidget * pw = 0 );
 
 	void editNotificationRoutes( QWidget * pw = 0 );
 

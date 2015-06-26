@@ -221,13 +221,10 @@ bool User::hasPerms( const QString & key, bool modify, const Project &  )
 		permCache.clear();
 	}
 	
-	QString classKey = "Blur::Model::" + key;
+	QString classKey = "Arsenal::Perm::" + key;
 	QString cacheKey = classKey;
 	if( modify )
 		cacheKey += "_modify";
-		
-//	if( project.isRecord() )
-//		cacheKey += "_" + QString::number( project.key() );
 	
 	if( permCache.contains( cacheKey ) ) {
 		int key = permCache[cacheKey];
@@ -242,37 +239,14 @@ bool User::hasPerms( const QString & key, bool modify, const Project &  )
 	
 	GroupList gl = currentUser().userGroups().groups();
 	foreach( Permission p, pl ) {
-		// Hmm, improper format
-		//LOG_5( "Checking permission record:\n " + p.dump() );
-		if( p.permission().length() != 4 ) {
-			//LOG_5( "Invalid permission format for record\n" + p.dump() );
-			continue;
+		if (p._class() == classKey)
+		{
+			if (modify == p.modify())
+			{
+				permCache[cacheKey] = p.key();
+				LOG_3("Permission granted for key: " + cacheKey + " from record: " + QString::number( p.key() ) );
+			}
 		}
-		int useReg = p.permission()[0].digitValue();
-		int user = p.permission()[1].digitValue();
-		int group = p.permission()[2].digitValue();
-		int all = p.permission()[3].digitValue();
-		
-		int needBit = modify ? 2 : 4;
-		
-
-		if( !useReg && (classKey != p._class()) )
-			continue;
-		
-		if( useReg && !classKey.contains( QRegExp( "^" + p._class() ) ) )
-			continue;
-		
-		bool pass = 
-			  ( all & needBit )
-			||(( user & needBit ) && p.user() == currentUser())
-			||(( group & needBit ) && p.group().isRecord() && gl.contains( p.group() ) );
-		
-		if( !pass )
-			continue;
-		
-		permCache[cacheKey] = p.key();
-		LOG_3( "Permission granted for key: " + cacheKey + " from record: " + QString::number( p.key() ) );
-		return true;
 	}
 	
 	LOG_3( "Permission denied for key: " + cacheKey );

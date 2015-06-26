@@ -37,7 +37,7 @@ SOURCES += \
 	src/pathtemplatecombo.cpp \
 	src/pathtemplatedialog.cpp \
 	src/pathtemplatesdialog.cpp \
-	src/permsdialog.cpp \
+	#src/permsdialog.cpp \
 	src/projectcombo.cpp \
 	src/projectdialog.cpp \
 	src/projectstoragedialog.cpp \
@@ -99,7 +99,7 @@ HEADERS += \
 	include/pathtemplatecombo.h \
 	include/pathtemplatedialog.h \
 	include/pathtemplatesdialog.h \
-	include/permsdialog.h \
+	#include/permsdialog.h \
 	include/projectcombo.h \
 	include/projectdialog.h \
 	include/projectstoragedialog.h \
@@ -151,7 +151,7 @@ FORMS += \
 	ui/notificationwidgetui.ui \
 	ui/pathtemplatedialogui.ui \
 	ui/pathtemplatesdialogui.ui \
-	ui/permsdialogui.ui \
+	#ui/permsdialogui.ui \
 	ui/projectdialogui.ui \
 	ui/projectstoragedialogui.ui \
 	ui/resincrashdialogui.ui \
