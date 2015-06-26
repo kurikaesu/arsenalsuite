@@ -5,6 +5,7 @@
 struct UserPermissionsItem : public RecordItem
 {
 	User mUser;
+	UserPermissionsItem() {}
 	UserPermissionsItem(const User& u)
 	{
 		mUser = u;
@@ -53,6 +54,32 @@ void UserPermissionsItem::setup(const Record& r, const QModelIndex&)
 	mUser = r;
 }
 
+int UserPermissionsItem::compare(const QModelIndex& a, const QModelIndex& b, int column, bool asc)
+{
+	return 0;
+}
+
+QVariant UserPermissionsItem::modelData(const QModelIndex& idx, int role) const
+{
+	return QVariant();
+}
+
+bool UserPermissionsItem::setModelData(const QModelIndex& idx, const QVariant& v, int role)
+{
+	return false;
+}
+
+Qt::ItemFlags UserPermissionsItem::modelFlags( const QModelIndex& idx )
+{
+	Qt::ItemFlags ret = Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+	return idx.column() == 1 ? ret : Qt::ItemFlags(ret | Qt::ItemIsEditable);
+}
+
+Record UserPermissionsItem::getRecord()
+{
+	return mUser;
+}
+
 static int upSortVal(const User& u)
 {
 	if (!u.isRecord()) return 0;
@@ -64,7 +91,7 @@ UserPermissionsModel::UserPermissionsModel( QObject* parent )
 {
 	new UserPermissionsTranslator(treeBuilder());
 	
-	connect( Permission::table(), SIGNAL( updated(Record,Record) ), SLOT(userPermissionsUpdated(Record,Record)));
+	//connect( Permission::table(), SIGNAL( updated(Record,Record) ), SLOT(userPermissionsUpdated(Record,Record)));
 }
 
 void UserPermissionsModel::userPermissionsUpdated(Record up, Record)
@@ -108,7 +135,7 @@ public:
 		}
 		RecordDelegate::setEditorData(editor,index);
 	}
-}
+};
 
 UserPermissionsView::UserPermissionsView( QWidget * parent )
 : RecordTreeView( parent )
