@@ -107,6 +107,12 @@ MainWindow::MainWindow( QWidget * parent )
 
 	ProjectReserveAction = new QAction( "Project Reserves", this );
 	ProjectReserveAction->setIcon( QIcon( ":/images/projectweighting" ) );
+	
+	UserManagerAction = new QAction("User Manager", this);
+	ProjectManagerAction = new QAction("Project Manager", this);
+	JobTypeManagerAction = new QAction("Job Type Manager", this);
+	ServiceManagerAction = new QAction("Service Manager", this);
+	LicenseManagerAction = new QAction("License Manager", this);
 
 	ViewHostsAction = new QAction( "View Hosts", this );
 	ViewHostsAction->setCheckable( TRUE );
@@ -968,6 +974,17 @@ void MainWindow::populateToolsMenu()
 		mToolsMenu->addAction( ProjectWeightingAction );
 	if( User::hasPerms( "ProjectReserve", true ) )
 		mToolsMenu->addAction( ProjectReserveAction );
+	
+	if ( User::hasPerms( "UserManagement", true ) )
+		mToolsMenu->addAction( UserManagerAction );
+	if ( User::hasPerms( "ProjectManagement", true ) )
+		mToolsMenu->addAction( ProjectManagerAction );
+	if ( User::hasPerms( "JobTypeManagement", true ) )
+		mToolsMenu->addAction( JobTypeManagerAction );
+	if ( User::hasPerms( "ServiceManagement", true ) )
+		mToolsMenu->addAction( ServiceManagerAction );
+	if ( User::hasPerms( "LicenseManagement", true ) )
+		mToolsMenu->addAction( LicenseManagerAction );
 	
 	mToolsMenu->addAction( "Manage My Host Lists...", this, SLOT( showManageHostListsDialog() ) );
 	

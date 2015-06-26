@@ -18,7 +18,7 @@
     <item>
      <widget class="QTreeWidget" name="treeWidget">
       <property name="columnCount">
-       <number>7</number>
+       <number>9</number>
       </property>
       <column>
        <property name="text">
@@ -33,6 +33,16 @@
       <column>
        <property name="text">
         <string>Modify Users</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Modify Projects</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Modify Project Weights</string>
        </property>
       </column>
       <column>
@@ -96,5 +106,22 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>mCloseButton</sender>
+   <signal>clicked()</signal>
+   <receiver>UserPermissionsEditorUI</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>489</x>
+     <y>572</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>268</x>
+     <y>306</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

@@ -31,14 +31,14 @@
 
 void * hMutex = 0;
 
-const char * CLIENT_LOG = "assburner.log";
+const char * CLIENT_LOG = "burner.log";
 bool QUIT_ON_DISABLE = false;
 
 #ifdef Q_WS_WIN
 
 // Windows config
-const char * LOG_COMMAND = "c:/blur/assburner/Tail.exe %1";
-const char * AF_COMMAND = "c:/blur/assfreezer/assfreezer.exe";
+const char * LOG_COMMAND = "C:/Windows/system32/WindowsPowerShell/v1.0/powershell.exe -Command Get-Content %1 -Wait";
+const char * AF_COMMAND = "%ARSENALDIR%/%ARSENALVER%/af.exe";
 
 #else
 

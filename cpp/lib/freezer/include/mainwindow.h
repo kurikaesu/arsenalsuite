@@ -186,6 +186,12 @@ protected:
 	QAction* ProjectWeightingAction;
 	QAction* ProjectReserveAction;
 	QAction* AutoRefreshAction;
+	
+	QAction* UserManagerAction;
+	QAction* ProjectManagerAction;
+	QAction* JobTypeManagerAction;
+	QAction* ServiceManagerAction;
+	QAction* LicenseManagerAction;
 
 	QAction * mNewJobViewAction;
 	QAction * mNewHostViewAction;
