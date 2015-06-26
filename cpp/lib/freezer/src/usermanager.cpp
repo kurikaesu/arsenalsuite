@@ -91,7 +91,7 @@ UserPermissionsModel::UserPermissionsModel( QObject* parent )
 {
 	new UserPermissionsTranslator(treeBuilder());
 	
-	//connect( Permission::table(), SIGNAL( updated(Record,Record) ), SLOT(userPermissionsUpdated(Record,Record)));
+	connect( Permission::table(), SIGNAL( updated(Record,Record) ), SLOT(userPermissionsUpdated(Record,Record)));
 }
 
 void UserPermissionsModel::userPermissionsUpdated(Record up, Record)

@@ -5,6 +5,7 @@
 #include <qmainwindow.h>
 
 #include "user.h"
+#include "permission.h"
 
 #include "recordsupermodel.h"
 #include "recordtreeview.h"
