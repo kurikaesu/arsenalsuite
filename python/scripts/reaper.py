@@ -140,7 +140,7 @@ def ensureSpoolSpace(requiredPercent):
             triedCleanup = True
             if cleanupJobs() > 0:
                 continue
-        jobs = Job.select("fkeyjobtype=9 and status='done' ORDER BY endedts asc limit 1", None, False)
+        jobs = Job.select("fkeyjobtype=9 and status='done' ORDER BY endedts asc limit 1", [], True)
         #only auto-deleting max8 jobs for now, some batch jobs will be really old and ppl will want them saved 
         #no matter what disk space they use
         if not jobs.isEmpty():
@@ -184,13 +184,13 @@ def getTimeoutCount(job):
     return 0
 
 def retrieveReapable():
-    jobList = Job.select("status IN ('ready','started')")
+    jobList = Job.select("status IN ('ready','started')", [], True)
     if not jobList.isEmpty():
         JobStatus.select("fkeyjob IN ("+jobList.keyString()+")")
     return jobList
 
 def retrieveCleanable():
-    return Job.select("status IN ('deleted') AND (cleaned IS NULL OR cleaned=0)")
+    return Job.select("status IN ('deleted') AND (cleaned IS NULL OR cleaned=0)", [], True)
 
 def reaper():
     #   Config: managerDriveLetter, managerSpoolDir, assburnerErrorStep

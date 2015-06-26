@@ -1,5 +1,5 @@
 
-	static bool updateJobStatuses( JobList jobs, const QString & jobStatus, bool resetTasks, bool restartHosts );
+	static bool updateJobStatuses( JobList jobs, const QString & jobStatus, bool resetTasks, bool restartHosts = false );
 
 	void changeFrameRange( QList<int>, JobOutput output = JobOutput(), bool changeCancelledToNew = true );
 

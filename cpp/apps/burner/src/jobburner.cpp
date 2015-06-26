@@ -492,12 +492,9 @@ void JobBurner::jobErrored( const QString & msg, bool timeout, const QString & n
     }
     mState = StateError;
 
-	LOG_3( "firing error slot in 1000 msecs" );
+//	LOG_3( "firing error slot in 1000 msecs" );
     // delay the actual error firing to grab any final output from the process
     //QTimer::singleShot(1000, this, SLOT(slotJobErrored(msg, timeout, nextstate)));
-#ifndef Q_OS_WIN
-    sleep(1);
-#endif
     slotJobErrored(msg, timeout, nextstate);
 }
 

@@ -13,7 +13,7 @@ import traceback
 
 import signal
 import cProfile
-import lsprofcalltree
+#import lsprofcalltree
 
 if sys.argv.count('-daemonize'):
     from blur.daemonize import createDaemon
@@ -682,7 +682,7 @@ SELECT * from running_shots_averagetime_4
     def refreshJobList(self):
         # Gather the jobs 
         self.jobList = Job.select( """WHERE status IN ('ready','started') 
-                                        AND ((SELECT count(*) FROM jobtask WHERE fkeyjob = keyjob AND status = 'new') > 0)""", None, False)
+                                        AND ((SELECT count(*) FROM jobtask WHERE fkeyjob = keyjob AND status = 'new') > 0)""", [], True)
         statuses = JobStatusList()
         if self.jobList.size() > 0:
             #statuses = JobStatus.select("fkeyjob IN("+self.jobList.keyString()+")")

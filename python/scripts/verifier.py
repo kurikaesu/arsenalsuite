@@ -135,7 +135,7 @@ def ensureSpoolSpace(requiredPercent):
 			triedCleanup = True
 			if cleanupJobs() > 0:
 				continue
-		jobs = Job.select("fkeyjobtype=9 and status='done' ORDER BY endedts asc limit 1")
+		jobs = Job.select("fkeyjobtype=9 and status='done' ORDER BY endedts asc limit 1", [], True)
 		#only auto-deleting max8 jobs for now, some batch jobs will be really old and ppl will want them saved 
 		#no matter what disk space they use
 		if not jobs.isEmpty():
@@ -193,7 +193,7 @@ def checkNewJob(job):
     return True
 
 def retrieveVerifiable():
-	jobList = Job.select("status IN ('verify','verify-suspended')", None, False)
+	jobList = Job.select("status IN ('verify','verify-suspended')", [], True)
 	if not jobList.isEmpty():
 		JobStatus.select("fkeyjob IN ("+jobList.keyString()+")")
 	return jobList
