@@ -153,6 +153,8 @@ MainWindow::MainWindow( QWidget * parent )
 	connect( SettingsAction, SIGNAL( triggered(bool) ), SLOT( showSettings() ) );
 	connect( DisplayPrefsAction, SIGNAL( triggered(bool) ), SLOT( showDisplayPrefs() ) );
 	connect( AdminAction, SIGNAL( triggered(bool) ), SLOT( enableAdmin() ) );
+	
+	connect( UserManagerAction, SIGNAL( trigger(bool) ), SLOT( openUserManagementWindow() ) );
 
 	/* Setup counter */
 	mCounterLabel = new QLabel("", statusBar());
@@ -1106,6 +1108,11 @@ void MainWindow::openHostServiceMatrixWindow()
 void MainWindow::openUserServiceMatrixWindow()
 {
 	(new UserServiceMatrixWindow(this))->show();
+}
+
+void MainWindow::openUserManagementWindow()
+{
+	(new UserManagementWindow(this))->show();
 }
 
 // Turns the update counter on or off

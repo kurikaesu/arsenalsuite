@@ -63,6 +63,8 @@ public slots:
 
 	void openHostServiceMatrixWindow();
 	void openUserServiceMatrixWindow();
+	
+	void openUserManagementWindow();
 
 	void enableAdmin();
 	void applyOptions();

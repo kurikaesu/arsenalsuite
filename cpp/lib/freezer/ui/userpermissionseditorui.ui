@@ -18,7 +18,7 @@
     <item>
      <widget class="QTreeWidget" name="treeWidget">
       <property name="columnCount">
-       <number>9</number>
+       <number>10</number>
       </property>
       <column>
        <property name="text">
@@ -57,12 +57,17 @@
       </column>
       <column>
        <property name="text">
-        <string>Modify Licenses</string>
+        <string>Modify Job Types</string>
        </property>
       </column>
       <column>
        <property name="text">
         <string>Modify Services</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Modify Licenses</string>
        </property>
       </column>
      </widget>

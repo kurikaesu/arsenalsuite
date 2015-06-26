@@ -139,7 +139,8 @@ INTERFACES+= \
 	ui/jobxsisettingswidgetui.ui \
 	ui/projectweightdialogui.ui \
 	ui/projectreservedialogui.ui \
-	ui/settingsdialogui.ui
+	ui/settingsdialogui.ui \
+	ui/userpermissionseditorui.ui
 
 LIBS+=-L../absubmit -labsubmit
 LIBS+=-L../classesui -lclassesui
