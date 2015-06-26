@@ -964,8 +964,11 @@ void MainWindow::populateToolsMenu()
 	if( User::hasPerms( "UserService", true ) )
 		mToolsMenu->addAction( UserServiceMatrixAction );
 
-	mToolsMenu->addAction( ProjectWeightingAction );
-	mToolsMenu->addAction( ProjectReserveAction );
+	if( User::hasPerms( "ProjectWeights", true ) )
+		mToolsMenu->addAction( ProjectWeightingAction );
+	if( User::hasPerms( "ProjectReserve", true ) )
+		mToolsMenu->addAction( ProjectReserveAction );
+	
 	mToolsMenu->addAction( "Manage My Host Lists...", this, SLOT( showManageHostListsDialog() ) );
 	
 	FreezerMenuFactory::instance()->aboutToShow(mToolsMenu);

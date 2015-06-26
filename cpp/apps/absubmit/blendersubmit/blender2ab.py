@@ -89,11 +89,7 @@ class BlenderRenderDialog(QDialog):
         sl['minMemory'] = "1388608"
         sl['maxMemory'] = "8388608"
 
-        if self.mAllFramesAsSingleTaskCheck.isChecked():
-            sl['allframesassingletask'] = 'true'
-            sl['frameList'] = str('1')
-        else:
-            sl['frameList'] = str(self.mFrameStartEdit.text() + "-" + self.mFrameEndEdit.text())
+        sl['frameList'] = str(self.mFrameStartEdit.text() + "-" + self.mFrameEndEdit.text())
         notifyError, notifyComplete = self.buildNotifyStrings()
         sl['notifyOnError'] = notifyError
         sl['notifyOnComplete'] = notifyComplete
