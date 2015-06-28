@@ -28,6 +28,7 @@
 #include "updatemanager.h"
 #include "user.h"
 #include "userdialog.h"
+#include "servicedialog.h"
 
 DialogFactory * DialogFactory::instance()
 {
@@ -189,6 +190,22 @@ void DialogFactory::newTask( ElementList parents, QWidget * pw )
 	AssetDialog td( parents[0], pw );
 	td.exec();
 	//Database::instance()->commitTransaction();
+}
+
+void DialogFactory::editServices( QWidget * pw )
+{
+	if (!pw && qApp->activeWindow() )
+		pw = qApp->activeWindow();
+	ServiceDialog * sd = new ServiceDialog(pw);
+	sd->exec();
+	delete sd;
+}
+
+void DialogFactory::editLicenses( QWidget * pw )
+{
+	if (!pw && qApp->activeWindow() )
+		pw = qApp->activeWindow();
+	
 }
 
 void DialogFactory::editPermissions( QWidget * pw )

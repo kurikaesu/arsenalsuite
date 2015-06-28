@@ -15,9 +15,12 @@ public:
 	ShotList newShot( const Element & parent, float suggest=0.0, QWidget * pw = 0  );
 
 	ShotGroup newScene( const Element & parent, QWidget * pw = 0 );
+	
+	void editServices( QWidget * pw=0 );
+	
+	void editLicenses( QWidget * pw=0 );
 
 	User newUser( QWidget * pw = 0 );
-
 
 	void editAssetTemplates( QWidget * pw = 0 );
 

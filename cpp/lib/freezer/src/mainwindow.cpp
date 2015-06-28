@@ -156,6 +156,8 @@ MainWindow::MainWindow( QWidget * parent )
 	connect( AdminAction, SIGNAL( triggered(bool) ), SLOT( enableAdmin() ) );
 	
 	connect( UserPermissionsManagerAction, SIGNAL( triggered(bool) ), SLOT( openUserPermissionsWindow() ) );
+	connect( ProjectManagerAction, SIGNAL( triggered(bool) ), SLOT( openProjectsWindow() ) );
+	connect( ServiceManagerAction, SIGNAL( triggered(bool) ), SLOT( openServicesWindow() ) );
 
 	/* Setup counter */
 	mCounterLabel = new QLabel("", statusBar());
@@ -1113,8 +1115,17 @@ void MainWindow::openUserServiceMatrixWindow()
 
 void MainWindow::openUserPermissionsWindow()
 {
-	LOG_1("Trying to edit permissions");
 	DialogFactory::instance()->editPermissions(this);
+}
+
+void MainWindow::openProjectsWindow()
+{
+	DialogFactory::instance()->newProject(this);
+}
+
+void MainWindow::openServicesWindow()
+{
+	DialogFactory::instance()->editServices(this);
 }
 
 // Turns the update counter on or off

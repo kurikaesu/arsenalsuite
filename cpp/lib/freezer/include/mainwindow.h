@@ -65,6 +65,8 @@ public slots:
 	void openUserServiceMatrixWindow();
 	
 	void openUserPermissionsWindow();
+	void openProjectsWindow();
+	void openServicesWindow();
 
 	void enableAdmin();
 	void applyOptions();
