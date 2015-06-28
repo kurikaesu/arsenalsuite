@@ -43,3 +43,5 @@ classesconfig.py
 qrc_threadview.cpp
 qrc_freezer.cpp
 qrc_burner.cpp
+*.manifest
+*.pyd.manifest
