@@ -65,6 +65,7 @@ SOURCES += \
 	src/userroledialog.cpp \
 	src/usertaskdialog.cpp \
 	src/usernotifydialog.cpp \
+	src/licensedialog.cpp \
 	src/versiontrackerdialog.cpp
 
 HEADERS += \
@@ -127,6 +128,7 @@ HEADERS += \
 	include/usertaskdialog.h \
 	include/userroledialog.h \
 	include/usernotifydialog.h \
+	include/licensedialog.h \
 	include/versiontrackerdialog.h
 
 FORMS += \
@@ -170,6 +172,7 @@ FORMS += \
 	ui/userroleui.ui \
 	ui/userdialogui.ui \
 	ui/usernotifyui.ui \
+	ui/licensedialogui.ui \
 	ui/versiontrackerdialogui.ui
 
 RESOURCES += \

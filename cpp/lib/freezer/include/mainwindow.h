@@ -67,6 +67,7 @@ public slots:
 	void openUserPermissionsWindow();
 	void openProjectsWindow();
 	void openServicesWindow();
+	void openLicensesWindow();
 
 	void enableAdmin();
 	void applyOptions();

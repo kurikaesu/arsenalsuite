@@ -158,6 +158,7 @@ MainWindow::MainWindow( QWidget * parent )
 	connect( UserPermissionsManagerAction, SIGNAL( triggered(bool) ), SLOT( openUserPermissionsWindow() ) );
 	connect( ProjectManagerAction, SIGNAL( triggered(bool) ), SLOT( openProjectsWindow() ) );
 	connect( ServiceManagerAction, SIGNAL( triggered(bool) ), SLOT( openServicesWindow() ) );
+	connect( LicenseManagerAction, SIGNAL( triggered(bool) ), SLOT( openLicensesWindow() ) );
 
 	/* Setup counter */
 	mCounterLabel = new QLabel("", statusBar());
@@ -1126,6 +1127,11 @@ void MainWindow::openProjectsWindow()
 void MainWindow::openServicesWindow()
 {
 	DialogFactory::instance()->editServices(this);
+}
+
+void MainWindow::openLicensesWindow()
+{
+	DialogFactory::instance()->editLicenses(this);
 }
 
 // Turns the update counter on or off

@@ -29,6 +29,7 @@
 #include "user.h"
 #include "userdialog.h"
 #include "servicedialog.h"
+#include "licensedialog.h"
 
 DialogFactory * DialogFactory::instance()
 {
@@ -205,7 +206,9 @@ void DialogFactory::editLicenses( QWidget * pw )
 {
 	if (!pw && qApp->activeWindow() )
 		pw = qApp->activeWindow();
-	
+	LicenseDialog * ld = new LicenseDialog(pw);
+	ld->exec();
+	delete ld;
 }
 
 void DialogFactory::editPermissions( QWidget * pw )

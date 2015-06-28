@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LicenseDialogUI</class>
- <widget class="QDialog" name="LicenseDialogUI">
+ <class>LicensesDialogUI</class>
+ <widget class="QDialog" name="LicensesDialogUI">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -106,34 +106,34 @@
  <resources/>
  <connections>
   <connection>
-   <sender>mCancelButton</sender>
+   <sender>mOKButton</sender>
    <signal>clicked()</signal>
-   <receiver>LicenseDialogUI</receiver>
-   <slot>reject()</slot>
+   <receiver>LicensesDialogUI</receiver>
+   <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>473</x>
-     <y>415</y>
+     <x>398</x>
+     <y>406</y>
     </hint>
     <hint type="destinationlabel">
-     <x>258</x>
-     <y>216</y>
+     <x>345</x>
+     <y>406</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>mOKButton</sender>
+   <sender>mCancelButton</sender>
    <signal>clicked()</signal>
-   <receiver>LicenseDialogUI</receiver>
-   <slot>accept()</slot>
+   <receiver>LicensesDialogUI</receiver>
+   <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>392</x>
-     <y>415</y>
+     <x>516</x>
+     <y>410</y>
     </hint>
     <hint type="destinationlabel">
-     <x>258</x>
-     <y>216</y>
+     <x>516</x>
+     <y>417</y>
     </hint>
    </hints>
   </connection>
