@@ -66,6 +66,7 @@ SOURCES += \
 	src/usertaskdialog.cpp \
 	src/usernotifydialog.cpp \
 	src/licensedialog.cpp \
+	src/serviceeditdialog.cpp \
 	src/versiontrackerdialog.cpp
 
 HEADERS += \
@@ -129,6 +130,7 @@ HEADERS += \
 	include/userroledialog.h \
 	include/usernotifydialog.h \
 	include/licensedialog.h \
+	include/serviceeditdialog.h \
 	include/versiontrackerdialog.h
 
 FORMS += \
@@ -140,7 +142,6 @@ FORMS += \
 	ui/editassettypedialogui.ui \
 	ui/eventdialogui.ui \
 	ui/assettemplatesdialogui.ui \
-	ui/assettemplatedialogui.ui \
 	ui/filetrackerdialogui.ui \
 	ui/graphitesavedialogui.ui \
 	ui/groupsdialogui.ui \
@@ -173,6 +174,7 @@ FORMS += \
 	ui/userdialogui.ui \
 	ui/usernotifyui.ui \
 	ui/licensedialogui.ui \
+	ui/serviceeditdialogui.ui \
 	ui/versiontrackerdialogui.ui
 
 RESOURCES += \

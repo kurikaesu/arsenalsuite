@@ -30,6 +30,7 @@
 #include "userdialog.h"
 #include "servicedialog.h"
 #include "licensedialog.h"
+#include "serviceeditdialog.h"
 
 DialogFactory * DialogFactory::instance()
 {
@@ -197,7 +198,7 @@ void DialogFactory::editServices( QWidget * pw )
 {
 	if (!pw && qApp->activeWindow() )
 		pw = qApp->activeWindow();
-	ServiceDialog * sd = new ServiceDialog(pw);
+	ServiceEditDialog * sd = new ServiceEditDialog(pw);
 	sd->exec();
 	delete sd;
 }

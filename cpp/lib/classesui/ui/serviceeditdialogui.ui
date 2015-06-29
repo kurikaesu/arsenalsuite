@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LicensesDialogUI</class>
- <widget class="QDialog" name="LicensesDialogUI">
+ <class>ServiceEditDialogUI</class>
+ <widget class="QDialog" name="ServiceEditDialogUI">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Licenses</string>
+   <string>Services</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
@@ -108,7 +108,7 @@
   <connection>
    <sender>mOKButton</sender>
    <signal>clicked()</signal>
-   <receiver>LicensesDialogUI</receiver>
+   <receiver>ServiceEditDialogUI</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -124,7 +124,7 @@
   <connection>
    <sender>mCancelButton</sender>
    <signal>clicked()</signal>
-   <receiver>LicensesDialogUI</receiver>
+   <receiver>ServiceEditDialogUI</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
