@@ -855,27 +855,34 @@ void FreezerHostMenu::slotAboutToShow()
     // Move plugins to a separate sub menu
     addMenu( mHostList->mHostPluginMenu );
 	addSeparator();
-	addAction( mHostList->HostOnlineAction );
-	addAction( mHostList->HostOfflineAction );
-	addAction( mHostList->HostOfflineWhenDoneAction );
-	addAction( mHostList->HostRestartAction );
-	addAction( mHostList->HostRestartWhenDoneAction );
-	addAction( mHostList->HostRebootAction );
-	addAction( mHostList->HostRebootWhenDoneAction );
-	addAction( mHostList->HostShutdownAction );
-	addAction( mHostList->HostShutdownWhenDoneAction );
-	addAction( mHostList->HostMaintenanceEnableAction );
+	if (User::currentUser().hasPerms("Host"))
+	{
+		addAction( mHostList->HostOnlineAction );
+		addAction( mHostList->HostOfflineAction );
+		addAction( mHostList->HostOfflineWhenDoneAction );
+		addAction( mHostList->HostRestartAction );
+		addAction( mHostList->HostRestartWhenDoneAction );
+		addAction( mHostList->HostRebootAction );
+		addAction( mHostList->HostRebootWhenDoneAction );
+		addAction( mHostList->HostShutdownAction );
+		addAction( mHostList->HostShutdownWhenDoneAction );
+		addAction( mHostList->HostMaintenanceEnableAction );
+	}
 	addSeparator();
 
 	addAction( mHostList->ShowJobsAction );
 	if( hl.size() == 1 )
 			addAction( mHostList->ShowHostErrorsAction );
-	addAction( mHostList->ClearHostErrorsAction );
-	addAction( mHostList->ClearHostErrorsSetOfflineAction );
-//	addAction( mHostList->ClientUpdateAction );
+	if (User::currentUser().hasPerms("Host"))
+	{
+		addAction( mHostList->ClearHostErrorsAction );
+		addAction( mHostList->ClearHostErrorsSetOfflineAction );
+	//	addAction( mHostList->ClientUpdateAction );
+	}
 	
 	addSeparator();
-	addAction( mHostList->VNCHostsAction );
+	if (User::currentUser().hasPerms("Host"))
+		addAction( mHostList->VNCHostsAction );
 	addAction( mHostList->ShowJobsAction );
 	if( hl.size() == 1 )
 		addAction( mHostList->ShowHostErrorsAction );
@@ -887,8 +894,8 @@ void FreezerHostMenu::slotAboutToShow()
 	addMenu( mHostList->mCannedBatchJobMenu );
 	mCancelBatchJobTasksAction = addAction( "Cancel Hosts' Batch Job Tasks..." );
 
-	if( true ) { //User::hasPerms( "Host", true ) ) {
-	addSeparator();
+	if( User::currentUser().hasPerms("Host") ) {
+		addSeparator();
 		mNewHostAction = addAction( "New Host" );
 		if( hl.size() == 1 )
 			mEditHostsAction  = addAction( "Edit Host" );

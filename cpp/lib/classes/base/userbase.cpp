@@ -246,7 +246,7 @@ bool User::hasPerms( const QString & key, bool modify, const Project &  )
 	foreach( Permission p, pl ) {
 		if (p._class() == classKey)
 		{
-			if (modify == p.modify())
+			if (p.modify() == true || modify == p.modify())
 			{
 				if (p.user().key() == currentUser().key())
 				{

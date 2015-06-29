@@ -30,11 +30,11 @@ public:
 				if( role == Qt::DisplayRole )
 					return perm.user().displayName();
 				else if( role == Qt::EditRole ) {
-					Employee none;
+					User none;
 					none.setName( "None" );
-					EmployeeList el = Employee::select().filter("disabled",0).sorted("name");
-					el.insert(el.begin(),none);
-					return qVariantFromValue<RecordList>(el);
+					UserList ul = User::select().filter("disabled",0).sorted("name");
+					ul.insert(ul.begin(),none);
+					return qVariantFromValue<RecordList>(ul);
 				} else if( role == RecordDelegate::CurrentRecordRole )
 					return qVariantFromValue<Record>(perm.user());
 				else if( role == RecordDelegate::FieldNameRole )
@@ -54,7 +54,7 @@ public:
 				} else if( role == RecordDelegate::CurrentRecordRole )
 					return qVariantFromValue<Record>(perm.group());
 				else if( role == RecordDelegate::FieldNameRole )
-					return "name";
+					return "grp";
 				break;
 			}
 			case 3:
@@ -97,12 +97,7 @@ public:
 				}
 				case 4:
 				{
-					QString p = v.toString();
-					if( !QRegExp( "^[0-7]{4}$" ).exactMatch( p ) ) {
-						// TODO: Warning dialog
-						return false;
-					}
-					//perm.setPermission( v.toString() );
+					perm.setModify(v.toBool());
 					break;
 				}
 			}
@@ -112,7 +107,7 @@ public:
 		return false;
 	}
 	Qt::ItemFlags modelFlags( const QModelIndex & index ) {
-		if( index.column() > 1 )
+		if( index.column() > 0 )
 			return Qt::ItemFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable );
 		return Qt::ItemFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
 	}

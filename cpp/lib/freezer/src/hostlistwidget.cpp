@@ -34,6 +34,7 @@
 #include "remotetailwindow.h"
 #include "remotetailwidget.h"
 #include "threadtasks.h"
+#include "user.h"
 
 HostListWidget::HostListWidget( QWidget * parent )
 : FreezerView( parent )
@@ -358,10 +359,13 @@ QToolBar * HostListWidget::toolBar( QMainWindow * mw )
 		mToolBar = new QToolBar( mw );
 		mToolBar->addAction( RefreshHostsAction );
 		mToolBar->addSeparator();
-		mToolBar->addAction( HostOnlineAction );
-		mToolBar->addAction( HostOfflineAction );
-		mToolBar->addAction( HostRestartAction );
-		mToolBar->addAction( VNCHostsAction );
+		if (User::currentUser().hasPerms("Host"))
+		{
+			mToolBar->addAction( HostOnlineAction );
+			mToolBar->addAction( HostOfflineAction );
+			mToolBar->addAction( HostRestartAction );
+			mToolBar->addAction( VNCHostsAction );
+		}
 		mToolBar->addSeparator();
 		mToolBar->addAction( FilterAction );
 		mToolBar->addAction( FilterClearAction );
