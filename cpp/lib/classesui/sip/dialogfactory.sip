@@ -19,6 +19,10 @@ public:
 	void editServices( QWidget * pw=0 );
 	
 	void editLicenses( QWidget * pw=0 );
+	
+	void editJobTypes( QWidget * pw=0 );
+	
+	void editProjects( QWidget * pw=0 );
 
 	User newUser( QWidget * pw = 0 );
 
