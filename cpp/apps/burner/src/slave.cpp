@@ -286,6 +286,9 @@ void Slave::startup()
     mUserTimer = new QTimer( this );
     connect( mUserTimer, SIGNAL( timeout() ), SLOT( updateLoggedUsers() ) );
 
+    // Run it once now
+    updateLoggedUsers();
+
     // Set it to trigger every 5 mins
     mUserTimer->start(300000);
 
@@ -1322,6 +1325,7 @@ void Slave::updateLoggedUsers()
         if (user.isRecord()) {
             if (user == mHost.user()){
                 mHost.setUserIsLoggedIn(true);
+		mHost.setUser(user);
                 mHost.commit();
                 return;
             }

@@ -234,10 +234,13 @@ void Host::updateHardwareInfo()
 	QString cpu = backtick("cat /proc/cpuinfo");
 	QRegExp cpuRx("physical id\\s+: (\\d+)");
 	QRegExp bogoRx("bogomips\\s+: (\\d+)");
+	QRegExp mhzRx("cpu MHz\\s+: (\\d+)");
 	QRegExp cpuCoresRx("cpu cores\\s+: (\\d+)");
 
 	LOG_3( "trying to get CPU info\n"+cpu );
-	if( bogoRx.indexIn(cpu) != -1 )
+	if( mhzRx.indexIn(cpu) != -1 )
+		setMhz( mhzRx.cap(1).toInt() );
+	else if( bogoRx.indexIn(cpu) != -1 )
 		setMhz( bogoRx.cap(1).toInt() );
 	int cores = 1;
 	if( cpuCoresRx.indexIn(cpu) != -1 )
