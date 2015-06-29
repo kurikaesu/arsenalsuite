@@ -109,7 +109,7 @@ MainWindow::MainWindow( QWidget * parent )
 	ProjectReserveAction = new QAction( "Project Reserves", this );
 	ProjectReserveAction->setIcon( QIcon( ":/images/projectweighting" ) );
 	
-	UserPermissionsManagerAction = new QAction("User Manager", this);
+	UserPermissionsManagerAction = new QAction("User Permissions Manager", this);
 	ProjectManagerAction = new QAction("Project Manager", this);
 	JobTypeManagerAction = new QAction("Job Type Manager", this);
 	ServiceManagerAction = new QAction("Service Manager", this);
@@ -1122,7 +1122,7 @@ void MainWindow::openUserPermissionsWindow()
 
 void MainWindow::openProjectsWindow()
 {
-	DialogFactory::instance()->newProject(this);
+	DialogFactory::instance()->editProjects(this);
 }
 
 void MainWindow::openServicesWindow()
