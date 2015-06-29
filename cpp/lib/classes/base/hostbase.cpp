@@ -236,6 +236,7 @@ void Host::updateHardwareInfo()
 	QRegExp bogoRx("bogomips\\s+: (\\d+)");
 	QRegExp mhzRx("cpu MHz\\s+: (\\d+)");
 	QRegExp cpuCoresRx("cpu cores\\s+: (\\d+)");
+	QRegExp cpuModelRx("model name\\s+: ([\\w() -]+)");
 
 	LOG_3( "trying to get CPU info\n"+cpu );
 	if( mhzRx.indexIn(cpu) != -1 )
@@ -256,7 +257,10 @@ void Host::updateHardwareInfo()
 		pos += cpuRx.matchedLength();
 		setCpus( (cpuId+1)*cores );
 	}
-	setCpuName(backtick("uname -p").replace("\n",""));
+	if (cpuModelRx.indexIn(cpu) != -1 )
+		setCpuName(cpuModelRx.cap(1));
+	else
+		setCpuName(backtick("uname -p").replace("\n",""));
 	setOs(backtick("uname").replace("\n",""));
 	setOsVersion(backtick("uname -r").replace("\n",""));
 	setArchitecture(backtick("uname -m").replace("\n",""));
