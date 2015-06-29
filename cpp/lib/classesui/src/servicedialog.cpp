@@ -86,7 +86,7 @@ ServiceDialog::ServiceDialog( QWidget * parent )
 	
 	mServiceModel = new RecordSuperModel( mServiceView );
 	new ServiceTranslator(mServiceModel->treeBuilder());
-	QStringList hl; hl << "Service" << "Enabled";
+	QStringList hl; hl << "Service" << "License" << "Enabled";
 	mServiceModel->setHeaderLabels(hl);
 	mServiceModel->setAutoSort(true);
 	mServiceModel->sort(0,Qt::DescendingOrder);

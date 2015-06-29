@@ -48,6 +48,14 @@ public slots:
 	 * Commits the ShotGroup to the database on OK
 	 **/
 	ShotGroup newScene( const Element & parent, QWidget * pw = 0 );
+	
+	void editServices( QWidget * pw=0 );
+	
+	void editLicenses( QWidget * pw=0 );
+	
+	void editJobTypes( QWidget * pw=0 );
+	
+	void editProjects( QWidget * pw=0 );
 
 	/**
 	 * Displays an empty UserDialog, allowing

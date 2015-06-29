@@ -221,57 +221,65 @@ bool User::hasPerms( const QString & key, bool modify, const Project &  )
 		permCache.clear();
 	}
 	
-	QString classKey = "Blur::Model::" + key;
+	QString classKey = "Arsenal::Perm::" + key;
 	QString cacheKey = classKey;
 	if( modify )
 		cacheKey += "_modify";
-		
-//	if( project.isRecord() )
-//		cacheKey += "_" + QString::number( project.key() );
+	
+	int foundKey = 0;
 	
 	if( permCache.contains( cacheKey ) ) {
-		int key = permCache[cacheKey];
-		if( key == 0 )
+		foundKey = permCache[cacheKey];
+		if( foundKey == 0 )
 			LOG_3( "[Cached] Permission denied for key: " + classKey );
 		else
-			LOG_3( "[Cached] Permission granted for key: " + cacheKey + " from record: " + QString::number( key ) );
-		return key > 0;
+			LOG_3( "[Cached] Permission granted for key: " + cacheKey + " from record: " + QString::number( foundKey ) );
+		return foundKey > 0;
 	}
 	
 	PermissionList pl = Permission::select();
 	
+	bool grantedUser = false;
+	bool grantedGroup = false;
+	
 	GroupList gl = currentUser().userGroups().groups();
 	foreach( Permission p, pl ) {
-		// Hmm, improper format
-		//LOG_5( "Checking permission record:\n " + p.dump() );
-		if( p.permission().length() != 4 ) {
-			//LOG_5( "Invalid permission format for record\n" + p.dump() );
-			continue;
+		if (p._class() == classKey)
+		{
+			if (p.modify() == true || modify == p.modify())
+			{
+				if (p.user().key() == currentUser().key())
+				{
+					if (p.enabled())
+					{
+						grantedUser = true;
+						foundKey = p.key();
+						break;
+					}
+					else
+					{
+						grantedUser = false;
+						grantedGroup = false;
+						break;
+					}
+				}
+					
+				if (gl.find(p.group()) != gl.end())
+				{
+					if (p.enabled())
+					{
+						grantedGroup = true;
+						foundKey = p.key();
+					}
+				}
+			}
 		}
-		int useReg = p.permission()[0].digitValue();
-		int user = p.permission()[1].digitValue();
-		int group = p.permission()[2].digitValue();
-		int all = p.permission()[3].digitValue();
-		
-		int needBit = modify ? 2 : 4;
-		
-
-		if( !useReg && (classKey != p._class()) )
-			continue;
-		
-		if( useReg && !classKey.contains( QRegExp( "^" + p._class() ) ) )
-			continue;
-		
-		bool pass = 
-			  ( all & needBit )
-			||(( user & needBit ) && p.user() == currentUser())
-			||(( group & needBit ) && p.group().isRecord() && gl.contains( p.group() ) );
-		
-		if( !pass )
-			continue;
-		
-		permCache[cacheKey] = p.key();
-		LOG_3( "Permission granted for key: " + cacheKey + " from record: " + QString::number( p.key() ) );
+	}
+	
+	if (grantedUser || grantedGroup)
+	{
+		permCache[cacheKey] = foundKey;
+		LOG_3("Permission granted for key: " + cacheKey + " from record: " + QString::number( foundKey ) );
 		return true;
 	}
 	

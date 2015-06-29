@@ -63,6 +63,12 @@ public slots:
 
 	void openHostServiceMatrixWindow();
 	void openUserServiceMatrixWindow();
+	
+	void openUserPermissionsWindow();
+	void openProjectsWindow();
+	void openServicesWindow();
+	void openLicensesWindow();
+	void openJobTypesWindow();
 
 	void enableAdmin();
 	void applyOptions();
@@ -187,7 +193,7 @@ protected:
 	QAction* ProjectReserveAction;
 	QAction* AutoRefreshAction;
 	
-	QAction* UserManagerAction;
+	QAction* UserPermissionsManagerAction;
 	QAction* ProjectManagerAction;
 	QAction* JobTypeManagerAction;
 	QAction* ServiceManagerAction;

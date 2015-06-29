@@ -28,6 +28,11 @@
 #include "updatemanager.h"
 #include "user.h"
 #include "userdialog.h"
+#include "servicedialog.h"
+#include "licensedialog.h"
+#include "serviceeditdialog.h"
+#include "jobtypeeditdialog.h"
+#include "projectseditdialog.h"
 
 DialogFactory * DialogFactory::instance()
 {
@@ -189,6 +194,42 @@ void DialogFactory::newTask( ElementList parents, QWidget * pw )
 	AssetDialog td( parents[0], pw );
 	td.exec();
 	//Database::instance()->commitTransaction();
+}
+
+void DialogFactory::editProjects( QWidget * pw )
+{
+	if(!pw && qApp->activeWindow() )
+		pw = qApp->activeWindow();
+	ProjectsEditDialog* ped = new ProjectsEditDialog(pw);
+	ped->exec();
+	delete ped;
+}
+
+void DialogFactory::editJobTypes( QWidget * pw )
+{
+	if (!pw && qApp->activeWindow() )
+		pw = qApp->activeWindow();
+	JobTypeEditDialog * jt = new JobTypeEditDialog(pw);
+	jt->exec();
+	delete jt;
+}
+
+void DialogFactory::editServices( QWidget * pw )
+{
+	if (!pw && qApp->activeWindow() )
+		pw = qApp->activeWindow();
+	ServiceEditDialog * sd = new ServiceEditDialog(pw);
+	sd->exec();
+	delete sd;
+}
+
+void DialogFactory::editLicenses( QWidget * pw )
+{
+	if (!pw && qApp->activeWindow() )
+		pw = qApp->activeWindow();
+	LicenseDialog * ld = new LicenseDialog(pw);
+	ld->exec();
+	delete ld;
 }
 
 void DialogFactory::editPermissions( QWidget * pw )

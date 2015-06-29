@@ -34,8 +34,6 @@ auto.pri
 loader.cpp
 moc_*.cpp
 build_resume.cache
-*.manifest
-sipconfig.py
 stoneconfig.py
 qrc_stonegui.cpp
 stoneguiconfig.py
@@ -45,4 +43,5 @@ classesconfig.py
 qrc_threadview.cpp
 qrc_freezer.cpp
 qrc_burner.cpp
-cpp/lib/sip/sipconfig.py
+*.manifest
+*.pyd.manifest
