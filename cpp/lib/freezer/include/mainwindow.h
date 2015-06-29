@@ -68,6 +68,7 @@ public slots:
 	void openProjectsWindow();
 	void openServicesWindow();
 	void openLicensesWindow();
+	void openJobTypesWindow();
 
 	void enableAdmin();
 	void applyOptions();

@@ -52,6 +52,8 @@ public slots:
 	void editServices( QWidget * pw=0 );
 	
 	void editLicenses( QWidget * pw=0 );
+	
+	void editJobTypes( QWidget * pw=0 );
 
 	/**
 	 * Displays an empty UserDialog, allowing

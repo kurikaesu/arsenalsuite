@@ -41,7 +41,8 @@ public:
 					LicenseList ll = License::select();
 					ll.insert(ll.begin(), none);
 					return qVariantFromValue<RecordList>(ll);
-				}
+				} else if( role == RecordDelegate::CurrentRecordRole )
+					return qVariantFromValue<Record>(svc.license());
 				else if( role == RecordDelegate::FieldNameRole )
 					return "license";
 				break;
@@ -107,14 +108,14 @@ public:
 	Record getRecord() { return svc; }
 };
 
-typedef TemplateRecordDataTranslator<ServiceEditItem> PermissionTranslator;
+typedef TemplateRecordDataTranslator<ServiceEditItem> ServiceEditTranslator;
 
 ServiceEditDialog::ServiceEditDialog( QWidget * parent )
 : QDialog( parent )
 {
 	setupUi( this );
 	mModel = new RecordSuperModel(mTreeView);
-	new PermissionTranslator(mModel->treeBuilder());
+	new ServiceEditTranslator(mModel->treeBuilder());
 	mTreeView->setModel(mModel);
 	mModel->setHeaderLabels( QStringList() << "Key" << "Service" << "License" << "Enabled" << "Active" );
 	mModel->listen( Service::table() );

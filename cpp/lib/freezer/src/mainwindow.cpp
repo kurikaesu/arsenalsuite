@@ -159,6 +159,7 @@ MainWindow::MainWindow( QWidget * parent )
 	connect( ProjectManagerAction, SIGNAL( triggered(bool) ), SLOT( openProjectsWindow() ) );
 	connect( ServiceManagerAction, SIGNAL( triggered(bool) ), SLOT( openServicesWindow() ) );
 	connect( LicenseManagerAction, SIGNAL( triggered(bool) ), SLOT( openLicensesWindow() ) );
+	connect( JobTypeManagerAction, SIGNAL( triggered(bool) ), SLOT( openJobTypesWindow() ) );
 
 	/* Setup counter */
 	mCounterLabel = new QLabel("", statusBar());
@@ -1132,6 +1133,11 @@ void MainWindow::openServicesWindow()
 void MainWindow::openLicensesWindow()
 {
 	DialogFactory::instance()->editLicenses(this);
+}
+
+void MainWindow::openJobTypesWindow()
+{
+	DialogFactory::instance()->editJobTypes(this);
 }
 
 // Turns the update counter on or off

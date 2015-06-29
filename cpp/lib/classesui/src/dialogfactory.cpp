@@ -31,6 +31,7 @@
 #include "servicedialog.h"
 #include "licensedialog.h"
 #include "serviceeditdialog.h"
+#include "jobtypeeditdialog.h"
 
 DialogFactory * DialogFactory::instance()
 {
@@ -192,6 +193,15 @@ void DialogFactory::newTask( ElementList parents, QWidget * pw )
 	AssetDialog td( parents[0], pw );
 	td.exec();
 	//Database::instance()->commitTransaction();
+}
+
+void DialogFactory::editJobTypes( QWidget * pw )
+{
+	if (!pw && qApp->activeWindow() )
+		pw = qApp->activeWindow();
+	JobTypeEditDialog * jt = new JobTypeEditDialog(pw);
+	jt->exec();
+	delete jt;
 }
 
 void DialogFactory::editServices( QWidget * pw )

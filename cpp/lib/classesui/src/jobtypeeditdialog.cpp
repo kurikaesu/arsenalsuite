@@ -1,17 +1,18 @@
+
 #include <qdialog.h>
 
 #include "recordtreeview.h"
-#include "licensedialog.h"
-#include "license.h"
+#include "jobtypeeditdialog.h"
+#include "service.h"
 
-class LicenseItem : public RecordItemBase
+class JobTypeEditItem : public RecordItemBase
 {
 public:
-	License lic;
-	LicenseItem( const License & l ) { setup(l); }
-	LicenseItem(){}
+	JobType jtype;
+	JobTypeEditItem( const JobType & jt ) { setup(jt); }
+	JobTypeEditItem(){}
 	void setup( const Record & r, const QModelIndex & = QModelIndex() ) {
-		lic = r;
+		jtype = r;
 	}
 	QVariant modelData( const QModelIndex & i, int role ) {
 		int col = i.column();
@@ -19,23 +20,31 @@ public:
 			case 0:
 			{
 				if( role == Qt::DisplayRole )
-					return lic.key();
+					return jtype.key();
 				break;
 			}	
 			case 1:
 			{
 				if( role == Qt::DisplayRole || role == Qt::EditRole )
-					return lic.license();
-				else if( role == RecordDelegate::FieldNameRole )
-					return "license";
+					return jtype.name();
+				else if ( role == RecordDelegate::FieldNameRole )
+					return "jobtype";
 				break;
 			}
 			case 2:
 			{
-				if( role == Qt::DisplayRole || role == Qt::EditRole )
-					return lic.total();
+				if( role == Qt::DisplayRole )
+					return jtype.service().service();
+				else if( role == Qt::EditRole ) {
+					Service none;
+					none.setService( "None" );
+					ServiceList sl = Service::select().sorted("service");
+					sl.insert(sl.begin(),none);
+					return qVariantFromValue<RecordList>(sl);
+				} else if( role == RecordDelegate::CurrentRecordRole )
+					return qVariantFromValue<Record>(jtype.service());
 				else if( role == RecordDelegate::FieldNameRole )
-					return "total";
+					return "service";
 				break;
 			}
 		}
@@ -49,16 +58,18 @@ public:
 					return false;
 				case 1:
 				{
-					lic.setLicense(v.toString());
+					jtype.setName(v.toString());
 					break;
 				}
 				case 2:
 				{
-					lic.setTotal(v.toInt());
+					Service s = qvariant_cast<Record>(v);
+					if( s.isValid() )
+						jtype.setService( s );
 					break;
 				}
 			}
-			lic.commit();
+			jtype.commit();
 			return true;
 		}
 		return false;
@@ -68,49 +79,49 @@ public:
 			return Qt::ItemFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable );
 		return Qt::ItemFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
 	}
-	Record getRecord() { return lic; }
+	Record getRecord() { return jtype; }
 };
 
-typedef TemplateRecordDataTranslator<LicenseItem> LicenseTranslator;
+typedef TemplateRecordDataTranslator<JobTypeEditItem> JobTypeEditTranslator;
 
-LicenseDialog::LicenseDialog( QWidget * parent )
+JobTypeEditDialog::JobTypeEditDialog( QWidget * parent )
 : QDialog( parent )
 {
 	setupUi( this );
 	mModel = new RecordSuperModel(mTreeView);
-	new LicenseTranslator(mModel->treeBuilder());
+	new JobTypeEditTranslator(mModel->treeBuilder());
 	mTreeView->setModel(mModel);
-	mModel->setHeaderLabels( QStringList() << "Key" << "License" << "Count" );
-	mModel->listen( License::table() );
+	mModel->setHeaderLabels( QStringList() << "Key" << "Job Type" << "Service" );
+	mModel->listen( JobType::table() );
 	connect( mTreeView, SIGNAL( currentChanged( const Record & ) ), SLOT( slotCurrentChanged( const Record & ) ) );
 	connect( mNewMethodButton, SIGNAL( clicked() ), SLOT( slotNewMethod() ) );
 	connect( mRemoveMethodButton, SIGNAL( clicked() ), SLOT( slotRemoveMethod() ) );
 	refresh();
 }
 
-void LicenseDialog::refresh()
+void JobTypeEditDialog::refresh()
 {
-	mModel->setRootList( License::select() );
+	mModel->setRootList( JobType::select() );
 	slotCurrentChanged( mTreeView->current() );
 }
 
-void LicenseDialog::slotNewMethod()
+void JobTypeEditDialog::slotNewMethod()
 {
-	License l;
-	mModel->append( l );
+	JobType jt;
+	mModel->append( jt );
 }
 
-void LicenseDialog::slotRemoveMethod()
+void JobTypeEditDialog::slotRemoveMethod()
 {
 	mTreeView->current().remove();
 }
 
-void LicenseDialog::slotCurrentChanged( const Record & r )
+void JobTypeEditDialog::slotCurrentChanged( const Record & r )
 {
 	mRemoveMethodButton->setEnabled( r.isValid() );
 }
 
-void LicenseDialog::accept()
+void JobTypeEditDialog::accept()
 {
 	QDialog::accept();
 }
