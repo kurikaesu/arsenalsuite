@@ -228,8 +228,8 @@ protected:
 
 	bool mStaticDataRetrieved;
 
-	EmployeeList mMainUserList;
-	EmployeeList mCurrentlyImmitating;
+	UserList mMainUserList;
+	UserList mCurrentlyImmitating;
 	bool mShowingMine;
 
 	struct SharedData {

@@ -10,7 +10,7 @@
 
 	void removeUser( const User & );
 
-	void setUsers( EmployeeList );
+	void setUsers( UserList );
 
 	bool hasUser ( const User & );
 
