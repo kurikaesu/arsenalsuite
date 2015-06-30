@@ -281,24 +281,12 @@ int main( int argc, char * argv[] )
     signal(SIGABRT, oops_handler);
 	QApplication a(argc, argv);
 	
-	a.addLibraryPath("./plugins");
+	a.addLibraryPath(getEnvParameter("ARSENALDIR") + "./plugins");
 	
-    if( !initConfig( "freezer.ini" ) ) {
-#ifndef Q_OS_WIN
-        // Fallback if the config file does not exist in the current folder
-        if( !initConfig( "/etc/ab/freezer.ini" ) )
-#endif
+    if( !initConfig( "freezer.ini" ) ) 
         return -1;
-    }
 
-#ifdef Q_OS_WIN
-	QString cp = "h:/public/" + getUserName() + "/Blur";
-	if( !QDir( cp ).exists() )
-		cp = "C:/Documents and Settings/" + getUserName();
-	initUserConfig( cp + "/freezer.ini" );
-#else
 	initUserConfig( QDir::homePath() + "/.freezer" );
-#endif
 
     initStone( argc, argv );
     classes_loader();

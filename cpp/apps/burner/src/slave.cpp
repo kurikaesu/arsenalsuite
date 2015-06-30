@@ -385,7 +385,7 @@ void Slave::loadEmbeddedPython()
 
     LOG_5( "Loading python plugins" );
     
-    QDir plugin_dir( "abplugins" );
+    QDir plugin_dir( getEnvParameter("ARSENALDIR") + "./abplugins" );
     QStringList el = plugin_dir.entryList(QStringList() << "*.py" << "*.pys" << "*.pyw", QDir::Files);
     foreach( QString plug, el ) {
         QString name("abplugins/" + plug);

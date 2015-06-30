@@ -81,6 +81,9 @@ STONE_EXPORT void initStone( const QStringList & args );
 /** \brief Returns a string representation of the options listed for the initStone function. */
 STONE_EXPORT QString stoneOptionsHelp();
 
+/** \brief Returns a specified environment variable's value */
+STONE_EXPORT QString getEnvParameter(const QString& parameterName);
+
 /** \brief Opens config file with 'configName' */
 STONE_EXPORT bool initConfig( const QString & configName, const QString & logfile = QString() );
 
