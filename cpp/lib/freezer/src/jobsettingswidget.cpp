@@ -90,7 +90,7 @@ JobSettingsWidget::JobSettingsWidget( QWidget * parent, Mode mode )
 	}
 
 	// Store the user list once
-	mMainUserList = Employee::select();
+	mMainUserList = User::select();
 }
 
 JobSettingsWidget::~JobSettingsWidget()

@@ -97,7 +97,7 @@ protected:
 
 	bool mNotifyChanged;
 
-	EmployeeList mMainUserList;
+	UserList mMainUserList;
 };
 
 class FREEZER_EXPORT JobServiceBridge

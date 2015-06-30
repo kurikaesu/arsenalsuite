@@ -1,2 +1,0 @@
-
-	QString fullName() const;

@@ -38,7 +38,6 @@
 
 #include "blurqt.h"
 
-#include "employee.h"
 #include "job.h"
 #include "jobtask.h"
 #include "jobtaskassignment.h"

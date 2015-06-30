@@ -170,11 +170,7 @@ int main(int argc, char * argv[])
 	bool burnOnlyMode = false;
 	// Burn Only param
 	int jobAssignmentKey = 0;
-#ifdef Q_OS_WIN
 	QString configFile = "burner.ini";
-#else
-	QString configFile = "/etc/ab/burner.ini";
-#endif
 	for( int i = 1; i<argc; i++ ){
 		QString arg( argv[i] );
 		if( arg == "-h" || arg == "--help" )

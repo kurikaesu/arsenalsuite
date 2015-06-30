@@ -42,7 +42,7 @@ void StaticJobListDataTask::run()
 		mHasData = staticJobListDataRetrieved = true;
 		// Cache information needed for permission checks
 		// Permission checks will happen when building menus
-		Employee::select();
+		User::select();
 		Group::select();
 		Permission::select();
 		UserGroup::recordsByUser( User::currentUser() );

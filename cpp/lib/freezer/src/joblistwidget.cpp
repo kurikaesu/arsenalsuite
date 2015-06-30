@@ -317,7 +317,7 @@ void JobListWidget::initializeViews(IniConfig & ini)
 		applyOptions();
 
 		// load this once
-		mMainUserList = Employee::select();
+		mMainUserList = User::select();
 
 		// Don't show the panel if there's no plugins to begin with
 		if( JobErrorsWidgetFactory::mJobErrorsWidgetPlugins.size() == 0 )
