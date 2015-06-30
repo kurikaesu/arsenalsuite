@@ -72,7 +72,7 @@ public:
 	QDateTime now, puppetPulse;
 	QIcon puppetIcon;
 	QPixmap icon;
-	mutable QString ver, mem, availMem, mhz, user, pulse, services, ip, uptime, tasktime, _jobName;
+	mutable QString os, ver, mem, availMem, mhz, user, pulse, services, ip, uptime, tasktime, _jobName;
 	mutable Interval uptimeInterval, tasktimeInterval;
 	ColorOption * co;
 	QString jobName() const;

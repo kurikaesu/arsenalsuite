@@ -217,6 +217,27 @@ QString w32_getOsVersion( QString * servicePackVersion = 0, int * buildNumber = 
 					else
 						ret = "Windows 7";
 					break;
+				case 2:
+					if( osvi.wProductType != VER_NT_WORKSTATION )
+						ret = "Windows Server 2012";
+					else
+						ret = "Windows 8";
+					break;
+				case 3:
+					if( osvi.wProductType != VER_NT_WORKSTATION )
+						ret = "Windows Server 2012 R2";
+					else
+						ret = "Windows 8.1";
+			};
+		}
+		case 10:
+		{
+			switch( osvi.dwMinorVersion ) {
+				case 0:
+					if( osvi.wProductType != VER_NT_WORKSTATION )
+						ret = "Windows Server Technical Preview";
+					else
+						ret = "Windows 10 Insider Preview";
 			};
 		}
 	};

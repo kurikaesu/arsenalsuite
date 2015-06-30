@@ -66,15 +66,16 @@ const ColumnStruct HostItem::host_columns [] =
 	{ "Current Jobs", "CurrentJobColumn", 200, 1, false, false },
 	{ "Status", "StatusColumn", 65, 2, false, true },
 	{ "Frames", "FramesColumn", 50, 3, false, false },
-	{ "OS", "OSColumn", 120, 4, false, true },
-	{ "Memory", "MemoryColumn", 100, 5, false, true },
-	{ "Mhz", "MhzColumn", 75, 6, false, true },
-	{ "User", "UserColumn", 70, 7, false, true },
-	{ "Packet Weight", "PacketWeightColumn", 40, 8, true, false },
-	{ "Description", "DescriptionColumn", 200, 9, false, true },
-	{ "Pulse", "PulseColumn", 130, 10, false, false },
-	{ "Key", "KeyColumn", 0, 11, true, true },
-	{ "OS Version", "OsVersionColumn", 100, 12, false, true },
+	{ "AB Version", "ABVersionColumn", 100, 4, false, true },
+	{ "OS", "OSColumn", 120, 5, false, true },
+	{ "Memory", "MemoryColumn", 100, 6, false, true },
+	{ "Mhz", "MhzColumn", 75, 7, false, true },
+	{ "User", "UserColumn", 70, 8, false, true },
+	{ "Packet Weight", "PacketWeightColumn", 40, 9, true, false },
+	{ "Description", "DescriptionColumn", 200, 10, false, true },
+	{ "Pulse", "PulseColumn", 130, 11, false, false },
+	{ "Key", "KeyColumn", 0, 12, true, true },
+	{ "OS Version", "OsVersionColumn", 100, 13, false, true },
 	{ "CPU Name", "CpuNameColumn", 40, 14, false, true },
 	{ "Arch", "ArchColumn", 65, 15, false, true },
 	{ "Services", "ServicesColumn", 100, 16, true, false },
@@ -145,7 +146,8 @@ void HostItem::setup( const Record & r, const QModelIndex &, bool loadJob ) {
 	host = r;
 	status = host.hostStatus();
 	jobsLoaded = false;
-	ver = host.os() + " " + host.abVersion();
+	os = host.os();
+	ver = host.abVersion();
 	mem = QString("%1 Mb").arg(host.memory());
 	availMem = QString("%1 Mb").arg(QString::number(status.availableMemory()));
 	mhz = QString("%1 Mhz (%2)").arg(host.mhz()).arg(host.cpus());
@@ -229,17 +231,18 @@ QVariant HostItem::modelData( const QModelIndex & i, int role ) const
 			case 2: return status.slaveStatus();
 			case 3: return QString();
 			case 4: return ver;
-			case 5: return mem;
-			case 6: return mhz;
-			case 7: return user;
-			case 8: return "";
-			case 9: return host.description();
-			case 10: return pulse;
-			case 11: return host.key();
-			case 12: return host.osVersion();
-			case 13: return host.cpuName();
-			case 14: return host.architecture();
-			case 15:
+			case 5: return os;
+			case 6: return mem;
+			case 7: return mhz;
+			case 8: return user;
+			case 9: return "";
+			case 10: return host.description();
+			case 11: return pulse;
+			case 12: return host.key();
+			case 13: return host.osVersion();
+			case 14: return host.cpuName();
+			case 15: return host.architecture();
+			case 16:
 			{
 				if( services.isNull() ) {
 					services = host.hostServices().services().sorted("service").services().join(",");
@@ -247,27 +250,27 @@ QVariant HostItem::modelData( const QModelIndex & i, int role ) const
 				}
 				return services;
 			}
-			case 16: return availMem;
-			case 17: return ( puppetPulse.toString() != "" ) ? convertTime( puppetPulse.secsTo(now) ) : QString();
-			case 18: return ipAddress();
-			case 19: return host.windowsDomain();
-			case 20: return host.department().name();
-			case 21: return uptime;
-			case 22: return tasktime;
-			case 23: return host.servicePackVersion();
-			case 24: return QString::number(host.buildNumber());
-			case 25: return host.videoCard();
-			case 26: return host.videoCardDriver();
-			case 27: return QString("%1 Mb").arg(host.videoMemory());
+			case 17: return availMem;
+			case 18: return ( puppetPulse.toString() != "" ) ? convertTime( puppetPulse.secsTo(now) ) : QString();
+			case 19: return ipAddress();
+			case 20: return host.windowsDomain();
+			case 21: return host.department().name();
+			case 22: return uptime;
+			case 23: return tasktime;
+			case 24: return host.servicePackVersion();
+			case 25: return QString::number(host.buildNumber());
+			case 26: return host.videoCard();
+			case 27: return host.videoCardDriver();
+			case 28: return QString("%1 Mb").arg(host.videoMemory());
 		}
 	} else if ( role == Qt::TextColorRole )
 		return co ? civ(co->fg) : QVariant();
 	else if( role == Qt::BackgroundColorRole )
 		return co ? civ(co->bg) : QVariant();
 	else if ( role == Qt::DecorationRole ) {
-		if ( col == 17 )
+		if ( col == 18 )
 			return QVariant( puppetIcon );
-		if ( col == 7 )
+		if ( col == 8 )
 			return icon;
 	}
 
