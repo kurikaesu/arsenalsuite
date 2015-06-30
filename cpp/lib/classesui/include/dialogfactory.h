@@ -56,6 +56,8 @@ public slots:
 	void editJobTypes( QWidget * pw=0 );
 	
 	void editProjects( QWidget * pw=0 );
+	
+	void editUsers( QWidget * pw=0 );
 
 	/**
 	 * Displays an empty UserDialog, allowing

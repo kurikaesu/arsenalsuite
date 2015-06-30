@@ -244,6 +244,35 @@ QString w32_getOsVersion( QString * servicePackVersion = 0, int * buildNumber = 
 	return ret;
 }
 
+QString w32_getProcessorInformation()
+{
+	int cpuInfo[4] = {-1};
+	__cpuid(cpuInfo, 0x80000000);
+	unsigned int nExIds = cpuInfo[0];
+	
+	char CPUBrandString[0x40] = { 0 };
+	for (unsigned int i=0x80000000; i <= nExIds; ++i)
+	{
+		__cpuid(cpuInfo, i);
+		switch (i)
+		{
+		case 0x80000002:
+			memcpy( CPUBrandString, cpuInfo, sizeof(cpuInfo));
+			break;
+		case 0x80000003:
+			memcpy( CPUBrandString + 16, cpuInfo, sizeof(cpuInfo));
+			break;
+		case 0x80000004:
+			memcpy( CPUBrandString + 32, cpuInfo, sizeof(cpuInfo));
+			break;
+		}
+	}
+	
+	QString processor = CPUBrandString;
+	processor.replace("  ", " ");
+	return processor;
+}
+
 #endif // Q_OS_WIN
 
 void Host::updateHardwareInfo()
@@ -340,6 +369,7 @@ void Host::updateHardwareInfo()
 		setOsVersion( w32_getOsVersion(&servicePackVersion,&buildNumber) );
 		setServicePackVersion(servicePackVersion);
 		setBuildNumber(buildNumber);
+		setCpuName( w32_getProcessorInformation() );
 		setCpus( sysInfo.dwNumberOfProcessors );
 		QSettings mhzReg( "HKEY_LOCAL_MACHINE\\Hardware\\Description\\System\\CentralProcessor\\0", QSettings::NativeFormat );
 		setMhz( mhzReg.value( "~MHz" ).toInt() );

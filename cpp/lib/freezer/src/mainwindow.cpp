@@ -109,6 +109,7 @@ MainWindow::MainWindow( QWidget * parent )
 	ProjectReserveAction = new QAction( "Project Reserves", this );
 	ProjectReserveAction->setIcon( QIcon( ":/images/projectweighting" ) );
 	
+	UserManagerAction = new QAction("User Manager", this);
 	UserPermissionsManagerAction = new QAction("User Permissions Manager", this);
 	ProjectManagerAction = new QAction("Project Manager", this);
 	JobTypeManagerAction = new QAction("Job Type Manager", this);
@@ -155,6 +156,7 @@ MainWindow::MainWindow( QWidget * parent )
 	connect( DisplayPrefsAction, SIGNAL( triggered(bool) ), SLOT( showDisplayPrefs() ) );
 	connect( AdminAction, SIGNAL( triggered(bool) ), SLOT( enableAdmin() ) );
 	
+	connect( UserManagerAction, SIGNAL( triggered(bool) ), SLOT( openUserEditWindow() ) );
 	connect( UserPermissionsManagerAction, SIGNAL( triggered(bool) ), SLOT( openUserPermissionsWindow() ) );
 	connect( ProjectManagerAction, SIGNAL( triggered(bool) ), SLOT( openProjectsWindow() ) );
 	connect( ServiceManagerAction, SIGNAL( triggered(bool) ), SLOT( openServicesWindow() ) );
@@ -983,7 +985,10 @@ void MainWindow::populateToolsMenu()
 		mToolsMenu->addAction( ProjectReserveAction );
 	
 	if ( User::hasPerms( "UserManagement", true ) )
+	{
+		mToolsMenu->addAction( UserManagerAction );
 		mToolsMenu->addAction( UserPermissionsManagerAction );
+	}
 	if ( User::hasPerms( "ProjectManagement", true ) )
 		mToolsMenu->addAction( ProjectManagerAction );
 	if ( User::hasPerms( "JobTypeManagement", true ) )
@@ -1113,6 +1118,11 @@ void MainWindow::openHostServiceMatrixWindow()
 void MainWindow::openUserServiceMatrixWindow()
 {
 	(new UserServiceMatrixWindow(this))->show();
+}
+
+void MainWindow::openUserEditWindow()
+{
+	DialogFactory::instance()->editUsers(this);
 }
 
 void MainWindow::openUserPermissionsWindow()

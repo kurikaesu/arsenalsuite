@@ -53,7 +53,6 @@
 #include "shotgroup.h"
 #include "thread.h"
 #include "thumbnail.h"
-#include "timesheet.h"
 #include "user.h"
 #include "userelement.h"
 

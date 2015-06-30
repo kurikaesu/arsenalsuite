@@ -69,6 +69,7 @@ SOURCES += \
 	src/serviceeditdialog.cpp \
 	src/jobtypeeditdialog.cpp \
 	src/projectseditdialog.cpp \
+	src/usereditdialog.cpp \
 	src/versiontrackerdialog.cpp
 
 HEADERS += \
@@ -135,6 +136,7 @@ HEADERS += \
 	include/serviceeditdialog.h \
 	include/jobtypeeditdialog.h \
 	include/projectseditdialog.h \
+	include/usereditdialog.h \
 	include/versiontrackerdialog.h
 
 FORMS += \
@@ -181,6 +183,7 @@ FORMS += \
 	ui/serviceeditdialogui.ui \
 	ui/jobtypeeditdialogui.ui \
 	ui/projectseditdialogui.ui \
+	ui/usereditdialogui.ui \
 	ui/versiontrackerdialogui.ui
 
 RESOURCES += \

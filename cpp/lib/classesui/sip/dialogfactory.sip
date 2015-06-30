@@ -23,6 +23,8 @@ public:
 	void editJobTypes( QWidget * pw=0 );
 	
 	void editProjects( QWidget * pw=0 );
+	
+	void editUsers( QWidget * pw=0 );
 
 	User newUser( QWidget * pw = 0 );
 

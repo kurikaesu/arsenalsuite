@@ -33,6 +33,7 @@
 #include "serviceeditdialog.h"
 #include "jobtypeeditdialog.h"
 #include "projectseditdialog.h"
+#include "usereditdialog.h"
 
 DialogFactory * DialogFactory::instance()
 {
