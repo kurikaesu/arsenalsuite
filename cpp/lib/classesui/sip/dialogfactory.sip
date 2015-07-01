@@ -36,13 +36,9 @@ public:
 	
 	void editAssetTypes( QWidget * pw = 0 );
 
-	void enterTimeSheetData( ElementList, const AssetType & at = AssetType(), QWidget * pw = 0 );
-
 	void newTask( ElementList, QWidget * parent );
 
 	void showConfigDBDialog( QWidget * pw=0 );
 
 	void editPermissions( QWidget * pw = 0 );
-
-	void editNotificationRoutes( QWidget * pw = 0 );
 };
