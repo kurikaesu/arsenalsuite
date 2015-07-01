@@ -7,6 +7,10 @@
   </column>
   <column type="QString" methodName="name" name="hostresource"/>
  </table>
+ <table name="JobStatusTypes" expireKeyCache="true" className="JobStatusTypes">
+  <column type="uint" methodName="keyJobStatusTypes" name="keyJobStatusTypes" pkey="true"/>
+  <column type="QString" methodName="status" name="status"/>
+ </table>
  <table name="PhoneNo" expireKeyCache="true" className="PhoneNo">
   <column type="uint" methodName="key" name="keyPhoneNo" pkey="true"/>
   <column type="QString" methodName="PhoneNo" name="phoneNo"/>
