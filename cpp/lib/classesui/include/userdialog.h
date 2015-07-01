@@ -57,14 +57,11 @@ public:
 	 * to the information stored in user
 	 **/
 	void setUser( const User & );
-	void setEmployee( const Employee & );
 	
 	virtual void accept();
 public slots:
 
 	void slotEditHosts();
-	
-	void slotEmpToggle( bool );
 
 	void slotEditGroups();
 	

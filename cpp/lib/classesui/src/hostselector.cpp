@@ -41,9 +41,7 @@
 #include "modelgrouper.h"
 #include "modeliter.h"
 
-#include "department.h"
 #include "dynamichostgroup.h"
-#include "employee.h"
 #include "host.h"
 #include "hostinterface.h"
 #include "hostservice.h"
@@ -82,7 +80,6 @@ const ColumnStruct HostItem::host_columns [] =
 	{ "Avail. Mem", "AvailMemColumn", 80, 17, false, false },
 	{ "IP Address", "IPAddressColumn", 45, 18, true, true },
 	{ "Domain", "DomainColumn", 45, 19, true, true },
-	{ "Department", "DepartmentColumn", 60, 20, true, true },
 	{ "System Uptime", "SystemUptimeColumn", 120, 21, false, false },
 	{ "Elapsed Task Time", "ElapsedTaskTimeColumn", 60, 22, false, false },
 	{ "OS Service Pack", "OSServicePackColumn", 60, 13, true, true },
@@ -157,8 +154,7 @@ void HostItem::setup( const Record & r, const QModelIndex &, bool loadJob ) {
 	pulse = convertTime( status.slavePulse().secsTo(now) );
 	mhz = QString("%1 Mhz (%2)").arg(host.mhz()).arg(host.cpus());
 	User u = host.user();
-	Employee e(u);
-	user = e.isRecord() ? e.name() : u.name();
+	user = u.name();
 	co = HostColors ? HostColors->getColorOption(status.slaveStatus()) : 0;
 	services = QString();
 	if( host.userIsLoggedIn())
@@ -254,14 +250,13 @@ QVariant HostItem::modelData( const QModelIndex & i, int role ) const
 			case 18: return ( puppetPulse.toString() != "" ) ? convertTime( puppetPulse.secsTo(now) ) : QString();
 			case 19: return ipAddress();
 			case 20: return host.windowsDomain();
-			case 21: return host.department().name();
-			case 22: return uptime;
-			case 23: return tasktime;
-			case 24: return host.servicePackVersion();
-			case 25: return QString::number(host.buildNumber());
-			case 26: return host.videoCard();
-			case 27: return host.videoCardDriver();
-			case 28: return QString("%1 Mb").arg(host.videoMemory());
+			case 21: return uptime;
+			case 22: return tasktime;
+			case 23: return host.servicePackVersion();
+			case 24: return QString::number(host.buildNumber());
+			case 25: return host.videoCard();
+			case 26: return host.videoCardDriver();
+			case 27: return QString("%1 Mb").arg(host.videoMemory());
 		}
 	} else if ( role == Qt::TextColorRole )
 		return co ? civ(co->fg) : QVariant();

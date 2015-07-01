@@ -7,19 +7,16 @@ UI_DIR=.out
 
 SOURCES += \
 	src/abadminplugin.cpp \
+	src/addnotedialog.cpp \
 	src/assetdialog.cpp \
 	src/assettemplatecombo.cpp \
 	src/assettemplatedialog.cpp \
 	src/assettemplatesdialog.cpp \
 	src/assettypecombo.cpp \
 	src/assettypedialog.cpp \
-	src/addnotedialog.cpp \
-	src/datechooserwidget.cpp \
 	src/dialogfactory.cpp \
 	src/elementmodel.cpp \
-	src/elementschedulecontroller.cpp \
 	src/elementui.cpp \
-	src/eventdialog.cpp \
 	src/filetrackerdialog.cpp \
 	src/graphitesavedialog.cpp \
 	src/groupsdialog.cpp \
@@ -30,10 +27,6 @@ SOURCES += \
 	src/hostlistsdialog.cpp \
 	src/jobassignmentwidget.cpp \
 	src/jobassignmentwindow.cpp \
-	src/notificationroutedialog.cpp \
-	src/notificationrouteview.cpp \
-	src/notificationview.cpp \
-	src/notificationwidget.cpp \
 	src/pathtemplatecombo.cpp \
 	src/pathtemplatedialog.cpp \
 	src/pathtemplatesdialog.cpp \
@@ -45,14 +38,6 @@ SOURCES += \
 	src/resinerror.cpp \
 	src/resolutiondialog.cpp \
 	src/scenedialog.cpp \
-	src/scheduledialog.cpp \
-	src/schedulewidget.cpp \
-	src/scheduleheader.cpp \
-	src/schedulepanel.cpp \
-	src/scheduleprintdialog.cpp \
-	src/schedulerow.cpp \
-	src/scheduleentry.cpp \
-	src/scheduleselection.cpp \
 	src/servicedialog.cpp \
 	src/shotdialog.cpp \
 	src/statussetdialog.cpp \
@@ -60,11 +45,8 @@ SOURCES += \
 	src/tasktypecombo.cpp \
 	src/threadview.cpp \
 	src/thumbnailui.cpp \
-	src/timeentrydialog.cpp \
 	src/userdialog.cpp \
 	src/userroledialog.cpp \
-	src/usertaskdialog.cpp \
-	src/usernotifydialog.cpp \
 	src/licensedialog.cpp \
 	src/serviceeditdialog.cpp \
 	src/jobtypeeditdialog.cpp \
@@ -81,12 +63,9 @@ HEADERS += \
 	include/assettemplatedialog.h \
 	include/assettypecombo.h \
 	include/assettypedialog.h \
-	include/datechooserwidget.h \
 	include/dialogfactory.h \
 	include/elementmodel.h \
-	include/elementschedulecontroller.h \
 	include/elementui.h \
-	include/eventdialog.h \
 	include/filetrackerdialog.h \
 	include/graphitesavedialog.h \
 	include/groupsdialog.h \
@@ -97,10 +76,6 @@ HEADERS += \
 	include/hostinterfacedialog.h \
 	include/jobassignmentwidget.h \
 	include/jobassignmentwindow.h \
-	include/notificationroutedialog.h \
-	include/notificationrouteview.h \
-	include/notificationview.h \
-	include/notificationwidget.h \
 	include/pathtemplatecombo.h \
 	include/pathtemplatedialog.h \
 	include/pathtemplatesdialog.h \
@@ -112,26 +87,15 @@ HEADERS += \
 	include/resinerror.h \
 	include/resolutiondialog.h \
 	include/scenedialog.h \
-	include/scheduledialog.h \
-	include/schedulewidget.h \
-	include/scheduleheader.h \
-	include/schedulepanel.h \
-	include/scheduleprintdialog.h \
-	include/schedulerow.h \
-	include/scheduleentry.h \
-	include/scheduleselection.h \
 	include/shotdialog.h \
 	include/servicedialog.h \
 	include/statussetdialog.h \
 	include/statusdialog.h \
 	include/tasktypecombo.h \
-	include/timeentrydialog.h \
 	include/threadview.h \
 	include/thumbnailui.h \
 	include/userdialog.h \
-	include/usertaskdialog.h \
 	include/userroledialog.h \
-	include/usernotifydialog.h \
 	include/licensedialog.h \
 	include/serviceeditdialog.h \
 	include/jobtypeeditdialog.h \
@@ -140,13 +104,12 @@ HEADERS += \
 	include/versiontrackerdialog.h
 
 FORMS += \
-	ui/addnotedialogui.ui \
 	ui/assetdialogui.ui \
+	ui/addnotedialogui.ui \
 	ui/assettemplatedialogui.ui \
 	ui/assettasksdialogui.ui \
 	ui/assettypedialogui.ui \
 	ui/editassettypedialogui.ui \
-	ui/eventdialogui.ui \
 	ui/assettemplatesdialogui.ui \
 	ui/filetrackerdialogui.ui \
 	ui/graphitesavedialogui.ui \
@@ -156,8 +119,6 @@ FORMS += \
 	ui/hostinterfacedialogui.ui \
 	ui/hostselectorbase.ui \
 	ui/jobassignmentwidgetui.ui \
-	ui/notificationroutedialogui.ui \
-	ui/notificationwidgetui.ui \
 	ui/pathtemplatedialogui.ui \
 	ui/pathtemplatesdialogui.ui \
 	ui/permsdialogui.ui \
@@ -167,18 +128,13 @@ FORMS += \
 	ui/resolutiondialogui.ui \
 	ui/savelistdialogui.ui \
 	ui/scenedialogui.ui \
-	ui/scheduledialogui.ui \
-	ui/scheduleprintdialogui.ui \
 	ui/servicedialogui.ui \
 	ui/shotdialogui.ui \
 	ui/statussetdialogui.ui \
 	ui/statusdialogui.ui \
 	ui/threadviewui.ui \
-	ui/timeentrydialogui.ui \
-	ui/usertaskui.ui \
 	ui/userroleui.ui \
 	ui/userdialogui.ui \
-	ui/usernotifyui.ui \
 	ui/licensedialogui.ui \
 	ui/serviceeditdialogui.ui \
 	ui/jobtypeeditdialogui.ui \

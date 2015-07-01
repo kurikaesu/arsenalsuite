@@ -90,7 +90,7 @@ def cmd_output(cmd,outputObject=None,shell=None):
     output = ''
     ret = 0
     def processOutput(existing, new, outputProgress):
-        existing += new.decode('utf-8')
+        existing += new #.decode('utf-8')
         if outputProgress:
             outputObject.output(new)
         return existing

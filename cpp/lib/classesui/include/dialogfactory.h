@@ -75,23 +75,11 @@ public slots:
 	
 	void editAssetTypes( QWidget * pw = 0 );
 	
-	/**
-	 * Pops up a dialog that allows the user
-	 * to enter a timesheet record. The user
-	 * can entry the number of hours, date,
-	 * and the user who did the time
-	 **/
-	void enterTimeSheetData( ElementList, const AssetType & at = AssetType(), QWidget * pw = 0 );
-
 	void newTask( ElementList, QWidget * parent );
 
 	void showConfigDBDialog( QWidget * pw=0 );
 
 	void editPermissions( QWidget * pw = 0 );
-
-	void editNotificationRoutes( QWidget * pw = 0 );
-
-	void viewNotifications( QWidget * pw = 0 );
 };
 
 #endif // DIALOG_FACTORY_H
