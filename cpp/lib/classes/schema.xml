@@ -1983,33 +1983,16 @@
  <table useCodeGen="true" parent="Element" name="Usr" expireKeyCache="true" className="User">
   <column type="QDate" methodName="dateoflastlogon" name="dateoflastlogon"/>
   <column type="QString" methodName="email" name="email"/>
-  <column type="QString" methodName="gpgkey" name="gpgkey"/>
-  <column type="QString" methodName="jid" name="jid"/>
-  <column type="QString" methodName="pager" name="pager"/>
   <column type="QString" methodName="password" name="password"/>
-  <column type="QString" methodName="remoteips" name="remoteips"/>
-  <column type="QString" methodName="schedule" name="schedule"/>
-  <column type="QString" methodName="shell" name="shell"/>
-  <column type="QString" methodName="sid" name="sid"/>
-  <column type="uint" methodName="uid" name="uid"/>
-  <column type="uint" methodName="threadNotifyByJabber" name="threadNotifyByJabber"/>
-  <column type="uint" methodName="threadNotifyByEmail" name="threadNotifyByEmail"/>
-  <column type="uint" methodName="Client" name="fkeyClient">
-   <fkey indexDeleteMode="DoNothingOnDelete" table="Client" type="single" hasIndex="false"/>
-  </column>
-  <column type="uint" methodName="intranet" name="intranet"/>
   <column type="QString" methodName="homeDir" name="homeDir"/>
   <column type="uint" methodName="disabled" name="disabled"/>
-  <column type="uint" methodName="gid" name="gid"/>
-  <column type="QString" methodName="usr" name="usr"/>
-  <column type="uint" methodName="keyUsr" name="keyUsr"/>
-  <column type="QString" methodName="lastLogonType" name="lastLogonType"/>
   <column type="uint" methodName="logonCount" name="logonCount"/>
+  <column type="QString" methodName="FirstName" name="FirstName"/>
+  <column type="QString" methodName="LastName" name="LastName"/>
+  <column type="uint" methodName="MiddleName" name="MiddleName"/>
+  <column type="QString" methodName="xmppId" name="xmppId"/>
   <index useCache="true" type="single" name="UserName">
    <column name="name"/>
-  </index>
-  <index useCache="false" type="single" name="Project">
-   <column name="fkeyProject"/>
   </index>
   <index useCache="true" type="single" name="UserNameAndDisabled">
    <column name="name"/>

@@ -159,10 +159,12 @@ void ProjectDialog::accept()
 	p.setClient( client );
 	p.commit();
 	
+	/*
 	if( mWebCheck->isChecked() || mFTPCheck->isChecked() ) {
 		User u = User::setupProjectUser( p, client, mWebCheck->isChecked(), mFTPCheck->isChecked() );
 		u.commit();
 	}
+	*/
 	
 	/* Create Project Storage Records */
 	ProjectStorageList storage;

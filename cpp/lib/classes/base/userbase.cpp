@@ -126,53 +126,6 @@ User User::activeByUserName( const QString & un )
 	return User::recordByUserNameAndDisabled( un, 0 );
 }
 
-User User::setupProjectUser( Project p, Client c, bool ftp, bool web )
-{
-	User u;
-	QString userName = p.name();
-	u = User::recordByProject( p );
-	
-	if( !u.isRecord() ) {
-		int cur = 2;
-		while( User::activeByUserName( userName ).isRecord() )
-			userName = p.name() + "_" + QString::number( cur++ );
-		u.setName( userName );
-		u.setUsr( userName );
-		u.setPassword( "rfm_generate" );
-		u.setProject( p );
-		u.setElementType( User::type() );
-	}
-	
-	u.setShell( "/bin/false" );
-	u.setUid( nextUID() );
-	u.setGid( nextGID() );
-	u.setProject( p );
-	u.setClient( c );
-	u.setDisabled( 0 );
-
-	if( web )
-		u.setIntranet( 1 );
-	
-	if( ftp )
-		u.setHomeDir( "/home/netftp/ftpRoot/" + p.name() );
-			
-	u.commit();
-	u.setKeyUsr( u.key() );
-	u.commit();
-	
-	Group client_group( Group::recordByName( "Client" ) );
-	
-	if( client_group.isRecord() ) {
-		UserGroup ug = UserGroup::recordByUserAndGroup( u, client_group );
-		if( !ug.isRecord() ) {
-			ug.setUser( u );
-			ug.setGroup( client_group );
-			ug.commit();
-		}
-	}
-	return u;
-}
-
 bool User::relatedElement( const Element & el, bool recurse )
 {
 	bool re=false;
