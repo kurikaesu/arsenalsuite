@@ -20,6 +20,7 @@ svnrev.h
 Makefile
 Makefile.Release
 Makefile.Debug
+sipMakefile
 *.swp
 *.exe
 *.exp
