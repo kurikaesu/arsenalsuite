@@ -338,7 +338,8 @@ def create_makefiles(macros):
         sipconfig.ParentMakefile(
             configuration=cfg,
             subdirs=subdirs,
-            installs=installs
+            installs=installs,
+            makefile="sipMakefile"
         ).generate()
 
     if opts.use_qmake:
