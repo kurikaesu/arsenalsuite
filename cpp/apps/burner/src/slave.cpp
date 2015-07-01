@@ -58,7 +58,6 @@
 #include "remotelogserver.h"
 
 #include "builtinburnerplugin.h"
-#include "employee.h"
 #include "group.h"
 #include "groupmapping.h"
 #include "hostservice.h"
@@ -995,7 +994,7 @@ void Slave::reset( bool offline )
          && !mInOwnLogonSession
          && mUseGui
          && mHostStatus.slaveStatus() == "offline" 
-         && Employee(User::currentUser()).isRecord() 
+         && User::currentUser().isRecord()
          && userConfig().readBool( "WarnBeforeMapping", true ) ) {
             MapWarningDialog * mwd = new MapWarningDialog(qobject_cast<QWidget*>(parent()));
             int result = mwd->exec();
@@ -1183,7 +1182,7 @@ void Slave::restoreDefaultMappings()
 {
     if( mIsMapped && !mInOwnLogonSession ) {
         if( mIsMapped 
-                && Employee(User::currentUser()).isRecord() 
+                && User::currentUser().isRecord() 
                 && userConfig().readBool( "WarnBeforeReMapping", true ) 
                 && mUseGui ) {
             ReMapWarningDialog * mwd = new ReMapWarningDialog(qobject_cast<QWidget*>(parent()));

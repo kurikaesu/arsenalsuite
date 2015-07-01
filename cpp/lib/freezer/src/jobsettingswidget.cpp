@@ -21,7 +21,6 @@
 #include "jobsettingswidgetplugin.h"
 #include "jobenvironment.h"
 #include "jobenvironmentwindow.h"
-#include "usernotifydialog.h"
 
 JobSettingsWidget::JobSettingsWidget( QWidget * parent, Mode mode )
 : QWidget( parent )
@@ -555,54 +554,6 @@ void JobSettingsWidget::showEnvironmentWindow()
 	jew.setEnvironment( mUpdatedEnvironment );
 	if( jew.exec() == QDialog::Accepted ){
 		mUpdatedEnvironment = jew.environment();
-		settingsChange();
-	}
-}
-
-void JobSettingsWidget::showEmailErrorListWindow()
-{
-	UserNotifyDialog und(this);
-	und.setMainUserList(mMainUserList);
-	und.setUsers(emailErrorList);
-	if( und.exec() == QDialog::Accepted ) {
-		mNotifyChanged = true;
-		emailErrorList = und.userList();
-		settingsChange();
-	}
-}
-
-void JobSettingsWidget::showJabberErrorListWindow()
-{
-	UserNotifyDialog und(this);
-	und.setMainUserList(mMainUserList);
-	und.setUsers(jabberErrorList);
-	if( und.exec() == QDialog::Accepted ) {
-		mNotifyChanged = true;
-		jabberErrorList = und.userList();
-		settingsChange();
-	}
-}
-
-void JobSettingsWidget::showEmailCompleteListWindow()
-{
-	UserNotifyDialog und(this);
-	und.setMainUserList(mMainUserList);
-	und.setUsers(emailCompleteList);
-	if( und.exec() == QDialog::Accepted ) {
-		mNotifyChanged = true;
-		emailCompleteList = und.userList();
-		settingsChange();
-	}
-}
-
-void JobSettingsWidget::showJabberCompleteListWindow()
-{
-	UserNotifyDialog und(this);
-	und.setMainUserList(mMainUserList);
-	und.setUsers(jabberCompleteList);
-	if( und.exec() == QDialog::Accepted ) {
-		mNotifyChanged = true;
-		jabberCompleteList = und.userList();
 		settingsChange();
 	}
 }

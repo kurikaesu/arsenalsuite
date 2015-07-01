@@ -54,7 +54,6 @@
 #include "tabtoolbar.h"
 #include "threadtasks.h"
 
-#include "usernotifydialog.h"
 #include "joberrorswidgetfactory.h"
 #include "joberrorswidgetplugin.h"
 
@@ -1245,15 +1244,6 @@ void JobListWidget::whoAmI()
 
 	if( u.isRecord() && !mCurrentlyImmitating.contains(u) )
 		mCurrentlyImmitating += u;
-
-	UserNotifyDialog und(this);
-	und.setMainUserList(mMainUserList);
-	und.setUsers(mCurrentlyImmitating);
-	if( und.exec() == QDialog::Accepted ) {
-		foreach( User su, und.userList() )
-			mJobFilter.userList += su.key();
-		mCurrentlyImmitating = und.userList();
-	}
 
 	// Make sure the current user is always included even if they delete their name off the list. Prevents the filter from just selecting everyone
 	if( u.isRecord() && !mJobFilter.userList.contains(u.key()) )
