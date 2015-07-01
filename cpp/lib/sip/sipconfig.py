@@ -38,7 +38,7 @@ _pkg_config = {
     'py_version':         0x020709,
     'qt_framework':       0,
     'sip_bin':            'C:\\Python27\\sip',
-    'sip_config_args':    '-k -p win32-msvc2013',
+    'sip_config_args':    '-p win32-msvc2013',
     'sip_inc_dir':        'C:\\Python27\\include',
     'sip_mod_dir':        'C:\\Python27\\Lib\\site-packages',
     'sip_version':        0x041007,

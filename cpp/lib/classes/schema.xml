@@ -1239,6 +1239,10 @@
    <column name="name"/>
   </index>
  </table>
+ <table name="JobStatusTypes" expireKeyCache="true" className="JobStatusTypes">
+  <column type="uint" methodName="keyJobStatusTypes" name="keyJobStatusTypes" pkey="true"/>
+  <column type="QString" methodName="status" name="status"/>
+ </table>
  <table useCodeGen="true" parent="Job" name="JobSync" expireKeyCache="true" className="JobSync">
   <column type="QString" methodName="direction" name="direction"/>
   <column type="QString" methodName="filesFrom" name="filesFrom"/>
@@ -1981,7 +1985,6 @@
   </index>
  </table>
  <table useCodeGen="true" parent="Element" name="Usr" expireKeyCache="true" className="User">
-  <column type="QDate" methodName="dateoflastlogon" name="dateoflastlogon"/>
   <column type="QString" methodName="email" name="email"/>
   <column type="QString" methodName="password" name="password"/>
   <column type="QString" methodName="homeDir" name="homeDir"/>
@@ -1989,7 +1992,7 @@
   <column type="uint" methodName="logonCount" name="logonCount"/>
   <column type="QString" methodName="FirstName" name="FirstName"/>
   <column type="QString" methodName="LastName" name="LastName"/>
-  <column type="uint" methodName="MiddleName" name="MiddleName"/>
+  <column type="QString" methodName="MiddleName" name="MiddleName"/>
   <column type="QString" methodName="xmppId" name="xmppId"/>
   <index useCache="true" type="single" name="UserName">
    <column name="name"/>

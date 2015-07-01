@@ -56,18 +56,23 @@ User UserDialog::user() const
 {
 	CSET_ENABLE(mChangeSet);
 
-	mUser.setName( mName->text() );
-	mUser.setUsr( mName->text() );
-	if( !mUser.gid() )
-		mUser.setGid( User::nextGID() );
-	if( !mUser.uid() )
-		mUser.setUid( User::nextUID() );
+	mUser.setFirstName( mFirstName->text() );
+	mUser.setMiddleName( mMiddleName->text() );
+	mUser.setLastName( mLastName->text() );
+	mUser.setName( mUserName->text() );
+	mUser.setEmail( mEmail->text() );
+	mUser.setXmppId( mXmpp->text() );
 	return mUser;
 }
 
 void UserDialog::setUser( const User & u )
 {
-	mName->setText( u.name() );
+	mUserName->setText( u.name() );
+	mFirstName->setText( u.firstName() );
+	mMiddleName->setText( u.middleName() );
+	mLastName->setText( u.lastName() );
+	mEmail->setText( u.email() );
+	mXmpp->setText( u.xmppId() );
 	mUser = u;
 	
 	if( mUser.isRecord() )
@@ -108,7 +113,6 @@ void UserDialog::accept()
 			mUser = User();
 			u = user();
 		}
-		u.setKeyUsr( u.key(true) );
 		u.commit();
 	} else {
 		user().commit();
