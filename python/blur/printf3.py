@@ -1,7 +1,11 @@
 def printf(string, args=None, newline=True):
-	if args == None:
-		args = ()
 	if newline:
-		print(string % args)
+		if args == None:
+			print(string)
+		else:
+			print(string % args)
 	else:
-		print(string % args, end=" ")
+		if args == None:
+			print(string, end=" ")
+		else:
+			print(string % args, end=" ")

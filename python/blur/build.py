@@ -189,7 +189,7 @@ class Target:
         
     def run_cmd(self,cmd,shell=None,noThrow=False):
         if self.has_arg('verbose') or self.has_arg('show-commands'):
-            printf(term.render('${BLUE}Running Command${NORMAL}:'), str(cmd))
+            printf(term.render('${BLUE}Running Command${NORMAL}: %s'), str(cmd))
         try:
             (ret,output) = cmd_output(cmd,self,shell)
         except:
