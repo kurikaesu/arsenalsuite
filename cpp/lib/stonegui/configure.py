@@ -94,7 +94,8 @@ def doit():
 	sipconfig.ParentMakefile(
 		configuration=config,
 		installs=installs,
-		subdirs=["sipStonegui"]
+		subdirs=["sipStonegui"],
+        makefile="sipMakefile"
 	).generate()
 
 	# Add the library we are wrapping.  The name doesn't include any platform

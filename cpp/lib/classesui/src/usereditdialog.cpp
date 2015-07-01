@@ -106,17 +106,27 @@ void UserEditDialog::slotNewMethod()
 
 void UserEditDialog::slotEditMethod()
 {
-	
+	UserDialog* ud = new UserDialog(this);
+	if (mCurrent.isValid())
+		ud->setUser(mCurrent);
+	else
+		ud->setUser(User());
+	ud->exec();
+	delete ud;
 }
 
 void UserEditDialog::slotRemoveMethod()
 {
 	mTreeView->current().remove();
+	mCurrent = User();
 }
 
 void UserEditDialog::slotCurrentChanged( const Record & r )
 {
-	mRemoveMethodButton->setEnabled( r.isValid() );
+	bool valid = r.isValid();
+	mRemoveMethodButton->setEnabled( valid );
+	if (valid)
+		mCurrent = r;
 }
 
 void UserEditDialog::accept()

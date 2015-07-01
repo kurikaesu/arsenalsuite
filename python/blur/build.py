@@ -313,6 +313,14 @@ class SipTarget(Target):
 
     def configure_command(self):
         pass
+        
+    def run_make(self, arg_string=''):
+        make_cmd = 'make -f sipMakefile'
+        if 'QMAKESPEC' in os.environ and 'msvc' in os.environ['QMAKESPEC']:
+            make_cmd = 'nmake /f sipMakefile'
+        if arg_string and arg_string[0] != ' ':
+            arg_string = ' ' + arg_string
+        return self.run_cmd(make_cmd + arg_string)
 
     def build_run(self):
         self.check_arg_sanity()
@@ -330,9 +338,10 @@ class SipTarget(Target):
         if self.has_arg("trace"):
             self.config += " -r"
 
-        if self.has_arg('build') or (not os.path.exists(os.getcwd() + 'Makefile') and not self.name.startswith('py') ):
+        if self.has_arg('build') or (not os.path.exists(os.getcwd() + '/sipMakefile') and not self.name.startswith('py') ):
             self.configure_command()
-            self.run_cmd(self.config)
+            if not os.path.exists(os.getcwd() + '/sipMakefile') or not self.has_arg('noreconfigure'):
+                self.run_cmd(self.config)
         if self.has_arg('clean') and not self.CleanDone:
             self.run_make('clean')
             self.CleanDone = True
@@ -415,8 +424,10 @@ class QMakeTarget(Target):
         self.check_arg_sanity()
 
         if not self.ConfigDone and self.has_arg("build"):
-            cmd = "qmake " + self.qmakeargs()
-            self.run_cmd(cmd)
+            if not os.path.exists(os.getcwd() + '/Makefile') or not self.has_arg('noreconfigure'):
+                cmd = "qmake " + self.qmakeargs()
+                self.run_cmd(cmd)
+                
             self.ConfigDone = True
         if self.has_arg("clean") and not self.CleanDone:
             self.run_make('clean')

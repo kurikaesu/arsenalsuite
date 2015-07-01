@@ -38,9 +38,9 @@ if sys.platform == 'win32':
 else:
 	deps = ["sipstatic","pystone","pyclasses","classes","pyburner",ini]
 
-assburner = QMakeTarget("burner",path, "burner.pro", deps)
 abpsmon = QMakeTarget("abpsmon",os.path.join(path,'psmon'), "psmon.pro", ["stonegui","classes",ini])
-Target("burner",path, [abpsmon],[nsi])
+assburner = QMakeTarget("burner",path, "burner.pro", deps, [abpsmon, nsi])
+#Target("burner",path, [abpsmon],[nsi])
 
 if sys.platform=="linux2":
 	rpm = RPMTarget('burnerrpm','burner',path,'../../../rpm/spec/burner.spec.template','1.0',["classesrpm","burner","pyburner","abpsmon"])

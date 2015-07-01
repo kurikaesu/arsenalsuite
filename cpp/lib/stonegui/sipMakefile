@@ -1,0 +1,46 @@
+
+all:
+	cd sipStonegui
+	$(MAKE)
+	@cd ..
+
+install:
+	cd sipStonegui
+	$(MAKE) install
+	@cd ..
+	@if not exist C:\Python27\sip\blur mkdir C:\Python27\sip\blur
+	copy /y sip\busywidget.sip C:\Python27\sip\blur\busywidget.sip
+	copy /y sip\configdbdialog.sip C:\Python27\sip\blur\configdbdialog.sip
+	copy /y sip\extgraphicsscene.sip C:\Python27\sip\blur\extgraphicsscene.sip
+	copy /y sip\exttreewidgetitem.sip C:\Python27\sip\blur\exttreewidgetitem.sip
+	copy /y sip\fieldcheckbox.sip C:\Python27\sip\blur\fieldcheckbox.sip
+	copy /y sip\fieldlineedit.sip C:\Python27\sip\blur\fieldlineedit.sip
+	copy /y sip\fieldspinbox.sip C:\Python27\sip\blur\fieldspinbox.sip
+	copy /y sip\fieldtextedit.sip C:\Python27\sip\blur\fieldtextedit.sip
+	copy /y sip\graphitedialog.sip C:\Python27\sip\blur\graphitedialog.sip
+	copy /y sip\graphiteoptionswidget.sip C:\Python27\sip\blur\graphiteoptionswidget.sip
+	copy /y sip\graphitesource.sip C:\Python27\sip\blur\graphitesource.sip
+	copy /y sip\graphitesourceswidget.sip C:\Python27\sip\blur\graphitesourceswidget.sip
+	copy /y sip\graphitewidget.sip C:\Python27\sip\blur\graphitewidget.sip
+	copy /y sip\htmlhighlighter.sip C:\Python27\sip\blur\htmlhighlighter.sip
+	copy /y sip\lostconnectiondialog.sip C:\Python27\sip\blur\lostconnectiondialog.sip
+	copy /y sip\modelgrouper.sip C:\Python27\sip\blur\modelgrouper.sip
+	copy /y sip\modeliter.sip C:\Python27\sip\blur\modeliter.sip
+	copy /y sip\qvariantcmp.sip C:\Python27\sip\blur\qvariantcmp.sip
+	copy /y sip\recordcombo.sip C:\Python27\sip\blur\recordcombo.sip
+	copy /y sip\recorddelegate.sip C:\Python27\sip\blur\recorddelegate.sip
+	copy /y sip\recorddrag.sip C:\Python27\sip\blur\recorddrag.sip
+	copy /y sip\recordlistmodel.sip C:\Python27\sip\blur\recordlistmodel.sip
+	copy /y sip\recordlistview.sip C:\Python27\sip\blur\recordlistview.sip
+	copy /y sip\recordsupermodel.sip C:\Python27\sip\blur\recordsupermodel.sip
+	copy /y sip\recordtreeview.sip C:\Python27\sip\blur\recordtreeview.sip
+	copy /y sip\richtexteditor.sip C:\Python27\sip\blur\richtexteditor.sip
+	copy /y sip\stonegui.sip C:\Python27\sip\blur\stonegui.sip
+	copy /y sip\supermodel.sip C:\Python27\sip\blur\supermodel.sip
+	@if not exist C:\Python27\Lib\site-packages\blur mkdir C:\Python27\Lib\site-packages\blur
+	copy /y stonegui.dll C:\Python27\Lib\site-packages\blur\stonegui.dll
+
+clean:
+	cd sipStonegui
+	$(MAKE) clean
+	@cd ..

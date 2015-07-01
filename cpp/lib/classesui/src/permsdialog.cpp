@@ -63,9 +63,17 @@ public:
 				break;
 			}
 			case 4:
+			{
 				if( role == Qt::DisplayRole || role == Qt::EditRole )
 					return perm.modify();
 				break;
+			}
+			case 5:
+			{
+				if( role == Qt::DisplayRole || role == Qt::EditRole )
+					return perm.enabled();
+				break;
+			}
 		}
 		return QVariant();
 	}
@@ -99,6 +107,10 @@ public:
 					perm.setModify(v.toBool());
 					break;
 				}
+				case 5:
+				{
+					perm.setEnabled(v.toBool());
+				}
 			}
 			perm.commit();
 			return true;
@@ -122,7 +134,7 @@ PermsDialog::PermsDialog( QWidget * parent )
 	mModel = new RecordSuperModel(mTreeView);
 	new PermissionTranslator(mModel->treeBuilder());
 	mTreeView->setModel(mModel);
-	mModel->setHeaderLabels( QStringList() << "Key" << "User" << "Group" << "Class" << "Modify" );
+	mModel->setHeaderLabels( QStringList() << "Key" << "User" << "Group" << "Class" << "Modify" << "Enabled" );
 	mModel->listen( Permission::table() );
 	connect( mTreeView, SIGNAL( currentChanged( const Record & ) ), SLOT( slotCurrentChanged( const Record & ) ) );
 	connect( mNewMethodButton, SIGNAL( clicked() ), SLOT( slotNewMethod() ) );

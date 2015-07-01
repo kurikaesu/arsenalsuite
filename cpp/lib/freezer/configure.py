@@ -86,7 +86,8 @@ def doit():
 	sipconfig.ParentMakefile(
 		configuration=config,
 		installs=installs,
-		subdirs=["sipFreezer"]
+		subdirs=["sipFreezer"],
+        makefile="sipMakefile"
 	).generate()
 
 	# Add the library we are wrapping.  The name doesn't include any platform

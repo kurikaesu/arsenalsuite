@@ -19,7 +19,7 @@ class ClassesModuleMakefile(pyqtconfig.QtCoreModuleMakefile):
 		if not kw.has_key("qt"):
 			kw["qt"] = ["QtCore", "QtXml", "QtSql","QtNetwork","QtGui"]
 	
-		apply(pyqtconfig.QtCoreModuleMakefile.__init__, (self, ) + args, kw)
+		apply(pyqtconfig.QtCoreModuleMakefile.__init__, (self,) + args, kw)
 
 	# Override target for static builds
 	def finalise(self):
@@ -94,7 +94,8 @@ def doit():
 	sipconfig.ParentMakefile(
 		configuration=config,
 		installs=installs,
-		subdirs=["sipClasses"]
+		subdirs=["sipClasses"],
+        makefile="sipMakefile"
 	).generate()
 
 	# Add the library we are wrapping.  The name doesn't include any platform
