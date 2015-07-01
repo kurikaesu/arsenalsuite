@@ -1,7 +1,6 @@
 
 #include <qdialog.h>
 
-#include "employee.h"
 #include "recordtreeview.h"
 #include "permsdialog.h"
 #include "user.h"

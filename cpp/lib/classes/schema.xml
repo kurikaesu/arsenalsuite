@@ -957,14 +957,23 @@
    <column name="type"/>
   </index>
  </table>
+ <table useCodeGen="true" parent="Job" name="JobHoudini" expireKeyCache="true" className="JobHoudini">
+  <column type="QString" methodName="driver" name="driver"/>
+  <column type="QString" methodName="take" name="take"/>
+  <column type="QString" methodName="seedspec" name="seedspec"/>
+  <column type="QString" methodName="wedgetestnode" name="wedgetestnode"/>
+  <column type="uint" methodName="wedgenumber" name="wedgenumber"/>
+  <column type="QString" methodName="fileNameOriginal" name="fileNameOriginal"/>
+  <column type="uint" methodName="version" name="version"/>
+ </table>
  <table useCodeGen="true" parent="Job" name="JobMantra" expireKeyCache="true" className="JobMantra">
-  <column type="bool" methodName="forceRayTrace" name="forceRayTrace"/>
-  <column type="uint" methodName="geoCacheSize" name="geoCacheSize"/>
-  <column type="uint" methodName="height" name="height"/>
-  <column type="uint" methodName="width" name="width"/>
-  <column type="QString" methodName="qualityFlag" name="qualityFlag"/>
-  <column pluralMethodName="threads" type="uint" methodName="threads" name="threads"/>
-  <column type="uint" methodName="renderQuality" name="renderQuality"/>
+  <column type="bool" methodName="cleanIfds" name="cleanIfds"/>
+  <column type="QString" methodName="seedspec" name="seedspec"/>
+  <column type="QString" methodName="wedgetestnode" name="wedgetestnode"/>
+  <column type="uint" methodName="wedgenumber" name="wedgenumber"/>
+  <column type="QString" methodName="filter" name="filter"/>
+  <column type="QString" methodName="filterargs" name="filterargs"/>
+  <column type="QString" methodName="take" name="take"/>
  </table>
  <table useCodeGen="true" name="JobMapping" expireKeyCache="true" className="JobMapping">
   <column type="uint" methodName="keyJobMapping" name="keyJobMapping" pkey="true"/>

@@ -58,8 +58,6 @@
 #define KEY_WOW64_64KEY 0x0100
 #endif
 
-const char * ABPSMON = "abpsmon.exe";
-
 // Force a "crash" so that we get a backtrace through drmingw
 // qt uses abort in many places when fatal errors are detected
 // which can be caused by memory corruption etc.
@@ -72,10 +70,9 @@ void abrt_handler(int )
 #else // !Q_OS_WIN
 
 #include <unistd.h>
-const char * ABPSMON = "abpsmon";
 
 #endif
-
+const char * ABPSMON = "abpsmon";
 
 // Returns true if there isn't another burner.exe running
 bool startup( bool usePsmon, bool daemonize, bool useSingleProcessMutex )

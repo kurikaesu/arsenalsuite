@@ -43,8 +43,7 @@
 #include "modelgrouper.h"
 #include "qvariantcmp.h"
 #include "recorddrag.h"
-
-#include "employee.h"
+#include "user.h"
 #include "jobdep.h"
 #include "jobhistory.h"
 #include "joboutput.h"

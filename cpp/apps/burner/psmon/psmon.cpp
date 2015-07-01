@@ -43,6 +43,7 @@ int main( int argc, char * argv [] )
 	QString procName = "burner";
 	bool useGUI = getenv( "DISPLAY" ) != 0;
 #endif
+	QString execName = "burner";
 
 	if (!useGUI)
 		procArgs = " -nogui";
@@ -72,7 +73,7 @@ int main( int argc, char * argv [] )
 
 			// try to avoid starting a shitload of processes rapidly
 			if( started.secsTo(QDateTime::currentDateTime()) > 30 ) {
-				QProcess::startDetached( procName+procArgs );
+				QProcess::startDetached( execName+procArgs );
 				started = QDateTime::currentDateTime();
 				crashMailSent = false;
 			}

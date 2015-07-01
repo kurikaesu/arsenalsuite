@@ -24,8 +24,8 @@
 #ifndef USER_DIALOG_H
 #define USER_DIALOG_H
 
-#include "employee.h"
 #include "host.h"
+#include "user.h"
 #include "group.h"
 
 #include "classesui.h"
@@ -50,7 +50,6 @@ public:
 	 * current information in the dialog
 	 **/
 	User user() const;
-	Employee employee() const;
 	
 	/**
 	 * Sets the information in the dialog

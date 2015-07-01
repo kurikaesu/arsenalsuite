@@ -10,7 +10,7 @@
 
 #include "database.h"
 
-#include "employee.h"
+#include "user.h"
 #include "group.h"
 #include "hostservice.h"
 #include "permission.h"

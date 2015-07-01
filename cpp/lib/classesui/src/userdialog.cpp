@@ -54,7 +54,7 @@ UserDialog::UserDialog( QWidget * parent, ChangeSet changeSet )
 
 User UserDialog::user() const
 {
-	CS_ENABLE(mChangeSet);
+	CSET_ENABLE(mChangeSet);
 
 	mUser.setName( mName->text() );
 	mUser.setUsr( mName->text() );
@@ -76,12 +76,12 @@ void UserDialog::setUser( const User & u )
 
 void UserDialog::refreshAssignedHosts()
 {
-	CS_ENABLE(mChangeSet);
+	CSET_ENABLE(mChangeSet);
 }
 
 void UserDialog::slotEditHosts()
 {
-	CS_ENABLE(mChangeSet);
+	CSET_ENABLE(mChangeSet);
 	HostSelector * hs = new HostSelector(this);
 	hs->setHostList( mUser.hosts() );
 	if( hs->exec() == QDialog::Accepted ) {
@@ -98,7 +98,7 @@ void UserDialog::slotEditHosts()
 
 void UserDialog::accept()
 {
-	CS_ENABLE(mChangeSet);
+	CSET_ENABLE(mChangeSet);
 	if( !mUser.isRecord() ) {
 		User u;
 		if( mIsEmp ) {
