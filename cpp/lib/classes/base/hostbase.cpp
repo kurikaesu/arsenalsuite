@@ -286,7 +286,7 @@ void Host::updateHardwareInfo()
 	QRegExp bogoRx("bogomips\\s+: (\\d+)");
 	QRegExp mhzRx("cpu MHz\\s+: (\\d+)");
 	QRegExp cpuCoresRx("cpu cores\\s+: (\\d+)");
-	QRegExp cpuModelRx("model name\\s+: ([\\w() -]+)");
+	QRegExp cpuModelRx("model name\\s+: ([\\w() -@\d\.]+)");
 
 	LOG_3( "trying to get CPU info\n"+cpu );
 	if( mhzRx.indexIn(cpu) != -1 )

@@ -466,6 +466,8 @@ class NSISTarget(Target):
 
     # Only buildable on win32
     def is_buildable(self):
+        if self.has_arg("noinstaller"):
+            return False
         return NSISTarget.CanBuild
 
     def find_nsis(self):
