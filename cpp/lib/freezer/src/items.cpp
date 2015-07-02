@@ -95,6 +95,7 @@ static const ColumnStruct job_columns [] =
 	{ "Suspended",		"Suspended",    140,    28, true, false}, //28
 	{ "Notifications",	"Notifications", 80,     29, true, false}, //29
 	{ "Wait Reason",	"WaitReason",    80,     30, true, false}, //30
+	{ "Revision", 		"Revision", 80, 31, false, true}, //31
 	{ 0, 					0, 					0, 		0, 	false, false }
 };
 
@@ -744,6 +745,7 @@ QVariant JobItem::modelData( const QModelIndex & i, int role ) const
 			case 27: return job.shotName();
 			case 28: return job.suspendedts().toString();
 			case 30: return jobStatus.skipReason().name();
+			case 31: return job.revision();
 		}
 	} else if (role == Qt::TextColorRole )
 		return co ? civ(co->fg) : QVariant();
