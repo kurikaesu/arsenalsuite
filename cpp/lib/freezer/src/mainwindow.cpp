@@ -374,7 +374,7 @@ void MainWindow::saveSettings()
 	ini.popSection();
 
 	ini.pushSection("Assfreezer");
-	ini.writeString("Version",SVN_REVSTR);
+	ini.writeString("Version",VERSION);
 	ini.popSection();
 	
 	saveViews();
@@ -482,7 +482,7 @@ void MainWindow::restoreViews()
 	IniConfig & ini = userConfig();
 
 	ini.pushSection("Assfreezer");
-	bool upgradeMode = ini.readInt( "Version" ) < 10545;
+	bool upgradeMode = false; // No longer necessary to do any upgrades
 	ini.popSection();
 	
 	ini.pushSection("Assfreezer_Saved_Views");
