@@ -167,11 +167,9 @@ QString stoneOptionsHelp()
 	return ret.join("\n");
 }
 
-QString getEnvParameter(const QString& parameterName)
+QString getEnvParameter(const char* param)
 {
 	QString envValue = "";
-	const char* param = parameterName.toStdString().c_str();
-	
 #ifdef Q_OS_WIN
 	size_t requiredSize;
 	

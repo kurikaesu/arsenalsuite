@@ -82,7 +82,7 @@ STONE_EXPORT void initStone( const QStringList & args );
 STONE_EXPORT QString stoneOptionsHelp();
 
 /** \brief Returns a specified environment variable's value */
-STONE_EXPORT QString getEnvParameter(const QString& parameterName);
+STONE_EXPORT QString getEnvParameter(const char* parameterName);
 
 /** \brief Opens config file with 'configName' */
 STONE_EXPORT bool initConfig( const QString & configName, const QString & logfile = QString() );
