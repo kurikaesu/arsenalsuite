@@ -15,7 +15,9 @@
 #include "user.h"
 #include "usergroup.h"
 
+#include "dialogfactory.h"
 #include "hostselector.h"
+#include "userselectiondialog.h"
 
 #include "jobsettingswidget.h"
 #include "jobsettingswidgetplugin.h"
@@ -393,6 +395,74 @@ QString JobSettingsWidget::buildNotifyString( UserList emailList, UserList jabbe
 	return notifyString;
 }
 
+void JobSettingsWidget::showEmailErrorListWindow()
+{
+	UserList available = User::select();
+	for (UserIter userit = emailErrorList.begin(); userit != emailErrorList.end(); ++userit)
+		available.remove((*userit));
+	
+	UserSelectionDialog* usd = new UserSelectionDialog(this, available, emailErrorList);
+	if (usd->exec() == QDialog::Accepted)
+	{
+		emailErrorList = usd->selectedUsers();
+		mNotifyChanged = true;
+		settingsChange();
+	}
+	
+	delete usd;
+}
+
+void JobSettingsWidget::showJabberErrorListWindow()
+{
+	UserList available = User::select();
+	for (UserIter userit = jabberErrorList.begin(); userit != jabberErrorList.end(); ++userit)
+		available.remove((*userit));
+	
+	UserSelectionDialog* usd = new UserSelectionDialog(this, available, jabberErrorList);
+	if (usd->exec() == QDialog::Accepted)
+	{
+		jabberErrorList = usd->selectedUsers();
+		mNotifyChanged = true;
+		settingsChange();
+	}
+	
+	delete usd;
+}
+
+void JobSettingsWidget::showEmailCompleteListWindow()
+{
+	UserList available = User::select();
+	for (UserIter userit = emailCompleteList.begin(); userit != emailCompleteList.end(); ++userit)
+		available.remove((*userit));
+	
+	UserSelectionDialog* usd = new UserSelectionDialog(this, available, emailCompleteList);
+	if (usd->exec() == QDialog::Accepted)
+	{
+		emailCompleteList = usd->selectedUsers();
+		mNotifyChanged = true;
+		settingsChange();
+	}
+	
+	delete usd;
+}
+
+void JobSettingsWidget::showJabberCompleteListWindow()
+{
+	UserList available = User::select();
+	for (UserIter userit = jabberCompleteList.begin(); userit != jabberCompleteList.end(); ++userit)
+		available.remove((*userit));
+	
+	UserSelectionDialog* usd = new UserSelectionDialog(this, available, jabberCompleteList);
+	if (usd->exec() == QDialog::Accepted)
+	{
+		jabberCompleteList = usd->selectedUsers();
+		mNotifyChanged = true;
+		settingsChange();
+	}
+	
+	delete usd;
+}
+
 QString updateNotifyMethod( const QString & original, Qt::CheckState jabber, Qt::CheckState email )
 {
 	QStringList parts = original.split(":");
@@ -502,6 +572,7 @@ void JobSettingsWidget::applySettings()
 			j.setNotifyOnComplete( notifyOnCompleteString );
 			mSelectedJobs.update(j);
 		}
+		mNotifyChanged = false;
 	}
 
 	if( mPrioritySpin->changed() )

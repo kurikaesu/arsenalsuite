@@ -61,6 +61,10 @@ public slots:
 	void buildServiceTree();
 	void saveServiceTree();
 
+	void showEmailErrorListWindow();
+	void showJabberErrorListWindow();
+	void showEmailCompleteListWindow();
+	void showJabberCompleteListWindow();
 signals:
 	void customJobSettingsWidgetCreated( CustomJobSettingsWidget * );
 

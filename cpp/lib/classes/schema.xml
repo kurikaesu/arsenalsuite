@@ -722,6 +722,7 @@
   <column docs="Contains a bit set of flags toggled on the job." type="uint" methodName="toggleFlags" name="toggleFlags"/>
   <column type="int" methodName="midTaskNumber" name="midTaskNumber"/>
   <column docs="For fixed packet size jobs this option will allow the manager to reduce the packet size in order to utilize idle hosts." type="uint" methodName="allowSmallerPackets" name="allowSmallerPackets"/>
+  <column type="QString" methodName="revision" name="revision"/>
  </table>
  <table useCodeGen="true" parent="Job" name="Job3Delight" expireKeyCache="true" className="Job3Delight">
   <column type="uint" methodName="width" name="width"/>
