@@ -236,18 +236,3 @@ void DialogFactory::editPermissions( QWidget * pw )
 	pm->exec();
 	delete pm;
 }
-
-UserList* DialogFactory::selectUsers( QWidget * pw, const UserList& available, const UserList& selected )
-{
-	UserList* returnVal = 0;
-	if (!pw && qApp->activeWindow())
-		pw = qApp->activeWindow();
-	UserSelectionDialog* usd = new UserSelectionDialog(pw, available, selected);
-	if (usd->exec() == QDialog::Accepted)
-	{
-		returnVal = new UserList(usd->selectedUsers());
-	}
-	delete usd;
-	
-	return returnVal;
-}

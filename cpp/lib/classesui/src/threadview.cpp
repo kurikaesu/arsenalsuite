@@ -289,7 +289,7 @@ ThreadViewInternal::ThreadViewInternal( QWidget * parent )
 	readConfig();
 
 	ThreadModel * tm = new ThreadModel( mThreadView );
-	tm->setHeaderLabels( QStringList() << "Subject" << "From" << "Date" << "Body" << "To" );
+	tm->setHeaderLabels( QStringList() << "Subject" << "Author" << "Date" << "Body" );
 	mThreadView->setModel( tm );
 	mThreadView->setColumnAutoResize( 0, true );
 
