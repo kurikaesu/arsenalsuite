@@ -64,6 +64,12 @@ sipconfig.ParentMakefile(
     makefile="sipMakefile"
 ).generate()
 
+sipconfig.ParentMakefile(
+	configuration=config,
+	subdirs=["sipBurner"],
+    makefile="sipMakefileStatic"
+).generate()
+
 # Add the library we are wrapping.  The name doesn't include any platform
 # specific prefixes or extensions (e.g. the "lib" prefix on UNIX, or the
 # ".dll" extension on Windows).

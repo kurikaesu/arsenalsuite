@@ -16,6 +16,7 @@
 #include "permission.h"
 #include "usergroup.h"
 #include "jobstatus.h"
+#include "jobstatustype.h"
 
 #include "threadtasks.h"
 
@@ -89,8 +90,17 @@ void JobListTask::run()
 		//LOG_5( "Non-Project Jobs: " + QString(mJobFilter.showNonProjectJobs ? "true" : "false") );
 		//LOG_5( "User List: " + mJobFilter.userList.join(",") );
 
-		if( mJobFilter.statusToShow.size() > 0 && mJobFilter.statusToShow.size() != 9 )
-			e = Job::c.Status.in(mJobFilter.statusToShow);
+		Expression se;
+		JobStatusTypeList jstl = JobStatus::select( se.orderBy(JobStatus::c.Key, Expression::Ascending) );
+		
+		if( mJobFilter.statusToShow.size() > 0 && mJobFilter.statusToShow.size() != jstl.size() )
+		{
+			JobStatusTypeList statsToShow;
+			foreach (QString status, mJobFilter.statusToShow)
+				statsToShow.append(JobStatusType::statusTypeByStatus(status));
+			
+			e = Job::c.Status.in(statsToShow);
+		}
 
 		if( mJobFilter.userList.size() > 0 )
 			e &= Job::c.User.in(mJobFilter.userList);

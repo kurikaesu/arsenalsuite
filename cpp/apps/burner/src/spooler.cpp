@@ -44,6 +44,7 @@
 #include "config.h"
 #include "job.h"
 #include "jobtype.h"
+#include "jobstatustype.h"
 #include "path.h"
 #include "maindialog.h"
 #include "process.h"
@@ -508,7 +509,7 @@ void Spooler::cleanup()
 		LOG_3( "Spooler::cleanup: Checking Job: " + j.name() );
 		j.reload();
 		if( !j.isRecord() || j.status() == "done" || j.status() == "deleted" || j.status() == "suspended" ) {
-			LOG_3( "Spooler::cleanup: Job has status " + (j.isRecord() ? j.status() : QString("deleted")) + ", Deleting Spool Item" );
+			LOG_3( "Spooler::cleanup: Job has status " + (j.isRecord() ? j.status().status() : QString("deleted")) + ", Deleting Spool Item" );
 			si->deref();
 		}
 	}

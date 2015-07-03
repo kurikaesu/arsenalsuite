@@ -36,9 +36,8 @@ QStringList BuiltinBurnerPlugin::jobTypes()
 	return QStringList();
 }
 
-JobBurner * BuiltinBurnerPlugin::createBurner( const JobAssignment & jobAssignment, Slave * slave )
+JobBurner * BuiltinBurnerPlugin::createBurner( const JobAssignment &, Slave * )
 {
-	//QString jt = jobAssignment.job().jobType().name();
 	return 0;
 }
 

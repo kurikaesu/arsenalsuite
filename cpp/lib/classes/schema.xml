@@ -652,7 +652,9 @@
   <column noDefaultSelect="true" type="QString" methodName="hostList" name="hostList"/>
   <column type="QString" methodName="name" name="job"/>
   <column type="QString" methodName="outputPath" name="outputPath"/>
-  <column type="QString" methodName="status" name="status"/>
+  <column type="uint" methodName="status" name="status">
+   <fkey indexDeleteMode="DoNothingOnDelete" table="JobStatusType" type="multi" hasIndex="false"/>
+  </column>
   <column type="uint" methodName="key" name="keyJob" pkey="true"/>
   <column type="uint" methodName="deleteOnComplete" name="deleteOnComplete"/>
   <column type="uint" methodName="priority" name="priority"/>

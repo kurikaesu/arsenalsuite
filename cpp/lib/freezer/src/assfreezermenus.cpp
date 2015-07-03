@@ -24,6 +24,7 @@
 #include "jobtaskassignment.h"
 #include "user.h"
 #include "usergroup.h"
+#include "jobstatustype.h"
 
 #include "hostdialog.h"
 #include "hosthistoryview.h"
@@ -223,6 +224,19 @@ void StatusFilterMenu::slotAboutToShow()
 		mStatusShowAll->setCheckable( true );
 		mStatusShowNone = new QAction( "Show None", this );
 		mStatusShowNone->setCheckable( true );
+		
+		Expression e;
+		JobStatusTypeList statusTypes = JobStatusType::select( e.orderBy(JobStatusType::c.Key, Expression::Ascending) );
+			
+		foreach (JobStatusType jst, statusTypes)
+		{
+			QAction* act = new QAction(jst.status(), this);
+			act->setCheckable(true);
+			if (mJobList->mJobFilter.statusToShow.contains(jst.status().toLower()))
+				act->setChecked(true);
+			mStatusActions.append(act);
+		}
+		/*
 		for(int i=0;stats[i]; i++){
 			QString stat(stats[i]);
 			QAction * act = new QAction( stat, this );
@@ -231,6 +245,7 @@ void StatusFilterMenu::slotAboutToShow()
 				act->setChecked(true);
 			mStatusActions.append( act );
 		}
+		*/
 		addAction( mStatusShowAll );
 		addAction( mStatusShowNone );
 		addSeparator();
@@ -675,7 +690,7 @@ void FreezerJobMenu::slotActionTriggered( QAction * action )
 					}
 				}
 				if( status == "ready" ) {
-					j.setStatus( status );
+					j.setStatus( JobStatusType::statusTypeByStatus(status) );
 					j.commit();
 				}
 			}
@@ -1053,7 +1068,7 @@ void FreezerTaskMenu::slotAboutToShow()
 	bool enabled = !mTasks.isEmpty();
 
 		//&& (User::currentUser() ==  mJobList->currentJob().user() || User::hasPerms( "JobTask", true ) ) )
-	if( (QStringList() << "ready" << "started" << "done" << "suspended").contains(mJobList->currentJob().status()) )
+	if( (QStringList() << "ready" << "started" << "done" << "suspended").contains(mJobList->currentJob().status().status()) )
 	{
 		mRerenderFramesAction = addAction( "Rerender Frame" + QString(mTasks.size()>1 ? "s" : "") );
 		mRerenderFramesAction->setEnabled( enabled );
@@ -1119,7 +1134,7 @@ void FreezerTaskMenu::slotActionTriggered( QAction * action )
 			tasks.commit();
 	
 			if( j.status() == "done" ) {
-				j.setStatus( "started" );
+				j.setStatus( JobStatusType::statusTypeByStatus("started") );
 				j.commit();
 			}
 		

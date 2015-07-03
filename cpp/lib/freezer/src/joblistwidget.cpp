@@ -31,6 +31,7 @@
 #include "service.h"
 #include "user.h"
 #include "usergroup.h"
+#include "jobstatustype.h"
 
 #include "busywidget.h"
 #include "filteredit.h"
