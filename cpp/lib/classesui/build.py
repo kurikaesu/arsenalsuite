@@ -2,17 +2,12 @@
 from blur.build import *
 
 path = os.path.dirname(os.path.abspath(__file__))
-sippath = os.path.join(path,'sipClassesui')
 
 post_deps = []
 
 # Install the libraries
 if sys.platform != 'win32':
 	LibInstallTarget("classesuiinstall",path,"classesui","/usr/lib/")
-
-try:
-	os.mkdir(sippath)
-except: pass
 
 # Python module targets, both depend on classes
 pc = SipTarget("pyclassesui",path)

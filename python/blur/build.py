@@ -318,6 +318,8 @@ class SipTarget(Target):
         make_cmd = 'make -f sipMakefile'
         if 'QMAKESPEC' in os.environ and 'msvc' in os.environ['QMAKESPEC']:
             make_cmd = 'nmake /f sipMakefile'
+        if self.Static:
+            make_cmd += "Static"
         if arg_string and arg_string[0] != ' ':
             arg_string = ' ' + arg_string
         return self.run_cmd(make_cmd + arg_string)
@@ -338,9 +340,12 @@ class SipTarget(Target):
         if self.has_arg("trace"):
             self.config += " -r"
 
-        if self.has_arg('build') or (not os.path.exists(os.getcwd() + '/sipMakefile') and not self.name.startswith('py') ):
+        makefileName = "sipMakefile"
+        if self.Static:
+            makefileName += "Static"
+        if self.has_arg('build') or (not os.path.exists(os.getcwd() + '/' + makefileName) and not self.name.startswith('py') ):
             self.configure_command()
-            if not os.path.exists(os.getcwd() + '/sipMakefile') or not self.has_arg('noreconfigure'):
+            if not os.path.exists(os.getcwd() + '/' + makefileName) or not self.has_arg('noreconfigure'):
                 self.run_cmd(self.config)
         if self.has_arg('clean') and not self.CleanDone:
             self.run_make('clean')

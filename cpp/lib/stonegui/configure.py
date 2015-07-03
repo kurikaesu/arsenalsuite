@@ -40,6 +40,20 @@ def doit():
 	config = pyqtconfig.Configuration()
 	config.pyqt_modules = []
 	config.__dict__["AR"] = "ar r"
+    
+	sipOutputDir = "sipStonegui"
+	if opt_static == 1:
+		sipOutputDir += "Static"
+		
+	path = os.path.dirname(os.path.abspath(__file__))
+	
+	try:
+		os.mkdir(os.path.join(path,sipOutputDir))
+	except: pass
+        
+	makefileName = "sipMakefile"
+	if opt_static == 1:
+		makefileName += "Static"
 
 	# Get the extra SIP flags needed by the imported qt module.  Note that
 	# this normally only includes those flags (-x and -t) that relate to SIP's
@@ -57,7 +71,7 @@ def doit():
 				sip_bin = "..\\sip\\sipgen\\sip.exe"
 		else:
 				sip_bin = config.sip_bin
-		ret = os.system(" ".join([sip_bin, "-e", "-k", "-c", "sipStonegui", "-b", "sipStonegui/" + build_file, "-I", config.pyqt_sip_dir, "-I", config.default_sip_dir, "-I", config.sip_mod_dir, config.pyqt_sip_flags, "sip/stonegui.sip"]))
+		ret = os.system(" ".join([sip_bin, "-e", "-k", "-c", sipOutputDir, "-b", sipOutputDir+"/" + build_file, "-I", config.pyqt_sip_dir, "-I", config.default_sip_dir, "-I", config.sip_mod_dir, config.pyqt_sip_flags, "sip/stonegui.sip"]))
 		if ret:
 			sys.exit(ret%255)
 
@@ -72,7 +86,7 @@ def doit():
 		# Use the sip mod dir instead to adhere to the DESTDIR settings
 		install_dir=os.path.join(config.sip_mod_dir,"blur"),
 #		install_dir=os.path.join(config.default_mod_dir,"blur"),
-		dir="sipStonegui"
+		dir=sipOutputDir
 	)
 
 	installs = []
@@ -94,8 +108,8 @@ def doit():
 	sipconfig.ParentMakefile(
 		configuration=config,
 		installs=installs,
-		subdirs=["sipStonegui"],
-        makefile="sipMakefile"
+		subdirs=[sipOutputDir],
+        makefile=makefileName
 	).generate()
 
 	# Add the library we are wrapping.  The name doesn't include any platform

@@ -1240,7 +1240,7 @@
    <column name="name"/>
   </index>
  </table>
- <table name="JobStatusType" expireKeyCache="true" className="JobStatusType">
+ <table useCodeGen="true" name="JobStatusType" expireKeyCache="true" className="JobStatusType">
   <column displayName="Key Job Status Type" pluralMethodName="keyJobStatusTypes" type="uint" methodName="key" name="keyJobStatusType" pkey="true"/>
   <column type="QString" methodName="status" name="status"/>
  </table>

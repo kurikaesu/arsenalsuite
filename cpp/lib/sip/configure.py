@@ -335,11 +335,14 @@ def create_makefiles(macros):
     else:
         sipconfig.inform("Creating top level Makefile...")
 
+        makefileName = "sipMakefile"
+        if opts.static:
+            makefileName += "Static"
         sipconfig.ParentMakefile(
             configuration=cfg,
             subdirs=subdirs,
             installs=installs,
-            makefile="sipMakefile"
+            makefile=makefileName
         ).generate()
 
     if opts.use_qmake:

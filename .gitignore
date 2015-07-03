@@ -7,13 +7,19 @@
 *.dylib
 .out
 sipStone
+sipStoneStatic
 sipStonegui
+sipStoneguiStatic
 sipClasses
+sipClassesStatic
 sipClassesui
+sipClassesuiStatic
 sipBach
 sipBurner
 sipFreezer
+sipFreezerStatic
 sipAbsubmit
+sipAbsubmitStatic
 autocore
 svnrev.h
 *-svnrev.nsi
@@ -21,6 +27,7 @@ Makefile
 Makefile.Release
 Makefile.Debug
 sipMakefile
+sipMakefileStatic
 *.swp
 *.exe
 *.exp
@@ -46,3 +53,4 @@ qrc_freezer.cpp
 qrc_burner.cpp
 *.manifest
 *.pyd.manifest
+sipconfig.py

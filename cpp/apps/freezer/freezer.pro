@@ -79,22 +79,22 @@ contains( DEFINES, USE_IMAGE_MAGICK ) {
 
 # Python modules
 Release:win32 {
-	LIBS+=-L../../lib/freezer/sipFreezer -lpyFreezer
-	LIBS+=-L../../lib/classes/sipClasses -lpyClasses
-	LIBS+=-L../../lib/classesui/sipClassesui -lpyClassesui
-	LIBS+=-L../../lib/stone/sipStone -lpyStone
-	LIBS+=-L../../lib/stonegui/sipStonegui -lpyStonegui
-	LIBS+=-L../../lib/absubmit/sipAbsubmit -lpyabsubmit
+	LIBS+=-L../../lib/freezer/sipFreezerStatic -lpyFreezer
+	LIBS+=-L../../lib/classes/sipClassesStatic -lpyClasses
+	LIBS+=-L../../lib/classesui/sipClassesuiStatic -lpyClassesui
+	LIBS+=-L../../lib/stone/sipStoneStatic -lpyStone
+	LIBS+=-L../../lib/stonegui/sipStoneguiStatic -lpyStonegui
+	LIBS+=-L../../lib/absubmit/sipAbsubmitStatic -lpyabsubmit
 	LIBS+=-L../../lib/sip/siplib -lsip
 }
 
 Debug:win32 {
-	LIBS+=-L../../lib/freezer/sipFreezer -lpyFreezer_d
-	LIBS+=-L../../lib/classes/sipClasses -lpyClasses_d
-	LIBS+=-L../../lib/classesui/sipClassesui -lpyClassesui_d
-	LIBS+=-L../../lib/stone/sipStone -lpyStone_d
-	LIBS+=-L../../lib/stonegui/sipStonegui -lpyStonegui_d
-	LIBS+=-L../../lib/absubmit/sipAbsubmit -lpyAbsubmit_d
+	LIBS+=-L../../lib/freezer/sipFreezerStatic -lpyFreezer_d
+	LIBS+=-L../../lib/classes/sipClassesStatic -lpyClasses_d
+	LIBS+=-L../../lib/classesui/sipClassesuiStatic -lpyClassesui_d
+	LIBS+=-L../../lib/stone/sipStoneStatic -lpyStone_d
+	LIBS+=-L../../lib/stonegui/sipStoneguiStatic -lpyStonegui_d
+	LIBS+=-L../../lib/absubmit/sipAbsubmitStatic -lpyAbsubmit_d
 	LIBS+=-L../../lib/sip/siplib -lsip_d
 }
 

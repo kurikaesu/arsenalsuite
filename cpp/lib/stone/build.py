@@ -5,10 +5,6 @@ from blur.build import *
 path = os.path.dirname(os.path.abspath(__file__))
 sippath = os.path.join(path,'sipStone')
 
-try:
-    os.mkdir(sippath)
-except: pass
-
 # Install the libraries
 if sys.platform != 'win32':
 	LibInstallTarget("stoneinstall",path,"stone","/usr/lib/")
