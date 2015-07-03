@@ -54,3 +54,4 @@ qrc_burner.cpp
 *.manifest
 *.pyd.manifest
 sipconfig.py
+ng_schema.xml
