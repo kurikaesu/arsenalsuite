@@ -2,6 +2,7 @@
 #include "jobdeptable.h"
 #include "job.h"
 #include "jobdepbase.h"
+#include "jobstatustype.h"
 
 JobDepTrigger::JobDepTrigger()
 : Trigger( Trigger::PostInsertTrigger | Trigger::PostDeleteTrigger )
@@ -16,7 +17,7 @@ void JobDepTrigger::postInsert( RecordList jobDeps )
 	JobList toCommit;
 	foreach( JobDep jd, jobDeps ) {
 		Job j = jd.job();
-		if( (QStringList() << "ready" << "started").contains( j.status() ) ) {
+		if( (QStringList() << "ready" << "started").contains( j.status().status() ) ) {
 			JobList deps = JobDep::recordsByJob( j ).deps();
 			if( !deps.isEmpty() && deps.filter("status",QRegExp("(done|deleted)")).size() < deps.size() ) {
 				toCommit += j;
@@ -38,7 +39,7 @@ void JobDepTrigger::postDelete( RecordList jobDeps )
 		if( j.status() == "holding" ) {
 			JobList deps = JobDep::recordsByJob( j ).deps();
 			if( deps.isEmpty() || deps.filter("status",QRegExp("(done|deleted)")).size() == deps.size() ) {
-				j.setStatus( "ready" );
+				j.setStatus( JobStatusType::select("status='ready'")[0]);
 				toCommit += j;
 			}
 		}

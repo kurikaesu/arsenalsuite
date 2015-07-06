@@ -3,11 +3,6 @@ import os
 from blur.build import *
 
 path = os.path.dirname(os.path.abspath(__file__))
-sippath = os.path.join(path,'sipFreezer')
-
-try:
-    os.mkdir(sippath)
-except: pass
 
 rev_path = os.path.join(path,'../..')
 

@@ -24,7 +24,7 @@ try:
 	pos = sys.argv.index('-config')
 	reaperConfig = sys.argv[pos+1]
 except: pass
-dbConfig = '/etc/ab/db.ini'
+dbConfig = '/etc/ab/ab.ini'
 try:
 	pos = sys.argv.index('-dbconfig')
 	dbConfig = sys.argv[pos+1]
@@ -141,7 +141,7 @@ def ensureSpoolSpace(requiredPercent):
 		if not jobs.isEmpty():
 			job = jobs[0]
 			print "Setting Job %s to deleted and removing files to free disk space" % (job.name())
-			job.setStatus('deleted')
+			job.setStatus(JobStatus.statusTypeByStatus('deleted'))
 			cleanupJob(job)
 			job.setCleaned(True)
 			job.commit()
@@ -176,7 +176,7 @@ def checkNewJob(job):
             status = 'holding'
     if job.status() == 'verify-suspended':
         status = 'suspended'
-    job.setStatus(status)
+    job.setStatus(JobStatus.statusTypeByStatus(status))
 
     print "New Job %s appears ready, running through plug-ins" % ( job.name() )
     for key in sorted(VerifierPluginFactory().sVerifierPlugins.keys()):
@@ -193,7 +193,7 @@ def checkNewJob(job):
     return True
 
 def retrieveVerifiable():
-	jobList = Job.select("status IN ('verify','verify-suspended')", [], True)
+	jobList = Job.select("WHERE status IN (SELECT keyjobstatustype FROM jobstatustype WHERE status in ('verify','verify-suspended'))", [], True)
 	if not jobList.isEmpty():
 		JobStatus.select("fkeyjob IN ("+jobList.keyString()+")")
 	return jobList

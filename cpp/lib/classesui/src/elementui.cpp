@@ -5,7 +5,6 @@
 
 #include "assettype.h"
 #include "elementstatus.h"
-#include "employee.h"
 
 #include "elementui.h"
 
@@ -28,22 +27,10 @@ QPixmap loadAndSize( const QString & fn, const QSize & size )
 QPixmap ElementUi::image( const QSize & size ) const
 {
 	QString name;
-	Employee emp(mElement);
-	
-	// if it is an employee we get the employee picture
-	// Only show the employees face for larger icons
-	if( emp.isRecord() && (qMin(size.width(),size.height()) > 20) )
-	{
-		name = "headshots/" + emp.firstName().toLower() + "_" + emp.lastName().toLower() + ".jpg";
-	}
-	
-	// if it is not an employee first we try to look for an icon that matches it's element type
-	if( !emp.isRecord() || name.isEmpty() || !QFile::exists("images/"+name) ) {
-		if( mElement.assetType().isRecord() )
-			name = mElement.assetType().name().toLower() + ".png";
-		else
-			name = mElement.elementType().name().toLower() + ".png";
-	}
+	if( mElement.assetType().isRecord() )
+		name = mElement.assetType().name().toLower() + ".png";
+	else
+		name = mElement.elementType().name().toLower() + ".png";
 
 	name = name.replace( ' ', '_' );
 

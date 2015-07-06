@@ -292,7 +292,7 @@ protected:
 	ChangeSet::ReadMode mReadMode, mReadModeRestore;
 };
 
-#define CS_ENABLE(changeset) ChangeSetEnabler _cse(changeset);
+#define CSET_ENABLE(changeset) ChangeSetEnabler _cse(changeset);
 
 /**
  *  This class represents a sort of proxy in front of either

@@ -51,7 +51,6 @@
 
 #include "element.h"
 #include "elementui.h"
-#include "employee.h"
 #include "task.h"
 #include "thread.h"
 #include "threadnotify.h"
@@ -290,7 +289,7 @@ ThreadViewInternal::ThreadViewInternal( QWidget * parent )
 	readConfig();
 
 	ThreadModel * tm = new ThreadModel( mThreadView );
-	tm->setHeaderLabels( QStringList() << "Subject" << "From" << "Date" << "Body" << "To" );
+	tm->setHeaderLabels( QStringList() << "Subject" << "Author" << "Date" << "Body" );
 	mThreadView->setModel( tm );
 	mThreadView->setColumnAutoResize( 0, true );
 
@@ -497,7 +496,7 @@ void ThreadViewInternal::slotAddNote( const Record & record, const Thread & repl
         j = mJobs[0];
 
 	AddNoteDialog * d = new AddNoteDialog( this );
-	d->setElement( el );
+	//d->setElement( el );
 	//d->setJob( j );
     d->setJobs( mJobs );
 	d->setReplyTo( replyTo );

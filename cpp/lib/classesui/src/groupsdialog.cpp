@@ -40,7 +40,7 @@ void UserGroupItem::setup( const Record & r, const QModelIndex & )
 
 QVariant UserGroupItem::modelData( const QModelIndex & i, int role )
 {
-	CS_ENABLE(changeSet(i));
+	CSET_ENABLE(changeSet(i));
 	int col = i.column();
 	if( col == 0 && role == Qt::CheckStateRole ) {
 		return ug.isRecord() ? Qt::Checked : Qt::Unchecked;
@@ -51,7 +51,7 @@ QVariant UserGroupItem::modelData( const QModelIndex & i, int role )
 
 bool UserGroupItem::setModelData( const QModelIndex & i, const QVariant & v, int role )
 {
-	CS_ENABLE(changeSet(i));
+	CSET_ENABLE(changeSet(i));
 	int col = i.column();
 	if( col == 0 && role == Qt::CheckStateRole ) {
 		Qt::CheckState cs = Qt::CheckState(v.toInt());
@@ -73,7 +73,7 @@ Qt::ItemFlags UserGroupItem::modelFlags( const QModelIndex & i )
 
 int UserGroupItem::compare( const QModelIndex & idx, const QModelIndex & idx2, int column, bool asc )
 {
-	CS_ENABLE(changeSet(idx));
+	CSET_ENABLE(changeSet(idx));
 	int diff = int(ug.isRecord()) - int(UserGroupTranslator::data(idx2).ug.isRecord());
 	return diff ? diff : ItemBase::compare(idx,idx2,column,asc);
 }
@@ -115,7 +115,7 @@ void GroupsDialog::reset()
 
 void GroupsDialog::setUser( const User & u )
 {
-	CS_ENABLE(mChangeSet);
+	CSET_ENABLE(mChangeSet);
 	reset();
 	mUser = u;
 	UserGroupList ugl = UserGroup::recordsByUser( u );
@@ -137,7 +137,7 @@ User GroupsDialog::user()
 
 void GroupsDialog::newGroup()
 {
-	CS_ENABLE(mChangeSet);
+	CSET_ENABLE(mChangeSet);
 	QString groupName = QInputDialog::getText( this, "New Group", "Enter the Group Name:" );
 	if( groupName.isEmpty() )
 		return;

@@ -11,6 +11,7 @@
 #include "hosterrorwindow.h"
 #include "items.h"
 #include "threadtasks.h"
+#include "jobstatustype.h"
 
 HostErrorWindow::HostErrorWindow( QWidget * parent )
 : QMainWindow( parent )

@@ -43,8 +43,7 @@
 #include "modelgrouper.h"
 #include "qvariantcmp.h"
 #include "recorddrag.h"
-
-#include "employee.h"
+#include "user.h"
 #include "jobdep.h"
 #include "jobhistory.h"
 #include "joboutput.h"
@@ -57,6 +56,7 @@
 #include "service.h"
 #include "thread.h"
 #include "joberror.h"
+#include "jobstatustype.h"
 
 #include "afcommon.h"
 #include "items.h"
@@ -96,6 +96,7 @@ static const ColumnStruct job_columns [] =
 	{ "Suspended",		"Suspended",    140,    28, true, false}, //28
 	{ "Notifications",	"Notifications", 80,     29, true, false}, //29
 	{ "Wait Reason",	"WaitReason",    80,     30, true, false}, //30
+	{ "Revision", 		"Revision", 80, 31, false, true}, //31
 	{ 0, 					0, 					0, 		0, 	false, false }
 };
 
@@ -667,7 +668,7 @@ void JobItem::setup( const Record & r, const QModelIndex & idx ) {
 	
 	healthIsNull = jobStatus.getValue( "health" ).isNull();
 	done = QString("%1 / %2").arg( jobStatus.tasksDone() ).arg( jobStatus.tasksCount() - jobStatus.tasksCancelled() );
-	QString status = job.status();
+	QString status = job.status().status();
 	hostsOnJob = QString::number( adjustedHostsOnJob(status,jobStatus) );
 	priority = QString::number( job.priority() );
 	if( job.priority() <= 20 ) {
@@ -717,7 +718,7 @@ QVariant JobItem::modelData( const QModelIndex & i, int role ) const
 	if( role == Qt::DisplayRole ) {
 		switch( col ) {
 			case 0: return job.name();
-			case 1: return job.status();
+			case 1: return job.status().status();
 			case 2: return "";
 			case 3: return done;
 			case 4: return userName;
@@ -745,6 +746,7 @@ QVariant JobItem::modelData( const QModelIndex & i, int role ) const
 			case 27: return job.shotName();
 			case 28: return job.suspendedts().toString();
 			case 30: return jobStatus.skipReason().name();
+			case 31: return job.revision();
 		}
 	} else if (role == Qt::TextColorRole )
 		return co ? civ(co->fg) : QVariant();
@@ -813,7 +815,7 @@ int JobItem::compare( const QModelIndex & a, const QModelIndex & b, int col, boo
 
 	JobItem & other = JobTranslator::data(b);
 	if( col == 1 ) {
-		return compareRetI( statusSortKey( job.status() ), statusSortKey( other.job.status() ) );
+		return compareRetI( statusSortKey( job.status().status() ), statusSortKey( other.job.status().status() ) );
 	} else if( col == 2 ) {
 		float other_done = other.jobStatus.tasksCount() ? other.jobStatus.tasksDone() / float(other.jobStatus.tasksCount()) : 0;
 		float done = jobStatus.tasksCount() ? jobStatus.tasksDone() / float(jobStatus.tasksCount()) : 0;
@@ -835,7 +837,7 @@ int JobItem::compare( const QModelIndex & a, const QModelIndex & b, int col, boo
 	} else if( col == 8 )
 		return compareRetI( job.submittedts(), other.job.submittedts() );
 	else if( col == 5 )
-		return compareRetI( adjustedHostsOnJob(job.status(),jobStatus), adjustedHostsOnJob(other.job.status(),other.jobStatus) );
+		return compareRetI( adjustedHostsOnJob(job.status().status(),jobStatus), adjustedHostsOnJob(other.job.status().status(),other.jobStatus) );
 	else if( col == 6 )
 		return compareRetI( job.priority(), other.job.priority() );
 	else if( col == 9 )
@@ -885,7 +887,7 @@ QString GroupedJobItem::calculateGroupValue( const QModelIndex & self, int colum
 			if( JobTranslator::isType(i) ) {
 				JobItem & ji = JobTranslator::data(i);
 				avgTimeInterval += Interval( ji.jobStatus.tasksAverageTime() );
-				slotCount += adjustedHostsOnJob(ji.job.status(),ji.jobStatus);
+				slotCount += adjustedHostsOnJob(ji.job.status().status(),ji.jobStatus);
 				jobs++;
 			}
 		}
@@ -1081,7 +1083,7 @@ bool JobModel::dropMimeData ( const QMimeData * data, Qt::DropAction action, int
 				dep.setDep( pdep );
 				dep.commit();
 				// Set job to holding if the dependency is not done
-				if( pdep.status() != "done" && (QStringList() << "ready" << "started" << "suspended").contains(target.status()) )
+				if( pdep.status() != "done" && (QStringList() << "ready" << "started" << "suspended").contains(target.status().status()) )
 					Job::updateJobStatuses( target, "holding", true, true );
 				Database::current()->commitTransaction();
 			}

@@ -264,7 +264,7 @@ QSqlQuery QSqlDbConnection::fakePrepare( const QString & sql )
 QSqlQuery QSqlDbConnection::exec( const QString & sql, const QList<QVariant> & vars, bool reExecLostConn, Table * table )
 {
 #ifdef Q_OS_WIN
-	if (sql.toLower().startsWith("create"))
+	if (sql.toLower().startsWith("create") || sql.toLower().startsWith("alter"))
 	{
 		checkConnection();
 		QSqlQuery squery(mDb);

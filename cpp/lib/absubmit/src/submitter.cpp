@@ -20,7 +20,7 @@
 #include "jobstatus.h"
 #include "rangefiletracker.h"
 #include "service.h"
-
+#include "jobstatustype.h"
 
 #include "submitter.h"
 #include "path.h"
@@ -119,7 +119,7 @@ Job Submitter::job()
 void Submitter::setJob( const Job & job )
 {
 	mJob = job;
-	mJob.setStatus( "submit" );
+	mJob.setStatus( JobStatusType::statusTypeByStatus("submit") );
 	mJob.setColumnLiteral( "submittedts", "now()" );
 	if( !mJob.host().isRecord() )
 		mJob.setHost( Host::currentHost() );
@@ -507,7 +507,7 @@ void Submitter::submit()
 	} else {
 		//if( jobHasFile )
 		//	checkMd5();
-		mJob.setStatus( mSubmitSuspended ? "verify-suspended" : "verify" );
+		mJob.setStatus( mSubmitSuspended ? JobStatusType::statusTypeByStatus("verify-suspended") : JobStatusType::statusTypeByStatus("verify") );
 		mJob.commit();
 		createJobStatus();
 		printJobInfo();
@@ -687,7 +687,7 @@ void Submitter::issueFtpCommands( bool makeUserDir )
 
 void Submitter::postCopy()
 {
-	mJob.setStatus( mSubmitSuspended ? "verify-suspended" : "verify" );
+	mJob.setStatus( mSubmitSuspended ? JobStatusType::statusTypeByStatus("verify-suspended") : JobStatusType::statusTypeByStatus("verify") );
 	mJob.commit();
 
 	LOG_3( "Submitter::postCopy: starting  checkJobStatus timer" );
@@ -709,7 +709,7 @@ void Submitter::printJobInfo()
 void Submitter::checkJobStatus()
 {
 	mJob.reload();
-	QString status = mJob.status();
+	QString status = mJob.status().status();
 	if( status.startsWith("verify") ) {
 		LOG_3( "Submitter::checkJobStatus: waiting on Reaper" );
 		return;
@@ -725,7 +725,7 @@ void Submitter::checkJobStatus()
 
 	// TODO: Alert IT
 	// Set status to deleted, let the reaper clean up
-	mJob.setStatus("deleted");
+	mJob.setStatus(JobStatusType::statusTypeByStatus("deleted"));
 	mJob.commit();
 
 	if( !mJob.isRecord() )
@@ -735,7 +735,7 @@ void Submitter::checkJobStatus()
 		if( error.isRecord() ) {
 			exitWithError( error.message() );
 		} else
-			exitWithError( "Unknown submission Error: The Job has status: " + mJob.status() );
+			exitWithError( "Unknown submission Error: The Job has status: " + mJob.status().status() );
 	}
 }
 

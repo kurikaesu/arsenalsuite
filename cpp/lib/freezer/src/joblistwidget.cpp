@@ -31,6 +31,7 @@
 #include "service.h"
 #include "user.h"
 #include "usergroup.h"
+#include "jobstatustype.h"
 
 #include "busywidget.h"
 #include "filteredit.h"
@@ -54,7 +55,6 @@
 #include "tabtoolbar.h"
 #include "threadtasks.h"
 
-#include "usernotifydialog.h"
 #include "joberrorswidgetfactory.h"
 #include "joberrorswidgetplugin.h"
 
@@ -317,7 +317,7 @@ void JobListWidget::initializeViews(IniConfig & ini)
 		applyOptions();
 
 		// load this once
-		mMainUserList = Employee::select();
+		mMainUserList = User::select();
 
 		// Don't show the panel if there's no plugins to begin with
 		if( JobErrorsWidgetFactory::mJobErrorsWidgetPlugins.size() == 0 )
@@ -1245,15 +1245,6 @@ void JobListWidget::whoAmI()
 
 	if( u.isRecord() && !mCurrentlyImmitating.contains(u) )
 		mCurrentlyImmitating += u;
-
-	UserNotifyDialog und(this);
-	und.setMainUserList(mMainUserList);
-	und.setUsers(mCurrentlyImmitating);
-	if( und.exec() == QDialog::Accepted ) {
-		foreach( User su, und.userList() )
-			mJobFilter.userList += su.key();
-		mCurrentlyImmitating = und.userList();
-	}
 
 	// Make sure the current user is always included even if they delete their name off the list. Prevents the filter from just selecting everyone
 	if( u.isRecord() && !mJobFilter.userList.contains(u.key()) )

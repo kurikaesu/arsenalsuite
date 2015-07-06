@@ -6,8 +6,6 @@
     static bool isUserLoggedIn( const QString & );
 	
 	static MappedRecord activeByUserName( const QString & );
-
-	static MappedRecord setupProjectUser( Project p, Client c, bool ftp, bool web );
 	
 	static bool hasPerms( const QString &, bool modify = false, const Project & project = Project() );
 	static void permAction( QAction *, const QString &, bool modify = false );

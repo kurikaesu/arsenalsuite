@@ -11,8 +11,6 @@
 #include "freezercore.h"
 #include "iniconfig.h"
 #include "dialogfactory.h"
-#include "notificationroutedialog.h"
-#include "notificationwidget.h"
 #include "pathtemplatesdialog.h"
 #include "permsdialog.h"
 #include "project.h"
@@ -24,7 +22,6 @@
 #include "statussetdialog.h"
 #include "database.h"
 //#include "taskdialog.h"
-#include "timeentrydialog.h"
 #include "updatemanager.h"
 #include "user.h"
 #include "userdialog.h"
@@ -33,6 +30,8 @@
 #include "serviceeditdialog.h"
 #include "jobtypeeditdialog.h"
 #include "projectseditdialog.h"
+#include "usereditdialog.h"
+#include "userselectiondialog.h"
 
 DialogFactory * DialogFactory::instance()
 {
@@ -168,18 +167,6 @@ void DialogFactory::editAssetTypes( QWidget * pw )
 	//Database::instance()->commitTransaction();
 }
 
-void DialogFactory::enterTimeSheetData( ElementList el, const AssetType & tt, QWidget * pw )
-{
-	if( !pw && qApp->activeWindow() )
-		pw = qApp->activeWindow();
-	//Database::instance()->beginTransaction( "Enter Time Sheet" );
-	TimeEntryDialog ted( pw );
-	ted.setAssetType( tt );
-	ted.setElementList( el );
-	ted.exec();
-	//Database::instance()->commitTransaction();
-}
-
 void DialogFactory::showConfigDBDialog( QWidget * pw )
 {
 	if( !pw && qApp->activeWindow() )
@@ -194,6 +181,15 @@ void DialogFactory::newTask( ElementList parents, QWidget * pw )
 	AssetDialog td( parents[0], pw );
 	td.exec();
 	//Database::instance()->commitTransaction();
+}
+
+void DialogFactory::editUsers( QWidget * pw )
+{
+	if(!pw && qApp->activeWindow() )
+		pw = qApp->activeWindow();
+	UserEditDialog* ued = new UserEditDialog(pw);
+	ued->exec();
+	delete ued;
 }
 
 void DialogFactory::editProjects( QWidget * pw )
@@ -239,22 +235,4 @@ void DialogFactory::editPermissions( QWidget * pw )
 	PermsDialog * pm = new PermsDialog(pw);
 	pm->exec();
 	delete pm;
-}
-
-void DialogFactory::editNotificationRoutes( QWidget * pw )
-{
-	if( !pw && qApp->activeWindow() )
-		pw = qApp->activeWindow();
-	NotificationRouteDialog * nrd = new NotificationRouteDialog( pw );
-	nrd->exec();
-	delete nrd;
-}
-
-void DialogFactory::viewNotifications( QWidget * pw )
-{
-	if( !pw && qApp->activeWindow() )
-		pw = qApp->activeWindow();
-	NotificationDialog * nd = new NotificationDialog( pw );
-	nd->exec();
-	delete nd;
 }

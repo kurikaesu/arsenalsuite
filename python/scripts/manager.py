@@ -24,7 +24,7 @@ try:
     pos = sys.argv.index('-config')
     managerConfig = sys.argv[pos+1]
 except: pass
-dbConfig = '/etc/ab/db.ini'
+dbConfig = '/etc/ab/ab.ini'
 try:
     pos = sys.argv.index('-dbconfig')
     dbConfig = sys.argv[pos+1]
@@ -681,7 +681,7 @@ SELECT * from running_shots_averagetime_4
 
     def refreshJobList(self):
         # Gather the jobs 
-        self.jobList = Job.select( """WHERE status IN ('ready','started') 
+        self.jobList = Job.select( """WHERE status IN (SELECT keyjobstatustype FROM jobstatustype WHERE status in ('ready','started') )
                                         AND ((SELECT count(*) FROM jobtask WHERE fkeyjob = keyjob AND status = 'new') > 0)""", [], True)
         statuses = JobStatusList()
         if self.jobList.size() > 0:
@@ -1085,8 +1085,8 @@ def run_loop():
     snapshot.refresh()
     snapshot.performAssignments()
     FarmResourceSnapshot.iteration += 1
-    if FarmResourceSnapshot.iteration > 110:
-        sys.exit(0)
+    #if FarmResourceSnapshot.iteration > 110:
+    #    sys.exit(0)
 
 def manager2():
     print "Manager: Starting up"

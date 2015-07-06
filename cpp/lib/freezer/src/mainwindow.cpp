@@ -90,7 +90,7 @@ MainWindow::MainWindow( QWidget * parent )
 {
 	FileExitAction = new QAction( "&Quit", this );
 	FileExitAction->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_Q ) );
-	FileExitAction->setIcon( QIcon( "images/quit.png" ) );
+	FileExitAction->setIcon( QIcon( ":images/quit.png" ) );
 
 	FileSaveAction = new QAction( "&Save Settings", this );
 	FileSaveAction->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_S ) );
@@ -98,10 +98,10 @@ MainWindow::MainWindow( QWidget * parent )
 
 	HelpAboutAction = new QAction( "About...", this );
 	HostServiceMatrixAction = new QAction( "Host Service Matrix...", this );
-	HostServiceMatrixAction->setIcon( QIcon( "images/hosts.png" ) );
+	HostServiceMatrixAction->setIcon( QIcon( ":images/hosts.png" ) );
 
 	UserServiceMatrixAction = new QAction( "User Service Matrix...", this );
-	UserServiceMatrixAction->setIcon( QIcon( "images/users.png" ) );
+	UserServiceMatrixAction->setIcon( QIcon( ":images/users.png" ) );
 
 	ProjectWeightingAction = new QAction( "Project Weighting", this );
 	ProjectWeightingAction->setIcon( QIcon( ":/images/projectweighting" ) );
@@ -109,6 +109,7 @@ MainWindow::MainWindow( QWidget * parent )
 	ProjectReserveAction = new QAction( "Project Reserves", this );
 	ProjectReserveAction->setIcon( QIcon( ":/images/projectweighting" ) );
 	
+	UserManagerAction = new QAction("User Manager", this);
 	UserPermissionsManagerAction = new QAction("User Permissions Manager", this);
 	ProjectManagerAction = new QAction("Project Manager", this);
 	JobTypeManagerAction = new QAction("Job Type Manager", this);
@@ -138,7 +139,7 @@ MainWindow::MainWindow( QWidget * parent )
 	AdminAction = new QAction( "Admin", this );
 	
 	AutoRefreshAction = new QAction( "Auto Refresh", this );
-	AutoRefreshAction->setIcon( QIcon( "images/auto_refresh.png" ) );
+	AutoRefreshAction->setIcon( QIcon( ":images/auto_refresh.png" ) );
 	AutoRefreshAction->setCheckable( true );
 	connect( AutoRefreshAction, SIGNAL( toggled( bool ) ), SLOT( setAutoRefreshEnabled( bool ) ) );
 	mAutoRefreshTimer = new QTimer(this);
@@ -155,6 +156,7 @@ MainWindow::MainWindow( QWidget * parent )
 	connect( DisplayPrefsAction, SIGNAL( triggered(bool) ), SLOT( showDisplayPrefs() ) );
 	connect( AdminAction, SIGNAL( triggered(bool) ), SLOT( enableAdmin() ) );
 	
+	connect( UserManagerAction, SIGNAL( triggered(bool) ), SLOT( openUserEditWindow() ) );
 	connect( UserPermissionsManagerAction, SIGNAL( triggered(bool) ), SLOT( openUserPermissionsWindow() ) );
 	connect( ProjectManagerAction, SIGNAL( triggered(bool) ), SLOT( openProjectsWindow() ) );
 	connect( ServiceManagerAction, SIGNAL( triggered(bool) ), SLOT( openServicesWindow() ) );
@@ -372,7 +374,7 @@ void MainWindow::saveSettings()
 	ini.popSection();
 
 	ini.pushSection("Assfreezer");
-	ini.writeString("Version",SVN_REVSTR);
+	ini.writeString("Version",VERSION);
 	ini.popSection();
 	
 	saveViews();
@@ -480,7 +482,7 @@ void MainWindow::restoreViews()
 	IniConfig & ini = userConfig();
 
 	ini.pushSection("Assfreezer");
-	bool upgradeMode = ini.readInt( "Version" ) < 10545;
+	bool upgradeMode = false; // No longer necessary to do any upgrades
 	ini.popSection();
 	
 	ini.pushSection("Assfreezer_Saved_Views");
@@ -983,7 +985,10 @@ void MainWindow::populateToolsMenu()
 		mToolsMenu->addAction( ProjectReserveAction );
 	
 	if ( User::hasPerms( "UserManagement", true ) )
+	{
+		mToolsMenu->addAction( UserManagerAction );
 		mToolsMenu->addAction( UserPermissionsManagerAction );
+	}
 	if ( User::hasPerms( "ProjectManagement", true ) )
 		mToolsMenu->addAction( ProjectManagerAction );
 	if ( User::hasPerms( "JobTypeManagement", true ) )
@@ -1113,6 +1118,11 @@ void MainWindow::openHostServiceMatrixWindow()
 void MainWindow::openUserServiceMatrixWindow()
 {
 	(new UserServiceMatrixWindow(this))->show();
+}
+
+void MainWindow::openUserEditWindow()
+{
+	DialogFactory::instance()->editUsers(this);
 }
 
 void MainWindow::openUserPermissionsWindow()

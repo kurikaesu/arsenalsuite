@@ -3,7 +3,6 @@
 #ifndef SUBMITTER_H
 #define SUBMITTER_H
 
-#include "employee.h"
 #include "host.h"
 #include "job.h"
 #include "jobdep.h"

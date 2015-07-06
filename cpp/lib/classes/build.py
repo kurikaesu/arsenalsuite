@@ -3,11 +3,6 @@ import sys
 from blur.build import *
 
 path = os.path.dirname(os.path.abspath(__file__))
-sippath = os.path.join(path,'sipClasses')
-
-try:
-	os.mkdir(sippath)
-except:	pass
 
 pre_deps = ["stone"]
 post_deps = []

@@ -3,16 +3,11 @@ from blur.build import *
 import os, sys
 
 path = os.path.dirname(os.path.abspath(__file__))
-sippath = os.path.join(path,'sipStonegui')
 
 post_deps = []
 # Install the libraries
 if sys.platform != 'win32':
 	LibInstallTarget("stoneguiinstall",path,"stonegui","/usr/lib/")
-
-try:
-	os.mkdir(sippath)
-except:	pass
 
 # Python module targets, both depend on classes
 pc = SipTarget("pystonegui",path)

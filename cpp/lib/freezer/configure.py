@@ -40,6 +40,20 @@ def doit():
 	config = pyqtconfig.Configuration()
 	config.pyqt_modules = []
 	config.__dict__["AR"] = "ar r"
+    
+	sipOutputDir = "sipFreezer"
+	if opt_static == 1:
+		sipOutputDir += "Static"
+		
+	path = os.path.dirname(os.path.abspath(__file__))
+	
+	try:
+		os.mkdir(os.path.join(path,sipOutputDir))
+	except: pass
+	
+	makefileName = "sipMakefile"
+	if opt_static == 1:
+		makefileName += "Static"
 
 	# Get the extra SIP flags needed by the imported qt module.  Note that
 	# this normally only includes those flags (-x and -t) that relate to SIP's
@@ -53,7 +67,7 @@ def doit():
 	print config.default_sip_dir
 	qt_sip_flags = config.pyqt_sip_flags
 	if opt_generate_code:
-		ret = os.system(" ".join([config.sip_bin, "-c", "sipFreezer", "-b", "sipFreezer/" + build_file, "-I", config.pyqt_sip_dir, "-I", config.default_sip_dir, config.pyqt_sip_flags, "sip/freezer.sip"]))
+		ret = os.system(" ".join([config.sip_bin, "-c", sipOutputDir, "-b", sipOutputDir+"/" + build_file, "-I", config.pyqt_sip_dir, "-I", config.default_sip_dir, config.pyqt_sip_flags, "sip/freezer.sip"]))
 		if ret:
 			sys.exit(ret%255)
 	
@@ -66,7 +80,7 @@ def doit():
 		static=opt_static,
 		debug=opt_debug,
 		install_dir=os.path.join(config.default_mod_dir,"blur"),
-		dir="sipFreezer"
+		dir=sipOutputDir
 	)
 
 	installs = []
@@ -86,7 +100,8 @@ def doit():
 	sipconfig.ParentMakefile(
 		configuration=config,
 		installs=installs,
-		subdirs=["sipFreezer"]
+		subdirs=[sipOutputDir],
+        makefile=makefileName
 	).generate()
 
 	# Add the library we are wrapping.  The name doesn't include any platform

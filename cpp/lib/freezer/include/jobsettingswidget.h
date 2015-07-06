@@ -14,7 +14,6 @@
 #include "jobtype.h"
 #include "job.h"
 #include "user.h"
-#include "employee.h"
 
 #include "afcommon.h"
 
@@ -59,15 +58,13 @@ public slots:
 	void showHostSelector();
 	void showEnvironmentWindow();
 
-	void showEmailErrorListWindow();
-	void showJabberErrorListWindow();
-
-	void showEmailCompleteListWindow();
-	void showJabberCompleteListWindow();
-
 	void buildServiceTree();
 	void saveServiceTree();
 
+	void showEmailErrorListWindow();
+	void showJabberErrorListWindow();
+	void showEmailCompleteListWindow();
+	void showJabberCompleteListWindow();
 signals:
 	void customJobSettingsWidgetCreated( CustomJobSettingsWidget * );
 
@@ -97,7 +94,7 @@ protected:
 
 	bool mNotifyChanged;
 
-	EmployeeList mMainUserList;
+	UserList mMainUserList;
 };
 
 class FREEZER_EXPORT JobServiceBridge

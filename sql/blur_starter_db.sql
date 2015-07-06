@@ -1,50 +1,4 @@
 --
--- PostgreSQL database cluster dump
---
-
-SET default_transaction_read_only = off;
-
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-
---
--- Roles
---
-
-CREATE ROLE burner;
-ALTER ROLE burner WITH SUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION PASSWORD 'md57af8e85edb17deb6f27f70d72cad1360';
-CREATE ROLE farmer;
-ALTER ROLE farmer WITH SUPERUSER NOINHERIT NOCREATEROLE CREATEDB LOGIN NOREPLICATION PASSWORD 'md5540c8b06950e36e01a118c985195accc';
-CREATE ROLE farmers;
-ALTER ROLE farmers WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB NOLOGIN NOREPLICATION;
-CREATE ROLE freezer;
-ALTER ROLE freezer WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION PASSWORD 'md56baa8b30a338653bc90c34be97077ac6';
-CREATE ROLE postgres;
-ALTER ROLE postgres WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN REPLICATION;
-CREATE ROLE submitter;
-ALTER ROLE submitter WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION PASSWORD 'md5f38b834843a7ba9092be4340dca3ceb4';
-
-
-
-
-
-
---
--- Database creation
---
-
-CREATE DATABASE blur WITH TEMPLATE = template0 OWNER = postgres;
-REVOKE ALL ON DATABASE template1 FROM PUBLIC;
-REVOKE ALL ON DATABASE template1 FROM postgres;
-GRANT ALL ON DATABASE template1 TO postgres;
-GRANT CONNECT ON DATABASE template1 TO PUBLIC;
-
-
-\connect blur
-
-SET default_transaction_read_only = off;
-
---
 -- PostgreSQL database dump
 --
 
@@ -3433,7 +3387,6 @@ CREATE TABLE job (
     job text,
     jobtime text,
     outputpath text,
-    status text DEFAULT 'new'::text,
     submitted integer,
     started integer,
     ended integer,
@@ -3516,7 +3469,9 @@ CREATE TABLE job (
     fkeyverifyerror integer,
     maxtasknumber integer,
     midtasknumber integer,
-    mintasknumber integer
+    mintasknumber integer,
+    revision text,
+    status integer
 );
 
 
@@ -3825,6 +3780,24 @@ CREATE VIEW "StatsByType" AS
 ALTER TABLE public."StatsByType" OWNER TO farmer;
 
 --
+-- Name: abdownloadstat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE abdownloadstat (
+    keyabdownloadstat integer NOT NULL,
+    type text,
+    size integer,
+    "time" integer,
+    fkeyhost integer,
+    abrev integer,
+    finished timestamp without time zone,
+    fkeyjob integer
+);
+
+
+ALTER TABLE public.abdownloadstat OWNER TO postgres;
+
+--
 -- Name: abdownloadstat_keyabdownloadstat_seq; Type: SEQUENCE; Schema: public; Owner: farmer
 --
 
@@ -3839,6 +3812,43 @@ CREATE SEQUENCE abdownloadstat_keyabdownloadstat_seq
 ALTER TABLE public.abdownloadstat_keyabdownloadstat_seq OWNER TO farmer;
 
 --
+-- Name: abdownloadstat_keyabdownloadstat_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE abdownloadstat_keyabdownloadstat_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.abdownloadstat_keyabdownloadstat_seq1 OWNER TO postgres;
+
+--
+-- Name: abdownloadstat_keyabdownloadstat_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE abdownloadstat_keyabdownloadstat_seq1 OWNED BY abdownloadstat.keyabdownloadstat;
+
+
+--
+-- Name: annotation; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE annotation (
+    keyannotation integer NOT NULL,
+    notes text,
+    markupdata text,
+    framestart integer,
+    frameend integer,
+    sequence text
+);
+
+
+ALTER TABLE public.annotation OWNER TO postgres;
+
+--
 -- Name: annotation_keyannotation_seq; Type: SEQUENCE; Schema: public; Owner: farmer
 --
 
@@ -3851,6 +3861,27 @@ CREATE SEQUENCE annotation_keyannotation_seq
 
 
 ALTER TABLE public.annotation_keyannotation_seq OWNER TO farmer;
+
+--
+-- Name: annotation_keyannotation_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE annotation_keyannotation_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.annotation_keyannotation_seq1 OWNER TO postgres;
+
+--
+-- Name: annotation_keyannotation_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE annotation_keyannotation_seq1 OWNED BY annotation.keyannotation;
+
 
 --
 -- Name: element_keyelement_seq; Type: SEQUENCE; Schema: public; Owner: farmer
@@ -4001,6 +4032,21 @@ ALTER SEQUENCE assetprop_keyassetprop_seq OWNED BY assetprop.keyassetprop;
 
 
 --
+-- Name: assetproperty; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE assetproperty (
+    keyassetproperty integer NOT NULL,
+    name text,
+    type integer,
+    value text,
+    fkeyelement integer
+);
+
+
+ALTER TABLE public.assetproperty OWNER TO postgres;
+
+--
 -- Name: assetproperty_keyassetproperty_seq; Type: SEQUENCE; Schema: public; Owner: farmer
 --
 
@@ -4013,6 +4059,27 @@ CREATE SEQUENCE assetproperty_keyassetproperty_seq
 
 
 ALTER TABLE public.assetproperty_keyassetproperty_seq OWNER TO farmer;
+
+--
+-- Name: assetproperty_keyassetproperty_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE assetproperty_keyassetproperty_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.assetproperty_keyassetproperty_seq1 OWNER TO postgres;
+
+--
+-- Name: assetproperty_keyassetproperty_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE assetproperty_keyassetproperty_seq1 OWNED BY assetproperty.keyassetproperty;
+
 
 --
 -- Name: assetproptype; Type: TABLE; Schema: public; Owner: farmer; Tablespace: 
@@ -4107,6 +4174,21 @@ CREATE TABLE assetsetitem (
 ALTER TABLE public.assetsetitem OWNER TO farmer;
 
 --
+-- Name: assettemplate; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE assettemplate (
+    keyassettemplate integer NOT NULL,
+    fkeyelement integer,
+    fkeyassettype integer,
+    fkeyproject integer,
+    name text
+);
+
+
+ALTER TABLE public.assettemplate OWNER TO postgres;
+
+--
 -- Name: assettemplate_keyassettemplate_seq; Type: SEQUENCE; Schema: public; Owner: farmer
 --
 
@@ -4119,6 +4201,27 @@ CREATE SEQUENCE assettemplate_keyassettemplate_seq
 
 
 ALTER TABLE public.assettemplate_keyassettemplate_seq OWNER TO farmer;
+
+--
+-- Name: assettemplate_keyassettemplate_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE assettemplate_keyassettemplate_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.assettemplate_keyassettemplate_seq1 OWNER TO postgres;
+
+--
+-- Name: assettemplate_keyassettemplate_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE assettemplate_keyassettemplate_seq1 OWNED BY assettemplate.keyassettemplate;
+
 
 --
 -- Name: assettype_keyassettype_seq; Type: SEQUENCE; Schema: public; Owner: farmer
@@ -4210,6 +4313,37 @@ CREATE TABLE attachmenttype (
 ALTER TABLE public.attachmenttype OWNER TO farmer;
 
 --
+-- Name: calendar; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE calendar (
+    keycalendar integer NOT NULL,
+    calendar text,
+    date timestamp without time zone,
+    enddate timestamp without time zone,
+    fkeycalendarcategory integer,
+    fkeyproject integer,
+    fkeyelement integer,
+    fkeyusr integer,
+    repeat integer,
+    fkeylocation integer,
+    locallocation text,
+    url text,
+    alldayevent boolean,
+    repeatuntil date,
+    fkeyauthor integer,
+    private integer,
+    details text,
+    reel text,
+    fkeydepartment integer,
+    public_calendar boolean,
+    fkeynotification integer
+);
+
+
+ALTER TABLE public.calendar OWNER TO postgres;
+
+--
 -- Name: calendar_keycalendar_seq; Type: SEQUENCE; Schema: public; Owner: farmer
 --
 
@@ -4222,6 +4356,39 @@ CREATE SEQUENCE calendar_keycalendar_seq
 
 
 ALTER TABLE public.calendar_keycalendar_seq OWNER TO farmer;
+
+--
+-- Name: calendar_keycalendar_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE calendar_keycalendar_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.calendar_keycalendar_seq1 OWNER TO postgres;
+
+--
+-- Name: calendar_keycalendar_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE calendar_keycalendar_seq1 OWNED BY calendar.keycalendar;
+
+
+--
+-- Name: calendarcategory; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE calendarcategory (
+    keycalendarcategory integer NOT NULL,
+    calendarcategory text
+);
+
+
+ALTER TABLE public.calendarcategory OWNER TO postgres;
 
 --
 -- Name: calendarcategory_keycalendarcategory_seq; Type: SEQUENCE; Schema: public; Owner: farmer
@@ -4238,6 +4405,44 @@ CREATE SEQUENCE calendarcategory_keycalendarcategory_seq
 ALTER TABLE public.calendarcategory_keycalendarcategory_seq OWNER TO farmer;
 
 --
+-- Name: calendarcategory_keycalendarcategory_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE calendarcategory_keycalendarcategory_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.calendarcategory_keycalendarcategory_seq1 OWNER TO postgres;
+
+--
+-- Name: calendarcategory_keycalendarcategory_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE calendarcategory_keycalendarcategory_seq1 OWNED BY calendarcategory.keycalendarcategory;
+
+
+--
+-- Name: checklistitem; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE checklistitem (
+    keychecklistitem integer NOT NULL,
+    body text,
+    checklistitem text,
+    fkeyproject integer,
+    fkeythumbnail integer,
+    fkeytimesheetcategory integer,
+    fkeystatusset integer
+);
+
+
+ALTER TABLE public.checklistitem OWNER TO postgres;
+
+--
 -- Name: checklistitem_keychecklistitem_seq; Type: SEQUENCE; Schema: public; Owner: farmer
 --
 
@@ -4250,6 +4455,41 @@ CREATE SEQUENCE checklistitem_keychecklistitem_seq
 
 
 ALTER TABLE public.checklistitem_keychecklistitem_seq OWNER TO farmer;
+
+--
+-- Name: checklistitem_keychecklistitem_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE checklistitem_keychecklistitem_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.checklistitem_keychecklistitem_seq1 OWNER TO postgres;
+
+--
+-- Name: checklistitem_keychecklistitem_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE checklistitem_keychecklistitem_seq1 OWNED BY checklistitem.keychecklistitem;
+
+
+--
+-- Name: checkliststatus; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE checkliststatus (
+    keycheckliststatus integer NOT NULL,
+    fkeychecklistitem integer,
+    fkeyelement integer,
+    fkeyelementstatus integer
+);
+
+
+ALTER TABLE public.checkliststatus OWNER TO postgres;
 
 --
 -- Name: checkliststatus_keycheckliststatus_seq; Type: SEQUENCE; Schema: public; Owner: farmer
@@ -4266,6 +4506,40 @@ CREATE SEQUENCE checkliststatus_keycheckliststatus_seq
 ALTER TABLE public.checkliststatus_keycheckliststatus_seq OWNER TO farmer;
 
 --
+-- Name: checkliststatus_keycheckliststatus_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE checkliststatus_keycheckliststatus_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.checkliststatus_keycheckliststatus_seq1 OWNER TO postgres;
+
+--
+-- Name: checkliststatus_keycheckliststatus_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE checkliststatus_keycheckliststatus_seq1 OWNED BY checkliststatus.keycheckliststatus;
+
+
+--
+-- Name: client; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE client (
+    keyclient integer NOT NULL,
+    client text,
+    textcard text
+);
+
+
+ALTER TABLE public.client OWNER TO postgres;
+
+--
 -- Name: client_keyclient_seq; Type: SEQUENCE; Schema: public; Owner: farmer
 --
 
@@ -4280,6 +4554,40 @@ CREATE SEQUENCE client_keyclient_seq
 ALTER TABLE public.client_keyclient_seq OWNER TO farmer;
 
 --
+-- Name: client_keyclient_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE client_keyclient_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.client_keyclient_seq1 OWNER TO postgres;
+
+--
+-- Name: client_keyclient_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE client_keyclient_seq1 OWNED BY client.keyclient;
+
+
+--
+-- Name: config; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE config (
+    keyconfig integer NOT NULL,
+    config text,
+    value text
+);
+
+
+ALTER TABLE public.config OWNER TO postgres;
+
+--
 -- Name: config_keyconfig_seq; Type: SEQUENCE; Schema: public; Owner: farmer
 --
 
@@ -4292,6 +4600,27 @@ CREATE SEQUENCE config_keyconfig_seq
 
 
 ALTER TABLE public.config_keyconfig_seq OWNER TO farmer;
+
+--
+-- Name: config_keyconfig_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE config_keyconfig_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.config_keyconfig_seq1 OWNER TO postgres;
+
+--
+-- Name: config_keyconfig_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE config_keyconfig_seq1 OWNED BY config.keyconfig;
+
 
 --
 -- Name: darwinweight; Type: TABLE; Schema: public; Owner: farmers; Tablespace: 
@@ -4344,6 +4673,21 @@ INHERITS (element);
 ALTER TABLE public.delivery OWNER TO farmer;
 
 --
+-- Name: deliveryelement; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE deliveryelement (
+    keydeliveryshot integer NOT NULL,
+    fkeydelivery integer,
+    fkeyelement integer,
+    framestart integer,
+    frameend integer
+);
+
+
+ALTER TABLE public.deliveryelement OWNER TO postgres;
+
+--
 -- Name: deliveryelement_keydeliveryshot_seq; Type: SEQUENCE; Schema: public; Owner: farmer
 --
 
@@ -4356,6 +4700,27 @@ CREATE SEQUENCE deliveryelement_keydeliveryshot_seq
 
 
 ALTER TABLE public.deliveryelement_keydeliveryshot_seq OWNER TO farmer;
+
+--
+-- Name: deliveryelement_keydeliveryshot_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE deliveryelement_keydeliveryshot_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.deliveryelement_keydeliveryshot_seq1 OWNER TO postgres;
+
+--
+-- Name: deliveryelement_keydeliveryshot_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE deliveryelement_keydeliveryshot_seq1 OWNED BY deliveryelement.keydeliveryshot;
+
 
 --
 -- Name: demoreel_keydemoreel_seq; Type: SEQUENCE; Schema: public; Owner: farmer
@@ -4390,6 +4755,58 @@ CREATE TABLE demoreel (
 ALTER TABLE public.demoreel OWNER TO farmer;
 
 --
+-- Name: department; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE department (
+    keydepartment integer NOT NULL,
+    name text,
+    "order" integer,
+    flags integer,
+    fkeytimeoffsupervisor integer,
+    description text,
+    sequentialorder integer
+);
+
+
+ALTER TABLE public.department OWNER TO postgres;
+
+--
+-- Name: department_keydepartment_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE department_keydepartment_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.department_keydepartment_seq OWNER TO postgres;
+
+--
+-- Name: department_keydepartment_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE department_keydepartment_seq OWNED BY department.keydepartment;
+
+
+--
+-- Name: diskimage; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE diskimage (
+    keydiskimage integer NOT NULL,
+    diskimage text,
+    path text,
+    created timestamp without time zone
+);
+
+
+ALTER TABLE public.diskimage OWNER TO postgres;
+
+--
 -- Name: diskimage_keydiskimage_seq; Type: SEQUENCE; Schema: public; Owner: farmer
 --
 
@@ -4402,6 +4819,27 @@ CREATE SEQUENCE diskimage_keydiskimage_seq
 
 
 ALTER TABLE public.diskimage_keydiskimage_seq OWNER TO farmer;
+
+--
+-- Name: diskimage_keydiskimage_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE diskimage_keydiskimage_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.diskimage_keydiskimage_seq1 OWNER TO postgres;
+
+--
+-- Name: diskimage_keydiskimage_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE diskimage_keydiskimage_seq1 OWNED BY diskimage.keydiskimage;
+
 
 --
 -- Name: dynamichostgroup_keydynamichostgroup_seq; Type: SEQUENCE; Schema: public; Owner: farmer
@@ -4634,118 +5072,6 @@ CREATE TABLE elementuser (
 ALTER TABLE public.elementuser OWNER TO farmer;
 
 --
--- Name: usr; Type: TABLE; Schema: public; Owner: farmer; Tablespace: 
---
-
-CREATE TABLE usr (
-    arsenalslotlimit integer DEFAULT (-1),
-    arsenalslotreserve integer DEFAULT 0,
-    dateoflastlogon date,
-    email text,
-    fkeyhost integer,
-    gpgkey text,
-    jid text,
-    pager text,
-    password text,
-    remoteips text,
-    schedule text,
-    shell text,
-    uid integer,
-    threadnotifybyjabber integer,
-    threadnotifybyemail integer,
-    fkeyclient integer,
-    intranet integer,
-    homedir text,
-    disabled integer DEFAULT 0,
-    gid integer,
-    usr text,
-    keyusr integer,
-    rolemask text,
-    usrlevel integer,
-    remoteok integer,
-    requestcount integer,
-    sessiontimeout integer,
-    logoncount integer,
-    useradded integer,
-    oldkeyusr integer,
-    sid text,
-    lastlogontype text
-)
-INHERITS (element);
-
-
-ALTER TABLE public.usr OWNER TO farmer;
-
---
--- Name: employee; Type: TABLE; Schema: public; Owner: farmer; Tablespace: 
---
-
-CREATE TABLE employee (
-    arsenalslotlimit integer DEFAULT (-1),
-    namefirst text,
-    namelast text,
-    dateofhire date,
-    dateoftermination date,
-    dateofbirth date,
-    logon text,
-    lockedout integer,
-    bebackat timestamp without time zone,
-    comment text,
-    userlevel integer,
-    nopostdays integer,
-    initials text,
-    missingtimesheetcount integer,
-    namemiddle text,
-    fkeyrole integer
-)
-INHERITS (usr);
-
-
-ALTER TABLE public.employee OWNER TO farmer;
-
---
--- Name: employeeavailability; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE employeeavailability (
-    keyemployeeavailability integer NOT NULL,
-    days double precision,
-    datestart date,
-    dateend date,
-    baseavail boolean,
-    freelance boolean,
-    qc boolean,
-    fkeyemployee integer,
-    fkeyrole integer,
-    supervisor boolean,
-    endofweek integer
-);
-
-
-ALTER TABLE public.employeeavailability OWNER TO postgres;
-
---
--- Name: employeeavailability_keyemployeeavailability_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE employeeavailability_keyemployeeavailability_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.employeeavailability_keyemployeeavailability_seq OWNER TO postgres;
-
---
--- Name: employeeavailability_keyemployeeavailability_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE employeeavailability_keyemployeeavailability_seq OWNED BY employeeavailability.keyemployeeavailability;
-
-
---
 -- Name: eventalert_keyEventAlert_seq; Type: SEQUENCE; Schema: public; Owner: farmer
 --
 
@@ -4937,6 +5263,26 @@ CREATE TABLE folder (
 ALTER TABLE public.folder OWNER TO farmer;
 
 --
+-- Name: graph; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE graph (
+    keygraph integer NOT NULL,
+    height double precision,
+    width double precision,
+    vlabel text,
+    period text,
+    upperlimit double precision,
+    lowerlimit double precision,
+    stack boolean,
+    graphmax boolean,
+    fkeygraphpage integer
+);
+
+
+ALTER TABLE public.graph OWNER TO postgres;
+
+--
 -- Name: graph_keygraph_seq; Type: SEQUENCE; Schema: public; Owner: farmer
 --
 
@@ -4949,6 +5295,46 @@ CREATE SEQUENCE graph_keygraph_seq
 
 
 ALTER TABLE public.graph_keygraph_seq OWNER TO farmer;
+
+--
+-- Name: graph_keygraph_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE graph_keygraph_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.graph_keygraph_seq1 OWNER TO postgres;
+
+--
+-- Name: graph_keygraph_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE graph_keygraph_seq1 OWNED BY graph.keygraph;
+
+
+--
+-- Name: graphds; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE graphds (
+    keygraphds integer NOT NULL,
+    varname text,
+    dstype text,
+    fkeyhost integer,
+    cdef text,
+    fieldname text,
+    filename text,
+    negative boolean,
+    graphds text
+);
+
+
+ALTER TABLE public.graphds OWNER TO postgres;
 
 --
 -- Name: graphds_keygraphds_seq; Type: SEQUENCE; Schema: public; Owner: farmer
@@ -4965,6 +5351,77 @@ CREATE SEQUENCE graphds_keygraphds_seq
 ALTER TABLE public.graphds_keygraphds_seq OWNER TO farmer;
 
 --
+-- Name: graphds_keygraphds_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE graphds_keygraphds_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.graphds_keygraphds_seq1 OWNER TO postgres;
+
+--
+-- Name: graphds_keygraphds_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE graphds_keygraphds_seq1 OWNED BY graphds.keygraphds;
+
+
+--
+-- Name: graphitesaveddesc; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE graphitesaveddesc (
+    keygraphitedesc integer NOT NULL,
+    name text,
+    "group" text,
+    url text,
+    fkeyuser integer,
+    modified timestamp without time zone
+);
+
+
+ALTER TABLE public.graphitesaveddesc OWNER TO postgres;
+
+--
+-- Name: graphitesaveddesc_keygraphitedesc_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE graphitesaveddesc_keygraphitedesc_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.graphitesaveddesc_keygraphitedesc_seq OWNER TO postgres;
+
+--
+-- Name: graphitesaveddesc_keygraphitedesc_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE graphitesaveddesc_keygraphitedesc_seq OWNED BY graphitesaveddesc.keygraphitedesc;
+
+
+--
+-- Name: graphpage; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE graphpage (
+    keygraphpage integer NOT NULL,
+    fkeygraphpage integer,
+    name text
+);
+
+
+ALTER TABLE public.graphpage OWNER TO postgres;
+
+--
 -- Name: graphpage_keygraphpage_seq; Type: SEQUENCE; Schema: public; Owner: farmer
 --
 
@@ -4979,6 +5436,40 @@ CREATE SEQUENCE graphpage_keygraphpage_seq
 ALTER TABLE public.graphpage_keygraphpage_seq OWNER TO farmer;
 
 --
+-- Name: graphpage_keygraphpage_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE graphpage_keygraphpage_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.graphpage_keygraphpage_seq1 OWNER TO postgres;
+
+--
+-- Name: graphpage_keygraphpage_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE graphpage_keygraphpage_seq1 OWNED BY graphpage.keygraphpage;
+
+
+--
+-- Name: graphrelationship; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE graphrelationship (
+    keygraphrelationship integer NOT NULL,
+    fkeygraphds integer,
+    fkeygraph integer
+);
+
+
+ALTER TABLE public.graphrelationship OWNER TO postgres;
+
+--
 -- Name: graphrelationship_keygraphrelationship_seq; Type: SEQUENCE; Schema: public; Owner: farmer
 --
 
@@ -4991,6 +5482,27 @@ CREATE SEQUENCE graphrelationship_keygraphrelationship_seq
 
 
 ALTER TABLE public.graphrelationship_keygraphrelationship_seq OWNER TO farmer;
+
+--
+-- Name: graphrelationship_keygraphrelationship_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE graphrelationship_keygraphrelationship_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.graphrelationship_keygraphrelationship_seq1 OWNER TO postgres;
+
+--
+-- Name: graphrelationship_keygraphrelationship_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE graphrelationship_keygraphrelationship_seq1 OWNED BY graphrelationship.keygraphrelationship;
+
 
 --
 -- Name: gridtemplate_keygridtemplate_seq; Type: SEQUENCE; Schema: public; Owner: farmer
@@ -5502,6 +6014,39 @@ CREATE TABLE hoststatus (
 ALTER TABLE public.hoststatus OWNER TO farmer;
 
 --
+-- Name: job3delight; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE job3delight (
+    width integer,
+    height integer,
+    framestart integer,
+    frameend integer,
+    threads integer,
+    processes integer,
+    jobscript text,
+    jobscriptparam text,
+    renderdlcmd text
+)
+INHERITS (job);
+
+
+ALTER TABLE public.job3delight OWNER TO postgres;
+
+--
+-- Name: jobaftereffects; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE jobaftereffects (
+    ignoremissingeffects boolean,
+    comp text
+)
+INHERITS (job);
+
+
+ALTER TABLE public.jobaftereffects OWNER TO postgres;
+
+--
 -- Name: jobassignment; Type: TABLE; Schema: public; Owner: farmer; Tablespace: 
 --
 
@@ -5589,6 +6134,46 @@ ALTER SEQUENCE jobassignmentstatus_keyjobassignmentstatus_seq OWNED BY jobassign
 
 
 --
+-- Name: jobautodeskburn; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE jobautodeskburn (
+    framestart integer,
+    frameend integer,
+    handle text
+)
+INHERITS (job);
+
+
+ALTER TABLE public.jobautodeskburn OWNER TO postgres;
+
+--
+-- Name: jobbatch; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE jobbatch (
+    cmd text,
+    restartaftershutdown boolean,
+    passslaveframesasparam boolean,
+    disablewow64fsredirect boolean
+)
+INHERITS (job);
+
+
+ALTER TABLE public.jobbatch OWNER TO postgres;
+
+--
+-- Name: jobblender; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE jobblender (
+)
+INHERITS (job);
+
+
+ALTER TABLE public.jobblender OWNER TO postgres;
+
+--
 -- Name: jobcannedbatch_keyjobcannedbatch_seq; Type: SEQUENCE; Schema: public; Owner: farmer
 --
 
@@ -5616,6 +6201,20 @@ CREATE TABLE jobcannedbatch (
 
 
 ALTER TABLE public.jobcannedbatch OWNER TO farmer;
+
+--
+-- Name: jobcinema4d; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE jobcinema4d (
+    videomode boolean,
+    videostartframe integer,
+    videoendframe integer
+)
+INHERITS (job);
+
+
+ALTER TABLE public.jobcinema4d OWNER TO postgres;
 
 --
 -- Name: jobclientupdate; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -5890,6 +6489,68 @@ ALTER SEQUENCE jobfiltertype_keyjobfiltertype_seq OWNED BY jobfiltertype.keyjobf
 
 
 --
+-- Name: jobmaxscript; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE jobmaxscript (
+    script text,
+    maxtime integer,
+    outputfiles text,
+    silent boolean,
+    maxversion text,
+    runmax64 boolean,
+    runpythonscript boolean,
+    use3dsmaxcmd boolean,
+    debugmode boolean
+)
+INHERITS (job);
+
+
+ALTER TABLE public.jobmaxscript OWNER TO postgres;
+
+--
+-- Name: jobfumefxsim; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE jobfumefxsim (
+    fumelogfilepath text
+)
+INHERITS (jobmaxscript);
+
+
+ALTER TABLE public.jobfumefxsim OWNER TO postgres;
+
+--
+-- Name: jobfusion; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE jobfusion (
+    framelist text,
+    allframesassingletask boolean,
+    outputcount integer,
+    reportedsavererror boolean
+)
+INHERITS (job);
+
+
+ALTER TABLE public.jobfusion OWNER TO postgres;
+
+--
+-- Name: jobfusionvideomaker; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE jobfusionvideomaker (
+    codec text,
+    inputframepath text,
+    sequenceframestart integer,
+    sequenceframeend integer
+)
+INHERITS (jobfusion);
+
+
+ALTER TABLE public.jobfusionvideomaker OWNER TO postgres;
+
+--
 -- Name: jobhistory_keyjobhistory_seq; Type: SEQUENCE; Schema: public; Owner: farmer
 --
 
@@ -5947,6 +6608,49 @@ CREATE TABLE jobhistorytype (
 ALTER TABLE public.jobhistorytype OWNER TO farmer;
 
 --
+-- Name: jobhoudini; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE jobhoudini (
+    driver text,
+    take text,
+    seedspec text,
+    wedgetestnode text,
+    wedgenumber integer,
+    filenameoriginal text,
+    version integer
+)
+INHERITS (job);
+
+
+ALTER TABLE public.jobhoudini OWNER TO postgres;
+
+--
+-- Name: jobmantra; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE jobmantra (
+    forceraytrace boolean,
+    geocachesize integer,
+    height integer,
+    width integer,
+    qualityflag text,
+    threads integer,
+    renderquality integer,
+    cleanifds boolean,
+    filter text,
+    filterargs text,
+    seedspec text,
+    take text,
+    wedgenumber integer,
+    wedgetestnode text
+)
+INHERITS (job);
+
+
+ALTER TABLE public.jobmantra OWNER TO postgres;
+
+--
 -- Name: jobmapping; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -5979,6 +6683,105 @@ ALTER TABLE public.jobmapping_keyjobmapping_seq OWNER TO postgres;
 
 ALTER SEQUENCE jobmapping_keyjobmapping_seq OWNED BY jobmapping.keyjobmapping;
 
+
+--
+-- Name: jobmax; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE jobmax (
+    camera text,
+    elementfile text,
+    fileoriginal text,
+    flag_h integer,
+    flag_v integer,
+    flag_w integer,
+    flag_x2 integer,
+    flag_xa integer,
+    flag_xc integer,
+    flag_xd integer,
+    flag_xe integer,
+    flag_xf integer,
+    flag_xh integer,
+    flag_xk integer,
+    flag_xn integer,
+    flag_xo integer,
+    flag_xp integer,
+    flag_xv integer,
+    frameend integer,
+    framelist text,
+    framestart integer,
+    exrchannels text,
+    exrattributes text,
+    startupscript text,
+    exrsavebitdepth integer,
+    plugininipath text,
+    exrversion integer,
+    exrcompression integer,
+    exrsavescanline boolean,
+    exrtilesize integer,
+    exrsaveregion boolean,
+    verbosity integer,
+    passoutputpath boolean,
+    canmodifyoutputpath boolean
+)
+INHERITS (job);
+
+
+ALTER TABLE public.jobmax OWNER TO postgres;
+
+--
+-- Name: jobmaya; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE jobmaya (
+    framestart integer,
+    frameend integer,
+    camera text,
+    renderer text,
+    projectpath text,
+    width integer,
+    height integer,
+    append text
+)
+INHERITS (job);
+
+
+ALTER TABLE public.jobmaya OWNER TO postgres;
+
+--
+-- Name: jobnaiad; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE jobnaiad (
+    framestart integer,
+    frameend integer,
+    threads integer,
+    append text,
+    restartcache text,
+    fullframe integer,
+    forcerestart boolean
+)
+INHERITS (job);
+
+
+ALTER TABLE public.jobnaiad OWNER TO postgres;
+
+--
+-- Name: jobnuke; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE jobnuke (
+    framestart integer,
+    frameend integer,
+    outputcount integer,
+    viewname text,
+    nodes text,
+    terminalonly boolean
+)
+INHERITS (job);
+
+
+ALTER TABLE public.jobnuke OWNER TO postgres;
 
 --
 -- Name: joboutput_keyjoboutput_seq; Type: SEQUENCE; Schema: public; Owner: farmer
@@ -6024,6 +6827,22 @@ INHERITS (job);
 
 
 ALTER TABLE public.jobproxy OWNER TO postgres;
+
+--
+-- Name: jobrealflow; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE jobrealflow (
+    framestart integer,
+    frameend integer,
+    simtype text,
+    threads integer,
+    script text
+)
+INHERITS (job);
+
+
+ALTER TABLE public.jobrealflow OWNER TO postgres;
 
 --
 -- Name: jobrenderman_keyjob_seq; Type: SEQUENCE; Schema: public; Owner: farmer
@@ -6336,6 +7155,39 @@ ALTER SEQUENCE jobstatusskipreason_keyjobstatusskipreason_seq OWNED BY jobstatus
 
 
 --
+-- Name: jobstatustype; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE jobstatustype (
+    keyjobstatustype integer NOT NULL,
+    status text
+);
+
+
+ALTER TABLE public.jobstatustype OWNER TO postgres;
+
+--
+-- Name: jobstatustype_keyjobstatustype_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE jobstatustype_keyjobstatustype_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.jobstatustype_keyjobstatustype_seq OWNER TO postgres;
+
+--
+-- Name: jobstatustype_keyjobstatustype_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE jobstatustype_keyjobstatustype_seq OWNED BY jobstatustype.keyjobstatustype;
+
+
+--
 -- Name: jobsync; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -6414,6 +7266,44 @@ CREATE TABLE jobtypemapping (
 
 
 ALTER TABLE public.jobtypemapping OWNER TO farmer;
+
+--
+-- Name: jobxsi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE jobxsi (
+    pass text,
+    framelist text,
+    framestart integer,
+    frameend integer,
+    resolutionx integer,
+    resolutiony integer,
+    renderer text,
+    motionblur boolean,
+    deformmotionblur boolean
+)
+INHERITS (job);
+
+
+ALTER TABLE public.jobxsi OWNER TO postgres;
+
+--
+-- Name: jobxsiscript; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE jobxsiscript (
+    framestart integer,
+    frameend integer,
+    scriptrequiresui boolean,
+    scriptfile text,
+    xsifile text,
+    scriptmethod text,
+    framelist text
+)
+INHERITS (job);
+
+
+ALTER TABLE public.jobxsiscript OWNER TO postgres;
 
 --
 -- Name: license_keylicense_seq; Type: SEQUENCE; Schema: public; Owner: farmer
@@ -7127,6 +8017,22 @@ CREATE TABLE pathtracker (
 ALTER TABLE public.pathtracker OWNER TO farmer;
 
 --
+-- Name: permission; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE permission (
+    keypermission integer NOT NULL,
+    fkeyusr integer,
+    class text,
+    enabled boolean,
+    fkeygrp integer,
+    modify boolean
+);
+
+
+ALTER TABLE public.permission OWNER TO postgres;
+
+--
 -- Name: permission_keypermission_seq; Type: SEQUENCE; Schema: public; Owner: farmer
 --
 
@@ -7141,20 +8047,25 @@ CREATE SEQUENCE permission_keypermission_seq
 ALTER TABLE public.permission_keypermission_seq OWNER TO farmer;
 
 --
--- Name: permission; Type: TABLE; Schema: public; Owner: farmer; Tablespace: 
+-- Name: permission_keypermission_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE permission (
-    keypermission integer DEFAULT nextval('permission_keypermission_seq'::regclass) NOT NULL,
-    methodpattern text,
-    fkeyusr integer,
-    permission text,
-    fkeygrp integer,
-    class text
-);
+CREATE SEQUENCE permission_keypermission_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
-ALTER TABLE public.permission OWNER TO farmer;
+ALTER TABLE public.permission_keypermission_seq1 OWNER TO postgres;
+
+--
+-- Name: permission_keypermission_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE permission_keypermission_seq1 OWNED BY permission.keypermission;
+
 
 --
 -- Name: pg_stat_statements; Type: VIEW; Schema: public; Owner: postgres
@@ -7267,7 +8178,7 @@ ALTER TABLE public.project OWNER TO farmer;
 --
 
 CREATE VIEW project_slots_current AS
-    SELECT project.name, COALESCE(sum(jobstatus.hostsonjob), (0)::bigint) AS sum, project.arsenalslotreserve, project.arsenalslotlimit FROM ((project LEFT JOIN job ON (((project.keyelement = job.fkeyproject) AND (job.status = 'started'::text)))) LEFT JOIN jobstatus jobstatus ON ((job.keyjob = jobstatus.fkeyjob))) GROUP BY project.name, project.arsenalslotreserve, project.arsenalslotlimit;
+    SELECT project.name, COALESCE(sum(jobstatus.hostsonjob), (0)::bigint) AS sum, project.arsenalslotreserve, project.arsenalslotlimit FROM ((project LEFT JOIN job ON (((project.keyelement = job.fkeyproject) AND (job.status IN (SELECT jobstatustype.keyjobstatustype FROM jobstatustype WHERE (jobstatustype.status = 'started'::text)))))) LEFT JOIN jobstatus jobstatus ON ((job.keyjob = jobstatus.fkeyjob))) GROUP BY project.name, project.arsenalslotreserve, project.arsenalslotlimit;
 
 
 ALTER TABLE public.project_slots_current OWNER TO farmer;
@@ -7560,7 +8471,7 @@ ALTER SEQUENCE role_keyrole_seq OWNED BY role.keyrole;
 --
 
 CREATE VIEW running_shots_averagetime AS
-    SELECT job.shotname, avg(jobstatus.tasksaveragetime) AS avgtime FROM (job JOIN jobstatus jobstatus ON ((jobstatus.fkeyjob = job.keyjob))) WHERE (job.status = ANY (ARRAY['ready'::text, 'started'::text])) GROUP BY job.shotname;
+    SELECT job.shotname, avg(jobstatus.tasksaveragetime) AS avgtime FROM (job JOIN jobstatus jobstatus ON ((jobstatus.fkeyjob = job.keyjob))) WHERE (job.status IN (SELECT jobstatustype.keyjobstatustype FROM jobstatustype WHERE (jobstatustype.status = ANY (ARRAY['ready'::text, 'started'::text])))) GROUP BY job.shotname;
 
 
 ALTER TABLE public.running_shots_averagetime OWNER TO farmer;
@@ -7570,7 +8481,7 @@ ALTER TABLE public.running_shots_averagetime OWNER TO farmer;
 --
 
 CREATE VIEW running_shots_averagetime_2 AS
-    SELECT job.shotname, project.name, (GREATEST((0)::double precision, avg(GREATEST((0)::double precision, (date_part('epoch'::text, ((jobtaskassignment.ended)::timestamp with time zone - (jobtaskassignment.started)::timestamp with time zone)) * (job.slots)::double precision)))))::numeric AS avgtime FROM ((((jobtaskassignment JOIN jobtask ON ((jobtask.fkeyjobtaskassignment = jobtaskassignment.keyjobtaskassignment))) JOIN job ON ((jobtask.fkeyjob = job.keyjob))) JOIN jobstatus jobstatus ON ((jobstatus.fkeyjob = job.keyjob))) JOIN project ON ((job.fkeyproject = project.keyelement))) WHERE ((jobtaskassignment.ended IS NOT NULL) AND (job.status = ANY (ARRAY['ready'::text, 'started'::text]))) GROUP BY job.shotname, project.name;
+    SELECT job.shotname, project.name, (GREATEST((0)::double precision, avg(GREATEST((0)::double precision, (date_part('epoch'::text, ((jobtaskassignment.ended)::timestamp with time zone - (jobtaskassignment.started)::timestamp with time zone)) * (job.slots)::double precision)))))::numeric AS avgtime FROM ((((jobtaskassignment JOIN jobtask ON ((jobtask.fkeyjobtaskassignment = jobtaskassignment.keyjobtaskassignment))) JOIN job ON ((jobtask.fkeyjob = job.keyjob))) JOIN jobstatus jobstatus ON ((jobstatus.fkeyjob = job.keyjob))) JOIN project ON ((job.fkeyproject = project.keyelement))) WHERE ((jobtaskassignment.ended IS NOT NULL) AND (job.status IN (SELECT jobstatustype.keyjobstatustype FROM jobstatustype WHERE (jobstatustype.status = ANY (ARRAY['ready'::text, 'started'::text]))))) GROUP BY job.shotname, project.name;
 
 
 ALTER TABLE public.running_shots_averagetime_2 OWNER TO farmer;
@@ -7580,7 +8491,7 @@ ALTER TABLE public.running_shots_averagetime_2 OWNER TO farmer;
 --
 
 CREATE VIEW running_shots_averagetime_3 AS
-    SELECT job.shotname, project.name, (GREATEST((0)::double precision, avg(GREATEST((0)::double precision, (date_part('epoch'::text, ((jobassignment.ended)::timestamp with time zone - (jobassignment.started)::timestamp with time zone)) * (jobassignment.assignslots)::double precision)))))::integer AS avgtime FROM ((jobassignment JOIN job ON (((jobassignment.fkeyjob = job.keyjob) AND (job.status = ANY (ARRAY['ready'::text, 'started'::text]))))) JOIN project ON ((job.fkeyproject = project.keyelement))) WHERE (jobassignment.ended IS NOT NULL) GROUP BY job.shotname, project.name;
+    SELECT job.shotname, project.name, (GREATEST((0)::double precision, avg(GREATEST((0)::double precision, (date_part('epoch'::text, ((jobassignment.ended)::timestamp with time zone - (jobassignment.started)::timestamp with time zone)) * (jobassignment.assignslots)::double precision)))))::integer AS avgtime FROM ((jobassignment JOIN job ON (((jobassignment.fkeyjob = job.keyjob) AND (job.status IN (SELECT jobstatustype.keyjobstatustype FROM jobstatustype WHERE (jobstatustype.status = ANY (ARRAY['ready'::text, 'started'::text]))))))) JOIN project ON ((job.fkeyproject = project.keyelement))) WHERE (jobassignment.ended IS NOT NULL) GROUP BY job.shotname, project.name;
 
 
 ALTER TABLE public.running_shots_averagetime_3 OWNER TO farmer;
@@ -7590,7 +8501,7 @@ ALTER TABLE public.running_shots_averagetime_3 OWNER TO farmer;
 --
 
 CREATE VIEW running_shots_averagetime_4 AS
-    SELECT job.shotname, project.name, ((sum(jobstatus.averagedonetime))::integer / COALESCE(dw.weight, 1)) AS avgtime FROM (((job JOIN jobstatus ON ((jobstatus.fkeyjob = job.keyjob))) JOIN project ON ((job.fkeyproject = project.keyelement))) LEFT JOIN darwinweight dw ON (((job.shotname = dw.shotname) AND (project.name = dw.projectname)))) WHERE (job.status = ANY (ARRAY['ready'::text, 'started'::text])) GROUP BY job.shotname, project.name, dw.weight ORDER BY job.shotname;
+    SELECT job.shotname, project.name, ((sum(jobstatus.averagedonetime))::integer / COALESCE(dw.weight, 1)) AS avgtime FROM (((job JOIN jobstatus ON ((jobstatus.fkeyjob = job.keyjob))) JOIN project ON ((job.fkeyproject = project.keyelement))) LEFT JOIN darwinweight dw ON (((job.shotname = dw.shotname) AND (project.name = dw.projectname)))) WHERE (job.status IN (SELECT jobstatustype.keyjobstatustype FROM jobstatustype WHERE (jobstatustype.status = ANY (ARRAY['ready'::text, 'started'::text])))) GROUP BY job.shotname, project.name, dw.weight ORDER BY job.shotname;
 
 
 ALTER TABLE public.running_shots_averagetime_4 OWNER TO postgres;
@@ -8384,24 +9295,28 @@ CREATE SEQUENCE timesheet_keytimesheet_seq
 ALTER TABLE public.timesheet_keytimesheet_seq OWNER TO farmer;
 
 --
--- Name: timesheet; Type: TABLE; Schema: public; Owner: farmer; Tablespace: 
+-- Name: timesheetcategory; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE TABLE timesheet (
-    keytimesheet integer DEFAULT nextval('timesheet_keytimesheet_seq'::regclass) NOT NULL,
-    datetime timestamp without time zone,
-    fkeyelement integer,
-    fkeyemployee integer,
-    fkeyproject integer,
-    fkeytimesheetcategory integer,
-    scheduledhour double precision,
-    datetimesubmitted timestamp without time zone,
-    unscheduledhour double precision,
-    comment text
+CREATE TABLE timesheetcategory (
+    keytimesheetcategory integer NOT NULL,
+    timesheetcategory text,
+    hasdaily integer,
+    disabled integer,
+    fkeyelementtype integer,
+    istask boolean,
+    fkeypathtemplate integer,
+    nameregexp text,
+    allowtime boolean,
+    color text,
+    description text,
+    sortcolumn text,
+    tags text,
+    sortnumber integer
 );
 
 
-ALTER TABLE public.timesheet OWNER TO farmer;
+ALTER TABLE public.timesheetcategory OWNER TO postgres;
 
 --
 -- Name: timesheetcategory_keytimesheetcategory_seq; Type: SEQUENCE; Schema: public; Owner: farmer
@@ -8418,30 +9333,25 @@ CREATE SEQUENCE timesheetcategory_keytimesheetcategory_seq
 ALTER TABLE public.timesheetcategory_keytimesheetcategory_seq OWNER TO farmer;
 
 --
--- Name: timesheetcategory; Type: TABLE; Schema: public; Owner: farmer; Tablespace: 
+-- Name: timesheetcategory_keytimesheetcategory_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE timesheetcategory (
-    keytimesheetcategory integer DEFAULT nextval('timesheetcategory_keytimesheetcategory_seq'::regclass) NOT NULL,
-    timesheetcategory text,
-    iconcolor integer,
-    hasdaily integer,
-    chronology text,
-    disabled integer,
-    istask boolean,
-    fkeypathtemplate integer,
-    fkeyelementtype integer DEFAULT 4,
-    nameregexp text,
-    allowtime boolean,
-    color text,
-    description text,
-    sortcolumn text DEFAULT 'displayName'::text,
-    tags text,
-    sortnumber integer
-);
+CREATE SEQUENCE timesheetcategory_keytimesheetcategory_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
-ALTER TABLE public.timesheetcategory OWNER TO farmer;
+ALTER TABLE public.timesheetcategory_keytimesheetcategory_seq1 OWNER TO postgres;
+
+--
+-- Name: timesheetcategory_keytimesheetcategory_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE timesheetcategory_keytimesheetcategory_seq1 OWNED BY timesheetcategory.keytimesheetcategory;
+
 
 --
 -- Name: tracker_keytracker_seq; Type: SEQUENCE; Schema: public; Owner: farmer
@@ -8614,11 +9524,58 @@ CREATE TABLE trackerstatus (
 ALTER TABLE public.trackerstatus OWNER TO farmer;
 
 --
+-- Name: usr; Type: TABLE; Schema: public; Owner: farmer; Tablespace: 
+--
+
+CREATE TABLE usr (
+    arsenalslotlimit integer DEFAULT (-1),
+    arsenalslotreserve integer DEFAULT 0,
+    dateoflastlogon date,
+    email text,
+    fkeyhost integer,
+    gpgkey text,
+    jid text,
+    pager text,
+    password text,
+    remoteips text,
+    schedule text,
+    shell text,
+    uid integer,
+    threadnotifybyjabber integer,
+    threadnotifybyemail integer,
+    fkeyclient integer,
+    intranet integer,
+    homedir text,
+    disabled integer DEFAULT 0,
+    gid integer,
+    usr text,
+    keyusr integer,
+    rolemask text,
+    usrlevel integer,
+    remoteok integer,
+    requestcount integer,
+    sessiontimeout integer,
+    logoncount integer,
+    useradded integer,
+    oldkeyusr integer,
+    sid text,
+    lastlogontype text,
+    firstname text,
+    lastname text,
+    middlename text,
+    xmppid text
+)
+INHERITS (element);
+
+
+ALTER TABLE public.usr OWNER TO farmer;
+
+--
 -- Name: user_service_current; Type: VIEW; Schema: public; Owner: farmer
 --
 
 CREATE VIEW user_service_current AS
-    SELECT ((usr.name || ':'::text) || service.service), sum(ja.assignslots) AS sum FROM ((((usr JOIN job ON (((usr.keyelement = job.fkeyusr) AND (job.status = ANY (ARRAY['ready'::text, 'started'::text]))))) JOIN jobassignment ja ON (((job.keyjob = ja.fkeyjob) AND (ja.fkeyjobassignmentstatus < 4)))) JOIN jobservice js ON ((job.keyjob = js.fkeyjob))) JOIN service ON ((service.keyservice = js.fkeyservice))) GROUP BY usr.name, service.service;
+    SELECT ((usr.name || ':'::text) || service.service), sum(ja.assignslots) AS sum FROM ((((usr JOIN job ON (((usr.keyelement = job.fkeyusr) AND (job.status IN (SELECT jobstatustype.keyjobstatustype FROM jobstatustype WHERE (jobstatustype.status = ANY (ARRAY['ready'::text, 'started'::text]))))))) JOIN jobassignment ja ON (((job.keyjob = ja.fkeyjob) AND (ja.fkeyjobassignmentstatus < 4)))) JOIN jobservice js ON ((job.keyjob = js.fkeyjob))) JOIN service ON ((service.keyservice = js.fkeyservice))) GROUP BY usr.name, service.service;
 
 
 ALTER TABLE public.user_service_current OWNER TO farmer;
@@ -8652,7 +9609,7 @@ ALTER TABLE public.user_service_limits OWNER TO farmer;
 --
 
 CREATE VIEW user_slots_current AS
-    SELECT usr.name, sum(jobstatus.hostsonjob) AS sum FROM ((usr JOIN job ON (((usr.keyelement = job.fkeyusr) AND (job.status = 'started'::text)))) JOIN jobstatus jobstatus ON ((job.keyjob = jobstatus.fkeyjob))) GROUP BY usr.name;
+    SELECT usr.name, sum(jobstatus.hostsonjob) AS sum FROM ((usr JOIN job ON (((usr.keyelement = job.fkeyusr) AND (job.status IN (SELECT jobstatustype.keyjobstatustype FROM jobstatustype WHERE (jobstatustype.status = 'started'::text)))))) JOIN jobstatus jobstatus ON ((job.keyjob = jobstatus.fkeyjob))) GROUP BY usr.name;
 
 
 ALTER TABLE public.user_slots_current OWNER TO farmer;
@@ -8825,7 +9782,7 @@ ALTER TABLE public.usrgrp_keyusrgrp_seq OWNER TO farmer;
 CREATE TABLE usrgrp (
     keyusrgrp integer DEFAULT nextval('usrgrp_keyusrgrp_seq'::regclass) NOT NULL,
     fkeyusr integer,
-    fkeygrp integer,
+    fkeygrp integer DEFAULT 7 NOT NULL,
     usrgrp text
 );
 
@@ -8882,6 +9839,20 @@ INHERITS (filetracker);
 ALTER TABLE public.versionfiletracker OWNER TO farmer;
 
 --
+-- Name: keyabdownloadstat; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY abdownloadstat ALTER COLUMN keyabdownloadstat SET DEFAULT nextval('abdownloadstat_keyabdownloadstat_seq1'::regclass);
+
+
+--
+-- Name: keyannotation; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY annotation ALTER COLUMN keyannotation SET DEFAULT nextval('annotation_keyannotation_seq1'::regclass);
+
+
+--
 -- Name: keyelement; Type: DEFAULT; Schema: public; Owner: farmer
 --
 
@@ -8910,10 +9881,66 @@ ALTER TABLE ONLY assetprop ALTER COLUMN keyassetprop SET DEFAULT nextval('assetp
 
 
 --
+-- Name: keyassetproperty; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY assetproperty ALTER COLUMN keyassetproperty SET DEFAULT nextval('assetproperty_keyassetproperty_seq1'::regclass);
+
+
+--
 -- Name: keyassetproptype; Type: DEFAULT; Schema: public; Owner: farmer
 --
 
 ALTER TABLE ONLY assetproptype ALTER COLUMN keyassetproptype SET DEFAULT nextval('assetproptype_keyassetproptype_seq'::regclass);
+
+
+--
+-- Name: keyassettemplate; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY assettemplate ALTER COLUMN keyassettemplate SET DEFAULT nextval('assettemplate_keyassettemplate_seq1'::regclass);
+
+
+--
+-- Name: keycalendar; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY calendar ALTER COLUMN keycalendar SET DEFAULT nextval('calendar_keycalendar_seq1'::regclass);
+
+
+--
+-- Name: keycalendarcategory; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY calendarcategory ALTER COLUMN keycalendarcategory SET DEFAULT nextval('calendarcategory_keycalendarcategory_seq1'::regclass);
+
+
+--
+-- Name: keychecklistitem; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY checklistitem ALTER COLUMN keychecklistitem SET DEFAULT nextval('checklistitem_keychecklistitem_seq1'::regclass);
+
+
+--
+-- Name: keycheckliststatus; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY checkliststatus ALTER COLUMN keycheckliststatus SET DEFAULT nextval('checkliststatus_keycheckliststatus_seq1'::regclass);
+
+
+--
+-- Name: keyclient; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY client ALTER COLUMN keyclient SET DEFAULT nextval('client_keyclient_seq1'::regclass);
+
+
+--
+-- Name: keyconfig; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY config ALTER COLUMN keyconfig SET DEFAULT nextval('config_keyconfig_seq1'::regclass);
 
 
 --
@@ -8931,6 +9958,27 @@ ALTER TABLE ONLY delivery ALTER COLUMN keyelement SET DEFAULT nextval('element_k
 
 
 --
+-- Name: keydeliveryshot; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY deliveryelement ALTER COLUMN keydeliveryshot SET DEFAULT nextval('deliveryelement_keydeliveryshot_seq1'::regclass);
+
+
+--
+-- Name: keydepartment; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY department ALTER COLUMN keydepartment SET DEFAULT nextval('department_keydepartment_seq'::regclass);
+
+
+--
+-- Name: keydiskimage; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY diskimage ALTER COLUMN keydiskimage SET DEFAULT nextval('diskimage_keydiskimage_seq1'::regclass);
+
+
+--
 -- Name: keyhostgroup; Type: DEFAULT; Schema: public; Owner: farmer
 --
 
@@ -8938,31 +9986,290 @@ ALTER TABLE ONLY dynamichostgroup ALTER COLUMN keyhostgroup SET DEFAULT nextval(
 
 
 --
--- Name: keyelement; Type: DEFAULT; Schema: public; Owner: farmer
+-- Name: keygraph; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY employee ALTER COLUMN keyelement SET DEFAULT nextval('element_keyelement_seq'::regclass);
-
-
---
--- Name: arsenalslotreserve; Type: DEFAULT; Schema: public; Owner: farmer
---
-
-ALTER TABLE ONLY employee ALTER COLUMN arsenalslotreserve SET DEFAULT 0;
+ALTER TABLE ONLY graph ALTER COLUMN keygraph SET DEFAULT nextval('graph_keygraph_seq1'::regclass);
 
 
 --
--- Name: disabled; Type: DEFAULT; Schema: public; Owner: farmer
+-- Name: keygraphds; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY employee ALTER COLUMN disabled SET DEFAULT 0;
+ALTER TABLE ONLY graphds ALTER COLUMN keygraphds SET DEFAULT nextval('graphds_keygraphds_seq1'::regclass);
 
 
 --
--- Name: keyemployeeavailability; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: keygraphitedesc; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY employeeavailability ALTER COLUMN keyemployeeavailability SET DEFAULT nextval('employeeavailability_keyemployeeavailability_seq'::regclass);
+ALTER TABLE ONLY graphitesaveddesc ALTER COLUMN keygraphitedesc SET DEFAULT nextval('graphitesaveddesc_keygraphitedesc_seq'::regclass);
+
+
+--
+-- Name: keygraphpage; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY graphpage ALTER COLUMN keygraphpage SET DEFAULT nextval('graphpage_keygraphpage_seq1'::regclass);
+
+
+--
+-- Name: keygraphrelationship; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY graphrelationship ALTER COLUMN keygraphrelationship SET DEFAULT nextval('graphrelationship_keygraphrelationship_seq1'::regclass);
+
+
+--
+-- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job3delight ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
+
+
+--
+-- Name: hostsonjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job3delight ALTER COLUMN hostsonjob SET DEFAULT 0;
+
+
+--
+-- Name: taskscount; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job3delight ALTER COLUMN taskscount SET DEFAULT 0;
+
+
+--
+-- Name: tasksunassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job3delight ALTER COLUMN tasksunassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksdone; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job3delight ALTER COLUMN tasksdone SET DEFAULT 0;
+
+
+--
+-- Name: priority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job3delight ALTER COLUMN priority SET DEFAULT 50;
+
+
+--
+-- Name: packettype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job3delight ALTER COLUMN packettype SET DEFAULT 'random'::text;
+
+
+--
+-- Name: maxtasktime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job3delight ALTER COLUMN maxtasktime SET DEFAULT 3600;
+
+
+--
+-- Name: tasksassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job3delight ALTER COLUMN tasksassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksbusy; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job3delight ALTER COLUMN tasksbusy SET DEFAULT 0;
+
+
+--
+-- Name: taskscancelled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job3delight ALTER COLUMN taskscancelled SET DEFAULT 0;
+
+
+--
+-- Name: taskssuspended; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job3delight ALTER COLUMN taskssuspended SET DEFAULT 0;
+
+
+--
+-- Name: personalpriority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job3delight ALTER COLUMN personalpriority SET DEFAULT 50;
+
+
+--
+-- Name: loggingenabled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job3delight ALTER COLUMN loggingenabled SET DEFAULT true;
+
+
+--
+-- Name: slots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job3delight ALTER COLUMN slots SET DEFAULT 4;
+
+
+--
+-- Name: maxerrors; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job3delight ALTER COLUMN maxerrors SET DEFAULT 27;
+
+
+--
+-- Name: maxquiettime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job3delight ALTER COLUMN maxquiettime SET DEFAULT 3600;
+
+
+--
+-- Name: autoadaptslots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY job3delight ALTER COLUMN autoadaptslots SET DEFAULT (-1);
+
+
+--
+-- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobaftereffects ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
+
+
+--
+-- Name: hostsonjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobaftereffects ALTER COLUMN hostsonjob SET DEFAULT 0;
+
+
+--
+-- Name: taskscount; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobaftereffects ALTER COLUMN taskscount SET DEFAULT 0;
+
+
+--
+-- Name: tasksunassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobaftereffects ALTER COLUMN tasksunassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksdone; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobaftereffects ALTER COLUMN tasksdone SET DEFAULT 0;
+
+
+--
+-- Name: priority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobaftereffects ALTER COLUMN priority SET DEFAULT 50;
+
+
+--
+-- Name: packettype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobaftereffects ALTER COLUMN packettype SET DEFAULT 'random'::text;
+
+
+--
+-- Name: maxtasktime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobaftereffects ALTER COLUMN maxtasktime SET DEFAULT 3600;
+
+
+--
+-- Name: tasksassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobaftereffects ALTER COLUMN tasksassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksbusy; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobaftereffects ALTER COLUMN tasksbusy SET DEFAULT 0;
+
+
+--
+-- Name: taskscancelled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobaftereffects ALTER COLUMN taskscancelled SET DEFAULT 0;
+
+
+--
+-- Name: taskssuspended; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobaftereffects ALTER COLUMN taskssuspended SET DEFAULT 0;
+
+
+--
+-- Name: personalpriority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobaftereffects ALTER COLUMN personalpriority SET DEFAULT 50;
+
+
+--
+-- Name: loggingenabled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobaftereffects ALTER COLUMN loggingenabled SET DEFAULT true;
+
+
+--
+-- Name: slots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobaftereffects ALTER COLUMN slots SET DEFAULT 4;
+
+
+--
+-- Name: maxerrors; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobaftereffects ALTER COLUMN maxerrors SET DEFAULT 27;
+
+
+--
+-- Name: maxquiettime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobaftereffects ALTER COLUMN maxquiettime SET DEFAULT 3600;
+
+
+--
+-- Name: autoadaptslots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobaftereffects ALTER COLUMN autoadaptslots SET DEFAULT (-1);
 
 
 --
@@ -8983,14 +10290,511 @@ ALTER TABLE ONLY jobassignmentstatus ALTER COLUMN keyjobassignmentstatus SET DEF
 -- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
+ALTER TABLE ONLY jobautodeskburn ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
+
+
+--
+-- Name: hostsonjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobautodeskburn ALTER COLUMN hostsonjob SET DEFAULT 0;
+
+
+--
+-- Name: taskscount; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobautodeskburn ALTER COLUMN taskscount SET DEFAULT 0;
+
+
+--
+-- Name: tasksunassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobautodeskburn ALTER COLUMN tasksunassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksdone; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobautodeskburn ALTER COLUMN tasksdone SET DEFAULT 0;
+
+
+--
+-- Name: priority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobautodeskburn ALTER COLUMN priority SET DEFAULT 50;
+
+
+--
+-- Name: packettype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobautodeskburn ALTER COLUMN packettype SET DEFAULT 'random'::text;
+
+
+--
+-- Name: maxtasktime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobautodeskburn ALTER COLUMN maxtasktime SET DEFAULT 3600;
+
+
+--
+-- Name: tasksassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobautodeskburn ALTER COLUMN tasksassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksbusy; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobautodeskburn ALTER COLUMN tasksbusy SET DEFAULT 0;
+
+
+--
+-- Name: taskscancelled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobautodeskburn ALTER COLUMN taskscancelled SET DEFAULT 0;
+
+
+--
+-- Name: taskssuspended; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobautodeskburn ALTER COLUMN taskssuspended SET DEFAULT 0;
+
+
+--
+-- Name: personalpriority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobautodeskburn ALTER COLUMN personalpriority SET DEFAULT 50;
+
+
+--
+-- Name: loggingenabled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobautodeskburn ALTER COLUMN loggingenabled SET DEFAULT true;
+
+
+--
+-- Name: slots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobautodeskburn ALTER COLUMN slots SET DEFAULT 4;
+
+
+--
+-- Name: maxerrors; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobautodeskburn ALTER COLUMN maxerrors SET DEFAULT 27;
+
+
+--
+-- Name: maxquiettime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobautodeskburn ALTER COLUMN maxquiettime SET DEFAULT 3600;
+
+
+--
+-- Name: autoadaptslots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobautodeskburn ALTER COLUMN autoadaptslots SET DEFAULT (-1);
+
+
+--
+-- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobbatch ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
+
+
+--
+-- Name: hostsonjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobbatch ALTER COLUMN hostsonjob SET DEFAULT 0;
+
+
+--
+-- Name: taskscount; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobbatch ALTER COLUMN taskscount SET DEFAULT 0;
+
+
+--
+-- Name: tasksunassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobbatch ALTER COLUMN tasksunassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksdone; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobbatch ALTER COLUMN tasksdone SET DEFAULT 0;
+
+
+--
+-- Name: priority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobbatch ALTER COLUMN priority SET DEFAULT 50;
+
+
+--
+-- Name: packettype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobbatch ALTER COLUMN packettype SET DEFAULT 'random'::text;
+
+
+--
+-- Name: maxtasktime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobbatch ALTER COLUMN maxtasktime SET DEFAULT 3600;
+
+
+--
+-- Name: tasksassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobbatch ALTER COLUMN tasksassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksbusy; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobbatch ALTER COLUMN tasksbusy SET DEFAULT 0;
+
+
+--
+-- Name: taskscancelled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobbatch ALTER COLUMN taskscancelled SET DEFAULT 0;
+
+
+--
+-- Name: taskssuspended; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobbatch ALTER COLUMN taskssuspended SET DEFAULT 0;
+
+
+--
+-- Name: personalpriority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobbatch ALTER COLUMN personalpriority SET DEFAULT 50;
+
+
+--
+-- Name: loggingenabled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobbatch ALTER COLUMN loggingenabled SET DEFAULT true;
+
+
+--
+-- Name: slots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobbatch ALTER COLUMN slots SET DEFAULT 4;
+
+
+--
+-- Name: maxerrors; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobbatch ALTER COLUMN maxerrors SET DEFAULT 27;
+
+
+--
+-- Name: maxquiettime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobbatch ALTER COLUMN maxquiettime SET DEFAULT 3600;
+
+
+--
+-- Name: autoadaptslots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobbatch ALTER COLUMN autoadaptslots SET DEFAULT (-1);
+
+
+--
+-- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobblender ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
+
+
+--
+-- Name: hostsonjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobblender ALTER COLUMN hostsonjob SET DEFAULT 0;
+
+
+--
+-- Name: taskscount; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobblender ALTER COLUMN taskscount SET DEFAULT 0;
+
+
+--
+-- Name: tasksunassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobblender ALTER COLUMN tasksunassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksdone; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobblender ALTER COLUMN tasksdone SET DEFAULT 0;
+
+
+--
+-- Name: priority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobblender ALTER COLUMN priority SET DEFAULT 50;
+
+
+--
+-- Name: packettype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobblender ALTER COLUMN packettype SET DEFAULT 'random'::text;
+
+
+--
+-- Name: maxtasktime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobblender ALTER COLUMN maxtasktime SET DEFAULT 3600;
+
+
+--
+-- Name: tasksassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobblender ALTER COLUMN tasksassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksbusy; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobblender ALTER COLUMN tasksbusy SET DEFAULT 0;
+
+
+--
+-- Name: taskscancelled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobblender ALTER COLUMN taskscancelled SET DEFAULT 0;
+
+
+--
+-- Name: taskssuspended; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobblender ALTER COLUMN taskssuspended SET DEFAULT 0;
+
+
+--
+-- Name: personalpriority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobblender ALTER COLUMN personalpriority SET DEFAULT 50;
+
+
+--
+-- Name: loggingenabled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobblender ALTER COLUMN loggingenabled SET DEFAULT true;
+
+
+--
+-- Name: slots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobblender ALTER COLUMN slots SET DEFAULT 4;
+
+
+--
+-- Name: maxerrors; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobblender ALTER COLUMN maxerrors SET DEFAULT 27;
+
+
+--
+-- Name: maxquiettime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobblender ALTER COLUMN maxquiettime SET DEFAULT 3600;
+
+
+--
+-- Name: autoadaptslots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobblender ALTER COLUMN autoadaptslots SET DEFAULT (-1);
+
+
+--
+-- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobcinema4d ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
+
+
+--
+-- Name: hostsonjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobcinema4d ALTER COLUMN hostsonjob SET DEFAULT 0;
+
+
+--
+-- Name: taskscount; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobcinema4d ALTER COLUMN taskscount SET DEFAULT 0;
+
+
+--
+-- Name: tasksunassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobcinema4d ALTER COLUMN tasksunassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksdone; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobcinema4d ALTER COLUMN tasksdone SET DEFAULT 0;
+
+
+--
+-- Name: priority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobcinema4d ALTER COLUMN priority SET DEFAULT 50;
+
+
+--
+-- Name: packettype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobcinema4d ALTER COLUMN packettype SET DEFAULT 'random'::text;
+
+
+--
+-- Name: maxtasktime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobcinema4d ALTER COLUMN maxtasktime SET DEFAULT 3600;
+
+
+--
+-- Name: tasksassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobcinema4d ALTER COLUMN tasksassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksbusy; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobcinema4d ALTER COLUMN tasksbusy SET DEFAULT 0;
+
+
+--
+-- Name: taskscancelled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobcinema4d ALTER COLUMN taskscancelled SET DEFAULT 0;
+
+
+--
+-- Name: taskssuspended; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobcinema4d ALTER COLUMN taskssuspended SET DEFAULT 0;
+
+
+--
+-- Name: personalpriority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobcinema4d ALTER COLUMN personalpriority SET DEFAULT 50;
+
+
+--
+-- Name: loggingenabled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobcinema4d ALTER COLUMN loggingenabled SET DEFAULT true;
+
+
+--
+-- Name: slots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobcinema4d ALTER COLUMN slots SET DEFAULT 4;
+
+
+--
+-- Name: maxerrors; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobcinema4d ALTER COLUMN maxerrors SET DEFAULT 27;
+
+
+--
+-- Name: maxquiettime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobcinema4d ALTER COLUMN maxquiettime SET DEFAULT 3600;
+
+
+--
+-- Name: autoadaptslots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobcinema4d ALTER COLUMN autoadaptslots SET DEFAULT (-1);
+
+
+--
+-- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
 ALTER TABLE ONLY jobclientupdate ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
-
-
---
--- Name: status; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY jobclientupdate ALTER COLUMN status SET DEFAULT 'new'::text;
 
 
 --
@@ -9141,6 +10945,636 @@ ALTER TABLE ONLY jobfiltertype ALTER COLUMN keyjobfiltertype SET DEFAULT nextval
 
 
 --
+-- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfumefxsim ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
+
+
+--
+-- Name: hostsonjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfumefxsim ALTER COLUMN hostsonjob SET DEFAULT 0;
+
+
+--
+-- Name: taskscount; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfumefxsim ALTER COLUMN taskscount SET DEFAULT 0;
+
+
+--
+-- Name: tasksunassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfumefxsim ALTER COLUMN tasksunassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksdone; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfumefxsim ALTER COLUMN tasksdone SET DEFAULT 0;
+
+
+--
+-- Name: priority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfumefxsim ALTER COLUMN priority SET DEFAULT 50;
+
+
+--
+-- Name: packettype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfumefxsim ALTER COLUMN packettype SET DEFAULT 'random'::text;
+
+
+--
+-- Name: maxtasktime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfumefxsim ALTER COLUMN maxtasktime SET DEFAULT 3600;
+
+
+--
+-- Name: tasksassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfumefxsim ALTER COLUMN tasksassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksbusy; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfumefxsim ALTER COLUMN tasksbusy SET DEFAULT 0;
+
+
+--
+-- Name: taskscancelled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfumefxsim ALTER COLUMN taskscancelled SET DEFAULT 0;
+
+
+--
+-- Name: taskssuspended; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfumefxsim ALTER COLUMN taskssuspended SET DEFAULT 0;
+
+
+--
+-- Name: personalpriority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfumefxsim ALTER COLUMN personalpriority SET DEFAULT 50;
+
+
+--
+-- Name: loggingenabled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfumefxsim ALTER COLUMN loggingenabled SET DEFAULT true;
+
+
+--
+-- Name: slots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfumefxsim ALTER COLUMN slots SET DEFAULT 4;
+
+
+--
+-- Name: maxerrors; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfumefxsim ALTER COLUMN maxerrors SET DEFAULT 27;
+
+
+--
+-- Name: maxquiettime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfumefxsim ALTER COLUMN maxquiettime SET DEFAULT 3600;
+
+
+--
+-- Name: autoadaptslots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfumefxsim ALTER COLUMN autoadaptslots SET DEFAULT (-1);
+
+
+--
+-- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusion ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
+
+
+--
+-- Name: hostsonjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusion ALTER COLUMN hostsonjob SET DEFAULT 0;
+
+
+--
+-- Name: taskscount; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusion ALTER COLUMN taskscount SET DEFAULT 0;
+
+
+--
+-- Name: tasksunassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusion ALTER COLUMN tasksunassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksdone; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusion ALTER COLUMN tasksdone SET DEFAULT 0;
+
+
+--
+-- Name: priority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusion ALTER COLUMN priority SET DEFAULT 50;
+
+
+--
+-- Name: packettype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusion ALTER COLUMN packettype SET DEFAULT 'random'::text;
+
+
+--
+-- Name: maxtasktime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusion ALTER COLUMN maxtasktime SET DEFAULT 3600;
+
+
+--
+-- Name: tasksassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusion ALTER COLUMN tasksassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksbusy; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusion ALTER COLUMN tasksbusy SET DEFAULT 0;
+
+
+--
+-- Name: taskscancelled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusion ALTER COLUMN taskscancelled SET DEFAULT 0;
+
+
+--
+-- Name: taskssuspended; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusion ALTER COLUMN taskssuspended SET DEFAULT 0;
+
+
+--
+-- Name: personalpriority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusion ALTER COLUMN personalpriority SET DEFAULT 50;
+
+
+--
+-- Name: loggingenabled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusion ALTER COLUMN loggingenabled SET DEFAULT true;
+
+
+--
+-- Name: slots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusion ALTER COLUMN slots SET DEFAULT 4;
+
+
+--
+-- Name: maxerrors; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusion ALTER COLUMN maxerrors SET DEFAULT 27;
+
+
+--
+-- Name: maxquiettime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusion ALTER COLUMN maxquiettime SET DEFAULT 3600;
+
+
+--
+-- Name: autoadaptslots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusion ALTER COLUMN autoadaptslots SET DEFAULT (-1);
+
+
+--
+-- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusionvideomaker ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
+
+
+--
+-- Name: hostsonjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusionvideomaker ALTER COLUMN hostsonjob SET DEFAULT 0;
+
+
+--
+-- Name: taskscount; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusionvideomaker ALTER COLUMN taskscount SET DEFAULT 0;
+
+
+--
+-- Name: tasksunassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusionvideomaker ALTER COLUMN tasksunassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksdone; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusionvideomaker ALTER COLUMN tasksdone SET DEFAULT 0;
+
+
+--
+-- Name: priority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusionvideomaker ALTER COLUMN priority SET DEFAULT 50;
+
+
+--
+-- Name: packettype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusionvideomaker ALTER COLUMN packettype SET DEFAULT 'random'::text;
+
+
+--
+-- Name: maxtasktime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusionvideomaker ALTER COLUMN maxtasktime SET DEFAULT 3600;
+
+
+--
+-- Name: tasksassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusionvideomaker ALTER COLUMN tasksassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksbusy; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusionvideomaker ALTER COLUMN tasksbusy SET DEFAULT 0;
+
+
+--
+-- Name: taskscancelled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusionvideomaker ALTER COLUMN taskscancelled SET DEFAULT 0;
+
+
+--
+-- Name: taskssuspended; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusionvideomaker ALTER COLUMN taskssuspended SET DEFAULT 0;
+
+
+--
+-- Name: personalpriority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusionvideomaker ALTER COLUMN personalpriority SET DEFAULT 50;
+
+
+--
+-- Name: loggingenabled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusionvideomaker ALTER COLUMN loggingenabled SET DEFAULT true;
+
+
+--
+-- Name: slots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusionvideomaker ALTER COLUMN slots SET DEFAULT 4;
+
+
+--
+-- Name: maxerrors; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusionvideomaker ALTER COLUMN maxerrors SET DEFAULT 27;
+
+
+--
+-- Name: maxquiettime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusionvideomaker ALTER COLUMN maxquiettime SET DEFAULT 3600;
+
+
+--
+-- Name: autoadaptslots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobfusionvideomaker ALTER COLUMN autoadaptslots SET DEFAULT (-1);
+
+
+--
+-- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobhoudini ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
+
+
+--
+-- Name: hostsonjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobhoudini ALTER COLUMN hostsonjob SET DEFAULT 0;
+
+
+--
+-- Name: taskscount; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobhoudini ALTER COLUMN taskscount SET DEFAULT 0;
+
+
+--
+-- Name: tasksunassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobhoudini ALTER COLUMN tasksunassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksdone; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobhoudini ALTER COLUMN tasksdone SET DEFAULT 0;
+
+
+--
+-- Name: priority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobhoudini ALTER COLUMN priority SET DEFAULT 50;
+
+
+--
+-- Name: packettype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobhoudini ALTER COLUMN packettype SET DEFAULT 'random'::text;
+
+
+--
+-- Name: maxtasktime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobhoudini ALTER COLUMN maxtasktime SET DEFAULT 3600;
+
+
+--
+-- Name: tasksassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobhoudini ALTER COLUMN tasksassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksbusy; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobhoudini ALTER COLUMN tasksbusy SET DEFAULT 0;
+
+
+--
+-- Name: taskscancelled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobhoudini ALTER COLUMN taskscancelled SET DEFAULT 0;
+
+
+--
+-- Name: taskssuspended; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobhoudini ALTER COLUMN taskssuspended SET DEFAULT 0;
+
+
+--
+-- Name: personalpriority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobhoudini ALTER COLUMN personalpriority SET DEFAULT 50;
+
+
+--
+-- Name: loggingenabled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobhoudini ALTER COLUMN loggingenabled SET DEFAULT true;
+
+
+--
+-- Name: slots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobhoudini ALTER COLUMN slots SET DEFAULT 4;
+
+
+--
+-- Name: maxerrors; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobhoudini ALTER COLUMN maxerrors SET DEFAULT 27;
+
+
+--
+-- Name: maxquiettime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobhoudini ALTER COLUMN maxquiettime SET DEFAULT 3600;
+
+
+--
+-- Name: autoadaptslots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobhoudini ALTER COLUMN autoadaptslots SET DEFAULT (-1);
+
+
+--
+-- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmantra ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
+
+
+--
+-- Name: hostsonjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmantra ALTER COLUMN hostsonjob SET DEFAULT 0;
+
+
+--
+-- Name: taskscount; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmantra ALTER COLUMN taskscount SET DEFAULT 0;
+
+
+--
+-- Name: tasksunassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmantra ALTER COLUMN tasksunassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksdone; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmantra ALTER COLUMN tasksdone SET DEFAULT 0;
+
+
+--
+-- Name: priority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmantra ALTER COLUMN priority SET DEFAULT 50;
+
+
+--
+-- Name: packettype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmantra ALTER COLUMN packettype SET DEFAULT 'random'::text;
+
+
+--
+-- Name: maxtasktime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmantra ALTER COLUMN maxtasktime SET DEFAULT 3600;
+
+
+--
+-- Name: tasksassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmantra ALTER COLUMN tasksassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksbusy; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmantra ALTER COLUMN tasksbusy SET DEFAULT 0;
+
+
+--
+-- Name: taskscancelled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmantra ALTER COLUMN taskscancelled SET DEFAULT 0;
+
+
+--
+-- Name: taskssuspended; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmantra ALTER COLUMN taskssuspended SET DEFAULT 0;
+
+
+--
+-- Name: personalpriority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmantra ALTER COLUMN personalpriority SET DEFAULT 50;
+
+
+--
+-- Name: loggingenabled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmantra ALTER COLUMN loggingenabled SET DEFAULT true;
+
+
+--
+-- Name: slots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmantra ALTER COLUMN slots SET DEFAULT 4;
+
+
+--
+-- Name: maxerrors; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmantra ALTER COLUMN maxerrors SET DEFAULT 27;
+
+
+--
+-- Name: maxquiettime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmantra ALTER COLUMN maxquiettime SET DEFAULT 3600;
+
+
+--
+-- Name: autoadaptslots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmantra ALTER COLUMN autoadaptslots SET DEFAULT (-1);
+
+
+--
 -- Name: keyjobmapping; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -9151,14 +11585,637 @@ ALTER TABLE ONLY jobmapping ALTER COLUMN keyjobmapping SET DEFAULT nextval('jobm
 -- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
+ALTER TABLE ONLY jobmax ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
+
+
+--
+-- Name: hostsonjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmax ALTER COLUMN hostsonjob SET DEFAULT 0;
+
+
+--
+-- Name: taskscount; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmax ALTER COLUMN taskscount SET DEFAULT 0;
+
+
+--
+-- Name: tasksunassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmax ALTER COLUMN tasksunassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksdone; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmax ALTER COLUMN tasksdone SET DEFAULT 0;
+
+
+--
+-- Name: priority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmax ALTER COLUMN priority SET DEFAULT 50;
+
+
+--
+-- Name: packettype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmax ALTER COLUMN packettype SET DEFAULT 'random'::text;
+
+
+--
+-- Name: maxtasktime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmax ALTER COLUMN maxtasktime SET DEFAULT 3600;
+
+
+--
+-- Name: tasksassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmax ALTER COLUMN tasksassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksbusy; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmax ALTER COLUMN tasksbusy SET DEFAULT 0;
+
+
+--
+-- Name: taskscancelled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmax ALTER COLUMN taskscancelled SET DEFAULT 0;
+
+
+--
+-- Name: taskssuspended; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmax ALTER COLUMN taskssuspended SET DEFAULT 0;
+
+
+--
+-- Name: personalpriority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmax ALTER COLUMN personalpriority SET DEFAULT 50;
+
+
+--
+-- Name: loggingenabled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmax ALTER COLUMN loggingenabled SET DEFAULT true;
+
+
+--
+-- Name: slots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmax ALTER COLUMN slots SET DEFAULT 4;
+
+
+--
+-- Name: maxerrors; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmax ALTER COLUMN maxerrors SET DEFAULT 27;
+
+
+--
+-- Name: maxquiettime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmax ALTER COLUMN maxquiettime SET DEFAULT 3600;
+
+
+--
+-- Name: autoadaptslots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmax ALTER COLUMN autoadaptslots SET DEFAULT (-1);
+
+
+--
+-- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaxscript ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
+
+
+--
+-- Name: hostsonjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaxscript ALTER COLUMN hostsonjob SET DEFAULT 0;
+
+
+--
+-- Name: taskscount; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaxscript ALTER COLUMN taskscount SET DEFAULT 0;
+
+
+--
+-- Name: tasksunassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaxscript ALTER COLUMN tasksunassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksdone; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaxscript ALTER COLUMN tasksdone SET DEFAULT 0;
+
+
+--
+-- Name: priority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaxscript ALTER COLUMN priority SET DEFAULT 50;
+
+
+--
+-- Name: packettype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaxscript ALTER COLUMN packettype SET DEFAULT 'random'::text;
+
+
+--
+-- Name: maxtasktime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaxscript ALTER COLUMN maxtasktime SET DEFAULT 3600;
+
+
+--
+-- Name: tasksassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaxscript ALTER COLUMN tasksassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksbusy; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaxscript ALTER COLUMN tasksbusy SET DEFAULT 0;
+
+
+--
+-- Name: taskscancelled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaxscript ALTER COLUMN taskscancelled SET DEFAULT 0;
+
+
+--
+-- Name: taskssuspended; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaxscript ALTER COLUMN taskssuspended SET DEFAULT 0;
+
+
+--
+-- Name: personalpriority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaxscript ALTER COLUMN personalpriority SET DEFAULT 50;
+
+
+--
+-- Name: loggingenabled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaxscript ALTER COLUMN loggingenabled SET DEFAULT true;
+
+
+--
+-- Name: slots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaxscript ALTER COLUMN slots SET DEFAULT 4;
+
+
+--
+-- Name: maxerrors; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaxscript ALTER COLUMN maxerrors SET DEFAULT 27;
+
+
+--
+-- Name: maxquiettime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaxscript ALTER COLUMN maxquiettime SET DEFAULT 3600;
+
+
+--
+-- Name: autoadaptslots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaxscript ALTER COLUMN autoadaptslots SET DEFAULT (-1);
+
+
+--
+-- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaya ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
+
+
+--
+-- Name: hostsonjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaya ALTER COLUMN hostsonjob SET DEFAULT 0;
+
+
+--
+-- Name: taskscount; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaya ALTER COLUMN taskscount SET DEFAULT 0;
+
+
+--
+-- Name: tasksunassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaya ALTER COLUMN tasksunassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksdone; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaya ALTER COLUMN tasksdone SET DEFAULT 0;
+
+
+--
+-- Name: priority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaya ALTER COLUMN priority SET DEFAULT 50;
+
+
+--
+-- Name: packettype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaya ALTER COLUMN packettype SET DEFAULT 'random'::text;
+
+
+--
+-- Name: maxtasktime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaya ALTER COLUMN maxtasktime SET DEFAULT 3600;
+
+
+--
+-- Name: tasksassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaya ALTER COLUMN tasksassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksbusy; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaya ALTER COLUMN tasksbusy SET DEFAULT 0;
+
+
+--
+-- Name: taskscancelled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaya ALTER COLUMN taskscancelled SET DEFAULT 0;
+
+
+--
+-- Name: taskssuspended; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaya ALTER COLUMN taskssuspended SET DEFAULT 0;
+
+
+--
+-- Name: personalpriority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaya ALTER COLUMN personalpriority SET DEFAULT 50;
+
+
+--
+-- Name: loggingenabled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaya ALTER COLUMN loggingenabled SET DEFAULT true;
+
+
+--
+-- Name: slots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaya ALTER COLUMN slots SET DEFAULT 4;
+
+
+--
+-- Name: maxerrors; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaya ALTER COLUMN maxerrors SET DEFAULT 27;
+
+
+--
+-- Name: maxquiettime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaya ALTER COLUMN maxquiettime SET DEFAULT 3600;
+
+
+--
+-- Name: autoadaptslots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobmaya ALTER COLUMN autoadaptslots SET DEFAULT (-1);
+
+
+--
+-- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnaiad ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
+
+
+--
+-- Name: hostsonjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnaiad ALTER COLUMN hostsonjob SET DEFAULT 0;
+
+
+--
+-- Name: taskscount; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnaiad ALTER COLUMN taskscount SET DEFAULT 0;
+
+
+--
+-- Name: tasksunassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnaiad ALTER COLUMN tasksunassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksdone; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnaiad ALTER COLUMN tasksdone SET DEFAULT 0;
+
+
+--
+-- Name: priority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnaiad ALTER COLUMN priority SET DEFAULT 50;
+
+
+--
+-- Name: packettype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnaiad ALTER COLUMN packettype SET DEFAULT 'random'::text;
+
+
+--
+-- Name: maxtasktime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnaiad ALTER COLUMN maxtasktime SET DEFAULT 3600;
+
+
+--
+-- Name: tasksassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnaiad ALTER COLUMN tasksassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksbusy; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnaiad ALTER COLUMN tasksbusy SET DEFAULT 0;
+
+
+--
+-- Name: taskscancelled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnaiad ALTER COLUMN taskscancelled SET DEFAULT 0;
+
+
+--
+-- Name: taskssuspended; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnaiad ALTER COLUMN taskssuspended SET DEFAULT 0;
+
+
+--
+-- Name: personalpriority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnaiad ALTER COLUMN personalpriority SET DEFAULT 50;
+
+
+--
+-- Name: loggingenabled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnaiad ALTER COLUMN loggingenabled SET DEFAULT true;
+
+
+--
+-- Name: slots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnaiad ALTER COLUMN slots SET DEFAULT 4;
+
+
+--
+-- Name: maxerrors; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnaiad ALTER COLUMN maxerrors SET DEFAULT 27;
+
+
+--
+-- Name: maxquiettime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnaiad ALTER COLUMN maxquiettime SET DEFAULT 3600;
+
+
+--
+-- Name: autoadaptslots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnaiad ALTER COLUMN autoadaptslots SET DEFAULT (-1);
+
+
+--
+-- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnuke ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
+
+
+--
+-- Name: hostsonjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnuke ALTER COLUMN hostsonjob SET DEFAULT 0;
+
+
+--
+-- Name: taskscount; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnuke ALTER COLUMN taskscount SET DEFAULT 0;
+
+
+--
+-- Name: tasksunassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnuke ALTER COLUMN tasksunassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksdone; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnuke ALTER COLUMN tasksdone SET DEFAULT 0;
+
+
+--
+-- Name: priority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnuke ALTER COLUMN priority SET DEFAULT 50;
+
+
+--
+-- Name: packettype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnuke ALTER COLUMN packettype SET DEFAULT 'random'::text;
+
+
+--
+-- Name: maxtasktime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnuke ALTER COLUMN maxtasktime SET DEFAULT 3600;
+
+
+--
+-- Name: tasksassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnuke ALTER COLUMN tasksassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksbusy; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnuke ALTER COLUMN tasksbusy SET DEFAULT 0;
+
+
+--
+-- Name: taskscancelled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnuke ALTER COLUMN taskscancelled SET DEFAULT 0;
+
+
+--
+-- Name: taskssuspended; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnuke ALTER COLUMN taskssuspended SET DEFAULT 0;
+
+
+--
+-- Name: personalpriority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnuke ALTER COLUMN personalpriority SET DEFAULT 50;
+
+
+--
+-- Name: loggingenabled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnuke ALTER COLUMN loggingenabled SET DEFAULT true;
+
+
+--
+-- Name: slots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnuke ALTER COLUMN slots SET DEFAULT 4;
+
+
+--
+-- Name: maxerrors; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnuke ALTER COLUMN maxerrors SET DEFAULT 27;
+
+
+--
+-- Name: maxquiettime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnuke ALTER COLUMN maxquiettime SET DEFAULT 3600;
+
+
+--
+-- Name: autoadaptslots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobnuke ALTER COLUMN autoadaptslots SET DEFAULT (-1);
+
+
+--
+-- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
 ALTER TABLE ONLY jobproxy ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
-
-
---
--- Name: status; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY jobproxy ALTER COLUMN status SET DEFAULT 'new'::text;
 
 
 --
@@ -9281,6 +12338,132 @@ ALTER TABLE ONLY jobproxy ALTER COLUMN autoadaptslots SET DEFAULT (-1);
 
 
 --
+-- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobrealflow ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
+
+
+--
+-- Name: hostsonjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobrealflow ALTER COLUMN hostsonjob SET DEFAULT 0;
+
+
+--
+-- Name: taskscount; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobrealflow ALTER COLUMN taskscount SET DEFAULT 0;
+
+
+--
+-- Name: tasksunassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobrealflow ALTER COLUMN tasksunassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksdone; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobrealflow ALTER COLUMN tasksdone SET DEFAULT 0;
+
+
+--
+-- Name: priority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobrealflow ALTER COLUMN priority SET DEFAULT 50;
+
+
+--
+-- Name: packettype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobrealflow ALTER COLUMN packettype SET DEFAULT 'random'::text;
+
+
+--
+-- Name: maxtasktime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobrealflow ALTER COLUMN maxtasktime SET DEFAULT 3600;
+
+
+--
+-- Name: tasksassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobrealflow ALTER COLUMN tasksassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksbusy; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobrealflow ALTER COLUMN tasksbusy SET DEFAULT 0;
+
+
+--
+-- Name: taskscancelled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobrealflow ALTER COLUMN taskscancelled SET DEFAULT 0;
+
+
+--
+-- Name: taskssuspended; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobrealflow ALTER COLUMN taskssuspended SET DEFAULT 0;
+
+
+--
+-- Name: personalpriority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobrealflow ALTER COLUMN personalpriority SET DEFAULT 50;
+
+
+--
+-- Name: loggingenabled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobrealflow ALTER COLUMN loggingenabled SET DEFAULT true;
+
+
+--
+-- Name: slots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobrealflow ALTER COLUMN slots SET DEFAULT 4;
+
+
+--
+-- Name: maxerrors; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobrealflow ALTER COLUMN maxerrors SET DEFAULT 27;
+
+
+--
+-- Name: maxquiettime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobrealflow ALTER COLUMN maxquiettime SET DEFAULT 3600;
+
+
+--
+-- Name: autoadaptslots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobrealflow ALTER COLUMN autoadaptslots SET DEFAULT (-1);
+
+
+--
 -- Name: keyjobscreenshot; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -9302,17 +12485,17 @@ ALTER TABLE ONLY jobstatusskipreason ALTER COLUMN keyjobstatusskipreason SET DEF
 
 
 --
+-- Name: keyjobstatustype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobstatustype ALTER COLUMN keyjobstatustype SET DEFAULT nextval('jobstatustype_keyjobstatustype_seq'::regclass);
+
+
+--
 -- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY jobsync ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
-
-
---
--- Name: status; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY jobsync ALTER COLUMN status SET DEFAULT 'new'::text;
 
 
 --
@@ -9442,6 +12625,258 @@ ALTER TABLE ONLY jobtaskassignment ALTER COLUMN keyjobtaskassignment SET DEFAULT
 
 
 --
+-- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsi ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
+
+
+--
+-- Name: hostsonjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsi ALTER COLUMN hostsonjob SET DEFAULT 0;
+
+
+--
+-- Name: taskscount; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsi ALTER COLUMN taskscount SET DEFAULT 0;
+
+
+--
+-- Name: tasksunassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsi ALTER COLUMN tasksunassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksdone; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsi ALTER COLUMN tasksdone SET DEFAULT 0;
+
+
+--
+-- Name: priority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsi ALTER COLUMN priority SET DEFAULT 50;
+
+
+--
+-- Name: packettype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsi ALTER COLUMN packettype SET DEFAULT 'random'::text;
+
+
+--
+-- Name: maxtasktime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsi ALTER COLUMN maxtasktime SET DEFAULT 3600;
+
+
+--
+-- Name: tasksassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsi ALTER COLUMN tasksassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksbusy; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsi ALTER COLUMN tasksbusy SET DEFAULT 0;
+
+
+--
+-- Name: taskscancelled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsi ALTER COLUMN taskscancelled SET DEFAULT 0;
+
+
+--
+-- Name: taskssuspended; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsi ALTER COLUMN taskssuspended SET DEFAULT 0;
+
+
+--
+-- Name: personalpriority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsi ALTER COLUMN personalpriority SET DEFAULT 50;
+
+
+--
+-- Name: loggingenabled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsi ALTER COLUMN loggingenabled SET DEFAULT true;
+
+
+--
+-- Name: slots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsi ALTER COLUMN slots SET DEFAULT 4;
+
+
+--
+-- Name: maxerrors; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsi ALTER COLUMN maxerrors SET DEFAULT 27;
+
+
+--
+-- Name: maxquiettime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsi ALTER COLUMN maxquiettime SET DEFAULT 3600;
+
+
+--
+-- Name: autoadaptslots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsi ALTER COLUMN autoadaptslots SET DEFAULT (-1);
+
+
+--
+-- Name: keyjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsiscript ALTER COLUMN keyjob SET DEFAULT nextval('job_keyjob_seq'::regclass);
+
+
+--
+-- Name: hostsonjob; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsiscript ALTER COLUMN hostsonjob SET DEFAULT 0;
+
+
+--
+-- Name: taskscount; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsiscript ALTER COLUMN taskscount SET DEFAULT 0;
+
+
+--
+-- Name: tasksunassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsiscript ALTER COLUMN tasksunassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksdone; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsiscript ALTER COLUMN tasksdone SET DEFAULT 0;
+
+
+--
+-- Name: priority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsiscript ALTER COLUMN priority SET DEFAULT 50;
+
+
+--
+-- Name: packettype; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsiscript ALTER COLUMN packettype SET DEFAULT 'random'::text;
+
+
+--
+-- Name: maxtasktime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsiscript ALTER COLUMN maxtasktime SET DEFAULT 3600;
+
+
+--
+-- Name: tasksassigned; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsiscript ALTER COLUMN tasksassigned SET DEFAULT 0;
+
+
+--
+-- Name: tasksbusy; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsiscript ALTER COLUMN tasksbusy SET DEFAULT 0;
+
+
+--
+-- Name: taskscancelled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsiscript ALTER COLUMN taskscancelled SET DEFAULT 0;
+
+
+--
+-- Name: taskssuspended; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsiscript ALTER COLUMN taskssuspended SET DEFAULT 0;
+
+
+--
+-- Name: personalpriority; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsiscript ALTER COLUMN personalpriority SET DEFAULT 50;
+
+
+--
+-- Name: loggingenabled; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsiscript ALTER COLUMN loggingenabled SET DEFAULT true;
+
+
+--
+-- Name: slots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsiscript ALTER COLUMN slots SET DEFAULT 4;
+
+
+--
+-- Name: maxerrors; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsiscript ALTER COLUMN maxerrors SET DEFAULT 27;
+
+
+--
+-- Name: maxquiettime; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsiscript ALTER COLUMN maxquiettime SET DEFAULT 3600;
+
+
+--
+-- Name: autoadaptslots; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY jobxsiscript ALTER COLUMN autoadaptslots SET DEFAULT (-1);
+
+
+--
 -- Name: keynotificationcomponent; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -9474,6 +12909,13 @@ ALTER TABLE ONLY package ALTER COLUMN keypackage SET DEFAULT nextval('package_ke
 --
 
 ALTER TABLE ONLY packageoutput ALTER COLUMN keypackageoutput SET DEFAULT nextval('packageoutput_keypackageoutput_seq'::regclass);
+
+
+--
+-- Name: keypermission; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY permission ALTER COLUMN keypermission SET DEFAULT nextval('permission_keypermission_seq1'::regclass);
 
 
 --
@@ -9603,6 +13045,13 @@ ALTER TABLE ONLY task ALTER COLUMN arsenalslotreserve SET DEFAULT 0;
 
 
 --
+-- Name: keytimesheetcategory; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY timesheetcategory ALTER COLUMN keytimesheetcategory SET DEFAULT nextval('timesheetcategory_keytimesheetcategory_seq1'::regclass);
+
+
+--
 -- Name: keyuserpassword; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -9638,6 +13087,14 @@ ALTER TABLE ONLY versionfiletracker ALTER COLUMN keyfiletracker SET DEFAULT next
 
 
 --
+-- Data for Name: abdownloadstat; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY abdownloadstat (keyabdownloadstat, type, size, "time", fkeyhost, abrev, finished, fkeyjob) FROM stdin;
+\.
+
+
+--
 -- Name: abdownloadstat_keyabdownloadstat_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
@@ -9645,10 +13102,32 @@ SELECT pg_catalog.setval('abdownloadstat_keyabdownloadstat_seq', 1, false);
 
 
 --
+-- Name: abdownloadstat_keyabdownloadstat_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('abdownloadstat_keyabdownloadstat_seq1', 1, false);
+
+
+--
+-- Data for Name: annotation; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY annotation (keyannotation, notes, markupdata, framestart, frameend, sequence) FROM stdin;
+\.
+
+
+--
 -- Name: annotation_keyannotation_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
 SELECT pg_catalog.setval('annotation_keyannotation_seq', 1, false);
+
+
+--
+-- Name: annotation_keyannotation_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('annotation_keyannotation_seq1', 1, false);
 
 
 --
@@ -9698,10 +13177,25 @@ SELECT pg_catalog.setval('assetprop_keyassetprop_seq', 1, false);
 
 
 --
+-- Data for Name: assetproperty; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY assetproperty (keyassetproperty, name, type, value, fkeyelement) FROM stdin;
+\.
+
+
+--
 -- Name: assetproperty_keyassetproperty_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
 SELECT pg_catalog.setval('assetproperty_keyassetproperty_seq', 1, false);
+
+
+--
+-- Name: assetproperty_keyassetproperty_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('assetproperty_keyassetproperty_seq1', 1, false);
 
 
 --
@@ -9750,10 +13244,25 @@ SELECT pg_catalog.setval('assetsetitem_keyassetsetitem_seq', 1, false);
 
 
 --
+-- Data for Name: assettemplate; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY assettemplate (keyassettemplate, fkeyelement, fkeyassettype, fkeyproject, name) FROM stdin;
+\.
+
+
+--
 -- Name: assettemplate_keyassettemplate_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
 SELECT pg_catalog.setval('assettemplate_keyassettemplate_seq', 1, false);
+
+
+--
+-- Name: assettemplate_keyassettemplate_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('assettemplate_keyassettemplate_seq1', 1, false);
 
 
 --
@@ -9805,10 +13314,33 @@ SELECT pg_catalog.setval('attachmenttype_keyattachmenttype_seq', 1, false);
 
 
 --
+-- Data for Name: calendar; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY calendar (keycalendar, calendar, date, enddate, fkeycalendarcategory, fkeyproject, fkeyelement, fkeyusr, repeat, fkeylocation, locallocation, url, alldayevent, repeatuntil, fkeyauthor, private, details, reel, fkeydepartment, public_calendar, fkeynotification) FROM stdin;
+\.
+
+
+--
 -- Name: calendar_keycalendar_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
 SELECT pg_catalog.setval('calendar_keycalendar_seq', 1, false);
+
+
+--
+-- Name: calendar_keycalendar_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('calendar_keycalendar_seq1', 1, false);
+
+
+--
+-- Data for Name: calendarcategory; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY calendarcategory (keycalendarcategory, calendarcategory) FROM stdin;
+\.
 
 
 --
@@ -9819,10 +13351,40 @@ SELECT pg_catalog.setval('calendarcategory_keycalendarcategory_seq', 1, false);
 
 
 --
+-- Name: calendarcategory_keycalendarcategory_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('calendarcategory_keycalendarcategory_seq1', 1, false);
+
+
+--
+-- Data for Name: checklistitem; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY checklistitem (keychecklistitem, body, checklistitem, fkeyproject, fkeythumbnail, fkeytimesheetcategory, fkeystatusset) FROM stdin;
+\.
+
+
+--
 -- Name: checklistitem_keychecklistitem_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
 SELECT pg_catalog.setval('checklistitem_keychecklistitem_seq', 1, false);
+
+
+--
+-- Name: checklistitem_keychecklistitem_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('checklistitem_keychecklistitem_seq1', 1, false);
+
+
+--
+-- Data for Name: checkliststatus; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY checkliststatus (keycheckliststatus, fkeychecklistitem, fkeyelement, fkeyelementstatus) FROM stdin;
+\.
 
 
 --
@@ -9833,10 +13395,40 @@ SELECT pg_catalog.setval('checkliststatus_keycheckliststatus_seq', 1, false);
 
 
 --
+-- Name: checkliststatus_keycheckliststatus_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('checkliststatus_keycheckliststatus_seq1', 1, false);
+
+
+--
+-- Data for Name: client; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY client (keyclient, client, textcard) FROM stdin;
+\.
+
+
+--
 -- Name: client_keyclient_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
 SELECT pg_catalog.setval('client_keyclient_seq', 1, false);
+
+
+--
+-- Name: client_keyclient_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('client_keyclient_seq1', 1, false);
+
+
+--
+-- Data for Name: config; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY config (keyconfig, config, value) FROM stdin;
+\.
 
 
 --
@@ -9847,10 +13439,18 @@ SELECT pg_catalog.setval('config_keyconfig_seq', 1, false);
 
 
 --
+-- Name: config_keyconfig_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('config_keyconfig_seq1', 1, false);
+
+
+--
 -- Data for Name: countercache; Type: TABLE DATA; Schema: public; Owner: farmer
 --
 
 COPY countercache (hoststotal, hostsactive, hostsready, jobstotal, jobsactive, jobsdone, lastupdated, slotstotal, slotsactive, jobswaiting) FROM stdin;
+2	0	1	1	0	1	2015-07-02 00:16:47.668986	2	\N	0
 \.
 
 
@@ -9878,10 +13478,25 @@ COPY delivery (keyelement, daysbid, description, fkeyelement, fkeyelementstatus,
 
 
 --
+-- Data for Name: deliveryelement; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY deliveryelement (keydeliveryshot, fkeydelivery, fkeyelement, framestart, frameend) FROM stdin;
+\.
+
+
+--
 -- Name: deliveryelement_keydeliveryshot_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
 SELECT pg_catalog.setval('deliveryelement_keydeliveryshot_seq', 1, false);
+
+
+--
+-- Name: deliveryelement_keydeliveryshot_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('deliveryelement_keydeliveryshot_seq1', 1, false);
 
 
 --
@@ -9900,10 +13515,40 @@ SELECT pg_catalog.setval('demoreel_keydemoreel_seq', 1, false);
 
 
 --
+-- Data for Name: department; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY department (keydepartment, name, "order", flags, fkeytimeoffsupervisor, description, sequentialorder) FROM stdin;
+\.
+
+
+--
+-- Name: department_keydepartment_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('department_keydepartment_seq', 1, false);
+
+
+--
+-- Data for Name: diskimage; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY diskimage (keydiskimage, diskimage, path, created) FROM stdin;
+\.
+
+
+--
 -- Name: diskimage_keydiskimage_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
 SELECT pg_catalog.setval('diskimage_keydiskimage_seq', 1, false);
+
+
+--
+-- Name: diskimage_keydiskimage_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('diskimage_keydiskimage_seq1', 1, false);
 
 
 --
@@ -10043,29 +13688,6 @@ SELECT pg_catalog.setval('elementuser_keyelementuser_seq', 1, false);
 
 
 --
--- Data for Name: employee; Type: TABLE DATA; Schema: public; Owner: farmer
---
-
-COPY employee (keyelement, daysbid, description, fkeyelement, fkeyelementstatus, fkeyelementtype, fkeyproject, fkeythumbnail, name, daysscheduled, daysestimated, status, filepath, fkeyassettype, fkeypathtemplate, fkeystatusset, allowtime, datestart, datecomplete, fkeyassettemplate, icon, arsenalslotlimit, arsenalslotreserve, dateoflastlogon, email, fkeyhost, gpgkey, jid, pager, password, remoteips, schedule, shell, uid, threadnotifybyjabber, threadnotifybyemail, fkeyclient, intranet, homedir, disabled, gid, usr, keyusr, rolemask, usrlevel, remoteok, requestcount, sessiontimeout, logoncount, useradded, oldkeyusr, sid, lastlogontype, namefirst, namelast, dateofhire, dateoftermination, dateofbirth, logon, lockedout, bebackat, comment, userlevel, nopostdays, initials, missingtimesheetcount, namemiddle, fkeyrole) FROM stdin;
-\.
-
-
---
--- Data for Name: employeeavailability; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY employeeavailability (keyemployeeavailability, days, datestart, dateend, baseavail, freelance, qc, fkeyemployee, fkeyrole, supervisor, endofweek) FROM stdin;
-\.
-
-
---
--- Name: employeeavailability_keyemployeeavailability_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('employeeavailability_keyemployeeavailability_seq', 1, false);
-
-
---
 -- Data for Name: eventalert; Type: TABLE DATA; Schema: public; Owner: farmer
 --
 
@@ -10156,10 +13778,33 @@ SELECT pg_catalog.setval('folder_keyfolder_seq', 1, false);
 
 
 --
+-- Data for Name: graph; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY graph (keygraph, height, width, vlabel, period, upperlimit, lowerlimit, stack, graphmax, fkeygraphpage) FROM stdin;
+\.
+
+
+--
 -- Name: graph_keygraph_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
 SELECT pg_catalog.setval('graph_keygraph_seq', 1, false);
+
+
+--
+-- Name: graph_keygraph_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('graph_keygraph_seq1', 1, false);
+
+
+--
+-- Data for Name: graphds; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY graphds (keygraphds, varname, dstype, fkeyhost, cdef, fieldname, filename, negative, graphds) FROM stdin;
+\.
 
 
 --
@@ -10170,6 +13815,36 @@ SELECT pg_catalog.setval('graphds_keygraphds_seq', 1, false);
 
 
 --
+-- Name: graphds_keygraphds_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('graphds_keygraphds_seq1', 1, false);
+
+
+--
+-- Data for Name: graphitesaveddesc; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY graphitesaveddesc (keygraphitedesc, name, "group", url, fkeyuser, modified) FROM stdin;
+\.
+
+
+--
+-- Name: graphitesaveddesc_keygraphitedesc_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('graphitesaveddesc_keygraphitedesc_seq', 1, false);
+
+
+--
+-- Data for Name: graphpage; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY graphpage (keygraphpage, fkeygraphpage, name) FROM stdin;
+\.
+
+
+--
 -- Name: graphpage_keygraphpage_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
@@ -10177,10 +13852,32 @@ SELECT pg_catalog.setval('graphpage_keygraphpage_seq', 1, false);
 
 
 --
+-- Name: graphpage_keygraphpage_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('graphpage_keygraphpage_seq1', 1, false);
+
+
+--
+-- Data for Name: graphrelationship; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY graphrelationship (keygraphrelationship, fkeygraphds, fkeygraph) FROM stdin;
+\.
+
+
+--
 -- Name: graphrelationship_keygraphrelationship_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
 SELECT pg_catalog.setval('graphrelationship_keygraphrelationship_seq', 1, false);
+
+
+--
+-- Name: graphrelationship_keygraphrelationship_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('graphrelationship_keygraphrelationship_seq1', 1, false);
 
 
 --
@@ -10237,6 +13934,9 @@ COPY grp (keygrp, grp, alias) FROM stdin;
 2	2D	\N
 3	RenderOps	\N
 4	RenderOps-Notify	\N
+5	Coordinator	\N
+6	Lead	\N
+7	User	\N
 \.
 
 
@@ -10244,7 +13944,7 @@ COPY grp (keygrp, grp, alias) FROM stdin;
 -- Name: grp_keygrp_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
-SELECT pg_catalog.setval('grp_keygrp_seq', 1, false);
+SELECT pg_catalog.setval('grp_keygrp_seq', 1, true);
 
 
 --
@@ -10518,7 +14218,15 @@ SELECT pg_catalog.setval('hoststatus_keyhoststatus_seq', 1, false);
 -- Data for Name: job; Type: TABLE DATA; Schema: public; Owner: farmer
 --
 
-COPY job (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, status, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber) FROM stdin;
+COPY job (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status) FROM stdin;
+\.
+
+
+--
+-- Data for Name: job3delight; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY job3delight (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, width, height, framestart, frameend, threads, processes, jobscript, jobscriptparam, renderdlcmd) FROM stdin;
 \.
 
 
@@ -10527,6 +14235,14 @@ COPY job (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, host
 --
 
 SELECT pg_catalog.setval('job_keyjob_seq', 1, false);
+
+
+--
+-- Data for Name: jobaftereffects; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY jobaftereffects (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, ignoremissingeffects, comp) FROM stdin;
+\.
 
 
 --
@@ -10541,7 +14257,7 @@ COPY jobassignment (keyjobassignment, fkeyjob, fkeyjobassignmentstatus, fkeyhost
 -- Name: jobassignment_keyjobassignment_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
-SELECT pg_catalog.setval('jobassignment_keyjobassignment_seq', 1, false);
+SELECT pg_catalog.setval('jobassignment_keyjobassignment_seq', 1170, true);
 
 
 --
@@ -10566,6 +14282,30 @@ SELECT pg_catalog.setval('jobassignmentstatus_keyjobassignmentstatus_seq', 6, tr
 
 
 --
+-- Data for Name: jobautodeskburn; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY jobautodeskburn (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, framestart, frameend, handle) FROM stdin;
+\.
+
+
+--
+-- Data for Name: jobbatch; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY jobbatch (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, cmd, restartaftershutdown, passslaveframesasparam, disablewow64fsredirect) FROM stdin;
+\.
+
+
+--
+-- Data for Name: jobblender; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY jobblender (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status) FROM stdin;
+\.
+
+
+--
 -- Data for Name: jobcannedbatch; Type: TABLE DATA; Schema: public; Owner: farmer
 --
 
@@ -10581,10 +14321,18 @@ SELECT pg_catalog.setval('jobcannedbatch_keyjobcannedbatch_seq', 1, false);
 
 
 --
+-- Data for Name: jobcinema4d; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY jobcinema4d (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, videomode, videostartframe, videoendframe) FROM stdin;
+\.
+
+
+--
 -- Data for Name: jobclientupdate; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY jobclientupdate (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, status, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber) FROM stdin;
+COPY jobclientupdate (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status) FROM stdin;
 \.
 
 
@@ -10638,6 +14386,41 @@ SELECT pg_catalog.setval('jobenvironment_keyjobenvironment_seq', 1, false);
 --
 
 COPY joberror (keyjoberror, fkeyhost, fkeyjob, frames, message, errortime, count, cleared, lastoccurrence, timeout, fkeyjobcommandhistory) FROM stdin;
+1	1	\N	\N	Couldn't Create Burner for Job 0, Job Type : 	1435113562	1	t	2015-06-24 12:39:22.015114	f	\N
+2	1	\N	\N	Couldn't Create Burner for Job 0, Job Type : 	1435117656	1	t	2015-06-24 13:47:36.467294	f	\N
+3	1	\N	\N	Couldn't Create Burner for Job 0, Job Type : 	1435117717	1	t	2015-06-24 13:48:37.315717	f	\N
+4	1	\N	\N	Couldn't Create Burner for Job 0, Job Type : 	1435118041	1	t	2015-06-24 13:54:01.452213	f	\N
+5	1	\N	\N	Couldn't Create Burner for Job 0, Job Type : 	1435118106	1	t	2015-06-24 13:55:06.02932	f	\N
+6	1	\N	\N	Couldn't Create Burner for Job 0, Job Type : 	1435118155	1	t	2015-06-24 13:55:55.058935	f	\N
+7	1	\N	\N	Couldn't Create Burner for Job 0, Job Type : 	1435118346	1	t	2015-06-24 13:59:05.644128	f	\N
+8	1	\N	\N	Couldn't Create Burner for Job 0, Job Type : 	1435118372	1	t	2015-06-24 13:59:31.533992	f	\N
+9	1	\N	\N	Couldn't Create Burner for Job 0, Job Type : 	1435118439	1	t	2015-06-24 14:00:38.525611	f	\N
+10	1	\N	\N	Couldn't Create Burner for Job 0, Job Type : 	1435119552	1	t	2015-06-24 14:19:12.416239	f	\N
+11	1	\N	\N	Traceback (most recent call last):\r\n	1435120877	1	t	2015-06-24 14:41:17.343537	f	\N
+12	1	\N	\N	Traceback (most recent call last):\r\n	1435122301	1	t	2015-06-24 15:05:00.917899	f	\N
+13	1	\N	\N	Traceback (most recent call last):\r\n	1435122344	1	t	2015-06-24 15:05:44.209302	f	\N
+34	1	3	1,51	Traceback (most recent call last):\r\n	1435283404	3	t	2015-06-26 11:50:03.69388	f	\N
+33	1	3	1,51	Traceback (most recent call last):\r\n	1435283168	3	t	2015-06-26 11:46:07.600223	f	\N
+14	1	\N	\N	Traceback (most recent call last):\r\n	1435122576	1	t	2015-06-24 15:09:36.169849	f	\N
+15	1	\N	\N	Traceback (most recent call last):\r\n	1435123068	1	t	2015-06-24 15:17:48.288283	f	\N
+16	1	\N	\N	Traceback (most recent call last):\r\n	1435135968	1	t	2015-06-24 18:52:47.100508	f	\N
+17	1	\N	\N	Traceback (most recent call last):\r\n	1435136787	1	t	2015-06-24 19:06:26.446201	f	\N
+18	1	\N	\N	Traceback (most recent call last):\r\n	1435137197	1	t	2015-06-24 19:13:16.729409	f	\N
+19	1	\N	\N	Traceback (most recent call last):\r\n	1435138234	1	t	2015-06-24 19:30:33.11616	f	\N
+20	1	\N	\N	Traceback (most recent call last):\r\n	1435141089	1	t	2015-06-24 20:18:08.009376	f	\N
+21	1	\N	\N	Traceback (most recent call last):\r\n	1435141386	1	t	2015-06-24 20:23:05.71196	f	\N
+22	1	\N	\N	Traceback (most recent call last):\r\n	1435142729	1	t	2015-06-24 20:45:27.959521	f	\N
+23	1	\N	\N	Traceback (most recent call last):\r\n	1435143193	1	t	2015-06-24 20:53:12.333701	f	\N
+24	1	\N	\N	Traceback (most recent call last):\r\n	1435143448	1	t	2015-06-24 20:57:27.280493	f	\N
+25	1	\N	\N	Traceback (most recent call last):\r\n	1435144047	1	t	2015-06-24 21:07:26.707242	f	\N
+26	1	\N	\N	Traceback (most recent call last):\r\n	1435145911	1	t	2015-06-24 21:38:29.886098	f	\N
+27	1	\N	\N	Traceback (most recent call last):\r\n	1435146053	1	t	2015-06-24 21:40:51.875623	f	\N
+28	1	\N	\N	Traceback (most recent call last):\r\n	1435146546	1	t	2015-06-24 21:49:05.49243	f	\N
+29	1	\N	\N	Traceback (most recent call last):\r\n	1435146642	1	t	2015-06-24 21:50:41.838832	f	\N
+30	1	\N	\N	Traceback (most recent call last):\r\n	1435146945	1	t	2015-06-24 21:55:43.98218	f	\N
+31	1	3	1,51	Traceback (most recent call last):\r\n	1435198545	24	t	2015-06-25 12:15:45.598793	f	\N
+32	1	3	1,51	Traceback (most recent call last):\r\n	1435282270	3	t	2015-06-26 11:31:09.574107	f	\N
+35	1	3	51	Traceback (most recent call last):\r\n	1435283587	1	f	2015-06-26 11:53:06.303045	f	\N
 \.
 
 
@@ -10645,7 +14428,7 @@ COPY joberror (keyjoberror, fkeyhost, fkeyjob, frames, message, errortime, count
 -- Name: joberror_keyjoberror_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
-SELECT pg_catalog.setval('joberror_keyjoberror_seq', 1, false);
+SELECT pg_catalog.setval('joberror_keyjoberror_seq', 35, true);
 
 
 --
@@ -10873,10 +14656,114 @@ SELECT pg_catalog.setval('jobfiltertype_keyjobfiltertype_seq', 5, true);
 
 
 --
+-- Data for Name: jobfumefxsim; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY jobfumefxsim (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, script, maxtime, outputfiles, silent, maxversion, runmax64, runpythonscript, use3dsmaxcmd, debugmode, fumelogfilepath) FROM stdin;
+\.
+
+
+--
+-- Data for Name: jobfusion; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY jobfusion (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, framelist, allframesassingletask, outputcount, reportedsavererror) FROM stdin;
+\.
+
+
+--
+-- Data for Name: jobfusionvideomaker; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY jobfusionvideomaker (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, framelist, allframesassingletask, outputcount, reportedsavererror, codec, inputframepath, sequenceframestart, sequenceframeend) FROM stdin;
+\.
+
+
+--
 -- Data for Name: jobhistory; Type: TABLE DATA; Schema: public; Owner: farmer
 --
 
 COPY jobhistory (keyjobhistory, fkeyjobhistorytype, fkeyjob, fkeyhost, fkeyuser, message, created) FROM stdin;
+1	\N	2	1	1	checkFileMd5 changed:   to  false\ndeleteOnComplete changed:   to  0\nfileName changed:   to  C:\\Users\\Villanueva\\Desktop\\TestShot.nk\nfkeyJobFilterSet changed: 0  to  2\njob changed:   to  TestShot.nk\nmaxMemory changed:   to  8388608\nminMemory changed:   to  1388608\nnotifyOnComplete changed:   to  Villanueva:j\nnotifyOnError changed:   to  Villanueva:j\npacketSize changed:   to  0\npacketType changed:   to  continuous\npriority changed:   to  50\nuploadedFile changed:   to  false	2015-06-23 08:25:03.789217
+2	\N	2	1	1	status changed: submit  to  verify	2015-06-23 08:25:03.834013
+3	\N	3	1	1	checkFileMd5 changed:   to  false\ndeleteOnComplete changed:   to  0\nfileName changed:   to  C:\\Users\\Villanueva\\Desktop\\TestShot.nk\nfkeyJobFilterSet changed: 0  to  2\njob changed:   to  TestShot.nk\nmaxMemory changed:   to  8388608\nminMemory changed:   to  1388608\nnotifyOnComplete changed:   to  Villanueva:j\nnotifyOnError changed:   to  Villanueva:j\npacketSize changed:   to  0\npacketType changed:   to  continuous\npriority changed:   to  50\nuploadedFile changed:   to  false	2015-06-23 08:27:41.28483
+4	\N	3	1	1	status changed: submit  to  verify	2015-06-23 08:27:41.313566
+5	\N	3	\N	\N	frameEnd changed: 0  to  100\nframeStart changed: 0  to  1\nmaxMemory changed: 8388608  to  8000000\nmaxTaskTime changed: 3600  to  0\nminMemory changed: 1388608  to  6000000\nslots changed: 4  to  2\nstatus changed: verify  to  ready	2015-06-23 10:58:56.385956
+6	\N	3	\N	\N	fkeyJobStat changed: 0  to  1	2015-06-23 10:58:56.464331
+7	\N	3	1	1	Rerender Frames: 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50	2015-06-25 00:20:14.320944
+8	\N	4	1	1	checkFileMd5 changed:   to  false\ndeleteOnComplete changed:   to  0\nfileName changed:   to  C:/Users/Villanueva/Desktop/benchmark/benchmark.blend\njob changed:   to  Test\nmaxMemory changed:   to  8388608\nminMemory changed:   to  1388608\nnotifyOnComplete changed:   to  Villanueva:j\nnotifyOnError changed:   to  Villanueva:j\npacketSize changed:   to  0\npacketType changed:   to  continuous\npriority changed:   to  50\nuploadedFile changed:   to  false	2015-06-26 10:25:13.538024
+9	\N	4	1	1	status changed: submit  to  verify	2015-06-26 10:25:13.56127
+10	\N	4	\N	\N	maxTaskTime changed: 3600  to  0\nstatus changed: verify  to  ready	2015-06-26 10:59:42.83871
+11	\N	4	\N	\N	fkeyJobStat changed: 0  to  2	2015-06-26 10:59:42.959437
+12	\N	5	1	1	checkFileMd5 changed:   to  false\ndeleteOnComplete changed:   to  0\nfileName changed:   to  C:/Users/Villanueva/Desktop/benchmark/benchmark.blend\njob changed:   to  Benchmark\nmaxMemory changed:   to  8388608\nminMemory changed:   to  1388608\nnotifyOnComplete changed:   to  Villanueva:j\nnotifyOnError changed:   to  Villanueva:j\npacketSize changed:   to  0\npacketType changed:   to  continuous\npriority changed:   to  50\nuploadedFile changed:   to  false	2015-06-26 11:13:58.064383
+13	\N	5	1	1	status changed: submit  to  verify	2015-06-26 11:13:58.092866
+14	\N	5	\N	\N	maxTaskTime changed: 3600  to  0\nstatus changed: verify  to  ready	2015-06-26 11:14:01.398297
+15	\N	5	\N	\N	fkeyJobStat changed: 0  to  3	2015-06-26 11:14:01.437717
+16	\N	3	\N	\N	startedts changed:   to  now()\nstatus changed: ready  to  started	2015-06-26 11:15:37.520532
+17	\N	4	\N	\N	startedts changed:   to  now()\nstatus changed: ready  to  started	2015-06-26 11:15:37.607858
+18	\N	5	\N	\N	startedts changed:   to  now()\nstatus changed: ready  to  started	2015-06-26 11:15:37.657221
+19	\N	6	1	1	checkFileMd5 changed:   to  false\ndeleteOnComplete changed:   to  0\nfileName changed:   to  C:/Users/Villanueva/Desktop/benchmark/benchmark.blend\njob changed:   to  benchmark\nmaxMemory changed:   to  8388608\nminMemory changed:   to  1388608\nnotifyOnComplete changed:   to  Villanueva:j\nnotifyOnError changed:   to  Villanueva:j\npacketSize changed:   to  0\npacketType changed:   to  continuous\npriority changed:   to  50\nuploadedFile changed:   to  false	2015-06-26 11:16:00.759558
+20	\N	6	1	1	status changed: submit  to  verify	2015-06-26 11:16:00.764636
+21	\N	6	\N	\N	maxTaskTime changed: 3600  to  0\nstatus changed: verify  to  ready	2015-06-26 11:16:01.949265
+22	\N	6	\N	\N	fkeyJobStat changed: 0  to  4	2015-06-26 11:16:01.99206
+23	\N	5	1	1	Rerender Frames: 1	2015-06-26 11:17:37.252505
+24	\N	4	1	1	Rerender Frames: 1	2015-06-26 11:17:43.434042
+25	\N	4	\N	\N	endedts changed:   to  now()\nstatus changed: started  to  done	2015-06-26 11:17:49.987303
+26	\N	5	\N	\N	endedts changed:   to  now()\nstatus changed: started  to  done	2015-06-26 11:17:50.109682
+27	\N	6	\N	\N	startedts changed:   to  now()\nstatus changed: ready  to  started	2015-06-26 11:17:50.17722
+28	\N	4	1	1	Status change fromdone to verify	2015-06-26 11:23:01.575775
+29	\N	5	1	1	Status change fromdone to verify	2015-06-26 11:23:01.575775
+30	\N	4	1	1	Job Restarted	2015-06-26 11:23:01.598122
+31	\N	5	1	1	Job Restarted	2015-06-26 11:23:01.600839
+32	\N	4	\N	\N	status changed: verify  to  ready	2015-06-26 11:23:03.888337
+33	\N	5	\N	\N	status changed: verify  to  ready	2015-06-26 11:23:03.932232
+34	\N	4	\N	\N	fkeyJobStat changed: 2  to  5	2015-06-26 11:23:03.987238
+35	\N	5	\N	\N	fkeyJobStat changed: 3  to  6	2015-06-26 11:23:03.988067
+36	\N	4	\N	\N	status changed: ready  to  started	2015-06-26 11:24:15.315348
+37	\N	5	\N	\N	status changed: ready  to  started	2015-06-26 11:24:15.327557
+38	\N	5	1	1	Rerender Frames: 1	2015-06-26 11:38:09.371775
+39	\N	6	1	1	Rerender Frames: 1	2015-06-26 11:39:06.514634
+40	\N	4	\N	\N	endedts changed: 2015-06-26T11:17:49  to  now()\nstatus changed: started  to  done	2015-06-26 11:39:23.347946
+41	\N	5	\N	\N	endedts changed: 2015-06-26T11:17:50  to  now()\nstatus changed: started  to  done	2015-06-26 11:39:23.377205
+42	\N	6	\N	\N	endedts changed:   to  now()\nstatus changed: started  to  done	2015-06-26 11:39:23.469293
+43	\N	6	1	1	Status change fromdone to verify	2015-06-26 11:39:34.882185
+44	\N	6	1	1	Job Restarted	2015-06-26 11:39:34.895391
+45	\N	6	\N	\N	status changed: verify  to  ready	2015-06-26 11:39:38.048667
+46	\N	6	\N	\N	fkeyJobStat changed: 4  to  7	2015-06-26 11:39:38.092828
+47	\N	6	\N	\N	status changed: ready  to  started	2015-06-26 11:41:31.898126
+48	\N	6	1	1	Suspend Frames: 1	2015-06-26 11:42:59.962722
+49	\N	6	1	1	Status change fromstarted to suspended	2015-06-26 11:43:40.275008
+50	\N	6	1	1	Status change fromsuspended to verify	2015-06-26 11:45:52.639633
+51	\N	6	1	1	Job Restarted	2015-06-26 11:45:52.654729
+52	\N	6	\N	\N	status changed: verify  to  ready	2015-06-26 11:45:54.424504
+53	\N	6	\N	\N	fkeyJobStat changed: 7  to  8	2015-06-26 11:45:54.484319
+54	\N	6	\N	\N	status changed: ready  to  started	2015-06-26 11:45:58.565217
+55	\N	5	1	1	Status change fromdone to verify	2015-06-26 11:49:16.608538
+56	\N	6	1	1	Status change fromstarted to verify	2015-06-26 11:49:16.608538
+57	\N	4	1	1	Status change fromdone to verify	2015-06-26 11:49:16.608538
+58	\N	5	1	1	Job Restarted	2015-06-26 11:49:16.736541
+59	\N	6	1	1	Job Restarted	2015-06-26 11:49:16.739093
+60	\N	4	1	1	Job Restarted	2015-06-26 11:49:16.742554
+61	\N	4	\N	\N	status changed: verify  to  ready	2015-06-26 11:49:20.414116
+62	\N	4	\N	\N	fkeyJobStat changed: 5  to  9	2015-06-26 11:49:20.484354
+63	\N	5	\N	\N	status changed: verify  to  ready	2015-06-26 11:49:20.49091
+64	\N	6	\N	\N	status changed: verify  to  ready	2015-06-26 11:49:20.519394
+65	\N	5	\N	\N	fkeyJobStat changed: 6  to  10	2015-06-26 11:49:20.607985
+66	\N	6	\N	\N	fkeyJobStat changed: 8  to  11	2015-06-26 11:49:20.615791
+67	\N	5	\N	\N	status changed: ready  to  started	2015-06-26 11:50:15.157639
+68	\N	6	\N	\N	status changed: ready  to  started	2015-06-26 11:50:15.174465
+69	\N	4	\N	\N	endedts changed: 2015-06-26T11:39:23  to  now()\nstatus changed: ready  to  done	2015-06-26 11:50:15.187469
+70	\N	5	1	1	Suspend Frames: 1	2015-06-26 11:50:46.196207
+71	\N	6	1	1	Status change fromstarted to suspended	2015-06-26 11:50:54.088855
+72	\N	5	1	1	Rerender Frames: 1	2015-06-26 11:52:41.663421
+73	\N	5	1	1	Suspend Frames: 1	2015-06-26 11:55:30.139768
+74	\N	5	\N	\N	Status change fromstarted to suspended	2015-06-26 12:27:41.298905
+75	\N	5	1	1	Status change fromsuspended to deleted	2015-06-29 23:12:03.998819
+76	\N	6	1	1	Status change fromsuspended to deleted	2015-06-29 23:12:03.998819
+77	\N	3	1	1	notifyOnError changed: Villanueva:j  to  aren:e,Villanueva:j	2015-07-02 11:21:08.280264
+78	\N	3	1	1	notifyOnError changed: aren:e,Villanueva:j  to  Villanueva:j	2015-07-02 11:23:09.669119
+79	\N	3	1	1	notifyOnError changed: Villanueva:j  to  aren:e,Villanueva:j	2015-07-02 11:23:14.083249
+80	\N	3	1	1	notifyOnError changed: aren:e,Villanueva:j  to  aren:e,Villanueva:ej	2015-07-02 11:48:39.213026
 \.
 
 
@@ -10884,7 +14771,7 @@ COPY jobhistory (keyjobhistory, fkeyjobhistorytype, fkeyjob, fkeyhost, fkeyuser,
 -- Name: jobhistory_keyjobhistory_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
-SELECT pg_catalog.setval('jobhistory_keyjobhistory_seq', 1, false);
+SELECT pg_catalog.setval('jobhistory_keyjobhistory_seq', 80, true);
 
 
 --
@@ -10903,6 +14790,22 @@ SELECT pg_catalog.setval('jobhistorytype_keyjobhistorytype_seq', 1, false);
 
 
 --
+-- Data for Name: jobhoudini; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY jobhoudini (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, driver, take, seedspec, wedgetestnode, wedgenumber, filenameoriginal, version) FROM stdin;
+\.
+
+
+--
+-- Data for Name: jobmantra; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY jobmantra (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, forceraytrace, geocachesize, height, width, qualityflag, threads, renderquality, cleanifds, filter, filterargs, seedspec, take, wedgenumber, wedgetestnode) FROM stdin;
+\.
+
+
+--
 -- Data for Name: jobmapping; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -10918,10 +14821,56 @@ SELECT pg_catalog.setval('jobmapping_keyjobmapping_seq', 1, false);
 
 
 --
+-- Data for Name: jobmax; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY jobmax (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, camera, elementfile, fileoriginal, flag_h, flag_v, flag_w, flag_x2, flag_xa, flag_xc, flag_xd, flag_xe, flag_xf, flag_xh, flag_xk, flag_xn, flag_xo, flag_xp, flag_xv, frameend, framelist, framestart, exrchannels, exrattributes, startupscript, exrsavebitdepth, plugininipath, exrversion, exrcompression, exrsavescanline, exrtilesize, exrsaveregion, verbosity, passoutputpath, canmodifyoutputpath) FROM stdin;
+\.
+
+
+--
+-- Data for Name: jobmaxscript; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY jobmaxscript (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, script, maxtime, outputfiles, silent, maxversion, runmax64, runpythonscript, use3dsmaxcmd, debugmode) FROM stdin;
+\.
+
+
+--
+-- Data for Name: jobmaya; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY jobmaya (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, framestart, frameend, camera, renderer, projectpath, width, height, append) FROM stdin;
+\.
+
+
+--
+-- Data for Name: jobnaiad; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY jobnaiad (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, framestart, frameend, threads, append, restartcache, fullframe, forcerestart) FROM stdin;
+\.
+
+
+--
+-- Data for Name: jobnuke; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY jobnuke (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, framestart, frameend, outputcount, viewname, nodes, terminalonly) FROM stdin;
+\.
+
+
+--
 -- Data for Name: joboutput; Type: TABLE DATA; Schema: public; Owner: farmer
 --
 
 COPY joboutput (keyjoboutput, fkeyjob, name, fkeyfiletracker) FROM stdin;
+1	1	Output1	\N
+2	2	Output1	\N
+3	3	Output1	\N
+4	4	Output1	\N
+5	5	Output1	\N
+6	6	Output1	\N
 \.
 
 
@@ -10929,14 +14878,22 @@ COPY joboutput (keyjoboutput, fkeyjob, name, fkeyfiletracker) FROM stdin;
 -- Name: joboutput_keyjoboutput_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
-SELECT pg_catalog.setval('joboutput_keyjoboutput_seq', 1, false);
+SELECT pg_catalog.setval('joboutput_keyjoboutput_seq', 6, true);
 
 
 --
 -- Data for Name: jobproxy; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY jobproxy (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, status, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, imagesequence, videooutput, lossless, fps, framestart, frameend) FROM stdin;
+COPY jobproxy (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, imagesequence, videooutput, lossless, fps, framestart, frameend) FROM stdin;
+\.
+
+
+--
+-- Data for Name: jobrealflow; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY jobrealflow (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, framestart, frameend, simtype, threads, script) FROM stdin;
 \.
 
 
@@ -10974,6 +14931,10 @@ SELECT pg_catalog.setval('jobscreenshot_keyjobscreenshot_seq', 1, false);
 --
 
 COPY jobservice (keyjobservice, fkeyjob, fkeyservice) FROM stdin;
+1	3	13
+2	4	21
+3	5	21
+4	6	21
 \.
 
 
@@ -10981,7 +14942,7 @@ COPY jobservice (keyjobservice, fkeyjob, fkeyservice) FROM stdin;
 -- Name: jobservice_keyjobservice_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
-SELECT pg_catalog.setval('jobservice_keyjobservice_seq', 1, false);
+SELECT pg_catalog.setval('jobservice_keyjobservice_seq', 4, true);
 
 
 --
@@ -11045,10 +15006,34 @@ SELECT pg_catalog.setval('jobstatusskipreason_keyjobstatusskipreason_seq', 1, fa
 
 
 --
+-- Data for Name: jobstatustype; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY jobstatustype (keyjobstatustype, status) FROM stdin;
+1	Submit
+2	Verify
+3	Ready
+4	Holding
+5	Started
+6	Suspended
+7	Done
+8	Archived
+9	Deleted
+\.
+
+
+--
+-- Name: jobstatustype_keyjobstatustype_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('jobstatustype_keyjobstatustype_seq', 9, true);
+
+
+--
 -- Data for Name: jobsync; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY jobsync (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, status, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, direction, filesfrom, append) FROM stdin;
+COPY jobsync (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, direction, filesfrom, append) FROM stdin;
 \.
 
 
@@ -11057,6 +15042,109 @@ COPY jobsync (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, 
 --
 
 COPY jobtask (keyjobtask, fkeyhost, fkeyjob, status, jobtask, label, fkeyjoboutput, progress, fkeyjobtaskassignment, schedulepolicy, endedts, fkeyjobcommandhistory, memory, startedts) FROM stdin;
+266	\N	3	new	66	\N	3	\N	\N	\N	\N	\N	\N	\N
+265	\N	3	new	65	\N	3	\N	\N	\N	\N	\N	\N	\N
+264	\N	3	new	64	\N	3	\N	\N	\N	\N	\N	\N	\N
+263	\N	3	new	63	\N	3	\N	\N	\N	\N	\N	\N	\N
+262	\N	3	new	62	\N	3	\N	\N	\N	\N	\N	\N	\N
+228	\N	3	new	28	\N	3	\N	\N	\N	\N	\N	\N	\N
+229	\N	3	new	29	\N	3	\N	\N	\N	\N	\N	\N	\N
+230	\N	3	new	30	\N	3	\N	\N	\N	\N	\N	\N	\N
+301	\N	4	new	1	\N	\N	\N	6982	\N	\N	\N	\N	\N
+231	\N	3	new	31	\N	3	\N	\N	\N	\N	\N	\N	\N
+302	\N	5	suspended	1	\N	\N	\N	7371	\N	\N	\N	\N	\N
+261	\N	3	new	61	\N	3	\N	\N	\N	\N	\N	\N	\N
+260	\N	3	new	60	\N	3	\N	\N	\N	\N	\N	\N	\N
+259	\N	3	new	59	\N	3	\N	\N	\N	\N	\N	\N	\N
+258	\N	3	new	58	\N	3	\N	\N	\N	\N	\N	\N	\N
+257	\N	3	new	57	\N	3	\N	\N	\N	\N	\N	\N	\N
+256	\N	3	new	56	\N	3	\N	\N	\N	\N	\N	\N	\N
+255	\N	3	new	55	\N	3	\N	\N	\N	\N	\N	\N	\N
+254	\N	3	new	54	\N	3	\N	\N	\N	\N	\N	\N	\N
+253	\N	3	new	53	\N	3	\N	\N	\N	\N	\N	\N	\N
+252	\N	3	new	52	\N	3	\N	\N	\N	\N	\N	\N	\N
+251	\N	3	new	51	\N	3	\N	\N	\N	\N	\N	\N	\N
+246	\N	3	new	46	\N	3	\N	\N	\N	\N	\N	\N	\N
+247	\N	3	new	47	\N	3	\N	\N	\N	\N	\N	\N	\N
+249	\N	3	new	49	\N	3	\N	\N	\N	\N	\N	\N	\N
+203	\N	3	new	3	\N	3	\N	\N	\N	\N	\N	\N	\N
+204	\N	3	new	4	\N	3	\N	\N	\N	\N	\N	\N	\N
+205	\N	3	new	5	\N	3	\N	\N	\N	\N	\N	\N	\N
+206	\N	3	new	6	\N	3	\N	\N	\N	\N	\N	\N	\N
+207	\N	3	new	7	\N	3	\N	\N	\N	\N	\N	\N	\N
+208	\N	3	new	8	\N	3	\N	\N	\N	\N	\N	\N	\N
+209	\N	3	new	9	\N	3	\N	\N	\N	\N	\N	\N	\N
+210	\N	3	new	10	\N	3	\N	\N	\N	\N	\N	\N	\N
+211	\N	3	new	11	\N	3	\N	\N	\N	\N	\N	\N	\N
+248	\N	3	new	48	\N	3	\N	\N	\N	\N	\N	\N	\N
+243	\N	3	new	43	\N	3	\N	\N	\N	\N	\N	\N	\N
+244	\N	3	new	44	\N	3	\N	\N	\N	\N	\N	\N	\N
+245	\N	3	new	45	\N	3	\N	\N	\N	\N	\N	\N	\N
+299	\N	3	new	99	\N	3	\N	\N	\N	\N	\N	\N	\N
+298	\N	3	new	98	\N	3	\N	\N	\N	\N	\N	\N	\N
+297	\N	3	new	97	\N	3	\N	\N	\N	\N	\N	\N	\N
+296	\N	3	new	96	\N	3	\N	\N	\N	\N	\N	\N	\N
+295	\N	3	new	95	\N	3	\N	\N	\N	\N	\N	\N	\N
+294	\N	3	new	94	\N	3	\N	\N	\N	\N	\N	\N	\N
+293	\N	3	new	93	\N	3	\N	\N	\N	\N	\N	\N	\N
+292	\N	3	new	92	\N	3	\N	\N	\N	\N	\N	\N	\N
+291	\N	3	new	91	\N	3	\N	\N	\N	\N	\N	\N	\N
+290	\N	3	new	90	\N	3	\N	\N	\N	\N	\N	\N	\N
+289	\N	3	new	89	\N	3	\N	\N	\N	\N	\N	\N	\N
+288	\N	3	new	88	\N	3	\N	\N	\N	\N	\N	\N	\N
+287	\N	3	new	87	\N	3	\N	\N	\N	\N	\N	\N	\N
+286	\N	3	new	86	\N	3	\N	\N	\N	\N	\N	\N	\N
+274	\N	3	new	74	\N	3	\N	\N	\N	\N	\N	\N	\N
+273	\N	3	new	73	\N	3	\N	\N	\N	\N	\N	\N	\N
+272	\N	3	new	72	\N	3	\N	\N	\N	\N	\N	\N	\N
+271	\N	3	new	71	\N	3	\N	\N	\N	\N	\N	\N	\N
+270	\N	3	new	70	\N	3	\N	\N	\N	\N	\N	\N	\N
+269	\N	3	new	69	\N	3	\N	\N	\N	\N	\N	\N	\N
+268	\N	3	new	68	\N	3	\N	\N	\N	\N	\N	\N	\N
+267	\N	3	new	67	\N	3	\N	\N	\N	\N	\N	\N	\N
+232	\N	3	new	32	\N	3	\N	\N	\N	\N	\N	\N	\N
+233	\N	3	new	33	\N	3	\N	\N	\N	\N	\N	\N	\N
+234	\N	3	new	34	\N	3	\N	\N	\N	\N	\N	\N	\N
+235	\N	3	new	35	\N	3	\N	\N	\N	\N	\N	\N	\N
+303	\N	6	new	1	\N	\N	\N	7151	\N	\N	\N	\N	\N
+236	\N	3	new	36	\N	3	\N	\N	\N	\N	\N	\N	\N
+237	\N	3	new	37	\N	3	\N	\N	\N	\N	\N	\N	\N
+238	\N	3	new	38	\N	3	\N	\N	\N	\N	\N	\N	\N
+239	\N	3	new	39	\N	3	\N	\N	\N	\N	\N	\N	\N
+240	\N	3	new	40	\N	3	\N	\N	\N	\N	\N	\N	\N
+241	\N	3	new	41	\N	3	\N	\N	\N	\N	\N	\N	\N
+242	\N	3	new	42	\N	3	\N	\N	\N	\N	\N	\N	\N
+202	\N	3	new	2	\N	3	\N	\N	\N	\N	\N	\N	\N
+201	\N	3	new	1	\N	3	\N	\N	\N	\N	\N	\N	\N
+285	\N	3	new	85	\N	3	\N	\N	\N	\N	\N	\N	\N
+284	\N	3	new	84	\N	3	\N	\N	\N	\N	\N	\N	\N
+283	\N	3	new	83	\N	3	\N	\N	\N	\N	\N	\N	\N
+282	\N	3	new	82	\N	3	\N	\N	\N	\N	\N	\N	\N
+281	\N	3	new	81	\N	3	\N	\N	\N	\N	\N	\N	\N
+280	\N	3	new	80	\N	3	\N	\N	\N	\N	\N	\N	\N
+279	\N	3	new	79	\N	3	\N	\N	\N	\N	\N	\N	\N
+278	\N	3	new	78	\N	3	\N	\N	\N	\N	\N	\N	\N
+277	\N	3	new	77	\N	3	\N	\N	\N	\N	\N	\N	\N
+276	\N	3	new	76	\N	3	\N	\N	\N	\N	\N	\N	\N
+275	\N	3	new	75	\N	3	\N	\N	\N	\N	\N	\N	\N
+250	\N	3	new	50	\N	3	\N	\N	\N	\N	\N	\N	\N
+212	\N	3	new	12	\N	3	\N	\N	\N	\N	\N	\N	\N
+213	\N	3	new	13	\N	3	\N	\N	\N	\N	\N	\N	\N
+214	\N	3	new	14	\N	3	\N	\N	\N	\N	\N	\N	\N
+215	\N	3	new	15	\N	3	\N	\N	\N	\N	\N	\N	\N
+216	\N	3	new	16	\N	3	\N	\N	\N	\N	\N	\N	\N
+217	\N	3	new	17	\N	3	\N	\N	\N	\N	\N	\N	\N
+218	\N	3	new	18	\N	3	\N	\N	\N	\N	\N	\N	\N
+219	\N	3	new	19	\N	3	\N	\N	\N	\N	\N	\N	\N
+220	\N	3	new	20	\N	3	\N	\N	\N	\N	\N	\N	\N
+221	\N	3	new	21	\N	3	\N	\N	\N	\N	\N	\N	\N
+222	\N	3	new	22	\N	3	\N	\N	\N	\N	\N	\N	\N
+223	\N	3	new	23	\N	3	\N	\N	\N	\N	\N	\N	\N
+224	\N	3	new	24	\N	3	\N	\N	\N	\N	\N	\N	\N
+225	\N	3	new	25	\N	3	\N	\N	\N	\N	\N	\N	\N
+226	\N	3	new	26	\N	3	\N	\N	\N	\N	\N	\N	\N
+227	\N	3	new	27	\N	3	\N	\N	\N	\N	\N	\N	\N
+300	\N	3	new	100	\N	3	\N	\N	\N	\N	\N	\N	\N
 \.
 
 
@@ -11064,7 +15152,7 @@ COPY jobtask (keyjobtask, fkeyhost, fkeyjob, status, jobtask, label, fkeyjoboutp
 -- Name: jobtask_keyjobtask_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
-SELECT pg_catalog.setval('jobtask_keyjobtask_seq', 1, false);
+SELECT pg_catalog.setval('jobtask_keyjobtask_seq', 303, true);
 
 
 --
@@ -11079,7 +15167,7 @@ COPY jobtaskassignment (keyjobtaskassignment, fkeyjobassignment, memory, started
 -- Name: jobtaskassignment_keyjobtaskassignment_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
-SELECT pg_catalog.setval('jobtaskassignment_keyjobtaskassignment_seq', 1, false);
+SELECT pg_catalog.setval('jobtaskassignment_keyjobtaskassignment_seq', 7380, true);
 
 
 --
@@ -11087,13 +15175,14 @@ SELECT pg_catalog.setval('jobtaskassignment_keyjobtaskassignment_seq', 1, false)
 --
 
 COPY jobtype (keyjobtype, jobtype, fkeyservice, icon, fkeyparentjobtype) FROM stdin;
-2	3Delight	36	\\x89504e470d0a1a0a0000000d49484452000000300000003008060000005702f987000000097048597300000b1300000b1301009a9c180000064f494441546881ed994b6c1cc51686bfaa7eccc3d3f68cc789337e5e27846089c7864584c50209242c58054456b0210b1e6205c2bc8222010b944848b0892205c412b16187c402090852042c500408ac9b183b8909ce5512dbf1f4744f77d55d743c763f26378278465ce5972c79aaab4f9fbfeb9c537f9d162740f30f86ecb6037f17b708741b6d09e4464729ecde0d42644f1082d2bdf75ed77861cf1e0cc7a1776a0a6b70b0ed3c61dbf4dc7d77e6357b7818bb566b7b6f9a80948cbcf20aff3a7c98e19919761d3d8acce7d30f9592d18307af4b60f0c00172e3e3385353e42726dace337b7b197ee9a5cc6b95871fc6d9bbf7c609988e830e02669f7c927f1f3880f67d0a939300188e43657a9acaf434b2548aad4e7e628281c71fc7d9bb1721e366fff3e9a7d47ffe79c3c6238f507ef0418cde5e0a77dc114d12027b6888ea638f51bcf3cec8976a95c2e424c5bbeec22c976f8c40b0bcccf9234790c52203fbf7939f98c0fbfd77ec5a8d5d478f6256ab188ec3f83bef200b85d65b1a7df34d5410e0dc771f23070fc6480c3efd34f99d3bb16b356e3b7e1cb352c11a1c64e7071f30fac61b00e4c6c7d9f1dc7368cf63f8e597e99d9ac2281631fbfa302b158465651230334701b35ca6ef8107d04a216c9bda0b2ff0e7f1e32c7ff92500ab274fb2e7934f00187af145ce1f394278e50acd3ffe60c7f3cf53bce79e962d61182004c333339c3f7c98abdf7f0f8077f62cb5679f8de65816e7de7e1bd568d0bc7891caf4340b870eb17af224c1952b342f5ebc3102c23010a689373fcfe9679e61fb534f31b07f3ff6f030ee6fbfb5e6f98b8b842b2b00588383e4c6c6607c1c80951327089797530fcbefda45fdd4a9d6efc6e9d3a86673e3ff460380d07511197997855408156ebf9d89f7df4798113761db84cbcb5cfdee3bfa1f7d14ae8546effdf763f6f703b0f6e38fac7cfd357f1e3bc6d2471f212d0bffc285d4c32e7ffe39d5279e8872474aca0f3db45120f42641a013e240a9b604522be0cecee2cdcd31f9d967a84603ffc205e667664008460f1de2b663c750ae8bf23c9a4b4b009c7ff75dc6de7a0b6f6e8edcd81897bff802e5ba9123eb7fc0d2871f32f2eaabecfef86394ebe2cdcfa3eaf5c8e7cd4e6abde174924c02a29d16324a258465115cbe1c675c2ea3c390707535758f5dab115cba84f2bccc8755f7eda3fecb2fb8bffe0a4250ddb78fdcd8188befbd775d27ff1281ad803d32c2e8ebaf83d608c3406bcdfc6baf115cbaf4976d7694005c2b12b60d80f67d7418fe2d7b6dcbe856418721da756f9abdff5f31f74fc12d02ddc62d02ddc62d02dd86d05a6b777696fa4f3f21f3799a4b4b7867cf6e4cb8a687bc8505643e1f1d540c23127a8b8be82088f43ea09b4d1022da6d0d2312685a47bbadd6ac7cf3cd4d276036ce9c61f9abaf227d2225c2b2f0cf9d8b4dd2611809b04d509e178dfd0fb5b8d5906ba74eb59cd04a61f4f5a53a1146a9d43a07b46ecce590b95cc71c6d0769384e7c4429ccbebef898d699876aa354da42d76e0cd2dabe3d3610aead6125fa30caf749ce039049f25d80b4b66d8b751054a3916e4229d57e05da35be3a04292c0ba3b77763446b8c62b175266e4d2c1452ad0d611818c56227fc6c0ba91b8d547828dfc71c18888de966136bdbb69481540e751852f97e2a64c2ab5753fd48edfb58d56ada40b70968cfc3709cd6310fa2b76d66386b24ab1360f4f4a4c2ad93905a6b741060562ab10bc2b25aadc3d6986160f4f4a48c74b39c4a00dd686027f3a05ec7dab12336a67d1f33230f64b70928cf8b1279534954ae8b9d2410869979d0cd448e56200810b95cec3b800ec3a8bc262484512ab5c45bcb886d677e43e8045ade69dfcf2e939bf70888f689e49810c88cdce8045a0494eba6cbe9da5aaa9caa7644bb14461b047c1fabbf3f9e079e8795d8d050aad595de0cc37152e1d60948b1eeb0522065fc4d2a852c95d2b2229f8fed1b1095d864d9ed04249b1252795ebaf2349b6959110499d5c8ec4218c5d65cb96e5a17d5ebd9a4b2ca6932b93b801801edfb98e5725c5e7b5e14f39b65f3fa012721a5653edf715921939f4475b399da6d65a1804cc6bc65a56bbf94c80ecb6b690f0dc53626e5ba295911aeada565c5faee9d40ea38bac5105a6badea75fcc54554b389901299cfb3fac30fac57a8f5834ce3cc1908c38d764910d0989b434889f67d200a396f61212aa9eb1d8b6bdfc956befdf6a613f82f03d53be0591e81e40000000049454e44ae426082	\N
-3	Naiad	46	\N	\N
 4	Nuke	32	\N	\N
 5	Maya	11	\N	\N
 1	BatchLinux	10	\N	\N
 6	BatchWin	19	\N	\N
 7	3dsMax	20	\N	\N
+8	Blender	21	\N	\N
+2	3Delight	\N	\\x89504e470d0a1a0a0000000d49484452000000300000003008060000005702f987000000097048597300000b1300000b1301009a9c180000064f494441546881ed994b6c1cc51686bfaa7eccc3d3f68cc789337e5e27846089c7864584c50209242c58054456b0210b1e6205c2bc8222010b944848b0892205c412b16187c402090852042c500408ac9b183b8909ce5512dbf1f4744f77d55d743c763f26378278465ce5972c79aaab4f9fbfeb9c537f9d162740f30f86ecb6037f17b708741b6d09e4464729ecde0d42644f1082d2bdf75ed77861cf1e0cc7a1776a0a6b70b0ed3c61dbf4dc7d77e6357b7818bb566b7b6f9a80948cbcf20aff3a7c98e19919761d3d8acce7d30f9592d18307af4b60f0c00172e3e3385353e42726dace337b7b197ee9a5cc6b95871fc6d9bbf7c609988e830e02669f7c927f1f3880f67d0a939300188e43657a9acaf434b2548aad4e7e628281c71fc7d9bb1721e366fff3e9a7d47ffe79c3c6238f507ef0418cde5e0a77dc114d12027b6888ea638f51bcf3cec8976a95c2e424c5bbeec22c976f8c40b0bcccf9234790c52203fbf7939f98c0fbfd77ec5a8d5d478f6256ab188ec3f83bef200b85d65b1a7df34d5410e0dc771f23070fc6480c3efd34f99d3bb16b356e3b7e1cb352c11a1c64e7071f30fac61b00e4c6c7d9f1dc7368cf63f8e597e99d9ac2281631fbfa302b158465651230334701b35ca6ef8107d04a216c9bda0b2ff0e7f1e32c7ff92500ab274fb2e7934f00187af145ce1f394278e50acd3ffe60c7f3cf53bce79e962d61182004c333339c3f7c98abdf7f0f8077f62cb5679f8de65816e7de7e1bd568d0bc7891caf4340b870eb17af224c1952b342f5ebc3102c23010a689373fcfe9679e61fb534f31b07f3ff6f030ee6fbfb5e6f98b8b842b2b00588383e4c6c6607c1c80951327089797530fcbefda45fdd4a9d6efc6e9d3a86673e3ff460380d07511197997855408156ebf9d89f7df4798113761db84cbcb5cfdee3bfa1f7d14ae8546effdf763f6f703b0f6e38fac7cfd357f1e3bc6d2471f212d0bffc285d4c32e7ffe39d5279e8872474aca0f3db45120f42641a013e240a9b604522be0cecee2cdcd31f9d967a84603ffc205e667664008460f1de2b663c750ae8bf23c9a4b4b009c7ff75dc6de7a0b6f6e8edcd81897bff802e5ba9123eb7fc0d2871f32f2eaabecfef86394ebe2cdcfa3eaf5c8e7cd4e6abde174924c02a29d16324a258465115cbe1c675c2ea3c390707535758f5dab115cba84f2bccc8755f7eda3fecb2fb8bffe0a4250ddb78fdcd8188befbd775d27ff1281ad803d32c2e8ebaf83d608c3406bcdfc6baf115cbaf4976d7694005c2b12b60d80f67d7418fe2d7b6dcbe856418721da756f9abdff5f31f74fc12d02ddc62d02ddc62d02dd86d05a6b777696fa4f3f21f3799a4b4b7867cf6e4cb8a687bc8505643e1f1d540c23127a8b8be82088f43ea09b4d1022da6d0d2312685a47bbadd6ac7cf3cd4d276036ce9c61f9abaf227d2225c2b2f0cf9d8b4dd2611809b04d509e178dfd0fb5b8d5906ba74eb59cd04a61f4f5a53a1146a9d43a07b46ecce590b95cc71c6d0769384e7c4429ccbebef898d699876aa354da42d76e0cd2dabe3d3610aead6125fa30caf749ce039049f25d80b4b66d8b751054a3916e4229d57e05da35be3a04292c0ba3b77763446b8c62b175266e4d2c1452ad0d611818c56227fc6c0ba91b8d547828dfc71c18888de966136bdbb69481540e751852f97e2a64c2ab5753fd48edfb58d56ada40b70968cfc3709cd6310fa2b76d66386b24ab1360f4f4a4c2ad93905a6b741060562ab10bc2b25aadc3d6986160f4f4a48c74b39c4a00dd686027f3a05ec7dab12336a67d1f33230f64b70928cf8b1279534954ae8b9d2410869979d0cd448e56200810b95cec3b800ec3a8bc262484512ab5c45bcb886d677e43e8045ade69dfcf2e939bf70888f689e49810c88cdce8045a0494eba6cbe9da5aaa9caa7644bb14461b047c1fabbf3f9e079e8795d8d050aad595de0cc37152e1d60948b1eeb0522065fc4d2a852c95d2b2229f8fed1b1095d864d9ed04249b1252795ebaf2349b6959110499d5c8ec4218c5d65cb96e5a17d5ebd9a4b2ca6932b93b801801edfb98e5725c5e7b5e14f39b65f3fa012721a5653edf715921939f4475b399da6d65a1804cc6bc65a56bbf94c80ecb6b690f0dc53626e5ba295911aeada565c5faee9d40ea38bac5105a6badea75fcc54554b389901299cfb3fac30fac57a8f5834ce3cc1908c38d764910d0989b434889f67d200a396f61212aa9eb1d8b6bdfc956befdf6a613f82f03d53be0591e81e40000000049454e44ae426082	\N
+3	Naiad	\N	\N	\N
 \.
 
 
@@ -11101,7 +15190,7 @@ COPY jobtype (keyjobtype, jobtype, fkeyservice, icon, fkeyparentjobtype) FROM st
 -- Name: jobtype_keyjobtype_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
-SELECT pg_catalog.setval('jobtype_keyjobtype_seq', 7, true);
+SELECT pg_catalog.setval('jobtype_keyjobtype_seq', 8, true);
 
 
 --
@@ -11120,6 +15209,22 @@ SELECT pg_catalog.setval('jobtypemapping_keyjobtypemapping_seq', 1, false);
 
 
 --
+-- Data for Name: jobxsi; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY jobxsi (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, pass, framelist, framestart, frameend, resolutionx, resolutiony, renderer, motionblur, deformmotionblur) FROM stdin;
+\.
+
+
+--
+-- Data for Name: jobxsiscript; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY jobxsiscript (keyjob, fkeyelement, fkeyhost, fkeyjobtype, fkeyproject, fkeyusr, hostlist, job, jobtime, outputpath, submitted, started, ended, expires, deleteoncomplete, hostsonjob, taskscount, tasksunassigned, tasksdone, tasksaveragetime, priority, errorcount, queueorder, packettype, packetsize, queueeta, notifyonerror, notifyoncomplete, maxtasktime, cleaned, filesize, btinfohash, rendertime, abversion, deplist, args, filename, filemd5sum, fkeyjobstat, username, domain, password, stats, currentmapserverweight, loadtimeaverage, tasksassigned, tasksbusy, prioritizeoutertasks, outertasksassigned, lastnotifiederrorcount, taskscancelled, taskssuspended, health, maxloadtime, license, maxmemory, fkeyjobparent, endedts, startedts, submittedts, maxhosts, personalpriority, loggingenabled, environment, runassubmitter, checkfilemd5, uploadedfile, framenth, framenthmode, exclusiveassignment, hastaskprogress, minmemory, scenename, shotname, slots, fkeyjobfilterset, maxerrors, notifycompletemessage, notifyerrormessage, fkeywrangler, maxquiettime, autoadaptslots, fkeyjobenvironment, suspendedts, toggleflags, allowpreemption, allowsmallerpackets, applyprojectweight, estimatedmemory, fkeyverifyerror, maxtasknumber, midtasknumber, mintasknumber, revision, status, framestart, frameend, scriptrequiresui, scriptfile, xsifile, scriptmethod, framelist) FROM stdin;
+\.
+
+
+--
 -- Data for Name: license; Type: TABLE DATA; Schema: public; Owner: farmer
 --
 
@@ -11128,7 +15233,7 @@ COPY license (keylicense, license, fkeyhost, fkeysoftware, total, reserved, inus
 2	nuke_r	\N	\N	600	0	0
 3	3delight	\N	\N	1400	0	0
 4	naiad	\N	\N	10	0	6
-5	mantra	\N	\N	1200	0	13
+5	mantra	\N	\N	1400	0	13
 \.
 
 
@@ -11440,12 +15545,24 @@ SELECT pg_catalog.setval('pathtracker_keypathtracker_seq', 1, false);
 
 
 --
--- Data for Name: permission; Type: TABLE DATA; Schema: public; Owner: farmer
+-- Data for Name: permission; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY permission (keypermission, methodpattern, fkeyusr, permission, fkeygrp, class) FROM stdin;
-1	\N	2	2777	\N	Blur::
-2	\N	122	0777	2	Blur::
+COPY permission (keypermission, fkeyusr, class, enabled, fkeygrp, modify) FROM stdin;
+1	1	Arsenal::Perm::HostService	t	\N	t
+2	1	Arsenal::Perm::UserService	t	\N	t
+3	1	Arsenal::Perm::ProjectWeights	t	\N	t
+5	1	Arsenal::Perm::UserManagement	t	\N	t
+6	1	Arsenal::Perm::ProjectManagement	t	\N	t
+7	1	Arsenal::Perm::JobTypeManagement	t	\N	t
+8	1	Arsenal::Perm::ServiceManagement	t	\N	t
+9	1	Arsenal::Perm::LicenseManagement	t	\N	t
+4	1	Arsenal::Perm::ProjectReserve	t	\N	t
+10	\N	Arsenal::Perm::HostService	t	1	t
+12	1	Arsenal::Perm::Job	t	\N	t
+11	1	Arsenal::Perm::Host	t	\N	t
+13	1	Arsenal::Perm::UsrGrp	t	\N	t
+14	1	Arsenal::Perm::Usr	t	\N	t
 \.
 
 
@@ -11454,6 +15571,13 @@ COPY permission (keypermission, methodpattern, fkeyusr, permission, fkeygrp, cla
 --
 
 SELECT pg_catalog.setval('permission_keypermission_seq', 1, false);
+
+
+--
+-- Name: permission_keypermission_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('permission_keypermission_seq1', 14, true);
 
 
 --
@@ -11693,8 +15817,6 @@ SELECT pg_catalog.setval('serverfileactiontype_keyserverfileactiontype_seq', 1, 
 
 COPY service (keyservice, service, description, fkeylicense, enabled, forbiddenprocesses, active, "unique", fkeysoftware, fkeyjobfilterset) FROM stdin;
 2	AB_manager	\N	\N	t	\N	\N	\N	\N	\N
-1	Assburner	\N	\N	t	\N	\N	\N	\N	\N
-5	AB_Reaper	\N	\N	t	\N	t	\N	\N	\N
 11	Maya	\N	\N	t	maya.bin	\N	\N	\N	\N
 12	MentalRay	\N	\N	t	\N	\N	\N	\N	\N
 3	AB_Verifier	\N	\N	\N	\N	\N	\N	\N	\N
@@ -11704,10 +15826,13 @@ COPY service (keyservice, service, description, fkeylicense, enabled, forbiddenp
 15	hbatch	\N	1	t	\N	t	\N	\N	\N
 16	3Delight	\N	\N	t	\N	t	\N	\N	\N
 17	naiad	\N	4	t	\N	t	\N	\N	\N
-18	BatchOSX	\N	\N	t	\N	\N	\N	\N	\N
 10	BatchLinux	\N	\N	t	\N	\N	\N	\N	\N
 19	BatchWin	\N	\N	t	\N	t	\N	\N	\N
 20	3dsmax	\N	\N	t	\N	t	\N	\N	\N
+18	BatchOSX	\N	\N	t	\N	\N	\N	\N	\N
+21	Blender	\N	\N	t	\N	t	\N	\N	\N
+5	AB_Reaper	\N	\N	t	\N	t	\N	\N	\N
+1	Assburner	\N	\N	t	\N	\N	\N	\N	\N
 \.
 
 
@@ -11715,7 +15840,7 @@ COPY service (keyservice, service, description, fkeylicense, enabled, forbiddenp
 -- Name: service_keyservice_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
-SELECT pg_catalog.setval('service_keyservice_seq', 20, true);
+SELECT pg_catalog.setval('service_keyservice_seq', 21, true);
 
 
 --
@@ -11875,6 +16000,66 @@ SELECT pg_catalog.setval('statusset_keystatusset_seq', 1, false);
 --
 
 COPY syslog (keysyslog, fkeyhost, fkeysyslogrealm, fkeysyslogseverity, message, count, lastoccurrence, created, class, method, ack, firstoccurence, hostname, username) FROM stdin;
+1	\N	\N	1	1 host services modified	1	2015-06-19 12:34:25.659205	2015-06-19 12:34:25.659205	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+2	\N	\N	1	1 host services modified	2	2015-06-19 12:34:58.409241	2015-06-19 12:34:58.409241	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+3	\N	\N	1	1 host services modified	3	2015-06-19 12:35:01.07468	2015-06-19 12:35:01.07468	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+4	\N	\N	1	1 host services modified	4	2015-06-19 12:35:02.828216	2015-06-19 12:35:02.828216	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+5	\N	\N	1	1 host services modified	5	2015-06-19 12:35:06.026759	2015-06-19 12:35:06.026759	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+6	\N	\N	1	1 host services modified	6	2015-06-19 12:35:07.637685	2015-06-19 12:35:07.637685	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+7	\N	\N	1	1 host services modified	7	2015-06-19 12:35:10.348787	2015-06-19 12:35:10.348787	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+8	\N	\N	1	1 host services modified	8	2015-06-19 12:35:11.797752	2015-06-19 12:35:11.797752	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+9	\N	\N	1	1 host services modified	9	2015-06-19 12:35:13.067041	2015-06-19 12:35:13.067041	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+10	\N	\N	1	1 host services modified	10	2015-06-19 12:35:14.542966	2015-06-19 12:35:14.542966	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+11	\N	\N	1	1 host services modified	11	2015-06-19 12:35:16.036123	2015-06-19 12:35:16.036123	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+12	\N	\N	1	1 host services modified	12	2015-06-19 12:37:32.462347	2015-06-19 12:37:32.462347	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+13	\N	\N	1	1 host services modified	13	2015-06-19 12:37:34.249739	2015-06-19 12:37:34.249739	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+14	\N	\N	1	1 host services modified	14	2015-06-19 12:37:35.769559	2015-06-19 12:37:35.769559	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+15	\N	\N	1	1 host services modified	15	2015-06-19 12:42:23.195491	2015-06-19 12:42:23.195491	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+16	\N	\N	1	1 host services modified	16	2015-06-19 12:42:25.06512	2015-06-19 12:42:25.06512	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+17	\N	\N	1	1 host services modified	17	2015-06-19 12:42:26.556472	2015-06-19 12:42:26.556472	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+18	\N	\N	1	1 host services modified	18	2015-06-19 12:42:27.651041	2015-06-19 12:42:27.651041	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+19	\N	\N	1	1 host services modified	19	2015-06-19 12:42:28.934305	2015-06-19 12:42:28.934305	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+20	\N	\N	1	1 host services modified	20	2015-06-19 14:09:07.376541	2015-06-19 14:09:07.376541	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+21	\N	\N	1	1 host services modified	21	2015-06-19 14:11:18.864544	2015-06-19 14:11:18.864544	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+22	\N	\N	1	1 host services modified	22	2015-06-19 14:14:18.873515	2015-06-19 14:14:18.873515	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+23	\N	\N	1	1 host services modified	23	2015-06-19 14:14:33.119867	2015-06-19 14:14:33.119867	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+24	\N	\N	1	1 host services modified	24	2015-06-19 14:18:15.837608	2015-06-19 14:18:15.837608	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+25	\N	\N	1	1 host services modified	25	2015-06-19 14:18:34.037523	2015-06-19 14:18:34.037523	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+26	\N	\N	1	1 host services modified	26	2015-06-19 14:18:51.760404	2015-06-19 14:18:51.760404	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+27	\N	\N	1	1 host services modified	27	2015-06-19 14:21:18.216538	2015-06-19 14:21:18.216538	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+28	\N	\N	1	1 host services modified	28	2015-06-19 14:21:20.36031	2015-06-19 14:21:20.36031	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+29	\N	\N	1	1 host services modified	29	2015-06-19 14:23:25.162414	2015-06-19 14:23:25.162414	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+30	\N	\N	1	1 host services modified	30	2015-06-19 14:26:38.530546	2015-06-19 14:26:38.530546	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+31	\N	\N	1	1 host services modified	31	2015-06-19 14:27:42.050954	2015-06-19 14:27:42.050954	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+32	\N	\N	1	1 host services modified	32	2015-06-19 14:27:44.09025	2015-06-19 14:27:44.09025	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+33	\N	\N	1	1 host services modified	33	2015-06-19 14:27:47.412201	2015-06-19 14:27:47.412201	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+34	\N	\N	1	1 host services modified	34	2015-06-19 14:30:06.250462	2015-06-19 14:30:06.250462	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+35	\N	\N	1	1 host services modified	35	2015-06-19 14:30:08.996817	2015-06-19 14:30:08.996817	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+36	\N	\N	1	1 host services modified	36	2015-06-19 14:32:27.363156	2015-06-19 14:32:27.363156	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+37	\N	\N	1	1 host services modified	37	2015-06-19 14:32:33.470138	2015-06-19 14:32:33.470138	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+38	\N	\N	1	1 host services modified	38	2015-06-19 14:33:44.053397	2015-06-19 14:33:44.053397	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+39	\N	\N	1	1 host services modified	39	2015-06-19 14:33:50.435752	2015-06-19 14:33:50.435752	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+40	\N	\N	1	1 host services modified	40	2015-06-19 14:33:55.45191	2015-06-19 14:33:55.45191	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+41	\N	\N	1	1 host services modified	41	2015-06-19 14:33:58.1611	2015-06-19 14:33:58.1611	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+42	\N	\N	1	1 host services modified	42	2015-06-19 14:37:47.523411	2015-06-19 14:37:47.523411	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+43	\N	\N	1	1 host services modified	43	2015-06-19 14:37:50.122686	2015-06-19 14:37:50.122686	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+44	\N	\N	1	1 host services removed	44	2015-06-19 14:37:52.545997	2015-06-19 14:37:52.545997	HostServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+45	\N	\N	1	1 host services removed	45	2015-06-19 14:37:53.801229	2015-06-19 14:37:53.801229	HostServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+46	\N	\N	1	1 host services modified	46	2015-06-19 14:38:01.214182	2015-06-19 14:38:01.214182	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+47	\N	\N	1	1 host services removed	47	2015-06-19 14:38:02.978927	2015-06-19 14:38:02.978927	HostServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+48	\N	\N	1	1 host services modified	48	2015-06-19 14:38:56.709233	2015-06-19 14:38:56.709233	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+49	\N	\N	1	1 host services modified	49	2015-06-19 14:48:52.633294	2015-06-19 14:48:52.633294	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+50	\N	\N	1	1 host services modified	50	2015-06-19 14:48:57.65044	2015-06-19 14:48:57.65044	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+51	\N	\N	1	16 host services modified	51	2015-06-19 14:56:04.073736	2015-06-19 14:56:04.073736	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+52	\N	\N	1	1 host services modified	52	2015-06-19 15:13:16.838238	2015-06-19 15:13:16.838238	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+53	\N	\N	1	1 host services modified	53	2015-06-19 15:14:15.791357	2015-06-19 15:14:15.791357	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+54	\N	\N	1	1 host services modified	54	2015-06-19 15:14:19.165061	2015-06-19 15:14:19.165061	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+55	\N	\N	1	1 host services modified	55	2015-06-20 01:14:45.513198	2015-06-20 01:14:45.513198	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+56	\N	\N	1	1 host services modified	56	2015-06-20 23:22:09.205454	2015-06-20 23:22:09.205454	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+57	\N	\N	1	1 host services modified	57	2015-06-20 23:45:12.758269	2015-06-20 23:45:12.758269	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+58	\N	\N	1	1 host services modified	58	2015-06-21 00:41:43.262386	2015-06-21 00:41:43.262386	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+59	\N	\N	1	1 host services modified	59	2015-06-21 00:41:44.27182	2015-06-21 00:41:44.27182	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	\N
+60	\N	\N	1	1 host services modified	60	2015-06-26 09:55:24.886856	2015-06-26 09:55:24.886856	UserServiceMatrix	slotShowMenu	0	\N	nyanko-sensei	Villanueva
 \.
 
 
@@ -11882,14 +16067,14 @@ COPY syslog (keysyslog, fkeyhost, fkeysyslogrealm, fkeysyslogseverity, message, 
 -- Name: syslog_count_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
-SELECT pg_catalog.setval('syslog_count_seq', 1, false);
+SELECT pg_catalog.setval('syslog_count_seq', 60, true);
 
 
 --
 -- Name: syslog_keysyslog_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
-SELECT pg_catalog.setval('syslog_keysyslog_seq', 1, false);
+SELECT pg_catalog.setval('syslog_keysyslog_seq', 60, true);
 
 
 --
@@ -12031,14 +16216,6 @@ SELECT pg_catalog.setval('thumbnail_keythumbnail_seq', 1, false);
 
 
 --
--- Data for Name: timesheet; Type: TABLE DATA; Schema: public; Owner: farmer
---
-
-COPY timesheet (keytimesheet, datetime, fkeyelement, fkeyemployee, fkeyproject, fkeytimesheetcategory, scheduledhour, datetimesubmitted, unscheduledhour, comment) FROM stdin;
-\.
-
-
---
 -- Name: timesheet_keytimesheet_seq; Type: SEQUENCE SET; Schema: public; Owner: farmer
 --
 
@@ -12046,94 +16223,10 @@ SELECT pg_catalog.setval('timesheet_keytimesheet_seq', 1, false);
 
 
 --
--- Data for Name: timesheetcategory; Type: TABLE DATA; Schema: public; Owner: farmer
+-- Data for Name: timesheetcategory; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY timesheetcategory (keytimesheetcategory, timesheetcategory, iconcolor, hasdaily, chronology, disabled, istask, fkeypathtemplate, fkeyelementtype, nameregexp, allowtime, color, description, sortcolumn, tags, sortnumber) FROM stdin;
-172	Systems Administration	\N	\N	\N	0	f	\N	4		f	#d4d0c8		displayName	role	\N
-168	Modeling Hair	\N	\N	\N	0	t	\N	4		t	#b5c2d6		displayName	schedule,timesheet	\N
-36	Compositing	\N	\N	0	0	t	\N	4		t	#dea5a3		displayName	schedule,timesheet	\N
-47	Maps	0	\N	0	1	t	\N	4	\N	t	#FFFFFF	\N	displayName	\N	\N
-68	Light	\N	\N	\N	\N	f	\N	4	\N	f	#FFFFFF	\N	displayName	\N	\N
-49	Animation	0	1	0	0	t	\N	4		t	#89c8b0		displayName	schedule,timesheet	\N
-72	Asset Group	\N	\N	\N	0	f	0	6		f	#FFFFFF	\N	displayName	\N	\N
-1	Layout	\N	1	40	0	t	\N	4		t	#dcb4c5	Animatic	displayName	schedule,timesheet	\N
-42	Scene Assembly Prep	\N	\N	0	1	t	\N	4	\N	t	#FFFFFF	\N	displayName	\N	\N
-69	Project	\N	\N	\N	0	f	4	1	[a-zA-Z0-9_]*	f	#c1afc3		displayName		\N
-13	Character Set-up	\N	\N	90	1	t	\N	4	\N	t	#FFFFFF	\N	displayName	\N	\N
-111	Rigging Face Robot	\N	\N	\N	0	t	1	4		t	#c2baa4		displayName	schedule,timesheet	\N
-43	Rigging	\N	\N	0	0	t	\N	4		t	#c2baa4		displayName	schedule,timesheet	\N
-20	Facial Clean-up	\N	\N	115	1	t	\N	4	\N	t	#FFFFFF	\N	displayName	\N	\N
-78	Rigging Deformation	\N	\N	\N	0	t	\N	5		t	#c2baa4		displayName	schedule,timesheet	\N
-53	Sample Still	0	\N	0	1	t	\N	4	\N	t	#FFFFFF	\N	displayName	\N	\N
-50	Renders	0	\N	0	1	t	\N	4	\N	t	#FFFFFF	\N	displayName	\N	\N
-28	Render farm	\N	\N	410	1	t	\N	4	\N	t	#FFFFFF	\N	displayName	\N	\N
-44	Prop Rigging	0	\N	0	1	t	\N	4	\N	t	#FFFFFF	\N	displayName	\N	\N
-51	Production	0	\N	0	0	t	0	4		f	#FFFFFF	\N	displayName	\N	\N
-46	Pre_Production	0	\N	0	1	t	\N	4	\N	t	#FFFFFF	\N	displayName	\N	\N
-63	Misc Rigging	\N	0	0	1	t	\N	4	\N	t	#FFFFFF	\N	displayName	\N	\N
-32	Lighting	\N	\N	51	1	t	\N	4	\N	t	#FFFFFF	\N	displayName	\N	\N
-79	Rigging Segment	\N	\N	\N	0	t	\N	5		t	#c2baa4		displayName	schedule,timesheet	\N
-12	Mocap Body Clean-up	\N	\N	70	0	t	\N	4		t	#acbebc		displayName	schedule,timesheet,role	\N
-80	Master Mesh	\N	\N	\N	0	t	0	5		f	#FFFFFF	\N	displayName	\N	\N
-81	Master Rig	\N	\N	\N	0	t	0	5		f	#FFFFFF	\N	displayName	\N	\N
-11	Mocap Body Session	\N	\N	60	0	t	\N	4		t	#acbebc		displayName	schedule,timesheet	\N
-55	Reference	0	\N	0	0	t	0	4		f	#FFFFFF	\N	displayName	\N	\N
-54	Materials	0	\N	0	0	t	0	4		f	#FFFFFF	\N	displayName	\N	\N
-37	Mocap Direction	\N	\N	0	0	t	\N	4		t	#acbebc		displayName	schedule,timesheet	\N
-115	Mocap Facial Clean-up	\N	\N	\N	0	t	\N	4		t	#acbebc		displayName	schedule,timesheet,role	\N
-15	Mocap Facial Session	\N	\N	110	0	t	\N	4		t	#acbebc		displayName	schedule,timesheet	\N
-25	Tutorials	\N	\N	430	0	t	\N	4		f	#d1c0c2		displayName		\N
-10	R&D	\N	\N	30	0	t	\N	4		t	#989898		displayName	schedule,timesheet	\N
-45	Information	0	\N	0	1	t	\N	4		t	#989898		displayName		\N
-174	Vehicle	\N	\N	\N	0	t	26	4	^[^\\s]*$	t	#b5c2d6		displayName	schedule,timesheet,bid	\N
-23	Mocap Prep	\N	\N	55	0	t	\N	4		t	#acbebc		displayName	schedule,timesheet,role	\N
-2	Vacation	\N	\N	505	0	t	\N	4		t	#ffbfff	Vacation!!!!!!!!	displayName	schedule,timesheet	\N
-56	Development	0	\N	0	0	t	\N	4		t	#dfdfdf		displayName	schedule,timesheet	\N
-120	Audio	\N	\N	\N	0	f	1	4	Audio	f	#dfdfdf		displayName		\N
-112	Human Resources	\N	\N	\N	0	t	0	4		t	#dfdfdf		displayName	role,schedule,timesheet	\N
-9	Storyboards	\N	\N	20	0	t	\N	4		t	#dfdfdf		displayName	schedule,timesheet	\N
-57	Bid	0	\N	0	0	t	0	4		f	#dfdfdf		displayName	schedule,timesheet	\N
-130	Software Management	\N	\N	\N	0	t	0	4		t	#aaaaff		displayName	timesheet	\N
-38	Animatic Modeling	\N	\N	0	1	t	\N	4		t	#dcb4c5		displayName	\N	\N
-41	Morph Targets	\N	\N	0	0	t	0	4		f	#b5c2d6		displayName	\N	\N
-26	Project prep	\N	\N	5	1	t	\N	4		t	#dfdfdf		displayName	\N	\N
-122	Milestone	\N	\N	\N	0	t	\N	4		f	#ff898b		datestart	\N	\N
-117	Credit List	\N	\N	\N	0	f	0	4		f	#000000		displayName	\N	\N
-19	Scene Assembly	\N	1	150	0	t	\N	4		t	#dea5a3		displayName	timesheet,schedule	\N
-126	Lead	\N	\N	\N	0	f	0	4		f	#d4d0c8	Lead and direct his/her team to create 3D animations and characters, using both key-frames and motion capture following the art direction and technical direction, cooperate with art director and technical director.	displayName	role	\N
-166	Rigging Lead	\N	\N	\N	0	f	\N	4		f	#d4d0c8		displayName	role	\N
-8	Concept Design	\N	\N	10	0	t	\N	4		t	#ecc4af		displayName	schedule,timesheet	\N
-17	Cloth	\N	\N	130	0	t	\N	4		t	#d8c8dc		displayName	schedule,timesheet,role	\N
-18	FX	\N	\N	140	0	t	\N	4		t	#c8c889		displayName	schedule,timesheet	\N
-35	Holiday	\N	\N	508	0	t	\N	4		t	#ffbfff		displayName	schedule,timesheet	\N
-175	Matte Painting	\N	\N	\N	0	f	\N	4		f	#ecc4af		displayName	schedule,timesheet	\N
-4	Modeling	\N	\N	50	0	t	0	4		t	#b5c2d6		displayName	schedule,timesheet	\N
-31	Modeling Texture	\N	\N	141	0	t	\N	4		t	#b5c2d6		displayName	schedule,timesheet	\N
-3	Sick	\N	\N	510	0	t	\N	4		t	#ffbfff		displayName	schedule,timesheet	\N
-29	Software	\N	\N	420	0	t	\N	4		t	#aaaaff		displayName	schedule,timesheet	\N
-6	Supervise	\N	\N	1	0	t	\N	4		t	#dfdfdf		displayName	schedule,timesheet	\N
-16	Animation Facial	\N	\N	120	0	t	0	4		t	#89c8b0		displayName	schedule,timesheet	\N
-113	Animation Body Mocap	\N	\N	\N	0	t	0	4		t	#89c8b0		displayName	schedule,timesheet	\N
-14	Animation Character 	\N	1	100	0	t	0	4		t	#89c8b0		displayName	schedule,timesheet	\N
-114	Animation Facial Mocap	\N	\N	\N	0	t	0	4		t	#89c8b0		displayName	schedule,timesheet	\N
-27	Scripting	\N	\N	400	0	t	\N	4		t	#989898		displayName	schedule,timesheet	\N
-34	Unpaid Leave	\N	\N	507	0	t	\N	4		t	#ffbfff		displayName	schedule,timesheet	\N
-40	Tech downtime	\N	\N	0	0	t	0	4		f	#ffbfff		displayName	timesheet	\N
-59	Paid Leave	0	0	0	0	t	\N	4		t	#ffbfff		displayName	schedule,timesheet	\N
-66	Prop	\N	\N	\N	0	t	18	4	^[^\\s]*$	t	#b5c2d6		displayName	schedule,timesheet	\N
-39	Idle Time	\N	\N	0	0	t	0	4		f	#ffbfff		displayName		\N
-65	Environment	\N	\N	\N	0	t	\N	4		t	#b5c2d6		displayName	schedule,timesheet	\N
-70	Shot	\N	\N	\N	0	f	\N	3		f	#ffffff		shotNumber		\N
-177	Layout Shot	\N	\N	\N	0	f	1	4	S(\\d+(?:\\.\\d+))	f	#efefef		displayName		\N
-176	Layout Scene	\N	\N	\N	0	f	1	4	Ly(\\d+)	f	#efefef		displayName		\N
-95	Point Cache	\N	\N	\N	0	f	1	4		f	#ffffff		displayName		\N
-178	QC	\N	\N	55	0	t	\N	4		t	#d4d0c8	QC 	\N		0
-24	Shag	\N	\N	135	1	t	\N	4	\N	t	#FFFFFF	\N	displayName	\N	\N
-33	Comp Time	\N	\N	506	0	t	\N	4		t	#ffbfff		displayName	schedule,timesheet	\N
-21	Editorial	\N	1	160	0	t	\N	4		t	#dfdfdf		displayName	schedule,timesheet	\N
-121	Edit	\N	\N	\N	0	f	\N	4	Edit	f	#d4d0c8		displayName	\N	\N
-179	Roto	\N	\N	\N	\N	t	\N	4	\N	t	\N	\N	displayName	\N	\N
+COPY timesheetcategory (keytimesheetcategory, timesheetcategory, hasdaily, disabled, fkeyelementtype, istask, fkeypathtemplate, nameregexp, allowtime, color, description, sortcolumn, tags, sortnumber) FROM stdin;
 \.
 
 
@@ -12142,6 +16235,13 @@ COPY timesheetcategory (keytimesheetcategory, timesheetcategory, iconcolor, hasd
 --
 
 SELECT pg_catalog.setval('timesheetcategory_keytimesheetcategory_seq', 1, false);
+
+
+--
+-- Name: timesheetcategory_keytimesheetcategory_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('timesheetcategory_keytimesheetcategory_seq1', 1, false);
 
 
 --
@@ -12313,7 +16413,7 @@ SELECT pg_catalog.setval('userservice_keyuserservice_seq', 1, false);
 -- Data for Name: usr; Type: TABLE DATA; Schema: public; Owner: farmer
 --
 
-COPY usr (keyelement, daysbid, description, fkeyelement, fkeyelementstatus, fkeyelementtype, fkeyproject, fkeythumbnail, name, daysscheduled, daysestimated, status, filepath, fkeyassettype, fkeypathtemplate, fkeystatusset, allowtime, datestart, datecomplete, fkeyassettemplate, icon, arsenalslotlimit, arsenalslotreserve, dateoflastlogon, email, fkeyhost, gpgkey, jid, pager, password, remoteips, schedule, shell, uid, threadnotifybyjabber, threadnotifybyemail, fkeyclient, intranet, homedir, disabled, gid, usr, keyusr, rolemask, usrlevel, remoteok, requestcount, sessiontimeout, logoncount, useradded, oldkeyusr, sid, lastlogontype) FROM stdin;
+COPY usr (keyelement, daysbid, description, fkeyelement, fkeyelementstatus, fkeyelementtype, fkeyproject, fkeythumbnail, name, daysscheduled, daysestimated, status, filepath, fkeyassettype, fkeypathtemplate, fkeystatusset, allowtime, datestart, datecomplete, fkeyassettemplate, icon, arsenalslotlimit, arsenalslotreserve, dateoflastlogon, email, fkeyhost, gpgkey, jid, pager, password, remoteips, schedule, shell, uid, threadnotifybyjabber, threadnotifybyemail, fkeyclient, intranet, homedir, disabled, gid, usr, keyusr, rolemask, usrlevel, remoteok, requestcount, sessiontimeout, logoncount, useradded, oldkeyusr, sid, lastlogontype, firstname, lastname, middlename, xmppid) FROM stdin;
 \.
 
 
@@ -12356,6 +16456,22 @@ COPY versionfiletracker (keyfiletracker, fkeyelement, name, path, filename, fkey
 
 
 --
+-- Name: abdownloadstat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY abdownloadstat
+    ADD CONSTRAINT abdownloadstat_pkey PRIMARY KEY (keyabdownloadstat);
+
+
+--
+-- Name: annotation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY annotation
+    ADD CONSTRAINT annotation_pkey PRIMARY KEY (keyannotation);
+
+
+--
 -- Name: assetdep_pkey; Type: CONSTRAINT; Schema: public; Owner: farmer; Tablespace: 
 --
 
@@ -12369,6 +16485,14 @@ ALTER TABLE ONLY assetdep
 
 ALTER TABLE ONLY assetprop
     ADD CONSTRAINT assetprop_pkey PRIMARY KEY (keyassetprop);
+
+
+--
+-- Name: assetproperty_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY assetproperty
+    ADD CONSTRAINT assetproperty_pkey PRIMARY KEY (keyassetproperty);
 
 
 --
@@ -12393,6 +16517,14 @@ ALTER TABLE ONLY assetset
 
 ALTER TABLE ONLY assetsetitem
     ADD CONSTRAINT assetsetitem_pkey PRIMARY KEY (keyassetsetitem);
+
+
+--
+-- Name: assettemplate_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY assettemplate
+    ADD CONSTRAINT assettemplate_pkey PRIMARY KEY (keyassettemplate);
 
 
 --
@@ -12428,6 +16560,54 @@ ALTER TABLE ONLY hostinterface
 
 
 --
+-- Name: calendar_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY calendar
+    ADD CONSTRAINT calendar_pkey PRIMARY KEY (keycalendar);
+
+
+--
+-- Name: calendarcategory_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY calendarcategory
+    ADD CONSTRAINT calendarcategory_pkey PRIMARY KEY (keycalendarcategory);
+
+
+--
+-- Name: checklistitem_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY checklistitem
+    ADD CONSTRAINT checklistitem_pkey PRIMARY KEY (keychecklistitem);
+
+
+--
+-- Name: checkliststatus_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY checkliststatus
+    ADD CONSTRAINT checkliststatus_pkey PRIMARY KEY (keycheckliststatus);
+
+
+--
+-- Name: client_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY client
+    ADD CONSTRAINT client_pkey PRIMARY KEY (keyclient);
+
+
+--
+-- Name: config_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY config
+    ADD CONSTRAINT config_pkey PRIMARY KEY (keyconfig);
+
+
+--
 -- Name: darwinweight_pkey; Type: CONSTRAINT; Schema: public; Owner: farmers; Tablespace: 
 --
 
@@ -12436,11 +16616,35 @@ ALTER TABLE ONLY darwinweight
 
 
 --
+-- Name: deliveryelement_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY deliveryelement
+    ADD CONSTRAINT deliveryelement_pkey PRIMARY KEY (keydeliveryshot);
+
+
+--
 -- Name: demoreel_pkey; Type: CONSTRAINT; Schema: public; Owner: farmer; Tablespace: 
 --
 
 ALTER TABLE ONLY demoreel
     ADD CONSTRAINT demoreel_pkey PRIMARY KEY (keydemoreel);
+
+
+--
+-- Name: department_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY department
+    ADD CONSTRAINT department_pkey PRIMARY KEY (keydepartment);
+
+
+--
+-- Name: diskimage_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY diskimage
+    ADD CONSTRAINT diskimage_pkey PRIMARY KEY (keydiskimage);
 
 
 --
@@ -12508,14 +16712,6 @@ ALTER TABLE ONLY elementuser
 
 
 --
--- Name: employeeavailability_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY employeeavailability
-    ADD CONSTRAINT employeeavailability_pkey PRIMARY KEY (keyemployeeavailability);
-
-
---
 -- Name: eventalert_pkey; Type: CONSTRAINT; Schema: public; Owner: farmer; Tablespace: 
 --
 
@@ -12561,6 +16757,46 @@ ALTER TABLE ONLY fileversion
 
 ALTER TABLE ONLY folder
     ADD CONSTRAINT folder_pkey PRIMARY KEY (keyfolder);
+
+
+--
+-- Name: graph_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY graph
+    ADD CONSTRAINT graph_pkey PRIMARY KEY (keygraph);
+
+
+--
+-- Name: graphds_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY graphds
+    ADD CONSTRAINT graphds_pkey PRIMARY KEY (keygraphds);
+
+
+--
+-- Name: graphitesaveddesc_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY graphitesaveddesc
+    ADD CONSTRAINT graphitesaveddesc_pkey PRIMARY KEY (keygraphitedesc);
+
+
+--
+-- Name: graphpage_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY graphpage
+    ADD CONSTRAINT graphpage_pkey PRIMARY KEY (keygraphpage);
+
+
+--
+-- Name: graphrelationship_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY graphrelationship
+    ADD CONSTRAINT graphrelationship_pkey PRIMARY KEY (keygraphrelationship);
 
 
 --
@@ -12924,6 +17160,14 @@ ALTER TABLE ONLY jobstatusskipreason
 
 
 --
+-- Name: jobstatustype_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY jobstatustype
+    ADD CONSTRAINT jobstatustype_pkey PRIMARY KEY (keyjobstatustype);
+
+
+--
 -- Name: jobtask_pkey; Type: CONSTRAINT; Schema: public; Owner: farmer; Tablespace: 
 --
 
@@ -13124,7 +17368,7 @@ ALTER TABLE ONLY pathtracker
 
 
 --
--- Name: permission_pkey; Type: CONSTRAINT; Schema: public; Owner: farmer; Tablespace: 
+-- Name: permission_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
 ALTER TABLE ONLY permission
@@ -13145,14 +17389,6 @@ ALTER TABLE ONLY phoneno
 
 ALTER TABLE ONLY phonetype
     ADD CONSTRAINT phonetype_pkey PRIMARY KEY (keyphonetype);
-
-
---
--- Name: pkey_employee; Type: CONSTRAINT; Schema: public; Owner: farmer; Tablespace: 
---
-
-ALTER TABLE ONLY employee
-    ADD CONSTRAINT pkey_employee PRIMARY KEY (keyelement);
 
 
 --
@@ -13436,15 +17672,7 @@ ALTER TABLE ONLY thumbnail
 
 
 --
--- Name: timesheet_pkey; Type: CONSTRAINT; Schema: public; Owner: farmer; Tablespace: 
---
-
-ALTER TABLE ONLY timesheet
-    ADD CONSTRAINT timesheet_pkey PRIMARY KEY (keytimesheet);
-
-
---
--- Name: timesheetcategory_pkey; Type: CONSTRAINT; Schema: public; Owner: farmer; Tablespace: 
+-- Name: timesheetcategory_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
 ALTER TABLE ONLY timesheetcategory
@@ -13753,20 +17981,6 @@ CREATE INDEX x_jfm_set ON jobfiltermessage USING btree (fkeyjobfilterset);
 
 
 --
--- Name: x_job_fkeyusr; Type: INDEX; Schema: public; Owner: farmer; Tablespace: 
---
-
-CREATE INDEX x_job_fkeyusr ON job USING btree (fkeyusr) WHERE ((((status = 'new'::text) OR (status = 'ready'::text)) OR (status = 'started'::text)) OR (status = 'done'::text));
-
-
---
--- Name: x_job_status; Type: INDEX; Schema: public; Owner: farmer; Tablespace: 
---
-
-CREATE INDEX x_job_status ON job USING btree (status);
-
-
---
 -- Name: x_job_user; Type: INDEX; Schema: public; Owner: farmer; Tablespace: 
 --
 
@@ -13785,6 +17999,13 @@ CREATE INDEX x_jobassignment_fkeyjob ON jobassignment USING btree (fkeyjob);
 --
 
 CREATE INDEX x_jobassignment_host ON jobassignment USING btree (fkeyhost);
+
+
+--
+-- Name: x_jobassignment_host_status; Type: INDEX; Schema: public; Owner: farmer; Tablespace: 
+--
+
+CREATE INDEX x_jobassignment_host_status ON jobassignment USING btree (fkeyhost, fkeyjobassignmentstatus);
 
 
 --
@@ -13900,20 +18121,6 @@ CREATE INDEX x_syslog_ack ON syslog USING btree (ack);
 
 
 --
--- Name: x_timesheet_fkeyemployee; Type: INDEX; Schema: public; Owner: farmer; Tablespace: 
---
-
-CREATE INDEX x_timesheet_fkeyemployee ON timesheet USING btree (fkeyemployee);
-
-
---
--- Name: x_timesheet_fkeyproject; Type: INDEX; Schema: public; Owner: farmer; Tablespace: 
---
-
-CREATE INDEX x_timesheet_fkeyproject ON timesheet USING btree (fkeyproject);
-
-
---
 -- Name: x_versionfiletracker_fkeyelement; Type: INDEX; Schema: public; Owner: farmer; Tablespace: 
 --
 
@@ -13935,6 +18142,13 @@ CREATE INDEX x_versionfiletracker_path ON versionfiletracker USING btree (path);
 
 
 --
+-- Name: department_preload_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER department_preload_trigger AFTER INSERT OR DELETE OR UPDATE ON department FOR EACH STATEMENT EXECUTE PROCEDURE department_preload_trigger();
+
+
+--
 -- Name: elementstatus_preload_trigger; Type: TRIGGER; Schema: public; Owner: farmer
 --
 
@@ -13946,13 +18160,6 @@ CREATE TRIGGER elementstatus_preload_trigger AFTER INSERT OR DELETE OR UPDATE ON
 --
 
 CREATE TRIGGER elementtype_preload_trigger AFTER INSERT OR DELETE OR UPDATE ON elementtype FOR EACH STATEMENT EXECUTE PROCEDURE elementtype_preload_trigger();
-
-
---
--- Name: employee_preload_trigger; Type: TRIGGER; Schema: public; Owner: farmer
---
-
-CREATE TRIGGER employee_preload_trigger AFTER INSERT OR DELETE OR UPDATE ON employee FOR EACH STATEMENT EXECUTE PROCEDURE employee_preload_trigger();
 
 
 --
@@ -14110,10 +18317,10 @@ CREATE TRIGGER pathtemplate_preload_trigger AFTER INSERT OR DELETE OR UPDATE ON 
 
 
 --
--- Name: permission_preload_trigger; Type: TRIGGER; Schema: public; Owner: farmer
+-- Name: permission_preload_trigger; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
-CREATE TRIGGER permission_preload_trigger AFTER INSERT OR DELETE OR UPDATE ON permission FOR EACH STATEMENT EXECUTE PROCEDURE permission_preload_trigger();
+CREATE TRIGGER permission_preload_trigger AFTER INSERT OR DELETE OR UPDATE ON permission FOR EACH ROW EXECUTE PROCEDURE permission_preload_trigger();
 
 
 --
@@ -14187,7 +18394,7 @@ CREATE TRIGGER syslogseverity_preload_trigger AFTER INSERT OR DELETE OR UPDATE O
 
 
 --
--- Name: timesheetcategory_preload_trigger; Type: TRIGGER; Schema: public; Owner: farmer
+-- Name: timesheetcategory_preload_trigger; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
 CREATE TRIGGER timesheetcategory_preload_trigger AFTER INSERT OR DELETE OR UPDATE ON timesheetcategory FOR EACH STATEMENT EXECUTE PROCEDURE timesheetcategory_preload_trigger();
@@ -14592,6 +18799,7 @@ REVOKE ALL ON TABLE countercache FROM PUBLIC;
 REVOKE ALL ON TABLE countercache FROM farmer;
 GRANT ALL ON TABLE countercache TO farmer;
 GRANT ALL ON TABLE countercache TO farmers;
+GRANT SELECT ON TABLE countercache TO freezer;
 
 
 --
@@ -15256,6 +19464,7 @@ REVOKE ALL ON TABLE job FROM PUBLIC;
 REVOKE ALL ON TABLE job FROM farmer;
 GRANT ALL ON TABLE job TO farmer;
 GRANT ALL ON TABLE job TO farmers;
+GRANT SELECT,UPDATE ON TABLE job TO freezer;
 
 
 --
@@ -15298,6 +19507,7 @@ REVOKE ALL ON TABLE host FROM PUBLIC;
 REVOKE ALL ON TABLE host FROM farmer;
 GRANT ALL ON TABLE host TO farmer;
 GRANT ALL ON TABLE host TO farmers;
+GRANT SELECT,UPDATE ON TABLE host TO freezer;
 
 
 --
@@ -15368,6 +19578,7 @@ REVOKE ALL ON TABLE jobtype FROM PUBLIC;
 REVOKE ALL ON TABLE jobtype FROM farmer;
 GRANT ALL ON TABLE jobtype TO farmer;
 GRANT ALL ON TABLE jobtype TO farmers;
+GRANT SELECT ON TABLE jobtype TO freezer;
 
 
 --
@@ -15776,6 +19987,7 @@ REVOKE ALL ON TABLE hostgroup FROM PUBLIC;
 REVOKE ALL ON TABLE hostgroup FROM farmer;
 GRANT ALL ON TABLE hostgroup TO farmer;
 GRANT ALL ON TABLE hostgroup TO farmers;
+GRANT SELECT ON TABLE hostgroup TO freezer;
 
 
 --
@@ -15786,6 +19998,7 @@ REVOKE ALL ON TABLE dynamichostgroup FROM PUBLIC;
 REVOKE ALL ON TABLE dynamichostgroup FROM farmer;
 GRANT ALL ON TABLE dynamichostgroup TO farmer;
 GRANT ALL ON TABLE dynamichostgroup TO farmers;
+GRANT SELECT ON TABLE dynamichostgroup TO freezer;
 
 
 --
@@ -15846,6 +20059,7 @@ REVOKE ALL ON TABLE elementthread FROM PUBLIC;
 REVOKE ALL ON TABLE elementthread FROM farmer;
 GRANT ALL ON TABLE elementthread TO farmer;
 GRANT ALL ON TABLE elementthread TO farmers;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE elementthread TO freezer;
 
 
 --
@@ -15906,26 +20120,6 @@ REVOKE ALL ON TABLE elementuser FROM PUBLIC;
 REVOKE ALL ON TABLE elementuser FROM farmer;
 GRANT ALL ON TABLE elementuser TO farmer;
 GRANT ALL ON TABLE elementuser TO farmers;
-
-
---
--- Name: usr; Type: ACL; Schema: public; Owner: farmer
---
-
-REVOKE ALL ON TABLE usr FROM PUBLIC;
-REVOKE ALL ON TABLE usr FROM farmer;
-GRANT ALL ON TABLE usr TO farmer;
-GRANT ALL ON TABLE usr TO farmers;
-
-
---
--- Name: employee; Type: ACL; Schema: public; Owner: farmer
---
-
-REVOKE ALL ON TABLE employee FROM PUBLIC;
-REVOKE ALL ON TABLE employee FROM farmer;
-GRANT ALL ON TABLE employee TO farmer;
-GRANT ALL ON TABLE employee TO farmers;
 
 
 --
@@ -16166,6 +20360,7 @@ REVOKE ALL ON TABLE grp FROM PUBLIC;
 REVOKE ALL ON TABLE grp FROM farmer;
 GRANT ALL ON TABLE grp TO farmer;
 GRANT ALL ON TABLE grp TO farmers;
+GRANT SELECT ON TABLE grp TO freezer;
 
 
 --
@@ -16397,6 +20592,7 @@ REVOKE ALL ON TABLE hostservice FROM PUBLIC;
 REVOKE ALL ON TABLE hostservice FROM farmer;
 GRANT ALL ON TABLE hostservice TO farmer;
 GRANT ALL ON TABLE hostservice TO farmers;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE hostservice TO freezer;
 
 
 --
@@ -16437,6 +20633,7 @@ REVOKE ALL ON TABLE hoststatus FROM PUBLIC;
 REVOKE ALL ON TABLE hoststatus FROM farmer;
 GRANT ALL ON TABLE hoststatus TO farmer;
 GRANT ALL ON TABLE hoststatus TO farmers;
+GRANT SELECT,UPDATE ON TABLE hoststatus TO freezer;
 
 
 --
@@ -16468,6 +20665,7 @@ REVOKE ALL ON TABLE jobassignmentstatus FROM PUBLIC;
 REVOKE ALL ON TABLE jobassignmentstatus FROM farmer;
 GRANT ALL ON TABLE jobassignmentstatus TO farmer;
 GRANT ALL ON TABLE jobassignmentstatus TO farmers;
+GRANT SELECT ON TABLE jobassignmentstatus TO freezer;
 
 
 --
@@ -16762,6 +20960,7 @@ REVOKE ALL ON TABLE jobservice FROM PUBLIC;
 REVOKE ALL ON TABLE jobservice FROM farmer;
 GRANT ALL ON TABLE jobservice TO farmer;
 GRANT ALL ON TABLE jobservice TO farmers;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE jobservice TO freezer;
 
 
 --
@@ -16927,6 +21126,7 @@ REVOKE ALL ON TABLE service FROM PUBLIC;
 REVOKE ALL ON TABLE service FROM farmer;
 GRANT ALL ON TABLE service TO farmer;
 GRANT ALL ON TABLE service TO farmers;
+GRANT SELECT ON TABLE service TO freezer;
 
 
 --
@@ -17292,6 +21492,16 @@ GRANT ALL ON TABLE pathtracker TO farmers;
 
 
 --
+-- Name: permission; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE permission FROM PUBLIC;
+REVOKE ALL ON TABLE permission FROM postgres;
+GRANT ALL ON TABLE permission TO postgres;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE permission TO freezer;
+
+
+--
 -- Name: permission_keypermission_seq; Type: ACL; Schema: public; Owner: farmer
 --
 
@@ -17299,16 +21509,6 @@ REVOKE ALL ON SEQUENCE permission_keypermission_seq FROM PUBLIC;
 REVOKE ALL ON SEQUENCE permission_keypermission_seq FROM farmer;
 GRANT ALL ON SEQUENCE permission_keypermission_seq TO farmer;
 GRANT ALL ON SEQUENCE permission_keypermission_seq TO farmers;
-
-
---
--- Name: permission; Type: ACL; Schema: public; Owner: farmer
---
-
-REVOKE ALL ON TABLE permission FROM PUBLIC;
-REVOKE ALL ON TABLE permission FROM farmer;
-GRANT ALL ON TABLE permission TO farmer;
-GRANT ALL ON TABLE permission TO farmers;
 
 
 --
@@ -17370,6 +21570,7 @@ REVOKE ALL ON TABLE project FROM PUBLIC;
 REVOKE ALL ON TABLE project FROM farmer;
 GRANT ALL ON TABLE project TO farmer;
 GRANT ALL ON TABLE project TO farmers;
+GRANT SELECT ON TABLE project TO freezer;
 
 
 --
@@ -17462,6 +21663,7 @@ REVOKE ALL ON TABLE projecttempo FROM PUBLIC;
 REVOKE ALL ON TABLE projecttempo FROM farmer;
 GRANT ALL ON TABLE projecttempo TO farmer;
 GRANT ALL ON TABLE projecttempo TO farmers;
+GRANT SELECT ON TABLE projecttempo TO freezer;
 
 
 --
@@ -17939,16 +22141,6 @@ GRANT ALL ON SEQUENCE timesheet_keytimesheet_seq TO farmers;
 
 
 --
--- Name: timesheet; Type: ACL; Schema: public; Owner: farmer
---
-
-REVOKE ALL ON TABLE timesheet FROM PUBLIC;
-REVOKE ALL ON TABLE timesheet FROM farmer;
-GRANT ALL ON TABLE timesheet TO farmer;
-GRANT ALL ON TABLE timesheet TO farmers;
-
-
---
 -- Name: timesheetcategory_keytimesheetcategory_seq; Type: ACL; Schema: public; Owner: farmer
 --
 
@@ -17956,16 +22148,6 @@ REVOKE ALL ON SEQUENCE timesheetcategory_keytimesheetcategory_seq FROM PUBLIC;
 REVOKE ALL ON SEQUENCE timesheetcategory_keytimesheetcategory_seq FROM farmer;
 GRANT ALL ON SEQUENCE timesheetcategory_keytimesheetcategory_seq TO farmer;
 GRANT ALL ON SEQUENCE timesheetcategory_keytimesheetcategory_seq TO farmers;
-
-
---
--- Name: timesheetcategory; Type: ACL; Schema: public; Owner: farmer
---
-
-REVOKE ALL ON TABLE timesheetcategory FROM PUBLIC;
-REVOKE ALL ON TABLE timesheetcategory FROM farmer;
-GRANT ALL ON TABLE timesheetcategory TO farmer;
-GRANT ALL ON TABLE timesheetcategory TO farmers;
 
 
 --
@@ -18086,6 +22268,17 @@ REVOKE ALL ON TABLE trackerstatus FROM PUBLIC;
 REVOKE ALL ON TABLE trackerstatus FROM farmer;
 GRANT ALL ON TABLE trackerstatus TO farmer;
 GRANT ALL ON TABLE trackerstatus TO farmers;
+
+
+--
+-- Name: usr; Type: ACL; Schema: public; Owner: farmer
+--
+
+REVOKE ALL ON TABLE usr FROM PUBLIC;
+REVOKE ALL ON TABLE usr FROM farmer;
+GRANT ALL ON TABLE usr TO farmer;
+GRANT ALL ON TABLE usr TO farmers;
+GRANT SELECT ON TABLE usr TO freezer;
 
 
 --
@@ -18231,6 +22424,7 @@ REVOKE ALL ON TABLE usrgrp FROM PUBLIC;
 REVOKE ALL ON TABLE usrgrp FROM farmer;
 GRANT ALL ON TABLE usrgrp TO farmer;
 GRANT ALL ON TABLE usrgrp TO farmers;
+GRANT SELECT ON TABLE usrgrp TO freezer;
 
 
 --
@@ -18275,107 +22469,5 @@ ALTER DEFAULT PRIVILEGES FOR ROLE farmer IN SCHEMA public GRANT ALL ON TABLES  T
 
 --
 -- PostgreSQL database dump complete
---
-
-\connect postgres
-
-SET default_transaction_read_only = off;
-
---
--- PostgreSQL database dump
---
-
-SET statement_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SET check_function_bodies = false;
-SET client_min_messages = warning;
-
---
--- Name: postgres; Type: COMMENT; Schema: -; Owner: postgres
---
-
-COMMENT ON DATABASE postgres IS 'default administrative connection database';
-
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
---
--- Name: public; Type: ACL; Schema: -; Owner: postgres
---
-
-REVOKE ALL ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON SCHEMA public FROM postgres;
-GRANT ALL ON SCHEMA public TO postgres;
-GRANT ALL ON SCHEMA public TO PUBLIC;
-
-
---
--- PostgreSQL database dump complete
---
-
-\connect template1
-
-SET default_transaction_read_only = off;
-
---
--- PostgreSQL database dump
---
-
-SET statement_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SET check_function_bodies = false;
-SET client_min_messages = warning;
-
---
--- Name: template1; Type: COMMENT; Schema: -; Owner: postgres
---
-
-COMMENT ON DATABASE template1 IS 'default template for new databases';
-
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
---
--- Name: public; Type: ACL; Schema: -; Owner: postgres
---
-
-REVOKE ALL ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON SCHEMA public FROM postgres;
-GRANT ALL ON SCHEMA public TO postgres;
-GRANT ALL ON SCHEMA public TO PUBLIC;
-
-
---
--- PostgreSQL database dump complete
---
-
---
--- PostgreSQL database cluster dump complete
 --
 

@@ -90,7 +90,7 @@ def cmd_output(cmd,outputObject=None,shell=None):
     output = ''
     ret = 0
     def processOutput(existing, new, outputProgress):
-        existing += new.decode('utf-8')
+        existing += new #.decode('utf-8')
         if outputProgress:
             outputObject.output(new)
         return existing
@@ -189,7 +189,7 @@ class Target:
         
     def run_cmd(self,cmd,shell=None,noThrow=False):
         if self.has_arg('verbose') or self.has_arg('show-commands'):
-            printf(term.render('${BLUE}Running Command${NORMAL}:'), str(cmd))
+            printf(term.render('${BLUE}Running Command${NORMAL}: %s'), str(cmd))
         try:
             (ret,output) = cmd_output(cmd,self,shell)
         except:
@@ -313,6 +313,16 @@ class SipTarget(Target):
 
     def configure_command(self):
         pass
+        
+    def run_make(self, arg_string=''):
+        make_cmd = 'make -f sipMakefile'
+        if 'QMAKESPEC' in os.environ and 'msvc' in os.environ['QMAKESPEC']:
+            make_cmd = 'nmake /f sipMakefile'
+        if self.Static:
+            make_cmd += "Static"
+        if arg_string and arg_string[0] != ' ':
+            arg_string = ' ' + arg_string
+        return self.run_cmd(make_cmd + arg_string)
 
     def build_run(self):
         self.check_arg_sanity()
@@ -330,9 +340,13 @@ class SipTarget(Target):
         if self.has_arg("trace"):
             self.config += " -r"
 
-        if self.has_arg('build') or (not os.path.exists(os.getcwd() + 'Makefile') and not self.name.startswith('py') ):
+        makefileName = "sipMakefile"
+        if self.Static:
+            makefileName += "Static"
+        if self.has_arg('build') or (not os.path.exists(os.getcwd() + '/' + makefileName) and not self.name.startswith('py') ):
             self.configure_command()
-            self.run_cmd(self.config)
+            if not os.path.exists(os.getcwd() + '/' + makefileName) or not self.has_arg('noreconfigure'):
+                self.run_cmd(self.config)
         if self.has_arg('clean') and not self.CleanDone:
             self.run_make('clean')
             self.CleanDone = True
@@ -415,8 +429,10 @@ class QMakeTarget(Target):
         self.check_arg_sanity()
 
         if not self.ConfigDone and self.has_arg("build"):
-            cmd = "qmake " + self.qmakeargs()
-            self.run_cmd(cmd)
+            if not os.path.exists(os.getcwd() + '/Makefile') or not self.has_arg('noreconfigure'):
+                cmd = "qmake " + self.qmakeargs()
+                self.run_cmd(cmd)
+                
             self.ConfigDone = True
         if self.has_arg("clean") and not self.CleanDone:
             self.run_make('clean')
@@ -455,6 +471,8 @@ class NSISTarget(Target):
 
     # Only buildable on win32
     def is_buildable(self):
+        if self.has_arg("noinstaller"):
+            return False
         return NSISTarget.CanBuild
 
     def find_nsis(self):

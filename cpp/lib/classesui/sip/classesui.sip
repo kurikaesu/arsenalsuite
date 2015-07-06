@@ -17,7 +17,6 @@
 %Include assetdialog.sip
 %Include elementmodel.sip
 %Include assettemplatecombo.sip
-%Include datechooser.sip
 %Include elementui.sip
 %Include thumbnailui.sip
 %Include hostselector.sip

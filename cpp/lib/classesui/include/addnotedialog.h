@@ -50,54 +50,20 @@ class CLASSESUI_EXPORT AddNoteDialog : public QDialog, public Ui::AddNoteDialogU
 	void setThread( const Thread & );
 	Thread thread() const;
 
-	void setElement( const Element & );
 	void setJobs( const JobList & );
 	void setReplyTo( const Thread & );
 
 	void setSubject( const QString & subject );
 	void setBody( const QString & body );
 
-	UserList notifyList() const;
-	void setNotifyList( const UserList & ul );
-
-	void setRelated( UserList supers, UserList coords, UserList producs, UserList assigned );
-	void refreshButtons();
-	void refresh();
-	UserList usersToNotify() const;
-	bool requireSignoff() const;
-	QStringList attachmentURLs() const;
-
-	void addAttachment( const QString & );
-
 	virtual void accept();
 
 public slots:
-	void appendList( UserList list );
-	void slotNotifyNew();
-	void slotNotifyDelete();
-	void slotNotifyClear();
-
-	void slotAddSupervisors();	
-	void slotAddCoordinators();
-	void slotAddProducers();	
-	void slotAddAssigned();
-
-	void slotAddUser( QAction * );
-
-	void slotAddAttachment();
-	void slotAttachmentPopup( QListWidgetItem *, const QPoint & );
 
 protected:
-	Element mElement;
 	JobList mJobs;
 	Thread mThread;
 	Thread mReplyThread;
-
-	QMap<QString,QString> mAttachmentURLs;
-	QMap<QString,QPixmap> mModifiedImages;
-
-	UserList mUserList, mSupers, mCoords, mProducs, mAssigned;
-	QMenu *mSupMenu, *mCoordMenu, *mProdMenu, *mAssMenu;
 };
 
 #endif // ADD_NOTE_DIALOG_H

@@ -167,6 +167,46 @@ QString stoneOptionsHelp()
 	return ret.join("\n");
 }
 
+QString getEnvParameter(const char* param)
+{
+	QString envValue = "";
+#ifdef Q_OS_WIN
+	size_t requiredSize;
+	
+	getenv_s(&requiredSize, NULL, 0, param);
+	if (requiredSize == 0)
+	{
+		fprintf( stderr, "%s environment variable doesn't exist\n", param );
+	}
+	else
+	{
+		char* arsevar;
+		arsevar = new char[requiredSize];
+		if (!arsevar)
+		{
+			fprintf( stderr, "Couldn't allocate enough memory for %s environment variable\n", param );
+		}
+		else
+		{
+			getenv_s(&requiredSize, arsevar, requiredSize, param);
+			envValue = arsevar;
+			delete[] arsevar;
+		}
+	}
+#else
+	{
+		char* arsevar;
+		arsevar = getenv(param);
+		if (arsevar != NULL)
+			envValue = arsevar;
+		else
+			fprintf( stderr, "%s environment variable doesn't exist\n", param );
+	}
+#endif
+	
+	return envValue;
+}
+
 /// Initialises the stone library using a supplied configuration file. Returns if it was able to read the configuration file successfully
 /// This function can be called multiple times.  The first time all needed Qt configuration(addLibraryPath,qRegisterMetaType) is done
 /// regardless of the config file being found.  Any subsequent times the config file will be read.
@@ -180,68 +220,9 @@ bool initConfig( const QString & configName, const QString & logfile )
 		int argc = 0;
 		new QCoreApplication(argc, (char**)0);
 	}
-	QString arsenalVer = "";
-	QString arsenalDir = "";
-#ifdef Q_OS_WIN
-	size_t requiredSize;
-	
-	getenv_s(&requiredSize, NULL, 0, "ARSENALDIR");
-	if (requiredSize == 0)
-	{
-		fprintf( stderr, "ARSENALDIR environment variable doesn't exist\n");
-	}
-	else
-	{
-		char* arsevar;
-		arsevar = new char[requiredSize];
-		if (!arsevar)
-		{
-			fprintf(stderr, "Couldn't allocate enough memory for ARSENALDIR environment variable\n");
-		}
-		else
-		{
-			getenv_s(&requiredSize, arsevar, requiredSize, "ARSENALDIR");
-			arsenalDir = arsevar;
-			delete[] arsevar;
-		}
-	}
-	
-	getenv_s(&requiredSize, NULL, 0, "ARSENALVER");
-	if (requiredSize == 0)
-	{
-		fprintf( stderr, "ARSENALVER environment variable doesn't exist\n");
-	}
-	else
-	{
-		char* arsevar;
-		arsevar = new char[requiredSize];
-		if (!arsevar)
-		{
-			fprintf(stderr, "Couldn't allocate enough memory for ARSENALVER environment variable\n");
-		}
-		else
-		{
-			getenv_s(&requiredSize, arsevar, requiredSize, "ARSENALVER");
-			arsenalVer = arsevar;
-			delete[] arsevar;
-		}
-	}
-#else
-	{
-		char* arseVar;
-		arseVar = getenv("ARSENALDIR");
-		if (arseVar != NULL)
-			arsenalDir = arseVar;
-		else
-			fprintf( stderr, "ARSENALDIR environment variable doesn't exist\n");
-		
-		arseVar = getenv("ARSENALVER");
-		if (arseVar != NULL)
-			arsenalVer = arseVar;
-		else
-			fprintf( stderr, "ARSENALVER environment variable doesn't exist\n");
-	}
-#endif
+	QString arsenalVer = getEnvParameter("ARSENALVER");
+	QString arsenalDir = getEnvParameter("ARSENALDIR");
+
 	arsenalDir.replace('\\', '/');
 	if (arsenalDir.startsWith("\""))
 	{

@@ -38,8 +38,7 @@ class AttachmentList;
 class ElementImp;
 class ElementManager;
 class ElementUser;
-class Employee;
-class EmployeeList;
+class User;
 class FileVersion;
 class UserList;
 class UserImp;
@@ -53,7 +52,7 @@ class QWidget;
 	bool isTask() const;
 
 	// Assigned user stuff
-	EmployeeList users( bool recursive = false ) const;
+	UserList users( bool recursive = false ) const;
 
 	QStringList userStringList() const;
 
@@ -61,7 +60,7 @@ class QWidget;
 
 	void removeUser( const User & );
 
-	void setUsers( EmployeeList );
+	void setUsers( UserList );
 
 	bool hasUser ( const User & ) const;
 

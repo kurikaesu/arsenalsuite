@@ -233,7 +233,6 @@ protected:
 	QAction * mSetJobKeyListAction;
 	QAction * mClearJobKeyListAction;
 	QAction * mModifyFrameRangeAction;
-
 	QMap<QAction *, JobViewerPlugin *> mJobViewerActions;
 };
 

@@ -217,10 +217,60 @@ QString w32_getOsVersion( QString * servicePackVersion = 0, int * buildNumber = 
 					else
 						ret = "Windows 7";
 					break;
+				case 2:
+					if( osvi.wProductType != VER_NT_WORKSTATION )
+						ret = "Windows Server 2012";
+					else
+						ret = "Windows 8";
+					break;
+				case 3:
+					if( osvi.wProductType != VER_NT_WORKSTATION )
+						ret = "Windows Server 2012 R2";
+					else
+						ret = "Windows 8.1";
+			};
+		}
+		case 10:
+		{
+			switch( osvi.dwMinorVersion ) {
+				case 0:
+					if( osvi.wProductType != VER_NT_WORKSTATION )
+						ret = "Windows Server Technical Preview";
+					else
+						ret = "Windows 10 Insider Preview";
 			};
 		}
 	};
 	return ret;
+}
+
+QString w32_getProcessorInformation()
+{
+	int cpuInfo[4] = {-1};
+	__cpuid(cpuInfo, 0x80000000);
+	unsigned int nExIds = cpuInfo[0];
+	
+	char CPUBrandString[0x40] = { 0 };
+	for (unsigned int i=0x80000000; i <= nExIds; ++i)
+	{
+		__cpuid(cpuInfo, i);
+		switch (i)
+		{
+		case 0x80000002:
+			memcpy( CPUBrandString, cpuInfo, sizeof(cpuInfo));
+			break;
+		case 0x80000003:
+			memcpy( CPUBrandString + 16, cpuInfo, sizeof(cpuInfo));
+			break;
+		case 0x80000004:
+			memcpy( CPUBrandString + 32, cpuInfo, sizeof(cpuInfo));
+			break;
+		}
+	}
+	
+	QString processor = CPUBrandString;
+	processor.replace("  ", " ");
+	return processor;
 }
 
 #endif // Q_OS_WIN
@@ -234,10 +284,14 @@ void Host::updateHardwareInfo()
 	QString cpu = backtick("cat /proc/cpuinfo");
 	QRegExp cpuRx("physical id\\s+: (\\d+)");
 	QRegExp bogoRx("bogomips\\s+: (\\d+)");
+	QRegExp mhzRx("cpu MHz\\s+: (\\d+)");
 	QRegExp cpuCoresRx("cpu cores\\s+: (\\d+)");
+	QRegExp cpuModelRx("model name\\s+: ([\\w() -@]+)");
 
 	LOG_3( "trying to get CPU info\n"+cpu );
-	if( bogoRx.indexIn(cpu) != -1 )
+	if( mhzRx.indexIn(cpu) != -1 )
+		setMhz( mhzRx.cap(1).toInt() );
+	else if( bogoRx.indexIn(cpu) != -1 )
 		setMhz( bogoRx.cap(1).toInt() );
 	int cores = 1;
 	if( cpuCoresRx.indexIn(cpu) != -1 )
@@ -253,7 +307,10 @@ void Host::updateHardwareInfo()
 		pos += cpuRx.matchedLength();
 		setCpus( (cpuId+1)*cores );
 	}
-	setCpuName(backtick("uname -p").replace("\n",""));
+	if (cpuModelRx.indexIn(cpu) != -1 )
+		setCpuName(cpuModelRx.cap(1));
+	else
+		setCpuName(backtick("uname -p").replace("\n",""));
 	setOs(backtick("uname").replace("\n",""));
 	setOsVersion(backtick("uname -r").replace("\n",""));
 	setArchitecture(backtick("uname -m").replace("\n",""));
@@ -312,6 +369,7 @@ void Host::updateHardwareInfo()
 		setOsVersion( w32_getOsVersion(&servicePackVersion,&buildNumber) );
 		setServicePackVersion(servicePackVersion);
 		setBuildNumber(buildNumber);
+		setCpuName( w32_getProcessorInformation() );
 		setCpus( sysInfo.dwNumberOfProcessors );
 		QSettings mhzReg( "HKEY_LOCAL_MACHINE\\Hardware\\Description\\System\\CentralProcessor\\0", QSettings::NativeFormat );
 		setMhz( mhzReg.value( "~MHz" ).toInt() );

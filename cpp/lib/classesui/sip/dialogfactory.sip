@@ -23,6 +23,8 @@ public:
 	void editJobTypes( QWidget * pw=0 );
 	
 	void editProjects( QWidget * pw=0 );
+	
+	void editUsers( QWidget * pw=0 );
 
 	User newUser( QWidget * pw = 0 );
 
@@ -34,13 +36,9 @@ public:
 	
 	void editAssetTypes( QWidget * pw = 0 );
 
-	void enterTimeSheetData( ElementList, const AssetType & at = AssetType(), QWidget * pw = 0 );
-
 	void newTask( ElementList, QWidget * parent );
 
 	void showConfigDBDialog( QWidget * pw=0 );
 
 	void editPermissions( QWidget * pw = 0 );
-
-	void editNotificationRoutes( QWidget * pw = 0 );
 };

@@ -99,8 +99,17 @@ public:
 
 	static Table * table();
 	static t__Schema * schema();
+protected:
+#define CLASS_PROTECTED
+<%BASEHEADER%>
+#undef CLASS_PROTECTED
+	
 private:
 	void checkImpType();
+	
+#define CLASS_PRIVATES
+<%BASEHEADER%>
+#undef CLASS_PRIVATES
 };
 
 #include "tl__list.h"

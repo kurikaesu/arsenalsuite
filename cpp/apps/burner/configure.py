@@ -60,7 +60,14 @@ makefile = BurnerModuleMakefile(
 
 sipconfig.ParentMakefile(
 	configuration=config,
-	subdirs=["sipBurner"]
+	subdirs=["sipBurner"],
+    makefile="sipMakefile"
+).generate()
+
+sipconfig.ParentMakefile(
+	configuration=config,
+	subdirs=["sipBurner"],
+    makefile="sipMakefileStatic"
 ).generate()
 
 # Add the library we are wrapping.  The name doesn't include any platform

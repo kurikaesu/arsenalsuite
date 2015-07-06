@@ -34,8 +34,6 @@ class NotificationMethodList;
     static bool isUserLoggedIn( const QString & );
 	
 	static User activeByUserName( const QString & );
-
-	static User setupProjectUser( Project p, Client c, bool ftp, bool web );
 	
 	typedef QMap<uint,int> PermMap;
 	typedef QMapIterator<uint,int> PermIter;

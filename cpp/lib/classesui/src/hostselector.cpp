@@ -41,9 +41,7 @@
 #include "modelgrouper.h"
 #include "modeliter.h"
 
-#include "department.h"
 #include "dynamichostgroup.h"
-#include "employee.h"
 #include "host.h"
 #include "hostinterface.h"
 #include "hostservice.h"
@@ -65,30 +63,23 @@ const ColumnStruct HostItem::host_columns [] =
 	{ "Host", "HostColumn", 100, 0, false, true },
 	{ "Current Jobs", "CurrentJobColumn", 200, 1, false, false },
 	{ "Status", "StatusColumn", 65, 2, false, true },
-	{ "Frames", "FramesColumn", 50, 3, false, false },
+	{ "AB Version", "ABVersionColumn", 100, 3, false, true },
 	{ "OS", "OSColumn", 120, 4, false, true },
 	{ "Memory", "MemoryColumn", 100, 5, false, true },
 	{ "Mhz", "MhzColumn", 75, 6, false, true },
 	{ "User", "UserColumn", 70, 7, false, true },
-	{ "Packet Weight", "PacketWeightColumn", 40, 8, true, false },
-	{ "Description", "DescriptionColumn", 200, 9, false, true },
-	{ "Pulse", "PulseColumn", 130, 10, false, false },
-	{ "Key", "KeyColumn", 0, 11, true, true },
-	{ "OS Version", "OsVersionColumn", 100, 12, false, true },
-	{ "CPU Name", "CpuNameColumn", 40, 14, false, true },
-	{ "Arch", "ArchColumn", 65, 15, false, true },
-	{ "Services", "ServicesColumn", 100, 16, true, false },
-	{ "Avail. Mem", "AvailMemColumn", 80, 17, false, false },
-	{ "IP Address", "IPAddressColumn", 45, 18, true, true },
-	{ "Domain", "DomainColumn", 45, 19, true, true },
-	{ "Department", "DepartmentColumn", 60, 20, true, true },
-	{ "System Uptime", "SystemUptimeColumn", 120, 21, false, false },
-	{ "Elapsed Task Time", "ElapsedTaskTimeColumn", 60, 22, false, false },
-	{ "OS Service Pack", "OSServicePackColumn", 60, 13, true, true },
-	{ "OS Build Number", "OSBuildNumberColumn", 60, 23, true, true },
-	{ "Video Card", "VideoCardColumn", 100, 24, true, true },
-	{ "Video Card Driver", "VideoCardDriverColumn", 120, 25, true, true },
-	{ "Video Memory", "VideoMemoryColumn", 100, 26, true, true },
+	{ "Description", "DescriptionColumn", 200, 8, false, true },
+	{ "Pulse", "PulseColumn", 130, 9, false, false },
+	{ "Key", "KeyColumn", 0, 10, true, true },
+	{ "OS Version", "OsVersionColumn", 100, 11, false, true },
+	{ "CPU Name", "CpuNameColumn", 40, 12, false, true },
+	{ "Arch", "ArchColumn", 65, 13, false, true },
+	{ "Services", "ServicesColumn", 100, 14, true, false },
+	{ "Avail. Mem", "AvailMemColumn", 80, 15, false, false },
+	{ "IP Address", "IPAddressColumn", 45, 16, true, true },
+	{ "Domain", "DomainColumn", 45, 17, true, true },
+	{ "System Uptime", "SystemUptimeColumn", 120, 18, false, false },
+	{ "Elapsed Task Time", "ElapsedTaskTimeColumn", 60, 19, false, false },
 	{ 0, 0, 0, 0, false }
 };
 
@@ -145,7 +136,8 @@ void HostItem::setup( const Record & r, const QModelIndex &, bool loadJob ) {
 	host = r;
 	status = host.hostStatus();
 	jobsLoaded = false;
-	ver = host.os() + " " + host.abVersion();
+	os = host.os();
+	ver = host.abVersion();
 	mem = QString("%1 Mb").arg(host.memory());
 	availMem = QString("%1 Mb").arg(QString::number(status.availableMemory()));
 	mhz = QString("%1 Mhz (%2)").arg(host.mhz()).arg(host.cpus());
@@ -155,8 +147,7 @@ void HostItem::setup( const Record & r, const QModelIndex &, bool loadJob ) {
 	pulse = convertTime( status.slavePulse().secsTo(now) );
 	mhz = QString("%1 Mhz (%2)").arg(host.mhz()).arg(host.cpus());
 	User u = host.user();
-	Employee e(u);
-	user = e.isRecord() ? e.name() : u.name();
+	user = u.name();
 	co = HostColors ? HostColors->getColorOption(status.slaveStatus()) : 0;
 	services = QString();
 	if( host.userIsLoggedIn())
@@ -227,19 +218,18 @@ QVariant HostItem::modelData( const QModelIndex & i, int role ) const
 			case 0: return host.name();
 			case 1: return _jobName;
 			case 2: return status.slaveStatus();
-			case 3: return QString();
-			case 4: return ver;
+			case 3: return ver;
+			case 4: return os;
 			case 5: return mem;
 			case 6: return mhz;
 			case 7: return user;
-			case 8: return "";
-			case 9: return host.description();
-			case 10: return pulse;
-			case 11: return host.key();
-			case 12: return host.osVersion();
-			case 13: return host.cpuName();
-			case 14: return host.architecture();
-			case 15:
+			case 8: return host.description();
+			case 9: return pulse;
+			case 10: return host.key();
+			case 11: return host.osVersion();
+			case 12: return host.cpuName();
+			case 13: return host.architecture();
+			case 14:
 			{
 				if( services.isNull() ) {
 					services = host.hostServices().services().sorted("service").services().join(",");
@@ -247,27 +237,18 @@ QVariant HostItem::modelData( const QModelIndex & i, int role ) const
 				}
 				return services;
 			}
-			case 16: return availMem;
-			case 17: return ( puppetPulse.toString() != "" ) ? convertTime( puppetPulse.secsTo(now) ) : QString();
-			case 18: return ipAddress();
-			case 19: return host.windowsDomain();
-			case 20: return host.department().name();
-			case 21: return uptime;
-			case 22: return tasktime;
-			case 23: return host.servicePackVersion();
-			case 24: return QString::number(host.buildNumber());
-			case 25: return host.videoCard();
-			case 26: return host.videoCardDriver();
-			case 27: return QString("%1 Mb").arg(host.videoMemory());
+			case 15: return availMem;
+			case 16: return ipAddress();
+			case 17: return host.windowsDomain();
+			case 18: return uptime;
+			case 19: return tasktime;
 		}
 	} else if ( role == Qt::TextColorRole )
 		return co ? civ(co->fg) : QVariant();
 	else if( role == Qt::BackgroundColorRole )
 		return co ? civ(co->bg) : QVariant();
 	else if ( role == Qt::DecorationRole ) {
-		if ( col == 17 )
-			return QVariant( puppetIcon );
-		if ( col == 7 )
+		if ( col == 8 )
 			return icon;
 	}
 

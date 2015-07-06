@@ -39,7 +39,6 @@
 #include "elementdep.h"
 #include "elementstatus.h"
 #include "elementuser.h"
-#include "employee.h"
 #include "filetracker.h"
 #include "filetrackerdep.h"
 #include "history.h"
@@ -54,7 +53,6 @@
 #include "shotgroup.h"
 #include "thread.h"
 #include "thumbnail.h"
-#include "timesheet.h"
 #include "user.h"
 #include "userelement.h"
 
@@ -63,9 +61,9 @@ bool Element::isTask() const
 	return assetType().isTask();
 }
 
-EmployeeList Element::users( bool recursive ) const
+UserList Element::users( bool recursive ) const
 {
-	EmployeeList ret = ElementUser::recordsByElement( *this ).users();
+	UserList ret = ElementUser::recordsByElement( *this ).users();
 	if( recursive ) {
 		ElementList kids = children( true );
 		foreach( Element e, kids )
@@ -77,9 +75,9 @@ EmployeeList Element::users( bool recursive ) const
 QStringList Element::userStringList() const
 {
 	QStringList ret;
-	EmployeeList ul = users();
-	foreach( Employee emp, ul )
-		ret += emp.fullName();
+	UserList ul = users();
+	foreach( User u, ul )
+		ret += u.name();
 	return ret;
 }
 
@@ -114,21 +112,21 @@ void Element::removeUser( const User & user )
 	ElementUser::recordsByElement( *this ).filter( "fkeyUser", user.key() ).remove();
 }
 
-void Element::setUsers( EmployeeList ul )
+void Element::setUsers( UserList ul )
 {
 	if (!isRecord())
 		return;
 
-	EmployeeList toAdd;
-	EmployeeList toRemove;
+	UserList toAdd;
+	UserList toRemove;
 
-	EmployeeList currentUsers = users();
+	UserList currentUsers = users();
 
-	foreach( Employee emp, ul )
+	foreach( User emp, ul )
 		if( !currentUsers.contains( emp ) )
 			toAdd += emp;
 
-	foreach( Employee eu, currentUsers )
+	foreach( User eu, currentUsers )
 		if( !ul.contains( eu ) )
 			toRemove += eu;
 
@@ -137,7 +135,7 @@ void Element::setUsers( EmployeeList ul )
 		if( toRemove.contains( eu.user() ) )
 			eu.remove();
 
-	foreach( Employee emp, toAdd )
+	foreach( User emp, toAdd )
 	{
 		ElementUser tu;
 		tu.setElement( *this );
@@ -315,8 +313,8 @@ QString Element::displayPath() const
 
 QString Element::displayName( bool needContext ) const
 {
-	if( Employee( *this ).isRecord() )
-		return Employee( *this ).fullName();
+	if( User( *this ).isRecord() )
+		return User( *this ).name();
 	QString ret;
 	if( needContext && isTask() && parent().isRecord() )
 		ret = parent().displayName( true ) + ". ";

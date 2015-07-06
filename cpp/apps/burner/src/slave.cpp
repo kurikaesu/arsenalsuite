@@ -58,7 +58,6 @@
 #include "remotelogserver.h"
 
 #include "builtinburnerplugin.h"
-#include "employee.h"
 #include "group.h"
 #include "groupmapping.h"
 #include "hostservice.h"
@@ -286,6 +285,9 @@ void Slave::startup()
     mUserTimer = new QTimer( this );
     connect( mUserTimer, SIGNAL( timeout() ), SLOT( updateLoggedUsers() ) );
 
+    // Run it once now
+    updateLoggedUsers();
+
     // Set it to trigger every 5 mins
     mUserTimer->start(300000);
 
@@ -382,7 +384,7 @@ void Slave::loadEmbeddedPython()
 
     LOG_5( "Loading python plugins" );
     
-    QDir plugin_dir( "abplugins" );
+    QDir plugin_dir( getEnvParameter("ARSENALDIR") + "./abplugins" );
     QStringList el = plugin_dir.entryList(QStringList() << "*.py" << "*.pys" << "*.pyw", QDir::Files);
     foreach( QString plug, el ) {
         QString name("abplugins/" + plug);
@@ -546,7 +548,10 @@ void Slave::handleStatusChange( const QString & status, const QString & oldStatu
         if( oldStatus != "ready" )
             online();
     } else if( status == "restart" ) {
-        restart();
+		if ( oldStatus != "" )
+			restart();
+		else
+			online();
     } else if( status == "restart-when-done" ) {
         mHostStatus.reload();
         if( mHostStatus.activeAssignmentCount() == 0 )
@@ -992,7 +997,7 @@ void Slave::reset( bool offline )
          && !mInOwnLogonSession
          && mUseGui
          && mHostStatus.slaveStatus() == "offline" 
-         && Employee(User::currentUser()).isRecord() 
+         && User::currentUser().isRecord()
          && userConfig().readBool( "WarnBeforeMapping", true ) ) {
             MapWarningDialog * mwd = new MapWarningDialog(qobject_cast<QWidget*>(parent()));
             int result = mwd->exec();
@@ -1180,7 +1185,7 @@ void Slave::restoreDefaultMappings()
 {
     if( mIsMapped && !mInOwnLogonSession ) {
         if( mIsMapped 
-                && Employee(User::currentUser()).isRecord() 
+                && User::currentUser().isRecord() 
                 && userConfig().readBool( "WarnBeforeReMapping", true ) 
                 && mUseGui ) {
             ReMapWarningDialog * mwd = new ReMapWarningDialog(qobject_cast<QWidget*>(parent()));
@@ -1322,6 +1327,7 @@ void Slave::updateLoggedUsers()
         if (user.isRecord()) {
             if (user == mHost.user()){
                 mHost.setUserIsLoggedIn(true);
+		mHost.setUser(user);
                 mHost.commit();
                 return;
             }
