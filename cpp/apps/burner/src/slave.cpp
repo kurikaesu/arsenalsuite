@@ -548,7 +548,10 @@ void Slave::handleStatusChange( const QString & status, const QString & oldStatu
         if( oldStatus != "ready" )
             online();
     } else if( status == "restart" ) {
-        restart();
+		if ( oldStatus != "" )
+			restart();
+		else
+			online();
     } else if( status == "restart-when-done" ) {
         mHostStatus.reload();
         if( mHostStatus.activeAssignmentCount() == 0 )
