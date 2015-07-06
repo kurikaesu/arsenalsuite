@@ -90,7 +90,7 @@ MainWindow::MainWindow( QWidget * parent )
 {
 	FileExitAction = new QAction( "&Quit", this );
 	FileExitAction->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_Q ) );
-	FileExitAction->setIcon( QIcon( "images/quit.png" ) );
+	FileExitAction->setIcon( QIcon( ":images/quit.png" ) );
 
 	FileSaveAction = new QAction( "&Save Settings", this );
 	FileSaveAction->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_S ) );
@@ -98,10 +98,10 @@ MainWindow::MainWindow( QWidget * parent )
 
 	HelpAboutAction = new QAction( "About...", this );
 	HostServiceMatrixAction = new QAction( "Host Service Matrix...", this );
-	HostServiceMatrixAction->setIcon( QIcon( "images/hosts.png" ) );
+	HostServiceMatrixAction->setIcon( QIcon( ":images/hosts.png" ) );
 
 	UserServiceMatrixAction = new QAction( "User Service Matrix...", this );
-	UserServiceMatrixAction->setIcon( QIcon( "images/users.png" ) );
+	UserServiceMatrixAction->setIcon( QIcon( ":images/users.png" ) );
 
 	ProjectWeightingAction = new QAction( "Project Weighting", this );
 	ProjectWeightingAction->setIcon( QIcon( ":/images/projectweighting" ) );
@@ -139,7 +139,7 @@ MainWindow::MainWindow( QWidget * parent )
 	AdminAction = new QAction( "Admin", this );
 	
 	AutoRefreshAction = new QAction( "Auto Refresh", this );
-	AutoRefreshAction->setIcon( QIcon( "images/auto_refresh.png" ) );
+	AutoRefreshAction->setIcon( QIcon( ":images/auto_refresh.png" ) );
 	AutoRefreshAction->setCheckable( true );
 	connect( AutoRefreshAction, SIGNAL( toggled( bool ) ), SLOT( setAutoRefreshEnabled( bool ) ) );
 	mAutoRefreshTimer = new QTimer(this);

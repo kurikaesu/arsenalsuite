@@ -52,5 +52,8 @@
 		<file>images/image.png</file>
 		<file>images/chart_line.png</file>
 		<file>resources/graph/index.html</file>
+		<file>images/quit.png</file>
+		<file>images/hosts.png</file>
+		<file>images/users.png</file>
     </qresource>
 </RCC>
